@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+    name: personal-website-files
+    labels:
+        app: personal-website
+spec:
+    selector:
+        matchLabels:
+            pv: personal-website-files
+    accessModes:
+        - ReadOnlyMany
+    resources:
+        requests:
+            storage: 1Gi 

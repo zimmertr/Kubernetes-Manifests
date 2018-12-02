@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: personal-website
+    labels:
+        app: personal-website
+        type: custom
+        facing: external
+spec:
+    replicas: 3
+    selector:
+        matchLabels:
+            app: personal-website
+    template:
+        metadata:
+            labels:
+                app: personal-website
+        spec:         
+            containers:
+            - name: weatherpy
+              image: zimmertr/weatherpy:latest
+              volumeMounts:
+                - name: personal-website-weatherrc
+                  mountPath: /root/.weatherrc
+                  subPath: .weatherrc
+            - name: statsbot
+              image: zimmertr/statsbot:latest
+            - name: httpd
+              image: zimmertr/personal-website:latest
+              ports:
+                - containerPort: 80
+              volumeMounts:
+                - name: personal-website-files
+                  mountPath: /var/www/html/Files/
+                - name: personal-website-analyticsjs
+                  mountPath: /var/www/html/analytics.js
+                  subPath: analytics.js
+            volumes:
+                - name: personal-website-files
+                  persistentVolumeClaim:
+                    claimName: personal-website-files
+                - name: personal-website-analyticsjs
+                  configMap:
+                    name: personal-website-analytics.js
+                - name: personal-website-weatherrc
+                  configMap:
+                    name: personal-website-weatherrc
