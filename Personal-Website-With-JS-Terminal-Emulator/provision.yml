@@ -1,0 +1,38 @@
+---
+- hosts: localhost
+  gather_facts: False
+  tasks:
+      - name: Including the variables.
+        include_vars:
+            file: ./vars.yml
+
+      - name: Creating a PVC for the Data Files.
+        k8s:
+            definition: "{{ lookup('template', './manifests/personal_website_pvc.yml.j2') | from_yaml }}"
+
+      - name: Creating a PV for the Data Files.
+        k8s:
+            definition: "{{ lookup('template', './manifests/personal_website_pv_files.yml.j2') | from_yaml }}"
+
+      - name: Creating a CM for the Google Analytics tracking ID.
+        k8s:
+            definition: "{{ lookup('template', './manifests/personal_website_cm_analyticsjs.yml.j2') | from_yaml }}"
+
+      - name: Creating a CM for the weatherpy config file.
+        k8s: 
+            definition: "{{ lookup('template', './manifests/personal_website_cm_weatherrc.yml.j2') | from_yaml }}"
+
+      - name: Creating a Service for the deployment.
+        k8s:
+            definition: "{{ lookup('template', './manifests/personal_website_service.yml.j2') | from_yaml }}"
+
+      - name: Creating a Deployment.
+        k8s: 
+            definition: "{{ lookup('template', './manifests/personal_website_deployment.yml.j2') | from_yaml }}"
+
+      - name: Waiting for the deployment to be ready.
+        wait_for:
+            host: "{{ load_balancer_ip }}"
+            port: "{{ website_port }}"
+            timeout: 300
+            msg: "Website not available after 5 minutes. Something has probably gone wrong."
