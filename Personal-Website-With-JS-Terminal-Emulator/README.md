@@ -11,13 +11,13 @@ Approximate Deployment Time: 1 minute
 * [Project Docker Containers](https://github.com/zimmertr/Personal-Website-With-JS-Terminal-Emulator/tree/master/Docker)
 
 **Requirements:**
-    1) Exported NFS Server with which Kubernetes can communicate.
-    2) Working [load balancer](https://metallb.universe.tf/) integrated with Kubernetes Services.
-    3) Wunderground [API key](https://www.wunderground.com/weather/api/)
-    4) Google Analytics [Tracking ID](https://developers.google.com/analytics/devguides/collection/analyticsjs/)
-    5) Python modules required to use the [k8s Ansible module](https://docs.ansible.com/ansible/latest/modules/k8s_module.html).
-        * tl;dr: `pip install openshift kubernetes pyyaml`
-        * If you're on MacOS, you might have to [do this instead](https://github.com/ansible/ansible/issues/43637#issuecomment-443495763).
+    1) Exported NFS Server with which Kubernetes can communicate.  
+    2) Working [load balancer](https://metallb.universe.tf/) integrated with Kubernetes Services.  
+    3) Wunderground [API key](https://www.wunderground.com/weather/api/).  
+    4) Google Analytics [Tracking ID](https://developers.google.com/analytics/devguides/collection/analyticsjs/).  
+    5) Python modules required to use the [k8s Ansible module](https://docs.ansible.com/ansible/latest/modules/k8s_module.html).  
+        * tl;dr: `pip install openshift kubernetes pyyaml`.  
+        * If you're on MacOS, you might have to [do this instead](https://github.com/ansible/ansible/issues/43637#issuecomment-443495763).  
 
 **Instructions:**  
     1) Make sure you satisfy the above requirements.   
