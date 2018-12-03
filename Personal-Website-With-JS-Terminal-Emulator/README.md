@@ -10,7 +10,7 @@ Approximate Deployment Time: 1 minute
 
 * [Project Docker Containers](https://github.com/zimmertr/Personal-Website-With-JS-Terminal-Emulator/tree/master/Docker)
 
-**Requirements:**
+**Requirements:**  
     1) Exported NFS Server with which Kubernetes can communicate.  
     2) Working [load balancer](https://metallb.universe.tf/) integrated with Kubernetes Services.  
     3) Wunderground [API key](https://www.wunderground.com/weather/api/).  
