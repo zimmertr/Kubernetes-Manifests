@@ -11,6 +11,7 @@ Approximate Deployment Time: 1 minute
 * [Project Docker Containers](https://github.com/zimmertr/Personal-Website-With-JS-Terminal-Emulator/tree/master/Docker)
 
 **Requirements:**  
+
     1) Exported NFS Server with which Kubernetes can communicate.  
     2) Working [load balancer](https://metallb.universe.tf/) integrated with Kubernetes Services.  
     3) Wunderground [API key](https://www.wunderground.com/weather/api/).  
@@ -20,9 +21,11 @@ Approximate Deployment Time: 1 minute
         * If you're on MacOS, you might have to [do this instead](https://github.com/ansible/ansible/issues/43637#issuecomment-443495763).  
 
 **Instructions:**  
+
     1) Make sure you satisfy the above requirements.   
     2) Fill out the `vars.yml` file with the parameters specific to your environment.  
     3) Execute the playbook: `ansible-playbook provision.yml`.  
 
 **Deletion:**  
+
     1) You can roll back this deployment with the `delete.yml` playbook: `ansible-playbook delete.yml`.
