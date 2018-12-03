@@ -7,6 +7,9 @@ load_balancer_ip: '192.168.0.100'
 # Port number on which you want to port forward the website.
 website_port: '2000'
 
+# NFS Server hostname or IP address.
+nfs_server: 'saturn.sol.milkyway'
+
 # NFS Mountpoint you want to expose to `website/Files/`
 website_public_files: '/SaturnPool/Kubernetes/Apache/Files'
 
