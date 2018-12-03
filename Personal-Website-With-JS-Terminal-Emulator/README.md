@@ -25,4 +25,4 @@ Approximate Deployment Time: 1 minute
     3) Execute the playbook: `ansible-playbook provision.yml`.  
 
 **Deletion:**  
-    1) You roll back this deployment with the `delete.yml` playbook: `ansible-playbook delete.yml`.
+    1) You can roll back this deployment with the `delete.yml` playbook: `ansible-playbook delete.yml`.
