@@ -1,0 +1,39 @@
+---
+- hosts: localhost
+  gather_facts: False
+  tasks:
+      - name: Including the variables.
+        include_vars:
+            file: ./vars.yml
+
+      - name: Deleting the Deployment.
+        k8s: 
+            definition: "{{ lookup('template', './manifests/personal_website_deployment.yml.j2') | from_yaml }}"
+            state: absent
+
+      - name: Deleting the Service for the deployment.
+        k8s:
+            definition: "{{ lookup('template', './manifests/personal_website_service.yml.j2') | from_yaml }}"
+            state: absent
+
+      - name: Deleting the PVC for the Data Files.
+        k8s:
+            definition: "{{ lookup('template', './manifests/personal_website_pvc.yml.j2') | from_yaml }}"
+            state: absent
+
+      - name: Deleting the PV for the Data Files.
+        k8s:
+            definition: "{{ lookup('template', './manifests/personal_website_pv_files.yml.j2') | from_yaml }}"
+            state: absent
+
+      - name: Deleting the CM for the Google Analytics tracking ID.
+        k8s:
+            definition: "{{ lookup('template', './manifests/personal_website_cm_analyticsjs.yml.j2') | from_yaml }}"
+            state: absent
+
+      - name: Deleting the CM for the weatherpy config file.
+        k8s: 
+            definition: "{{ lookup('template', './manifests/personal_website_cm_weatherrc.yml.j2') | from_yaml }}"
+            state: absent
+
+
