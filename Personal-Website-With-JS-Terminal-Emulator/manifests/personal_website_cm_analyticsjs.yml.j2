@@ -7,8 +7,9 @@ data:
         m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
         })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
     
-        ga('create', 'UA-#########-#', 'auto');
+        ga('create', '{{ google_analytics_tracking_id }}', 'auto');
         ga('require', 'displayfeatures');
         ga('send', 'pageview');
 metadata:
     name: personal-website-analytics.js
+    namespace: {{ website_namespace }}

@@ -3,10 +3,11 @@ kind: ConfigMap
 data:
     .weatherrc: |
         {
-            "api_key": "################",
+            "api_key": "{{ wunderground_api_key }}",
             "date": "date",
             "time": "civilian",
             "units": "english"
         }   
 metadata:
     name: personal-website-weatherrc
+    namespace: {{ website_namespace }}
