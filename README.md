@@ -26,10 +26,10 @@ Approximate Deployment Time: 1 minute
         * tl;dr: `pip install openshift kubernetes pyyaml`
         * If you're on MacOS, you might have to [do this instead](https://github.com/ansible/ansible/issues/43637#issuecomment-443495763).
 
-**Instructions:**
+**Instructions:**  
     1) Make sure you satisfy the above requirements.   
     2) Fill out the `vars.yml` file with the parameters specific to your environment.  
     3) Execute the playbook: `ansible-playbook provision.yml`.  
 
-**Deletion:**
+**Deletion:**  
     1) You roll back this deployment with the `delete.yml` playbook: `ansible-playbook delete.yml`.
