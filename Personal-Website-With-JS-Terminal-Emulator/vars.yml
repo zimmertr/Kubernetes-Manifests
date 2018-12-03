@@ -1,0 +1,17 @@
+# Namespace to deploy the manifests to.
+website_namespace: 'default'
+
+# IP Address on which you want to to load balance the website.
+load_balancer_ip: '192.168.0.100'
+
+# Port number on which you want to port forward the website.
+website_port: '2000'
+
+# NFS Mountpoint you want to expose to `website/Files/`
+website_public_files: '/SaturnPool/Kubernetes/Apache/Files'
+
+# Google Analytics tracking ID used for monitoring website traffic. 
+google_analytics_tracking_id: 'TRACKINGID'
+
+# Wunderground API Key used for querying for weather statistics for tjsh's `weather` command.
+wunderground_api_key: 'APIKEY'
