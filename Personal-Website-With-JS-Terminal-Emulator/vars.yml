@@ -4,8 +4,8 @@ website_namespace: 'default'
 # IP Address on which you want to to load balance the website.
 load_balancer_ip: '192.168.0.100'
 
-# Port number on which you want to port forward the website.
-website_port: '2000'
+# The hostname with which you want to connect to the service on the load balancer.
+website_hostname: 'test.sol.milkyway'
 
 # NFS Server hostname or IP address.
 nfs_server: 'saturn.sol.milkyway'
