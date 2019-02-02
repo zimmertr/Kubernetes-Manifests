@@ -18,4 +18,4 @@
             - "pvc_deluge_downloads.yml.j2"
             - "pvc_deluge_fileserver.yml.j2"
             - "dep_deluge.yml.j2"
-            - "svc_deluge.yml.j2"   
+            - "svc_deluge.yml.j2" 
