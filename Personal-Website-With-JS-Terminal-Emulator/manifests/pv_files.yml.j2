@@ -3,9 +3,6 @@ kind: PersistentVolume
 metadata:
     name: personal-website-files
     namespace: {{ website_namespace }}
-    labels:
-        app: personal-website
-        pv: personal-website-files
 spec:
     capacity:
         storage: 1Gi
@@ -14,3 +11,4 @@ spec:
     nfs:
         server: {{ nfs_server }}
         path: {{ website_public_files }}
+    storageClassName: nfs
