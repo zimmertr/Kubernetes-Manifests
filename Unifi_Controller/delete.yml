@@ -1,0 +1,18 @@
+---
+- hosts: localhost
+  gather_facts: False
+  tasks:
+      - name: Including the variables.
+        include_vars:
+            file: ./vars.yml
+
+      - name: Deleting the Unifi Controller manifests from Kubernetes.
+        k8s:
+            definition: "{{ lookup('template', './manifests/{{ item }}') | from_yaml }}"
+            state: absent            
+        with_items:
+            - "pv_unifi_controller_config.yml.j2"
+            - "pvc_unifi_controller_config.yml.j2"
+            - "dep_unifi_controller.yml.j2"
+            - "svc_unifi_controller_tcp.yml.j2"
+            - "svc_unifi_controller_udp.yml.j2" 

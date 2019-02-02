@@ -1,0 +1,25 @@
+---
+- hosts: localhost
+  gather_facts: False
+  tasks:
+      - name: Including the variables.
+        include_vars:
+            file: ./vars.yml
+
+      - name: Deploying the Unifi Controller manifests to Kubernetes.
+        k8s:
+            definition: "{{ lookup('template', './manifests/{{ item }}') | from_yaml }}"
+        with_items:
+            - "ns_unifi_controller.yml.j2"
+            - "pv_unifi_controller_config.yml.j2"
+            - "pvc_unifi_controller_config.yml.j2"
+            - "dep_unifi_controller.yml.j2"
+            - "svc_unifi_controller_tcp.yml.j2"
+            - "svc_unifi_controller_udp.yml.j2"
+
+      - name: Waiting for the deployment to be ready.
+        wait_for:
+            host: "{{ unifi_controller_hostname }}"
+            port: 8443
+            timeout: 300
+            msg: "Webserver not available after 5 minutes. Something has probably gone wrong."
