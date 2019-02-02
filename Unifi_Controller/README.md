@@ -1,5 +1,9 @@
 ## Unifi Controller
 
+<p align="center">
+  <img src="https://raw.githubusercontent.com/zimmertr/Kubernetes-Manifests/master/Unifi_Controller/screenshot.png" width="800">
+</p>
+
 **Summary:**
 
 These manifests are used to deploy the Unifi Controller to Kubernetes. They rely on MetalLB to configure a load balancer as well as an exported NFS mountpoint that Kubernetes can bind to with a persistent volume in order to store Unifi's configuration. Furthermore, additional configuration will be necessary at the software level and device discovery may not work. (Or my network might just suck)
@@ -43,8 +47,9 @@ Approximate Deployment Time: 10-15 minutes
 
 **Problems:**
 
-    1) Unfortunately I have not gotten Device Discovery to work yet. It could be my network. 
-    2) Controller may eventually report that APs are no longer working. But they will be?
+    1) Scaling this up to more than one pod causes issues. Could probably get working with some work.
+    2) Unfortunately I have not gotten Device Discovery to work yet. It could be my network. 
+    3) Controller may eventually report that APs are no longer working. But they will be?
 
 **Deletion:**  
 

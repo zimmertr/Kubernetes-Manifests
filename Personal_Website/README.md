@@ -1,4 +1,8 @@
-## Personal Website With JS Terminal Emulator
+## Personal Website 
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/zimmertr/Kubernetes-Manifests/master/Personal_Website/screenshot.png" width="800">
+</p>
 
 **Summary:**
 
