@@ -6,33 +6,16 @@
         include_vars:
             file: ./vars.yml
 
-      - name: Creating a PVC for the Data Files.
+      - name: Deploying the Personal Website manifests to Kubernetes.
         k8s:
-            definition: "{{ lookup('template', './manifests/pvc.yml.j2') | from_yaml }}"
-
-      - name: Creating a PV for the Data Files.
-        k8s:
-            definition: "{{ lookup('template', './manifests/pv_files.yml.j2') | from_yaml }}"
-
-      - name: Creating a CM for the Google Analytics tracking ID.
-        k8s:
-            definition: "{{ lookup('template', './manifests/cm_analyticsjs.yml.j2') | from_yaml }}"
-
-      - name: Creating a CM for the weatherpy config file.
-        k8s: 
-            definition: "{{ lookup('template', './manifests/cm_weatherrc.yml.j2') | from_yaml }}"
-
-      - name: Creating a Service for the deployment.
-        k8s:
-            definition: "{{ lookup('template', './manifests/service.yml.j2') | from_yaml }}"
-
-      - name: Creating an Ingress for the deployment.
-        k8s:
-            definition: "{{ lookup('template', './manifests/ingress.yml.j2') | from_yaml }}"            
-
-      - name: Creating a Deployment.
-        k8s: 
-            definition: "{{ lookup('template', './manifests/deployment.yml.j2') | from_yaml }}"
+            definition: "{{ lookup('template', './manifests/{{ item }}') | from_yaml }}"
+        with_items:
+            - "pv_files.yml.j2"          
+            - "pvc.yml.j2"
+            - "cm_analyticsjs.yml.j2"
+            - "cm_weatherrc.yml.j2"
+            - "svc.yml.j2"
+            - "dep.yml.j2"
 
       - name: Waiting for the deployment to be ready.
         wait_for:
