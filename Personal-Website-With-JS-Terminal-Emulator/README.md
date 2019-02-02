@@ -4,7 +4,7 @@
 
 These manifests are used to build my personal website. They rely on MetalLB to configure a load balancer as well as an exported NFS mountpoint that Kubernetes can bind to with a persistent volume in order to serve up public files. 
 
-Approximate Deployment Time: 1 minute
+Approximate Deployment Time: 1-5 minutes
 
 * [Project Source](https://github.com/zimmertr/Personal-Website-With-JS-Terminal-Emulator)
 
@@ -29,3 +29,4 @@ Approximate Deployment Time: 1 minute
 **Deletion:**  
 
     1) You can roll back this deployment with the `delete.yml` playbook: `ansible-playbook delete.yml`.
+        - Please note, this will not remove the deployed namespace because I could not be sure you didn't specify an existing namespace. I would hate to delete your `default` for example. So you must manually clean that up. `kubectl delete ns >namespace name<`
