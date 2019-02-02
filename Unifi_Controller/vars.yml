@@ -1,0 +1,14 @@
+# Namespace to deploy the manifests to.
+unifi_controller_namespace: 'unifi-controller'
+
+# IP Address on which you want to to load balance the website.
+load_balancer_ip: '192.168.0.102'
+
+# The hostname with which you want to connect to the service on the load balancer.
+unifi_controller_hostname: 'unifi.sol.milkyway'
+
+# NFS Server hostname or IP address.
+nfs_server: 'saturn.sol.milkyway'
+
+# NFS Mountpoint you want to use for preserving your unifi-controller configuration.
+unifi_controller_config: '/SaturnPool/Kubernetes/Unifi'
