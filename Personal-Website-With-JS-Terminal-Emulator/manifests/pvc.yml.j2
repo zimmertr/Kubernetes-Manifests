@@ -3,14 +3,11 @@ kind: PersistentVolumeClaim
 metadata:
     name: personal-website-files
     namespace: {{ website_namespace }}
-    labels:
-        app: personal-website
 spec:
-    selector:
-        matchLabels:
-            pv: personal-website-files
     accessModes:
         - ReadOnlyMany
     resources:
         requests:
             storage: 1Gi 
+    storageClassName: nfs            
+    volumeName: personal-website-files
