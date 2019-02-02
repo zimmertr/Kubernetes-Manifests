@@ -34,6 +34,7 @@ Approximate Deployment Time: 10-15 minutes
     4) Execute the playbook: `ansible-playbook provision.yml`.  
     5) Once it has been deployed, connect to the LB IP/DNS and you will be greeted by the Welcome Wizard.
     6) If you took a backup, feel free to restore it. You will need to delete your devices, however, as the relationship will have been broken.
+        - Devices -> Device -> Config -> Manage Device -> Forget
     7) Configure your Unifi Controller to be informed over a different identity. 
         - Enable `Override inform host with controller hostname/IP`
         - Set Controller Hostname/IP to the IP associated with your load balancer service.
@@ -43,6 +44,7 @@ Approximate Deployment Time: 10-15 minutes
     9) SSH into your Unifi Devices and manually inform the controller of their existence.
         - `set-inform http://>{IP,HOSTNAME}<:8080/inform`
     10) After a few moments, your devices will appear in the Controller. Click Adopt and configure away. 
+        - If your devices get stuck in an Adopting -> Disconnected loop make sure that your `Controller Hostname/IP` is configured correctly in step 7. You can test this by SSHing into the device and trying to resolve the Unifi Controller LB IP/DNS.
 
 
 **Problems:**
