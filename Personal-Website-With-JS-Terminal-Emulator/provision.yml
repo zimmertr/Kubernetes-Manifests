@@ -10,13 +10,13 @@
         k8s:
             definition: "{{ lookup('template', './manifests/{{ item }}') | from_yaml }}"
         with_items:
-            - "ns_website.yml.j2"
-            - "pv_website_files.yml.j2"          
-            - "pvc_website_files.yml.j2"
-            - "cm_website_analyticsjs.yml.j2"
-            - "cm_website_weatherrc.yml.j2"
-            - "svc_website.yml.j2"
-            - "dep_website.yml.j2"
+            - "ns_personal_website.yml.j2"
+            - "pv_personal_website_files.yml.j2"          
+            - "pvc_personal_website_files.yml.j2"
+            - "cm_personal_website_analyticsjs.yml.j2"
+            - "cm_personal_website_weatherrc.yml.j2"
+            - "svc_personal_website.yml.j2"
+            - "dep_personal_website.yml.j2"
 
       - name: Waiting for the deployment to be ready.
         wait_for:
