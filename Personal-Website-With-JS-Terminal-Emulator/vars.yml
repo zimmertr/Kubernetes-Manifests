@@ -5,7 +5,7 @@ website_namespace: 'default'
 load_balancer_ip: '192.168.0.100'
 
 # The hostname with which you want to connect to the service on the load balancer.
-website_hostname: 'test.sol.milkyway'
+website_hostname: 'website.sol.milkyway'
 
 # NFS Server hostname or IP address.
 nfs_server: 'saturn.sol.milkyway'
