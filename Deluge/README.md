@@ -4,7 +4,7 @@
 
 These manifests are used to build an instance of Deluge. It relies on MetalLB to configure a load balancer as well as an exported NFS mountpoint that Kubernetes can bind to with three persistent volumes in order to store the Deluge configuration as well as interact with your Downloaded files and other subdirectories on your fileserver involved in running a Bittorrent server.
 
-Approximate Deployment Time: 1 minute
+Approximate Deployment Time: 1-5 minutes
 
 * [Project Docker Containers](https://github.com/linuxserver/docker-deluge)
 
@@ -25,3 +25,4 @@ Approximate Deployment Time: 1 minute
 **Deletion:**  
 
     1) You can roll back this deployment with the `delete.yml` playbook: `ansible-playbook delete.yml`.
+        - Please note, this will not remove the deployed namespace because I could not be sure you didn't specify an existing namespace. I would hate to delete your `default` for example. So you must manually clean that up. `kubectl delete ns >namespace name<`
