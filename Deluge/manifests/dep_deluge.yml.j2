@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: deluge
+    namespace: {{ deluge_namespace }}
+    labels:
+        app: deluge
+        type: official
+        facing: internal
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: deluge
+    template:
+        metadata:
+            labels:
+                app: deluge
+        spec:         
+            containers:
+            - name: deluge
+              image: linuxserver/deluge:latest
+              env:
+                  - name: PUID
+                    value: "1002"
+                  - name: PGID
+                    value: "1007"
+                  - name: TZ
+                    value: "Pacific"
+              ports:
+                  - containerPort: 7850
+                  - containerPort: 8112
+                  - containerPort: 58846
+              volumeMounts:
+                  - name: deluge-config
+                    mountPath: /config
+                  - name: deluge-downloads
+                    mountPath: /downloads
+                  - name: deluge-fileserver
+                    mountPath: /SaturnPool
+            volumes:
+                - name: deluge-config
+                  persistentVolumeClaim:
+                    claimName: deluge-config
+                - name: deluge-downloads
+                  persistentVolumeClaim:
+                    claimName: deluge-downloads
+                - name: deluge-fileserver
+                  persistentVolumeClaim:
+                    claimName: deluge-fileserver

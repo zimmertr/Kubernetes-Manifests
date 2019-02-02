@@ -1,5 +1,5 @@
 # Namespace to deploy the manifests to.
-website_namespace: 'default'
+website_namespace: 'website'
 
 # IP Address on which you want to to load balance the website.
 load_balancer_ip: '192.168.0.100'
