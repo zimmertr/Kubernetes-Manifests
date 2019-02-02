@@ -1,5 +1,9 @@
 ## Deluge
 
+<p align="center">
+  <img src="https://raw.githubusercontent.com/zimmertr/Kubernetes-Manifests/master/Deluge/screenshot.png" width="800">
+</p>
+
 **Summary:**
 
 These manifests are used to build an instance of Deluge. It relies on MetalLB to configure a load balancer as well as an exported NFS mountpoint that Kubernetes can bind to with three persistent volumes in order to store the Deluge configuration as well as interact with your Downloaded files and other subdirectories on your fileserver involved in running a Bittorrent server.
@@ -22,6 +26,12 @@ Approximate Deployment Time: 1-5 minutes
     2) Fill out the `vars.yml` file with the parameters specific to your environment.  
     3) Execute the playbook: `ansible-playbook provision.yml`.  
 
+
+**Problems:**
+
+    1) Scaling this up to more than one pod causes issues. Could probably get working with some work.
+
+    
 **Deletion:**  
 
     1) You can roll back this deployment with the `delete.yml` playbook: `ansible-playbook delete.yml`.
