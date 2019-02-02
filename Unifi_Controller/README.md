@@ -19,9 +19,11 @@ Approximate Deployment Time: 10-15 minutes
 **Instructions:**  
 
 *Optional:*
+
     1) Export a backup of your existing Unifi Controller settings to a .unf file.
 
 *Required:*
+
     1) Stop your existing Unifi Controller service.
     2) Make sure you satisfy the above requirements.   
     3) Fill out the `vars.yml` file with the parameters specific to your environment.  
@@ -40,6 +42,7 @@ Approximate Deployment Time: 10-15 minutes
 
 
 **Problems:**
+
     1) Unfortunately I have not gotten Device Discovery to work yet. It could be my network. 
     2) Controller may eventually report that APs are no longer working. But they will be?
 
