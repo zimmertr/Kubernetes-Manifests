@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Service
+metadata:
+    name: deluge
+    namespace: {{ deluge_namespace }}
+    labels:
+        app: deluge
+spec:
+    type: LoadBalancer
+    selector:
+        app: deluge
+    loadBalancerIP: {{ load_balancer_ip }}
+    ports:
+    - name: "deluge-traffic"
+      protocol: TCP
+      targetPort: 7850
+      port: 7850
+    - name: "deluge-web-interface"
+      protocol: TCP
+      targetPort: 8112
+      port: 8112
+    - name: "deluge-daemon"
+      protocol: TCP
+      targetPort: 58846
+      port: 58846

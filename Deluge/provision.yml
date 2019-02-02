@@ -1,0 +1,28 @@
+---
+- hosts: localhost
+  gather_facts: False
+  tasks:
+      - name: Including the variables.
+        include_vars:
+            file: ./vars.yml
+
+      - name: Deploying the Deluge manifests to Kubernetes.
+        k8s:
+            definition: "{{ lookup('template', './manifests/{{ item }}') | from_yaml }}"
+        with_items:
+            - "ns_deluge.yml.j2"
+            - "pv_deluge_config.yml.j2"
+            - "pv_deluge_downloads.yml.j2"
+            - "pv_deluge_fileserver.yml.j2"
+            - "pvc_deluge_config.yml.j2"
+            - "pvc_deluge_downloads.yml.j2"
+            - "pvc_deluge_fileserver.yml.j2"
+            - "dep_deluge.yml.j2"
+            - "svc_deluge.yml.j2"
+
+      - name: Waiting for the deployment to be ready.
+        wait_for:
+            host: "{{ deluge_hostname }}"
+            port: 8112
+            timeout: 300
+            msg: "Webserver not available after 5 minutes. Something has probably gone wrong."
