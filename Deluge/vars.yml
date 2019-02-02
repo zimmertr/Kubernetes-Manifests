@@ -1,0 +1,20 @@
+# Namespace to deploy the manifests to.
+deluge_namespace: 'deluge'
+
+# IP Address on which you want to to load balance the website.
+load_balancer_ip: '192.168.0.101'
+
+# The hostname with which you want to connect to the service on the load balancer.
+deluge_hostname: 'deluge.sol.milkyway'
+
+# NFS Server hostname or IP address.
+nfs_server: 'saturn.sol.milkyway'
+
+# NFS Mountpoint you want to use for preserving your Deluge configuration.
+deluge_config: '/SaturnPool/Kubernetes/Deluge'
+
+# NFS Mountpoint you want to use for storing your downloaded files.
+deluge_downloads: '/SaturnPool/Downloads/'
+
+# NFS Mountpoint you want to use for exposing your fileserver.
+fileserver_root: '/SaturnPool/'
