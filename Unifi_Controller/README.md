@@ -49,9 +49,9 @@ Approximate Deployment Time: 10-15 minutes
 
 **Problems:**
 
-    1) Scaling this up to more than one pod causes issues. Could probably get working with some work.
+    1) Scaling this up to more than one pod causes issues. Load Balancing the controller does not appear to be supported.
+        - https://community.ubnt.com/t5/UniFi-Feature-Requests/Unifi-Controller-Redundancy/idi-p/680341
     2) Unfortunately I have not gotten Device Discovery to work yet. It could be my network. 
-    3) Controller may eventually report that APs are no longer working. But they will be?
 
 **Deletion:**  
 
