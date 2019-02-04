@@ -2,7 +2,7 @@
 personal_website_namespace: 'personal-website'
 
 # IP Address on which you want to to load balance the website.
-load_balancer_ip: '192.168.0.100'
+load_balancer_ip: '192.168.0.50'
 
 # The hostname with which you want to connect to the service on the load balancer.
 website_hostname: 'website.sol.milkyway'
