@@ -22,4 +22,4 @@
             host: "{{ unifi_controller_hostname }}"
             port: 8443
             timeout: 600
-            msg: "Webserver not available after 5 minutes. Something has probably gone wrong."
+            msg: "Webserver not available after 10 minutes. Something has probably gone wrong."
