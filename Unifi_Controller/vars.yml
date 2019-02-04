@@ -2,7 +2,7 @@
 unifi_controller_namespace: 'unifi-controller'
 
 # IP Address on which you want to to load balance the website.
-load_balancer_ip: '192.168.0.102'
+load_balancer_ip: '192.168.0.1'
 
 # The hostname with which you want to connect to the service on the load balancer.
 unifi_controller_hostname: 'unifi.sol.milkyway'
