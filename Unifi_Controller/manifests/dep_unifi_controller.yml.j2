@@ -46,6 +46,7 @@ spec:
                   volumeMounts:
                       - name: unifi-controller-config
                         mountPath: /config
+                  #Controller takes between 3-8 to start up.
                   readinessProbe:
                       httpGet:
                           path: /
@@ -53,6 +54,7 @@ spec:
                       initialDelaySeconds: 500
                       periodSeconds: 10
                       failureThreshold: 1
+                  #Controller takes between 3-8 to start up.                      
                   livenessProbe:
                       httpGet:
                           path: /
