@@ -18,3 +18,14 @@ google_analytics_tracking_id: 'TRACKINGID'
 
 # Wunderground API Key used for querying for weather statistics for tjsh's `weather` command.
 wunderground_api_key: 'APIKEY'
+
+# CPU limitation for images
+# 1 = 1 vCPU affinity
+cpu_limit_weatherpy: '.05'
+cpu_limit_statsbot: '.02'
+cpu_limit_httpd: '.05'
+
+# Memory limitation for images
+mem_limit_weatherpy: '512Mi'
+mem_limit_statsbot: '102Mi'
+mem_limit_httpd: '512Mi'

@@ -18,3 +18,16 @@ deluge_downloads: '/SaturnPool/Downloads/'
 
 # NFS Mountpoint you want to use for exposing your fileserver.
 fileserver_root: '/SaturnPool/'
+
+# CPU Requests for Deluge image
+# 1 = 1 vCPU affinity
+cpu_request_deluge: '1'
+
+# CPU limitations for Deluge image
+cpu_limit_deluge: '2'
+
+# Memory request for Deluge image
+mem_request_deluge: '2048Mi'
+
+# Memory limitation for Deluge image
+mem_limit_deluge: '10240Mi'
