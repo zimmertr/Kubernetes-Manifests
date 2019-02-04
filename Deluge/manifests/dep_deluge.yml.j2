@@ -5,10 +5,12 @@ metadata:
     namespace: {{ deluge_namespace }}
     labels:
         app: deluge
-        type: official
+        type: third-party
         facing: internal
 spec:
     replicas: 1
+    strategy:
+        type: Recreate
     selector:
         matchLabels:
             app: deluge
@@ -18,26 +20,48 @@ spec:
                 app: deluge
         spec:         
             containers:
-            - name: deluge
-              image: linuxserver/deluge:latest
-              env:
-                  - name: PUID
-                    value: "1002"
-                  - name: PGID
-                    value: "1007"
-                  - name: TZ
-                    value: "Pacific"
-              ports:
-                  - containerPort: 7850
-                  - containerPort: 8112
-                  - containerPort: 58846
-              volumeMounts:
-                  - name: deluge-config
-                    mountPath: /config
-                  - name: deluge-downloads
-                    mountPath: /downloads
-                  - name: deluge-fileserver
-                    mountPath: /SaturnPool
+                - name: deluge
+                  image: linuxserver/deluge:latest
+                  env:
+                      - name: PUID
+                        value: "1002"
+                      - name: PGID
+                        value: "1007"
+                      - name: TZ
+                        value: "Pacific"
+                  ports:
+                      - containerPort: 7850
+                      - containerPort: 7851
+                      - containerPort: 8112
+                      - containerPort: 58846
+                  volumeMounts:
+                      - name: deluge-config
+                        mountPath: /config
+                      - name: deluge-downloads
+                        mountPath: /downloads
+                      - name: deluge-fileserver
+                        mountPath: /SaturnPool
+                  readinessProbe:
+                      httpGet:
+                          path: /
+                          port: 8112
+                      initialDelaySeconds: 60
+                      periodSeconds: 10
+                      failureThreshold: 1
+                  livenessProbe:
+                      httpGet:
+                          path: /
+                          port: 8112
+                      initialDelaySeconds: 60
+                      periodSeconds: 10
+                      failureThreshold: 5
+                  resources:
+                      requests:
+                          memory: {{ mem_request_deluge }}
+                          cpu: {{ cpu_request_deluge }}
+                      limits:
+                          memory: {{ mem_limit_deluge }}
+                          cpu: {{ cpu_limit_deluge }}
             volumes:
                 - name: deluge-config
                   persistentVolumeClaim:
