@@ -12,3 +12,16 @@ nfs_server: 'saturn.sol.milkyway'
 
 # NFS Mountpoint you want to use for preserving your unifi-controller configuration.
 unifi_controller_config: '/SaturnPool/Kubernetes/Unifi'
+
+# CPU Requests for Deluge image
+# 1 = 1 vCPU affinity
+cpu_request_unifi: '.02'
+
+# CPU limitations for Deluge image
+cpu_limit_unifi: '.3'
+
+# Memory request for Deluge image
+mem_request_unifi: '512Mi'
+
+# Memory limitation for Deluge image
+mem_limit_unifi: '2048Mi'
