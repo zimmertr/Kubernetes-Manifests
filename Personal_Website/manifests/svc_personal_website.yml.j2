@@ -11,6 +11,7 @@ spec:
         app: personal-website
     loadBalancerIP: {{ load_balancer_ip }}
     ports:
-    - protocol: TCP
+    - name: "personal-website-httpd"
+      protocol: TCP
       targetPort: 80
       port: 80
