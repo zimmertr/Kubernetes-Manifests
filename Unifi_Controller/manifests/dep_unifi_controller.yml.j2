@@ -5,10 +5,12 @@ metadata:
     namespace: {{ unifi_controller_namespace }}
     labels:
         app: unifi-controller
-        type: official
+        type: third-party
         facing: internal
 spec:
     replicas: 1
+    strategy:
+        type: Recreate
     selector:
         matchLabels:
             app: unifi-controller
@@ -18,32 +20,53 @@ spec:
                 app: unifi-controller
         spec:         
             containers:
-            - name: unifi-controller
-              image: linuxserver/unifi:latest
-              env:
-                  - name: PUID
-                    value: "1002"
-                  - name: PGID
-                    value: "1007"
-                  - name: TZ
-                    value: "Pacific"
-              ports:
-                  - containerPort: 1900
-                    protocol: UDP
-                  - containerPort: 3478
-                    protocol: UDP
-                  - containerPort: 10001
-                    protocol: UDP
-                  - containerPort: 6789
-                  - containerPort: 8080
-                  - containerPort: 8081
-                  - containerPort: 8443
-                  - containerPort: 8843
-                  - containerPort: 8880
-                  - containerPort: 27117
-              volumeMounts:
-                  - name: unifi-controller-config
-                    mountPath: /config
+                - name: unifi-controller
+                  image: linuxserver/unifi:latest
+                  env:
+                      - name: PUID
+                        value: "1002"
+                      - name: PGID
+                        value: "1007"
+                      - name: TZ
+                        value: "Pacific"
+                  ports:
+                      - containerPort: 1900
+                        protocol: UDP
+                      - containerPort: 3478
+                        protocol: UDP
+                      - containerPort: 10001
+                        protocol: UDP
+                      - containerPort: 6789
+                      - containerPort: 8080
+                      - containerPort: 8081
+                      - containerPort: 8443
+                      - containerPort: 8843
+                      - containerPort: 8880
+                      - containerPort: 27117
+                  volumeMounts:
+                      - name: unifi-controller-config
+                        mountPath: /config
+                  readinessProbe:
+                      httpGet:
+                          path: /
+                          port: 8080
+                      initialDelaySeconds: 60
+                      periodSeconds: 10
+                      failureThreshold: 1
+                  livenessProbe:
+                      httpGet:
+                          path: /
+                          port: 8080
+                      initialDelaySeconds: 60
+                      periodSeconds: 10
+                      failureThreshold: 5
+                  resources:
+                      requests:
+                          memory: {{ mem_request_unifi }}
+                          cpu: {{ cpu_request_unifi }}
+                      limits:
+                          memory: {{ mem_limit_unifi }}
+                          cpu: {{ cpu_limit_unifi }}
             volumes:
                 - name: unifi-controller-config
                   persistentVolumeClaim:
