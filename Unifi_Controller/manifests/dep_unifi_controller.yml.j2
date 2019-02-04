@@ -50,14 +50,14 @@ spec:
                       httpGet:
                           path: /
                           port: 8080
-                      initialDelaySeconds: 300
+                      initialDelaySeconds: 500
                       periodSeconds: 10
                       failureThreshold: 1
                   livenessProbe:
                       httpGet:
                           path: /
                           port: 8080
-                      initialDelaySeconds: 300
+                      initialDelaySeconds: 500
                       periodSeconds: 10
                       failureThreshold: 5
                   resources:
