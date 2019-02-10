@@ -18,34 +18,56 @@ spec:
         metadata:
             labels:
                 app: unifi-controller
-        spec:         
+        spec:    
+            initContainers:
+                - name: unifi-controller-system-properties-injector
+                  image: busybox
+                  command: ['sh', '-c', 'mkdir -p /unifi_controller_data/data && cp /system.properties /unifi_controller_data/data/system.properties']
+                  volumeMounts:
+                      - name: unifi-controller-system-properties
+                        mountPath: /system.properties
+                        subPath: system.properties    
+                      - name: unifi-controller-data
+                        mountPath: /unifi_controller_data/
             containers:
                 - name: unifi-controller
                   image: linuxserver/unifi:latest
                   env:
+                      - name: TZ
+                        value: "Pacific"
                       - name: PUID
                         value: "1002"
                       - name: PGID
                         value: "1007"
-                      - name: TZ
-                        value: "Pacific"
                   ports:
-                      - containerPort: 1900
+                      - name: "l2-discoverable"
+                        containerPort: 1900
                         protocol: UDP
-                      - containerPort: 3478
+                      - name: "stun"
+                        containerPort: 3478
                         protocol: UDP
-                      - containerPort: 10001
+                      - name: "ap-discovery"
+                        containerPort: 10001
                         protocol: UDP
-                      - containerPort: 6789
-                      - containerPort: 8080
-                      - containerPort: 8081
-                      - containerPort: 8443
-                      - containerPort: 8843
-                      - containerPort: 8880
-                      - containerPort: 27117
+                      - name: "speed-test"
+                        containerPort: 6789
+                      - name: "internal-comms"
+                        containerPort: 8080
+                      - name: "unknown-port"
+                        containerPort: 8081
+                      - name: "web-interface"
+                        containerPort: 8443
+                      - name: "https-redirect"
+                        containerPort: 8843
+                      - name: "http-redirect"
+                        containerPort: 8880
+                      - name: "local-comms"
+                        containerPort: 27117
                   volumeMounts:
-                      - name: unifi-controller-config
+                      - name: unifi-controller-data
                         mountPath: /config
+                      - name: unifi-controller-backups
+                        mountPath: /backups
 #                  readinessProbe:
 #                      httpGet:
 #                          path: /
@@ -60,14 +82,20 @@ spec:
 #                      initialDelaySeconds: 500
 #                      periodSeconds: 10
 #                      failureThreshold: 5
-                  resources:
-                      requests:
-                          memory: {{ mem_request_unifi }}
-                          cpu: {{ cpu_request_unifi }}
-                      limits:
-                          memory: {{ mem_limit_unifi }}
-                          cpu: {{ cpu_limit_unifi }}
+#                  resources:
+#                      requests:
+#                          memory: {{ mem_request_unifi }}
+#                          cpu: {{ cpu_request_unifi }}
+#                      limits:
+#                          memory: {{ mem_limit_unifi }}
+#                          cpu: {{ cpu_limit_unifi }}
             volumes:
-                - name: unifi-controller-config
+                - name: unifi-controller-data
                   persistentVolumeClaim:
-                    claimName: unifi-controller-config
+                    claimName: unifi-controller-data
+                - name: unifi-controller-backups
+                  persistentVolumeClaim:
+                    claimName: unifi-controller-backups                    
+                - name: unifi-controller-system-properties
+                  configMap:
+                    name: unifi-controller-system-properties                    
