@@ -13,7 +13,7 @@ spec:
         app: unifi-controller
     loadBalancerIP: {{ load_balancer_ip }}
     ports:
-    - name: "discoverable-on-l2-network"
+    - name: "l2-discoverable"
       protocol: UDP
       targetPort: 1900 
       port: 1900
