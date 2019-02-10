@@ -35,22 +35,18 @@ Approximate Deployment Time: 10-15 minutes
     5) Once it has been deployed, connect to the LB IP/DNS and you will be greeted by the Welcome Wizard.
     6) If you took a backup, feel free to restore it. You will need to delete your devices, however, as the relationship will have been broken.
         - Devices -> Device -> Config -> Manage Device -> Forget
-    7) Configure your Unifi Controller to be informed over a different identity. 
-        - Enable `Override inform host with controller hostname/IP`
-        - Set Controller Hostname/IP to the IP associated with your load balancer service.
-            - Hostname if your DHCP server pushes out your DNS server to all clients.
-            - IP Address otherwise, since your Unifi devices won't be able to resolve DNS by default. 
-    8) Hardware reset your Unifi devices.
-    9) SSH into your Unifi Devices and manually inform the controller of their existence.
+    7) Reset your Ubiquiti devices to factory defaults.
+    8) SSH into your Unifi Devices and manually inform the controller of their existence.
         - `set-inform http://>{IP,HOSTNAME}<:8080/inform`
-    10) After a few moments, your devices will appear in the Controller. Click Adopt and configure away. 
-        - If your devices get stuck in an Adopting -> Disconnected loop make sure that your `Controller Hostname/IP` is configured correctly in step 7. You can test this by SSHing into the device and trying to resolve the Unifi Controller LB IP/DNS.
+    9) After a few moments, your devices will appear in the Controller. Click Adopt and configure away. 
+        - If your devices get stuck in an Adopting -> Disconnected loop make sure that your `Controller Hostname/IP` is configured correctly in the settings. This should automatically be set by the `system.properties` injection, however. You can test this by SSHing into the device and trying to resolve the Unifi Controller LB IP/DNS.
 
 
 **Problems:**
 
-    1) Scaling this up to more than one pod causes issues. Load Balancing the controller does not appear to be supported.
+    1) Scaling this up to more than one pod causes issues. Load Balancing the controller does not appear to be supported. 
         - https://community.ubnt.com/t5/UniFi-Feature-Requests/Unifi-Controller-Redundancy/idi-p/680341
+        - Currently trying to decentralize the MongoDB instance to resolve this.
     2) Unfortunately I have not gotten Device Discovery to work yet. It could be my network. 
 
 **Deletion:**  
