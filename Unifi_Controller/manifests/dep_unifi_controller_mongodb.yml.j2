@@ -1,0 +1,71 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: unifi-controller-mongodb
+    namespace: {{ unifi_controller_namespace }}
+    labels:
+        app: unifi-controller-mongodb
+        type: third-party
+        facing: internal
+spec:
+    replicas: 1
+    strategy:
+        type: Recreate
+    selector:
+        matchLabels:
+            app: unifi-controller-mongodb
+    template:
+        metadata:
+            labels:
+                app: unifi-controller-mongodb
+        spec:         
+            containers:
+                - name: unifi-controller-mongodb
+                  #Supported version by Unifi Controller is 3.4.x
+                  image: mongo:3.4
+                  env:
+                      - name: MONGO_INITDB_ROOT_USERNAME
+                        value: "ubnt"
+                      - name: MONGO_INITDB_ROOT_PASSWORD
+                        valueFrom:
+                            secretKeyRef:
+                                key: mongodb_password
+                                name: unifi-controller-mongodb-password
+                      - name: MONGO_INITDB_DATABASE
+                        value: "unifi"
+                  ports:
+                      - containerPort: 27017
+                  volumeMounts:
+                      - name: unifi-controller-mongodb
+                        mountPath: /data/db
+                      - name: unifi-controller-mongodb-config
+                        mountPath: /docker-entrypoint-initdb.d/create_unifi_db.sh
+                        subPath: create_unifi_db.sh
+#                  readinessProbe:
+#                      httpGet:
+#                          path: /
+#                          port: 8080
+#                      initialDelaySeconds: 500
+#                      periodSeconds: 10
+#                      failureThreshold: 1                   
+#                  livenessProbe:
+#                      httpGet:
+#                          path: /
+#                          port: 8080
+#                      initialDelaySeconds: 500
+#                      periodSeconds: 10
+#                      failureThreshold: 5
+#                  resources:
+#                      requests:
+#                          memory: {{ mem_request_unifi }}
+#                          cpu: {{ cpu_request_unifi }}
+#                      limits:
+#                          memory: {{ mem_limit_unifi }}
+#                          cpu: {{ cpu_limit_unifi }}                        
+            volumes:
+                - name: unifi-controller-mongodb
+                  persistentVolumeClaim:
+                    claimName: unifi-controller-mongodb
+                - name: unifi-controller-mongodb-config
+                  configMap:
+                    name: unifi-controller-mongodb-config

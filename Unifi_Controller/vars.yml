@@ -2,7 +2,7 @@
 unifi_controller_namespace: 'unifi-controller'
 
 # IP Address on which you want to to load balance the website.
-load_balancer_ip: '192.168.0.1'
+load_balancer_ip: '192.168.0.2'
 
 # The hostname with which you want to connect to the service on the load balancer.
 unifi_controller_hostname: 'unifi.sol.milkyway'
@@ -11,7 +11,16 @@ unifi_controller_hostname: 'unifi.sol.milkyway'
 nfs_server: 'saturn.sol.milkyway'
 
 # NFS Mountpoint you want to use for preserving your unifi-controller configuration.
-unifi_controller_config: '/SaturnPool/Kubernetes/Unifi'
+unifi_controller_data: '/SaturnPool/Kubernetes/Unifi/data'
+
+# NFS Mountpoint you want to use for preserving your unifi-controller backups.
+unifi_controller_backups: '/SaturnPool/Kubernetes/Unifi/backups'
+
+# NFS Mountpoint you want to use for preserving your mongodb database.
+unifi_controller_mongodb: '/SaturnPool/Kubernetes/Unifi/mongodb'
+
+# Password for the MongoDB database used for your unifi-controller. 
+mongodb_password: 'PASSWORD'
 
 # CPU Requests for Deluge image
 # 1 = 1 vCPU affinity
