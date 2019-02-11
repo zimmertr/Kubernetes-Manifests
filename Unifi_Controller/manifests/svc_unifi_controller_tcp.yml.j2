@@ -13,15 +13,15 @@ spec:
         app: unifi-controller
     loadBalancerIP: {{ load_balancer_ip }}
     ports:
-    - name: "unifi-mobile-speed-test"
+    - name: "speed-test"
       protocol: TCP
       targetPort: 6789
       port: 6789
-    - name: "device-and-controller-comms"
+    - name: "internal-comms"
       protocol: TCP
       targetPort: 8080
       port: 8080
-    - name: "unknown-linuxserver-port"
+    - name: "unknown-port"
       protocol: TCP
       targetPort: 8081
       port: 8081
@@ -29,15 +29,15 @@ spec:
       protocol: TCP
       targetPort: 8443
       port: 8443
-    - name: "https-interface-redirect"
+    - name: "https-redirect"
       protocol: TCP
       targetPort: 8843
       port: 8843
-    - name: "http-interface-redirect"
+    - name: "http-redirect"
       protocol: TCP
       targetPort: 8880
       port: 8880
-    - name: "local-bound-database-comms"
+    - name: "local-comms"
       protocol: TCP
       targetPort: 27117
       port: 27117

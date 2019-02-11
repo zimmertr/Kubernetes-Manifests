@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+    name: unifi-controller-mongodb-config
+    namespace: {{ unifi_controller_namespace }}
+data:
+    create_unifi_db.sh: |
+        #!/bin/bash
+        mongo \
+            --username ubnt \
+            --password "{{ mongodb_password }}" \
+            --authenticationDatabase admin \
+            --eval 'db.getSiblingDB("unifi").createUser({user: "ubnt", pwd: "{{ mongodb_password }}", roles: [{role: "dbAdmin", db: "unifi"},{role: "readWrite", db: "unifi"}]})'
+
+        mongo \
+            --username ubnt \
+            --password "{{ mongodb_password }}" \
+            --authenticationDatabase admin \
+            --eval 'db.getSiblingDB("unifi_stat").createUser({user: "ubnt", pwd: "{{ mongodb_password }}", roles: [{role: "dbAdmin", db: "unifi_stat"},{role: "readWrite", db: "unifi_stat"}]})'
