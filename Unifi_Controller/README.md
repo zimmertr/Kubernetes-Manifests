@@ -41,12 +41,19 @@ Approximate Deployment Time: 10-15 minutes
     9) After a few moments, your devices will appear in the Controller. Click Adopt and configure away. 
         - If your devices get stuck in an Adopting -> Disconnected loop make sure that your `Controller Hostname/IP` is configured correctly in the settings. This should automatically be set by the `system.properties` injection, however. You can test this by SSHing into the device and trying to resolve the Unifi Controller LB IP/DNS.
 
+**TODO:**
+
+    1) Set up liveness/readiness probes against status api endpoint.  
+    2) Monitor resource utilization and configure limits and requests.   
+    3) Test to see if password allows for special characters correctly.  
+
 
 **Problems:**
 
     1) Scaling this up to more than one pod causes issues. Load Balancing the controller does not appear to be supported. 
         - https://community.ubnt.com/t5/UniFi-Feature-Requests/Unifi-Controller-Redundancy/idi-p/680341
         - Currently trying to decentralize the MongoDB instance to resolve this.
+        - Installing a proper certificate may remediate the issue.
     2) Unfortunately I have not gotten Device Discovery to work yet. It could be my network. 
 
 **Deletion:**  
