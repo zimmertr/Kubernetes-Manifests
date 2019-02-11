@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+    name: unifi-controller-mongodb
+    namespace: {{ unifi_controller_namespace }}
+    labels:
+        app: unifi-controller-mongodb
+spec:
+    selector:
+        app: unifi-controller-mongodb
+    ports:
+    - name: "unifi-controller-mongodb"
+      protocol: TCP
+      targetPort: 27017
+      port: 27017
