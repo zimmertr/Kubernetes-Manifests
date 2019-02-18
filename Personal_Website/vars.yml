@@ -1,6 +1,9 @@
 # Namespace to deploy the manifests to.
 personal_website_namespace: 'personal-website'
 
+# MetalLB Address Pool that you want to obtain an IP from:
+load_balancer_address_pool: 'DMZ'
+
 # IP Address on which you want to to load balance the website.
 load_balancer_ip: '192.168.0.50'
 

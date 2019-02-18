@@ -1,8 +1,11 @@
 # Namespace to deploy the manifests to.
 unifi_controller_namespace: 'unifi-controller'
 
+# MetalLB Address Pool that you want to obtain an IP from:
+load_balancer_address_pool: 'LAN'
+
 # IP Address on which you want to to load balance the website.
-load_balancer_ip: '192.168.0.1'
+load_balancer_ip: '192.168.1.150'
 
 # The hostname with which you want to connect to the service on the load balancer.
 unifi_controller_hostname: 'unifi.sol.milkyway'
