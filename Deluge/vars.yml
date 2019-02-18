@@ -1,8 +1,11 @@
 # Namespace to deploy the manifests to.
 deluge_namespace: 'deluge'
 
+# MetalLB Address Pool that you want to obtain an IP from:
+load_balancer_address_pool: 'LAN'
+
 # IP Address on which you want to to load balance the website.
-load_balancer_ip: '192.168.0.101'
+load_balancer_ip: '192.168.1.160'
 
 # The hostname with which you want to connect to the service on the load balancer.
 deluge_hostname: 'deluge.sol.milkyway'
