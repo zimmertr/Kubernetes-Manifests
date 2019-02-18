@@ -31,7 +31,7 @@ spec:
                         mountPath: /unifi_controller_data/
             containers:
                 - name: unifi-controller
-                  image: linuxserver/unifi:latest
+                  image: linuxserver/unifi-controller:5.9
                   env:
                       - name: TZ
                         value: "Pacific"
@@ -61,34 +61,31 @@ spec:
                         containerPort: 8843
                       - name: "http-redirect"
                         containerPort: 8880
-                      - name: "local-comms"
-                        containerPort: 27117
                   volumeMounts:
                       - name: unifi-controller-data
                         mountPath: /config
                       - name: unifi-controller-backups
                         mountPath: /backups
-#                  readinessProbe:
-#                      httpGet:
-#                          path: /
-#                          port: 8080
-#                      initialDelaySeconds: 500
-#                      periodSeconds: 10
-#                      failureThreshold: 1                   
-#                  livenessProbe:
-#                      httpGet:
-#                          path: /
-#                          port: 8080
-#                      initialDelaySeconds: 500
-#                      periodSeconds: 10
-#                      failureThreshold: 5
-#                  resources:
-#                      requests:
-#                          memory: {{ mem_request_unifi }}
-#                          cpu: {{ cpu_request_unifi }}
-#                      limits:
-#                          memory: {{ mem_limit_unifi }}
-#                          cpu: {{ cpu_limit_unifi }}
+                  readinessProbe:
+                      httpGet:
+                          path: /status
+                          port: 8080
+                      periodSeconds: 10
+                      failureThreshold: 1                   
+                  livenessProbe:
+                      httpGet:
+                          path: /status
+                          port: 8080
+                      initialDelaySeconds: 360
+                      periodSeconds: 30
+                      failureThreshold: 5
+                  resources:
+                      requests:
+                          memory: {{ unifi_mem_request }}
+                          cpu: {{ unifi_cpu_request }}
+                      limits:
+                          memory: {{ unifi_mem_limit }}
+                          cpu: {{ unifi_cpu_limit }}
             volumes:
                 - name: unifi-controller-data
                   persistentVolumeClaim:
