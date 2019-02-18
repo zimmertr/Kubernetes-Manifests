@@ -41,27 +41,25 @@ spec:
                       - name: unifi-controller-mongodb-config
                         mountPath: /docker-entrypoint-initdb.d/create_unifi_db.sh
                         subPath: create_unifi_db.sh
-#                  readinessProbe:
-#                      httpGet:
-#                          path: /
-#                          port: 8080
-#                      initialDelaySeconds: 500
-#                      periodSeconds: 10
-#                      failureThreshold: 1                   
-#                  livenessProbe:
-#                      httpGet:
-#                          path: /
-#                          port: 8080
-#                      initialDelaySeconds: 500
-#                      periodSeconds: 10
-#                      failureThreshold: 5
-#                  resources:
-#                      requests:
-#                          memory: {{ mem_request_unifi }}
-#                          cpu: {{ cpu_request_unifi }}
-#                      limits:
-#                          memory: {{ mem_limit_unifi }}
-#                          cpu: {{ cpu_limit_unifi }}                        
+                  readinessProbe:
+                      tcpSocket:
+                          port: 27017
+                      initialDelaySeconds: 30
+                      periodSeconds: 10
+                      failureThreshold: 1                   
+                  livenessProbe:
+                      tcpSocket:
+                          port: 27017
+                      initialDelaySeconds: 30
+                      periodSeconds: 10
+                      failureThreshold: 6
+                  resources:
+                      requests:
+                          memory: {{ mongodb_mem_request }}
+                          cpu: {{ mongodb_cpu_request }}
+                      limits:
+                          memory: {{ mongodb_mem_limit }}
+                          cpu: {{ mongodb_cpu_limit }}                        
             volumes:
                 - name: unifi-controller-mongodb
                   persistentVolumeClaim:
