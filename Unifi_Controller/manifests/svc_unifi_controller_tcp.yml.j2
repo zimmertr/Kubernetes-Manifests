@@ -2,9 +2,10 @@ apiVersion: v1
 kind: Service
 metadata:
     name: unifi-controller-tcp
-    namespace: {{ unifi_controller_namespace }}
     annotations:
         metallb.universe.tf/allow-shared-ip: "true"
+        metallb.universe.tf/address-pool: {{ load_balancer_address_pool }}    
+    namespace: {{ unifi_controller_namespace }}
     labels:
         app: unifi-controller
 spec:
