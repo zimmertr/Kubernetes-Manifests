@@ -2,7 +2,7 @@
 unifi_controller_namespace: 'unifi-controller'
 
 # IP Address on which you want to to load balance the website.
-load_balancer_ip: '192.168.0.2'
+load_balancer_ip: '192.168.0.1'
 
 # The hostname with which you want to connect to the service on the load balancer.
 unifi_controller_hostname: 'unifi.sol.milkyway'
@@ -22,15 +22,19 @@ unifi_controller_mongodb: '/SaturnPool/Kubernetes/Unifi/mongodb'
 # Password for the MongoDB database used for your unifi-controller. 
 mongodb_password: 'PASSWORD'
 
-# CPU Requests for Deluge image
+# CPU Requests the images
 # 1 = 1 vCPU affinity
-cpu_request_unifi: '.02'
+unifi_cpu_request: '.02'
+mongodb_cpu_request: '.03'
 
-# CPU limitations for Deluge image
-cpu_limit_unifi: '.3'
+# CPU limitations for the images
+unifi_cpu_limit: '.2'
+mongodb_cpu_limit: '.2'
 
-# Memory request for Deluge image
-mem_request_unifi: '512Mi'
+# Memory request for the images
+unifi_mem_request: '512Mi'
+mongodb_mem_request: '512Mi'
 
-# Memory limitation for Deluge image
-mem_limit_unifi: '2048Mi'
+# Memory limitation for the images
+unifi_mem_limit: '3072Mi'
+mongodb_mem_limit: '3072Mi'
