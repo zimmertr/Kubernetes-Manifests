@@ -1,6 +1,9 @@
 # Namespace to deploy the manifests to.
 unifi_controller_namespace: 'unifi-controller'
 
+# Timezone the Unifi Controller should identify as default.
+unifi_controller_timezone: 'Pacific'
+
 # MetalLB Address Pool that you want to obtain an IP from:
 load_balancer_address_pool: 'LAN'
 
