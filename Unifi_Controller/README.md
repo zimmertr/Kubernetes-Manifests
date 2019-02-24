@@ -12,7 +12,7 @@ Approximate Deployment Time: 10-15 minutes
 
 * [Project Docker Containers](https://github.com/linuxserver/docker-unifi)
 
-**Requirements:**  
+**Requirements:**
 
     1) Exported NFS Server with which Kubernetes can communicate.  
     2) Working load balancer integrated with Kubernetes Services. (https://metallb.universe.tf/)  
@@ -20,15 +20,16 @@ Approximate Deployment Time: 10-15 minutes
         * pip install openshift kubernetes pyyaml 
         * If you're on MacOS, you might have to do this instead (https://github.com/ansible/ansible/issues/43637#issuecomment-443495763).
 
-**Instructions:**  
+**Instructions:**
 
 *Optional:*
 
     1) Export a backup of your existing Unifi Controller settings to a .unf file.
+    2) If you plan on running the controller on a different network than your AP's, you can likely set DHCP options for remote discovery on your router. Instructions can be found here: https://help.ubnt.com/hc/en-us/articles/204909754-UniFi-Device-Adoption-Methods-for-Remote-UniFi-Controllers
 
 *Required:*
 
-    1) Stop your existing Unifi Controller service.
+    1) Stop any existing Unifi Controllers on the same network.
     2) Make sure you satisfy the above requirements.   
     3) Fill out the `vars.yml` file with the parameters specific to your environment.  
     4) Execute the playbook: `ansible-playbook provision.yml`.  
@@ -54,9 +55,8 @@ Approximate Deployment Time: 10-15 minutes
         - https://community.ubnt.com/t5/UniFi-Feature-Requests/Unifi-Controller-Redundancy/idi-p/680341
         - Currently trying to decentralize the MongoDB instance to resolve this.
         - Installing a proper certificate may remediate the issue.
-    2) Unfortunately I have not gotten Device Discovery to work yet. It could be my network. 
 
-**Deletion:**  
+**Deletion:**
 
     1) You can roll back this deployment with the `delete.yml` playbook: `ansible-playbook delete.yml`.
-        - Please note, this will not remove the deployed namespace because I could not be sure you didn't specify an existing namespace. I would hate to delete your `default` for example. So you must manually clean that up. `kubectl delete ns >namespace name<`
+        - Please note, this will not remove the deployed namespace because I cannot be sure you didn't specify an existing namespace. I would hate to delete your `default` for example. So you must manually clean that up. `kubectl delete ns >namespace name<`

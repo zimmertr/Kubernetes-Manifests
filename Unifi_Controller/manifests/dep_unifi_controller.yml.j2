@@ -34,7 +34,7 @@ spec:
                   image: linuxserver/unifi-controller:5.9
                   env:
                       - name: TZ
-                        value: "Pacific"
+                        value: "{{ unifi_controller_timezone }} "
                       - name: PUID
                         value: "1002"
                       - name: PGID
