@@ -24,16 +24,24 @@ spec:
                   image: linuxserver/deluge:latest
                   env:
                       - name: PUID
-                        value: "1002"
+                        value: "{{ fileserver_uid }}"
                       - name: PGID
-                        value: "1007"
+                        value: "{{ fileserver_gid }}"
                       - name: TZ
-                        value: "Pacific"
+                        value: "{{ timezone }}"
                   ports:
-                      - containerPort: 7850
-                      - containerPort: 7851
-                      - containerPort: 8112
-                      - containerPort: 58846
+                      - name: "deluge-traffic1"
+                        containerPort: 7850
+                        protocol: TCP
+                      - name: "deluge-traffic2"
+                        containerPort: 7851
+                        protocol: TCP
+                      - name: "deluge-web"
+                        containerPort: 8112
+                        protocol: TCP
+                      - name: "deluge-daemon"
+                        containerPort: 58846
+                        protocol: TCP
                   volumeMounts:
                       - name: deluge-config
                         mountPath: /config
