@@ -21,6 +21,11 @@ A collection of Kubernetes Manifests separated by project for use with deploying
 [These manifests](Sonarr/) are used to deploy Sonarr to Kubernetes. They rely on MetalLB to configure a load balancer as well as an exported NFS mountpoint that Kubernetes can bind to with a persistent volume in order to interact with downloaded TV Shows and other subdirectories on your fileserver involved in running a Bittorrent server that is integrated with RSS feeds. 
 
 
+**Radarr**
+
+[These manifests](Radarr/) are used to deploy Radarr to Kubernetes. They rely on MetalLB to configure a load balancer as well as an exported NFS mountpoint that Kubernetes can bind to with a persistent volume in order to interact with downloaded Movies and other subdirectories on your fileserver involved in running a Bittorrent server that is integrated with RSS feeds. 
+
+
 **Unifi Controller**
 
 [These Manifests](Unifi_Controller/) are used to deploy the Unifi Controller to Kubernetes. They rely on MetalLB to configure a load balancer as well as an exported NFS mountpoint that Kubernetes can bind to with a persistent volume in order to store Unifi's configuration. Furthermore, additional configuration will be necessary at the software level and device discovery may not work. 
