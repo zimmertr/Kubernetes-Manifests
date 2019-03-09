@@ -42,7 +42,9 @@ spec:
                 - name: httpd
                   image: zimmertr/personal-website:latest
                   ports:
-                      - containerPort: 80
+                      - name: "website-http"
+                        containerPort: 80
+                        protocol: TCP
                   volumeMounts:
                       - name: personal-website-files
                         mountPath: /var/www/html/Files/
