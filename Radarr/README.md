@@ -1,21 +1,21 @@
-## Sonarr
+## Radarr
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/zimmertr/Kubernetes-Manifests/master/Sonarr/screenshot.png" width="800">
+  <img src="https://raw.githubusercontent.com/zimmertr/Kubernetes-Manifests/master/Radarr/screenshot.png" width="800">
 </p>
 
 **Summary:**
 
-These manifests are used to build an instance of Sonarr. It relies on MetalLB to configure a load balancer as well as an exported NFS mountpoint that Kubernetes can bind to with three persistent volumes in order to store the Sonarr configuration as well as interact with your TV Shows files and other subdirectories on your fileserver involved in running an RSS server.
+These manifests are used to build an instance of radarr. It relies on MetalLB to configure a load balancer as well as an exported NFS mountpoint that Kubernetes can bind to with three persistent volumes in order to store the Radarr configuration as well as interact with your Movie files and other subdirectories on your fileserver involved in running an RSS server.
 
 Approximate Deployment Time: 1-5 minutes
 
-* [Project Docker Containers](https://github.com/linuxserver/docker-sonarr)
+* [Project Docker Containers](https://github.com/linuxserver/docker-radarr)
 
 **Requirements:**  
 
     1) Exported NFS Server with which Kubernetes can communicate.  
-    2) Directory named `/Sonarr` created on the NFS Endpoint you specify in `vars.yml`.
+    2) Directory named `/radarr` created on the NFS Endpoint you specify in `vars.yml`.
     2) Working load balancer integrated with Kubernetes Services. (https://metallb.universe.tf/)  
     3) Python modules required to use the k8s Ansible module (https://docs.ansible.com/ansible/latest/modules/k8s_module.html).    
         * pip install openshift kubernetes pyyaml 

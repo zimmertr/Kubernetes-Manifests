@@ -6,23 +6,23 @@
         include_vars:
             file: ./vars.yml
 
-      - name: Deploying the Sonarr manifests to Kubernetes.
+      - name: Deploying the radarr manifests to Kubernetes.
         k8s:
             definition: "{{ lookup('template', './manifests/{{ item }}') | from_yaml }}"
         with_items:
-            - "ns_sonarr.yml.j2"
-            - "pv_sonarr_config.yml.j2"
-            - "pv_sonarr_tv_shows.yml.j2"
-            - "pv_sonarr_fileserver.yml.j2"
-            - "pvc_sonarr_config.yml.j2"
-            - "pvc_sonarr_tv_shows.yml.j2"
-            - "pvc_sonarr_fileserver.yml.j2"
-            - "dep_sonarr.yml.j2"
-            - "svc_sonarr.yml.j2"
+            - "ns_radarr.yml.j2"
+            - "pv_radarr_config.yml.j2"
+            - "pv_radarr_movies.yml.j2"
+            - "pv_radarr_fileserver.yml.j2"
+            - "pvc_radarr_config.yml.j2"
+            - "pvc_radarr_movies.yml.j2"
+            - "pvc_radarr_fileserver.yml.j2"
+            - "dep_radarr.yml.j2"
+            - "svc_radarr.yml.j2"
 
       - name: Waiting for the deployment to be ready.
         wait_for:
             host: "{{ hostname }}"
-            port: 8989
+            port: 7878
             timeout: 300
             msg: "Webserver not available after 5 minutes. Something has probably gone wrong."
