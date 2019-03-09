@@ -1,34 +1,33 @@
-# Namespace to deploy the manifests to.
-namespace: 'nix'
+# The namespace to be created and used for the deployment. 
+namespace: 'personal-website'
 
-# MetalLB Address Pool that you want to obtain an IP from:
+# The MetalLB Address Pool from which you want to obtain an IP address.
 load_balancer_address_pool: 'VLAN60'
 
-# IP Address on which you want to to load balance the website.
+# The IP address within the Address Pool to which you want to bind the service. 
 load_balancer_ip: '192.168.60.10'
 
-# The hostname with which you want to connect to the service on the load balancer.
+# The hostname with which you want to test connectivity to the IP Address after the deployment has completed.
 hostname: 'nix.sol.milkyway'
 
-# NFS Server hostname or IP address.
+# The hostname or IP address of the NFS server on which you want to store Persistent Volume content.
 nfs_server: 'saturn.sol.milkyway'
 
-# NFS Mountpoint you want to expose to `website/Files/`
+# The NFS mountpoint to be used as the root of the fileserver.
 public_files_dir: '/SaturnPool/Kubernetes/Apache/Files'
 
-# Google Analytics tracking ID used for monitoring website traffic. 
-google_analytics_tracking_id: 'UA-123281732-1'
+# The Google Analytics tracking ID to be used for monitoring website traffic. 
+google_analytics_tracking_id: 'TRACKINGID'
 
-# Wunderground API Key used for querying for weather statistics for tjsh's `weather` command.
-wunderground_api_key: '2462a69f2083cd5a'
+# The Wunderground API Key to be used for weather-related metrics.
+wunderground_api_key: 'APIKEY'
 
-# CPU limitation for the pods.
+# The resource limitations for the pods.
 # 1 = 1 vCPU affinity
 cpu_limit_weatherpy: '.05'
 cpu_limit_statsbot: '.02'
 cpu_limit_httpd: '.05'
 
-# Memory limitation for the pods.
 mem_limit_weatherpy: '512Mi'
 mem_limit_statsbot: '102Mi'
 mem_limit_httpd: '512Mi'
