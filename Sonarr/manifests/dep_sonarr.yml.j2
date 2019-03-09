@@ -8,7 +8,7 @@ metadata:
         type: third-party
         facing: internal
 spec:
-    replicas: 3
+    replicas: 1
     strategy:
         type: Recreate
     selector:
@@ -24,13 +24,15 @@ spec:
                   image: linuxserver/sonarr:latest
                   env:
                       - name: PUID
-                        value: "1002"
+                        value: "{{ fileserver_uid }}"
                       - name: PGID
-                        value: "1007"
+                        value: "{{ fileserver_gid }}"
                       - name: TZ
-                        value: "Pacific"
+                        value: "{{ timezone }}"
                   ports:
-                      - containerPort: 8989
+                      - name: "sonarr-web"
+                        containerPort: 8989
+                        protocol: TCP
                   volumeMounts:
                       - name: sonarr-config
                         mountPath: /config
@@ -50,12 +52,9 @@ spec:
                       periodSeconds: 10
                       failureThreshold: 5
                   resources:
-                      requests:
-                          memory: {{ mem_request }}
-                          cpu: {{ cpu_request }}
                       limits:
+                          cpu: {{ cpu_limit }}                        
                           memory: {{ mem_limit }}
-                          cpu: {{ cpu_limit }}
             volumes:
                 - name: sonarr-config
                   persistentVolumeClaim:
