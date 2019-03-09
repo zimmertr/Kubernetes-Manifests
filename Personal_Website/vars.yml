@@ -1,5 +1,5 @@
 # Namespace to deploy the manifests to.
-personal_website_namespace: 'nix'
+namespace: 'nix'
 
 # MetalLB Address Pool that you want to obtain an IP from:
 load_balancer_address_pool: 'VLAN60'
@@ -8,19 +8,19 @@ load_balancer_address_pool: 'VLAN60'
 load_balancer_ip: '192.168.60.10'
 
 # The hostname with which you want to connect to the service on the load balancer.
-website_hostname: 'nix.sol.milkyway'
+hostname: 'nix.sol.milkyway'
 
 # NFS Server hostname or IP address.
 nfs_server: 'saturn.sol.milkyway'
 
 # NFS Mountpoint you want to expose to `website/Files/`
-website_public_files: '/SaturnPool/Kubernetes/Apache/Files'
+public_files_dir: '/SaturnPool/Kubernetes/Apache/Files'
 
 # Google Analytics tracking ID used for monitoring website traffic. 
-google_analytics_tracking_id: 'TRACKINGID'
+google_analytics_tracking_id: '***REMOVED***'
 
 # Wunderground API Key used for querying for weather statistics for tjsh's `weather` command.
-wunderground_api_key: 'APIKEY'
+wunderground_api_key: '***REMOVED***'
 
 # CPU limitation for images
 # 1 = 1 vCPU affinity
