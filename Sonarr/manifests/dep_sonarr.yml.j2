@@ -34,8 +34,6 @@ spec:
                   volumeMounts:
                       - name: sonarr-config
                         mountPath: /config
-                      - name: sonarr-fileserver
-                        mountPath: /downloads
                       - name: sonarr-tv-shows
                         mountPath: /tv
                   readinessProbe:
@@ -62,9 +60,6 @@ spec:
                 - name: sonarr-config
                   persistentVolumeClaim:
                     claimName: sonarr-config
-                - name: sonarr-fileserver
-                  persistentVolumeClaim:
-                    claimName: sonarr-fileserver
                 - name: sonarr-tv-shows
                   persistentVolumeClaim:
                     claimName: sonarr-tv-shows
