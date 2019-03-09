@@ -4,7 +4,7 @@ metadata:
     name: deluge
     annotations:
         metallb.universe.tf/address-pool: {{ load_balancer_address_pool }}
-    namespace: {{ deluge_namespace }}
+    namespace: {{ namespace }}
     labels:
         app: deluge
 spec:

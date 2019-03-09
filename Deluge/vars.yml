@@ -1,5 +1,5 @@
 # Namespace to deploy the manifests to.
-deluge_namespace: 'io'
+namespace: 'io'
 
 # MetalLB Address Pool that you want to obtain an IP from:
 load_balancer_address_pool: 'VLAN50'
@@ -8,29 +8,29 @@ load_balancer_address_pool: 'VLAN50'
 load_balancer_ip: '192.168.50.20'
 
 # The hostname with which you want to connect to the service on the load balancer.
-deluge_hostname: 'io.sol.milkyway'
+hostname: 'io.sol.milkyway'
 
 # NFS Server hostname or IP address.
 nfs_server: 'saturn.sol.milkyway'
 
 # NFS Mountpoint you want to use for preserving your Deluge configuration.
-deluge_config: '/SaturnPool/Kubernetes/Deluge'
+config_dir: '/SaturnPool/Kubernetes/Deluge'
 
 # NFS Mountpoint you want to use for storing your downloaded files.
-deluge_downloads: '/SaturnPool/Downloads/'
+downloads_dir: '/SaturnPool/Downloads/'
 
 # NFS Mountpoint you want to use for exposing your fileserver.
 fileserver_root: '/SaturnPool/'
 
 # CPU Requests for Deluge image
 # 1 = 1 vCPU affinity
-cpu_request_deluge: '1'
+cpu_request: '1'
 
 # CPU limitations for Deluge image
-cpu_limit_deluge: '2'
+cpu_limit: '2'
 
 # Memory request for Deluge image
-mem_request_deluge: '2048Mi'
+mem_request: '2048Mi'
 
 # Memory limitation for Deluge image
-mem_limit_deluge: '10240Mi'
+mem_limit: '10240Mi'
