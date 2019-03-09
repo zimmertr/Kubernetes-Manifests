@@ -33,12 +33,12 @@ spec:
                 - name: unifi-controller
                   image: linuxserver/unifi-controller:5.9
                   env:
-                      - name: TZ
-                        value: "{{ timezone }} "
                       - name: PUID
-                        value: "1002"
+                        value: "{{ fileserver_uid }}"
                       - name: PGID
-                        value: "1007"
+                        value: "{{ fileserver_gid }}"
+                      - name: TZ
+                        value: "{{ timezone }}"
                   ports:
                       - name: "l2-discoverable"
                         containerPort: 1900
