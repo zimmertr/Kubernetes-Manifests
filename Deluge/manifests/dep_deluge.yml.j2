@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
     name: deluge
-    namespace: {{ deluge_namespace }}
+    namespace: {{ namespace }}
     labels:
         app: deluge
         type: third-party
@@ -56,11 +56,11 @@ spec:
                       failureThreshold: 5
                   resources:
                       requests:
-                          memory: {{ mem_request_deluge }}
-                          cpu: {{ cpu_request_deluge }}
+                          memory: {{ mem_request }}
+                          cpu: {{ cpu_request }}
                       limits:
-                          memory: {{ mem_limit_deluge }}
-                          cpu: {{ cpu_limit_deluge }}
+                          memory: {{ mem_limit }}
+                          cpu: {{ cpu_limit }}
             volumes:
                 - name: deluge-config
                   persistentVolumeClaim:

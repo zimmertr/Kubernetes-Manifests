@@ -2,7 +2,7 @@ apiVersion: v1
 kind: PersistentVolume
 metadata:
     name: deluge-config
-    namespace: {{ deluge_namespace }}
+    namespace: {{ namespace }}
 spec:
     capacity:
         storage: 2Gi
@@ -10,5 +10,5 @@ spec:
         - ReadWriteMany
     nfs:
         server: {{ nfs_server }}
-        path: {{ deluge_config }}
+        path: {{ config_dir }}
     storageClassName: nfs

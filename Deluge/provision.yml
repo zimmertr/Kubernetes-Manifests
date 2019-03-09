@@ -22,7 +22,7 @@
 
       - name: Waiting for the deployment to be ready.
         wait_for:
-            host: "{{ deluge_hostname }}"
+            host: "{{ hostname }}"
             port: 8112
             timeout: 300
             msg: "Webserver not available after 5 minutes. Something has probably gone wrong."
