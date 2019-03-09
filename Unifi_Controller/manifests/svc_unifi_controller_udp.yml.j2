@@ -10,6 +10,7 @@ metadata:
         app: unifi-controller
 spec:
     type: LoadBalancer
+    externalTrafficPolicy: Local
     selector:
         app: unifi-controller
     loadBalancerIP: {{ load_balancer_ip }}
