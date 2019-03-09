@@ -4,7 +4,7 @@ metadata:
     name: personal-website
     annotations:
         metallb.universe.tf/address-pool: {{ load_balancer_address_pool }}
-    namespace: {{ personal_website_namespace }}
+    namespace: {{ namespace }}
     labels:
         app: personal-website
 spec:

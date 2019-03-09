@@ -1,5 +1,8 @@
 apiVersion: v1
 kind: ConfigMap
+metadata:
+    name: personal-website-weatherrc
+    namespace: {{ namespace }}
 data:
     .weatherrc: |
         {
@@ -8,6 +11,3 @@ data:
             "time": "civilian",
             "units": "english"
         }   
-metadata:
-    name: personal-website-weatherrc
-    namespace: {{ personal_website_namespace }}

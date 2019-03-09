@@ -20,7 +20,7 @@
 
       - name: Waiting for the deployment to be ready.
         wait_for:
-            host: "{{ website_hostname }}"
+            host: "{{ hostname }}"
             port: 80
             timeout: 300
             msg: "Website not available after 5 minutes. Something has probably gone wrong."
