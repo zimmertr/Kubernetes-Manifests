@@ -11,24 +11,24 @@
             definition: "{{ lookup('template', './manifests/{{ item }}') | from_yaml }}"
         with_items:
             - "ns_unifi_controller.yml.j2"
-            - "cm_unifi_controller_mongodb_config.yml.j2"
+            - "cm_mongodb_dir_config.yml.j2"
             - "cm_unifi_controller_system_properties.yml.j2"
-            - "sec_unifi_controller_mongodb_password.yml.j2"          
-            - "pv_unifi_controller_backups.yml.j2"            
-            - "pv_unifi_controller_data.yml.j2"
-            - "pv_unifi_controller_mongodb.yml.j2"
-            - "pvc_unifi_controller_backups.yml.j2"                       
-            - "pvc_unifi_controller_data.yml.j2"
-            - "pvc_unifi_controller_mongodb.yml.j2"
-            - "dep_unifi_controller_mongodb.yml.j2"
+            - "sec_mongodb_dir_password.yml.j2"          
+            - "pv_backups_dir.yml.j2"            
+            - "pv_data_dir.yml.j2"
+            - "pv_mongodb_dir.yml.j2"
+            - "pvc_backups_dir.yml.j2"                       
+            - "pvc_data_dir.yml.j2"
+            - "pvc_mongodb_dir.yml.j2"
+            - "dep_mongodb_dir.yml.j2"
             - "dep_unifi_controller.yml.j2"
-            - "svc_unifi_controller_mongodb.yml.j2"
+            - "svc_mongodb_dir.yml.j2"
             - "svc_unifi_controller_tcp.yml.j2"
             - "svc_unifi_controller_udp.yml.j2"
 
       - name: Waiting for the deployment to be ready.
         wait_for:
-            host: "{{ unifi_controller_hostname }}"
+            host: "{{ hostname }}"
             port: 8443
             #Controller takes between 3-8 to start up. 
             #Will give time for k8s probes to fail before failing.                    

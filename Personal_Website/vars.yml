@@ -22,13 +22,13 @@ google_analytics_tracking_id: 'UA-123281732-1'
 # Wunderground API Key used for querying for weather statistics for tjsh's `weather` command.
 wunderground_api_key: '2462a69f2083cd5a'
 
-# CPU limitation for images
+# CPU limitation for the pods.
 # 1 = 1 vCPU affinity
 cpu_limit_weatherpy: '.05'
 cpu_limit_statsbot: '.02'
 cpu_limit_httpd: '.05'
 
-# Memory limitation for images
+# Memory limitation for the pods.
 mem_limit_weatherpy: '512Mi'
 mem_limit_statsbot: '102Mi'
 mem_limit_httpd: '512Mi'
