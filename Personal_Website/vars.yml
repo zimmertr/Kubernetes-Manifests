@@ -1,14 +1,14 @@
 # Namespace to deploy the manifests to.
-personal_website_namespace: 'personal-website'
+personal_website_namespace: 'nix'
 
 # MetalLB Address Pool that you want to obtain an IP from:
-load_balancer_address_pool: 'DMZ'
+load_balancer_address_pool: 'VLAN60'
 
 # IP Address on which you want to to load balance the website.
-load_balancer_ip: '192.168.0.50'
+load_balancer_ip: '192.168.60.10'
 
 # The hostname with which you want to connect to the service on the load balancer.
-website_hostname: 'website.sol.milkyway'
+website_hostname: 'nix.sol.milkyway'
 
 # NFS Server hostname or IP address.
 nfs_server: 'saturn.sol.milkyway'
