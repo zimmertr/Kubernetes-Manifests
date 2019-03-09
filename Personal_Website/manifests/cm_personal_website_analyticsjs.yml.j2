@@ -1,5 +1,8 @@
 apiVersion: v1
 kind: ConfigMap
+metadata:
+    name: personal-website-analytics.js
+    namespace: {{ namespace }}
 data:
     analytics.js: |
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -10,6 +13,3 @@ data:
         ga('create', '{{ google_analytics_tracking_id }}', 'auto');
         ga('require', 'displayfeatures');
         ga('send', 'pageview');
-metadata:
-    name: personal-website-analytics.js
-    namespace: {{ personal_website_namespace }}
