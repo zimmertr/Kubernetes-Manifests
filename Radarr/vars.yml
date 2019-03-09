@@ -1,0 +1,36 @@
+# Namespace to deploy the manifests to.
+namespace: 'deimos'
+
+# MetalLB Address Pool that you want to obtain an IP from:
+load_balancer_address_pool: 'VLAN50'
+
+# IP Address on which you want to to load balance the website.
+load_balancer_ip: '192.168.50.50'
+
+# The hostname with which you want to connect to the service on the load balancer.
+hostname: 'deimos.sol.milkyway'
+
+# NFS Server hostname or IP address.
+nfs_server: 'saturn.sol.milkyway'
+
+# NFS Mountpoint you want to use for preserving your configuration.
+config_dir: '/SaturnPool/Kubernetes/Radarr'
+
+# NFS Mountpoint you want to use for storing your downloaded files.
+movies_dir: '/SaturnPool/Movies/'
+
+# NFS Mountpoint you want to use for exposing your fileserver.
+fileserver_root: '/SaturnPool/'
+
+# CPU Requests for the pods.
+# 1 = 1 vCPU affinity
+cpu_request: '1'
+
+# CPU limitations for the pods.
+cpu_limit: '2'
+
+# Memory request for the pods.
+mem_request: '2048Mi'
+
+# Memory limitation for the pods.
+mem_limit: '10240Mi'
