@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
     name: unifi-controller-mongodb-config
-    namespace: {{ unifi_controller_namespace }}
+    namespace: {{ namespace }}
 data:
     create_unifi_db.sh: |
         #!/bin/bash

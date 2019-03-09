@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
     name: unifi-controller-mongodb
-    namespace: {{ unifi_controller_namespace }}
+    namespace: {{ namespace }}
     labels:
         app: unifi-controller-mongodb
         type: third-party
