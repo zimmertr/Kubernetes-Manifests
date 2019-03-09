@@ -9,6 +9,7 @@ metadata:
         app: personal-website
 spec:
     type: LoadBalancer
+    externalTrafficPolicy: Local
     selector:
         app: personal-website
     loadBalancerIP: {{ load_balancer_ip }}

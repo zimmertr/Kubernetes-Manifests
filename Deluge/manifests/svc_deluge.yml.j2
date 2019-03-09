@@ -9,6 +9,7 @@ metadata:
         app: deluge
 spec:
     type: LoadBalancer
+    externalTrafficPolicy: Local
     selector:
         app: deluge
     loadBalancerIP: {{ load_balancer_ip }}
