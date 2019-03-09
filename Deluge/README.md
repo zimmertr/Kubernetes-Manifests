@@ -15,6 +15,7 @@ Approximate Deployment Time: 1-5 minutes
 **Requirements:**  
 
     1) Exported NFS Server with which Kubernetes can communicate.  
+    2) Directory named `/Deluge` created on the NFS Endpoint you specify in `vars.yml`.
     2) Working load balancer integrated with Kubernetes Services. (https://metallb.universe.tf/)  
     3) Python modules required to use the k8s Ansible module (https://docs.ansible.com/ansible/latest/modules/k8s_module.html).    
         * pip install openshift kubernetes pyyaml 
