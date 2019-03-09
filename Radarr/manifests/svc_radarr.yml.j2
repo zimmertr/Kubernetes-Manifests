@@ -14,7 +14,7 @@ spec:
         app: radarr
     loadBalancerIP: {{ load_balancer_ip }}
     ports:
-    - name: "radarr-traffic-incoming"
+    - name: "radarr-web"
       protocol: TCP
       targetPort: 7878
       port: 7878
