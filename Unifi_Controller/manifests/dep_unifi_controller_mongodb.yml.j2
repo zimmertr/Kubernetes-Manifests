@@ -21,7 +21,7 @@ spec:
         spec:         
             containers:
                 - name: unifi-controller-mongodb
-                  #Supported version by Unifi Controller is 3.4.x
+                  # The latest version supported by the Unifi Controller is 3.4.x
                   image: mongo:3.4
                   env:
                       - name: MONGO_INITDB_ROOT_USERNAME
@@ -34,7 +34,9 @@ spec:
                       - name: MONGO_INITDB_DATABASE
                         value: "unifi"
                   ports:
-                      - containerPort: 27017
+                      - name: "mongodb-api"
+                        containerPort: 27017
+                        protocol: TCP
                   volumeMounts:
                       - name: unifi-controller-mongodb
                         mountPath: /data/db
