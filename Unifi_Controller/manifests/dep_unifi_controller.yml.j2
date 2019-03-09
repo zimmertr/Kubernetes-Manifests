@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
     name: unifi-controller
-    namespace: {{ unifi_controller_namespace }}
+    namespace: {{ namespace }}
     labels:
         app: unifi-controller
         type: third-party
@@ -22,19 +22,19 @@ spec:
             initContainers:
                 - name: unifi-controller-system-properties-injector
                   image: busybox
-                  command: ['sh', '-c', 'mkdir -p /unifi_controller_data/data && cp /system.properties /unifi_controller_data/data/system.properties']
+                  command: ['sh', '-c', 'mkdir -p /data_dir/data && cp /system.properties /data_dir/data/system.properties']
                   volumeMounts:
                       - name: unifi-controller-system-properties
                         mountPath: /system.properties
                         subPath: system.properties    
                       - name: unifi-controller-data
-                        mountPath: /unifi_controller_data/
+                        mountPath: /data_dir/
             containers:
                 - name: unifi-controller
                   image: linuxserver/unifi-controller:5.9
                   env:
                       - name: TZ
-                        value: "{{ unifi_controller_timezone }} "
+                        value: "{{ timezone }} "
                       - name: PUID
                         value: "1002"
                       - name: PGID

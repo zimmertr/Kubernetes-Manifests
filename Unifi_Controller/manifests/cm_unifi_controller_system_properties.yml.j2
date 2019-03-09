@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
     name: unifi-controller-system-properties
-    namespace: {{ unifi_controller_namespace }}
+    namespace: {{ namespace }}
 data:
     system.properties: |
         # Enable debug logging
