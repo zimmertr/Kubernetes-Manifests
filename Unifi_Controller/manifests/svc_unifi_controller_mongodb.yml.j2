@@ -4,7 +4,7 @@ metadata:
     name: unifi-controller-mongodb
     annotations:
         metallb.universe.tf/address-pool: {{ load_balancer_address_pool }}
-    namespace: {{ unifi_controller_namespace }}
+    namespace: {{ namespace }}
     labels:
         app: unifi-controller-mongodb
 spec:
