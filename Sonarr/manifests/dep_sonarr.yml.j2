@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: sonarr
+    namespace: {{ namespace }}
+    labels:
+        app: sonarr
+        type: third-party
+        facing: internal
+spec:
+    replicas: 3
+    strategy:
+        type: Recreate
+    selector:
+        matchLabels:
+            app: sonarr
+    template:
+        metadata:
+            labels:
+                app: sonarr
+        spec:         
+            containers:
+                - name: sonarr
+                  image: linuxserver/sonarr:latest
+                  env:
+                      - name: PUID
+                        value: "1002"
+                      - name: PGID
+                        value: "1007"
+                      - name: TZ
+                        value: "Pacific"
+                  ports:
+                      - containerPort: 8989
+                  volumeMounts:
+                      - name: sonarr-config
+                        mountPath: /config
+                      - name: sonarr-fileserver
+                        mountPath: /downloads
+                      - name: sonarr-tv-shows
+                        mountPath: /tv
+                  readinessProbe:
+                      httpGet:
+                          path: /
+                          port: 8989
+                      periodSeconds: 10
+                      failureThreshold: 3
+                  livenessProbe:
+                      httpGet:
+                          path: /
+                          port: 8989
+                      initialDelaySeconds: 60
+                      periodSeconds: 10
+                      failureThreshold: 5
+                  resources:
+                      requests:
+                          memory: {{ mem_request }}
+                          cpu: {{ cpu_request }}
+                      limits:
+                          memory: {{ mem_limit }}
+                          cpu: {{ cpu_limit }}
+            volumes:
+                - name: sonarr-config
+                  persistentVolumeClaim:
+                    claimName: sonarr-config
+                - name: sonarr-fileserver
+                  persistentVolumeClaim:
+                    claimName: sonarr-fileserver
+                - name: sonarr-tv-shows
+                  persistentVolumeClaim:
+                    claimName: sonarr-tv-shows
