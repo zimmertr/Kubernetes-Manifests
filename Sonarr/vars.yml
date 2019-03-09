@@ -19,9 +19,6 @@ config_dir: '/SaturnPool/Kubernetes/Sonarr'
 # NFS Mountpoint you want to use for storing your downloaded files.
 tv_shows_dir: '/SaturnPool/TV Shows/'
 
-# NFS Mountpoint you want to use for exposing your fileserver.
-fileserver_root: '/SaturnPool/'
-
 # CPU Requests for the pods.
 # 1 = 1 vCPU affinity
 cpu_request: '1'

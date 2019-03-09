@@ -13,10 +13,8 @@
             - "ns_sonarr.yml.j2"
             - "pv_sonarr_config.yml.j2"
             - "pv_sonarr_tv_shows.yml.j2"
-            - "pv_sonarr_fileserver.yml.j2"
             - "pvc_sonarr_config.yml.j2"
             - "pvc_sonarr_tv_shows.yml.j2"
-            - "pvc_sonarr_fileserver.yml.j2"
             - "dep_sonarr.yml.j2"
             - "svc_sonarr.yml.j2"
 
