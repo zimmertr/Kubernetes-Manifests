@@ -1,36 +1,45 @@
-# Namespace to deploy the manifests to.
-namespace: 'io'
+# The namespace to be created and used for the deployment. 
+namespace: 'deluge'
 
-# MetalLB Address Pool that you want to obtain an IP from:
+# The MetalLB Address Pool from which you want to obtain an IP address.
 load_balancer_address_pool: 'VLAN50'
 
-# IP Address on which you want to to load balance the website.
+# The IP address within the Address Pool to which you want to bind the service. 
 load_balancer_ip: '192.168.50.20'
 
-# The hostname with which you want to connect to the service on the load balancer.
+# The hostname with which you want to test connectivity to the IP Address after the deployment has completed.
 hostname: 'io.sol.milkyway'
 
-# NFS Server hostname or IP address.
+# The timezone of the location for the deployment.
+timezone: 'Pacific'
+
+# The hostname or IP address of the NFS server on which you want to store Persistent Volume content.
 nfs_server: 'saturn.sol.milkyway'
 
-# NFS Mountpoint you want to use for preserving your configuration.
-config_dir: '/SaturnPool/Kubernetes/Deluge'
+# The UID used for accessing content on the fileserver.
+fileserver_uid: '1002'
 
-# NFS Mountpoint you want to use for storing your downloaded files.
-downloads_dir: '/SaturnPool/Downloads/'
+# The GID used for accessing content on the fileserver.
+fileserver_gid: '1007'
 
-# NFS Mountpoint you want to use for exposing your fileserver.
+# The NFS mountpoint to be used as the root of the fileserver.
 fileserver_root: '/SaturnPool/'
 
-# CPU Requests for the pods.
+# The NFS mountpoint to be used for preserving the configuration of the application.
+config_dir: '/SaturnPool/Kubernetes/Deluge'
+
+# The NFS mountpoint to be used for downloaded content.
+downloads_dir: '/SaturnPool/Downloads/'
+
+# The resource requests for the pods.
 # 1 = 1 vCPU affinity
-cpu_request: '1'
-
-# CPU limitations for the pods.
-cpu_limit: '2'
-
-# Memory request for the pods.
+cpu_request: '.25'
 mem_request: '2048Mi'
 
-# Memory limitation for the pods.
-mem_limit: '10240Mi'
+# The resource limitations for the pods.
+cpu_limit: '1.5'
+mem_limit: '6144Mi'
+
+
+
+# Add timezone, uid, & gid env variables
