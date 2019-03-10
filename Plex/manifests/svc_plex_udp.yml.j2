@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Service
+metadata:
+    name: plex-udp
+    annotations:
+        metallb.universe.tf/address-pool: {{ load_balancer_address_pool }}
+        metallb.universe.tf/allow-shared-ip: "true"
+    namespace: {{ namespace }}
+    labels:
+        app: plex
+spec:
+    type: LoadBalancer
+    externalTrafficPolicy: Local
+    selector:
+        app: plex
+    loadBalancerIP: {{ load_balancer_ip }}
+    ports:
+      - name: "plex-dlna-udp-1"
+        targetPort: 1900
+        port: 1900
+        protocol: UDP
+      - name: "gdm-discovery-1"
+        targetPort: 32410
+        port: 32410
+        protocol: UDP
+      - name: "gdm-discovery-2"
+        targetPort: 32412
+        port: 32412
+        protocol: UDP
+      - name: "gdm-discovery-3"
+        targetPort: 32413
+        port: 32413
+        protocol: UDP
+      - name: "gdm-discovery-4"
+        targetPort: 32414
+        port: 32414
+        protocol: UDP
