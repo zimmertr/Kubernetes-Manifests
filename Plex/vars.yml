@@ -38,7 +38,7 @@ config_dir: '/SaturnPool/Kubernetes/Plex/config'
 transcode_dir: '/SaturnPool/Kubernetes/Plex/transcode'
 
 # The NFS mountpoint to be used for serving audiobooks.
-config_dir: '/SaturnPool/Audiobooks'
+audiobooks_dir: '/SaturnPool/Audiobooks'
 
 # The NFS mountpoint to be used for serving TV shows.
 tv_shows_dir: '/SaturnPool/TV Shows'
