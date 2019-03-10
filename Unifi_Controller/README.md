@@ -6,7 +6,7 @@
 
 **Summary:**
 
-These manifests are used to deploy the Unifi Controller to Kubernetes. They rely on MetalLB to configure a load balancer as well as an exported NFS mountpoint that Kubernetes can bind to with a persistent volume in order to store Unifi's configuration. Furthermore, additional configuration will be necessary at the software level and device discovery may not work. (Or my network might just suck)
+These manifests are used to deploy an instance of Unifi Controller and MongoDB. They rely on MetalLB to configure a load balancer as well as an exported NFS mountpoint that Kubernetes can bind to in order to store Persistent Volumes for the configuration as well as the other files that the server will interact with. 
 
 Approximate Deployment Time: 10-15 minutes
 
@@ -45,9 +45,7 @@ Approximate Deployment Time: 10-15 minutes
 
 **TODO:**
 
-    1) Set up liveness/readiness probes against status api endpoint.  
-    2) Monitor resource utilization and configure limits and requests.   
-    3) Test to see if password allows for special characters correctly.  
+    1) Test to see if password allows for special characters correctly.  
 
 
 **Problems:**

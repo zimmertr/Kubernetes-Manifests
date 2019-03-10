@@ -11,7 +11,8 @@ load_balancer_ip: '192.168.20.10'
 hostname: 'unifi.sol.milkyway'
 
 # The timezone of the location for the deployment.
-timezone: 'Pacific'
+# https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+timezone: 'America/Los_Angeles'
 
 # The password to be used for the MongoDB database. 
 mongodb_password: 'PASSWORD'

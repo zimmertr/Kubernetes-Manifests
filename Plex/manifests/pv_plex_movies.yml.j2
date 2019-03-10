@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+    name: plex-movies
+    namespace: {{ namespace }}
+spec:
+    capacity:
+        storage: 15Ti
+    accessModes:
+        - ReadWriteMany
+    nfs:
+        server: {{ nfs_server }}
+        path: {{ movies_dir }}
+    storageClassName: nfs
