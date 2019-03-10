@@ -6,7 +6,7 @@
 
 **Summary:**
 
-These manifests are used to build my personal website. They rely on MetalLB to configure a load balancer as well as an exported NFS mountpoint that Kubernetes can bind to with a persistent volume in order to serve up public files. 
+These manifests are used to deploy an instance of my personal website. They rely on MetalLB to configure a load balancer as well as an exported NFS mountpoint that Kubernetes can bind to in order to store Persistent Volumes for the configuration as well as the other files that the server will interact with. 
 
 Approximate Deployment Time: 1-5 minutes
 
