@@ -6,7 +6,7 @@
 
 **Summary:**
 
-These manifests are used to build an instance of radarr. It relies on MetalLB to configure a load balancer as well as an exported NFS mountpoint that Kubernetes can bind to with three persistent volumes in order to store the Radarr configuration as well as interact with your Movie files and other subdirectories on your fileserver involved in running an RSS server.
+These manifests are used to deploy an instance of Radarr. They rely on MetalLB to configure a load balancer as well as an exported NFS mountpoint that Kubernetes can bind to in order to store Persistent Volumes for the configuration as well as the other files that the server will interact with. 
 
 Approximate Deployment Time: 1-5 minutes
 
@@ -15,7 +15,7 @@ Approximate Deployment Time: 1-5 minutes
 **Requirements:**  
 
     1) Exported NFS Server with which Kubernetes can communicate.  
-    2) Directory named `/radarr` created on the NFS Endpoint you specify in `vars.yml`.
+    2) Directory named `/Radarr` created on the NFS Endpoint you specify in `vars.yml`.
     2) Working load balancer integrated with Kubernetes Services. (https://metallb.universe.tf/)  
     3) Python modules required to use the k8s Ansible module (https://docs.ansible.com/ansible/latest/modules/k8s_module.html).    
         * pip install openshift kubernetes pyyaml 
@@ -30,7 +30,7 @@ Approximate Deployment Time: 1-5 minutes
 
 **Problems:**
 
-    1) Scaling this up to more than one pod causes issues. Could probably get working with some work.
+    1) Scaling this up to more than one pod causes issues. 
 
     
 **Deletion:**  
