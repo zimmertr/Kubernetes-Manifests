@@ -1,0 +1,129 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: plex
+    namespace: {{ namespace }}
+    labels:
+        app: plex
+        type: official
+        facing: internal
+spec:
+    replicas: 1
+    strategy:
+        type: Recreate
+    selector:
+        matchLabels:
+            app: plex
+    template:
+        metadata:
+            labels:
+                app: plex
+        spec:         
+            containers:
+                - name: plex
+                  image: plexinc/pms-docker:latest
+                  env:
+                      - name: TZ
+                        value: "{{ timezone }}"
+                      - name: PLEX_CLAIM
+                        value: "{{ claim_token }}"
+                      - name: ADVERTISE_IP
+                        value: "http://{{ load_balancer_ip }}:32400/"
+                      - name: HOSTNAME
+                        value: "{{ hostname }}"
+                      - name: PLEX_UID
+                        value: "{{ fileserver_uid }}"
+                      - name: PLEX_GID
+                        value: "{{ fileserver_gid }}"
+                      - name: ALLOWED_NETWORKS
+                        value: "{{ allowed_networks }}"
+                  ports:
+                      - name: "plex-dlna-udp-1"
+                        containerPort: 1900
+                        protocol: UDP
+                      - name: "gdm-discovery-1"
+                        containerPort: 32410
+                        protocol: UDP
+                      - name: "gdm-discovery-2"
+                        containerPort: 32412
+                        protocol: UDP
+                      - name: "gdm-discovery-3"
+                        containerPort: 32413
+                        protocol: UDP
+                      - name: "gdm-discovery-4"
+                        containerPort: 32414
+                        protocol: UDP
+                      - name: "plex-home-contr"
+                        containerPort: 3005
+                        protocol: TCP
+                      - name: "plex-roku-contr"
+                        containerPort: 8324
+                        protocol: TCP
+                      - name: "plex-web-tcp"
+                        containerPort: 32400
+                        protocol: TCP
+                      - name: "plex-dlna-tcp"
+                        containerPort: 32469
+                        protocol: TCP
+                  volumeMounts:
+                      - name: plex-audiobooks
+                        mountPath: /audiobooks
+                      - name: plex-config
+                        mountPath: /config
+                      - name: plex-tv-shows
+                        mountPath: /tv
+                      - name: plex-movies
+                        mountPath: /movies
+                      - name: plex-music
+                        mountPath: /music
+                      - name: plex-anime
+                        mountPath: /anime
+                      - name: plex-unsorted
+                        mountPath: /unsorted
+                      - name: plex-transcode
+                        mountPath: /transcode
+                  readinessProbe:
+                      httpGet:
+                          path: /identity
+                          port: 32400
+                      periodSeconds: 10
+                      failureThreshold: 3
+                  livenessProbe:
+                      httpGet:
+                          path: /identity
+                          port: 32400
+                      initialDelaySeconds: 60
+                      periodSeconds: 10
+                      failureThreshold: 5
+                  resources:
+                      requests:
+                          memory: {{ mem_request }}
+                          cpu: {{ cpu_request }}
+                      limits:
+                          memory: {{ mem_limit }}
+                          cpu: {{ cpu_limit }}
+            volumes:
+                - name: plex-audiobooks
+                  persistentVolumeClaim:
+                    claimName: plex-audiobooks
+                - name: plex-config
+                  persistentVolumeClaim:
+                    claimName: plex-config
+                - name: plex-tv-shows
+                  persistentVolumeClaim:
+                    claimName: plex-tv-shows
+                - name: plex-movies
+                  persistentVolumeClaim:
+                    claimName: plex-movies
+                - name: plex-music
+                  persistentVolumeClaim:
+                    claimName: plex-music
+                - name: plex-anime
+                  persistentVolumeClaim:
+                    claimName: plex-anime
+                - name: plex-unsorted
+                  persistentVolumeClaim:
+                    claimName: plex-unsorted
+                - name: plex-transcode
+                  persistentVolumeClaim:
+                    claimName: plex-transcode
