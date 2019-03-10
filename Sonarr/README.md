@@ -6,7 +6,7 @@
 
 **Summary:**
 
-These manifests are used to build an instance of Sonarr. It relies on MetalLB to configure a load balancer as well as an exported NFS mountpoint that Kubernetes can bind to with three persistent volumes in order to store the Sonarr configuration as well as interact with your TV Shows files and other subdirectories on your fileserver involved in running an RSS server.
+These manifests are used to deploy an instance of Sonarr. They rely on MetalLB to configure a load balancer as well as an exported NFS mountpoint that Kubernetes can bind to in order to store Persistent Volumes for the configuration as well as the other files that the server will interact with. 
 
 Approximate Deployment Time: 1-5 minutes
 
@@ -30,7 +30,7 @@ Approximate Deployment Time: 1-5 minutes
 
 **Problems:**
 
-    1) Scaling this up to more than one pod causes issues. Could probably get working with some work.
+    1) Scaling this up to more than one pod causes issues. 
 
     
 **Deletion:**  
