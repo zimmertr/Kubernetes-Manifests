@@ -1,0 +1,39 @@
+---
+- hosts: localhost
+  gather_facts: False
+  tasks:
+      - name: Including the variables.
+        include_vars:
+            file: ./vars.yml
+
+      - name: Deploying the plex manifests to Kubernetes.
+        k8s:
+            definition: "{{ lookup('template', './manifests/{{ item }}') | from_yaml }}"
+        with_items:
+            - "ns_plex.yml.j2"
+            - "pv_plex_audiobooks.yml.j2"
+            - "pv_plex_config.yml.j2"
+            - "pv_plex_movies.yml.j2"
+            - "pv_plex_music.yml.j2"
+            - "pv_plex_anime.yml.j2"
+            - "pv_plex_unsorted.yml.j2"
+            - "pv_plex_tv_shows.yml.j2"
+            - "pv_plex_transcode.yml.j2"
+            - "pvc_plex_audiobooks.yml.j2"
+            - "pvc_plex_config.yml.j2"
+            - "pvc_plex_movies.yml.j2"
+            - "pvc_plex_music.yml.j2"
+            - "pvc_plex_anime.yml.j2"
+            - "pvc_plex_unsorted.yml.j2"
+            - "pvc_plex_tv_shows.yml.j2"
+            - "pvc_plex_transcode.yml.j2"
+            - "dep_plex.yml.j2"
+            - "svc_plex_tcp.yml.j2"
+            - "svc_plex_udp.yml.j2"
+
+      - name: Waiting for the deployment to be ready.
+        wait_for:
+            host: "{{ hostname }}"
+            port: 32400
+            timeout: 300
+            msg: "Webserver not available after 5 minutes. Something has probably gone wrong."

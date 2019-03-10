@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+    name: plex-audiobooks
+    namespace: {{ namespace }}
+spec:
+    accessModes:
+        - ReadWriteMany
+    resources:
+        requests:
+            storage: 15Ti
+    storageClassName: nfs            
+    volumeName: plex-audiobooks
