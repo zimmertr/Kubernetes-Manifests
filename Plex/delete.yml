@@ -1,0 +1,32 @@
+---
+- hosts: localhost
+  gather_facts: False
+  tasks:
+      - name: Including the variables.
+        include_vars:
+            file: ./vars.yml
+
+      - name: Deleting the Deluge manifests from Kubernetes.
+        k8s:
+            definition: "{{ lookup('template', './manifests/{{ item }}') | from_yaml }}"
+            state: absent            
+        with_items:
+            - "pv_plex_audiobooks.yml.j2"
+            - "pv_plex_config.yml.j2"
+            - "pv_plex_movies.yml.j2"
+            - "pv_plex_music.yml.j2"
+            - "pv_plex_anime.yml.j2"
+            - "pv_plex_unsorted.yml.j2"
+            - "pv_plex_tv_shows.yml.j2"
+            - "pv_plex_transcode.yml.j2"
+            - "pvc_plex_audiobooks.yml.j2"
+            - "pvc_plex_config.yml.j2"
+            - "pvc_plex_movies.yml.j2"
+            - "pvc_plex_music.yml.j2"
+            - "pvc_plex_anime.yml.j2"
+            - "pvc_plex_unsorted.yml.j2"
+            - "pvc_plex_tv_shows.yml.j2"
+            - "pvc_plex_transcode.yml.j2"
+            - "dep_plex.yml.j2"
+            - "svc_plex_tcp.yml.j2"
+            - "svc_plex_udp.yml.j2"
