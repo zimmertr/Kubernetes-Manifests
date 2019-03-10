@@ -1,0 +1,65 @@
+# The namespace to be created and used for the deployment. 
+namespace: 'plex-media-server'
+
+# The MetalLB Address Pool from which you want to obtain an IP address.
+load_balancer_address_pool: 'VLAN50'
+
+# The IP address within the Address Pool to which you want to bind the service. 
+load_balancer_ip: '192.168.50.30'
+
+# The hostname with which you want to test connectivity to the IP Address after the deployment has completed.
+hostname: 'janus.sol.milkyway'
+
+# The timezone of the location for the deployment.
+# https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+timezone: 'America/Los_Angeles'
+
+# The claim token used to claim your Plex Media Server. Be sure to generate this immediatly before deployment 
+# as it will expire 4 minutes after it is created.
+# https://www.plex.tv/claim/
+claim_token: 'CLAIMTOKEN'
+
+# A comma separated list of network CIDRs that should be allowed to connect to Plex Media Server without authorization.
+allowed_networks: '192.168.20.0/24,192.168.30.0/24'
+
+# The hostname or IP address of the NFS server on which you want to store Persistent Volume content.
+nfs_server: 'saturn.sol.milkyway'
+
+# The UID used for accessing content on the fileserver.
+fileserver_uid: '1002'
+
+# The GID used for accessing content on the fileserver.
+fileserver_gid: '1007'
+
+# The NFS mountpoint to be used for preserving the configuration of the application.
+config_dir: '/SaturnPool/Kubernetes/Plex/config'
+
+# The NFS mountpoint to be used for storing transcoding data. Ideally this volume would be highly performant.
+transcode_dir: '/SaturnPool/Kubernetes/Plex/transcode'
+
+# The NFS mountpoint to be used for serving audiobooks.
+config_dir: '/SaturnPool/Audiobooks'
+
+# The NFS mountpoint to be used for serving TV shows.
+tv_shows_dir: '/SaturnPool/TV Shows'
+
+# The NFS mountpoint to be used for serving movies.
+movies_dir: '/SaturnPool/Movies'
+
+# The NFS mountpoint to be used for serving music.
+music_dir: '/SaturnPool/Music'
+
+# The NFS mountpoint to be used for serving anime.
+anime_dir: '/SaturnPool/Anime'
+
+# The NFS mountpoint to be used for serving unsorted content.
+unsorted_dir: '/SaturnPool/Downloads/Unsorted'
+
+# The resource requests for the pods.
+# 1 = 1 vCPU affinity
+cpu_request: '2'
+mem_request: '2048Mi'
+
+# The resource limitations for the pods.
+cpu_limit: '4'
+mem_limit: '10240Mi'
