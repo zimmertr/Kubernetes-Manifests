@@ -10,7 +10,7 @@ These manifests are used to deploy an instance of Plex Media Server. They rely o
 
 Approximate Deployment Time: 1-5 minutes
 
-* [Project Docker Containers](https://github.com/linuxserver/docker-plex)
+* [Project Docker Containers](https://github.com/plexinc/pms-docker)
 
 **Requirements:**  
 
