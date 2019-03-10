@@ -1,21 +1,21 @@
-## Deluge
+## Plex Media Server
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/zimmertr/Kubernetes-Manifests/master/Deluge/screenshot.png" width="800">
+  <img src="https://raw.githubusercontent.com/zimmertr/Kubernetes-Manifests/master/Plex/screenshot.png" width="800">
 </p>
 
 **Summary:**
 
-These manifests are used to Deploy an instance of Deluge. They rely on MetalLB to configure a load balancer as well as an exported NFS mountpoint that Kubernetes can bind to in order to store Persistent Volumes for the configuration as well as the other files that the server will interact with. 
+These manifests are used to deploy an instance of Plex Media Server. They rely on MetalLB to configure a load balancer as well as an exported NFS mountpoint that Kubernetes can bind to in order to store Persistent Volumes for the configuration as well as the other files that the server will interact with. 
 
 Approximate Deployment Time: 1-5 minutes
 
-* [Project Docker Containers](https://github.com/linuxserver/docker-deluge)
+* [Project Docker Containers](https://github.com/linuxserver/docker-plex)
 
 **Requirements:**  
 
     1) Exported NFS Server with which Kubernetes can communicate.  
-    2) Directory named `/Deluge` created on the NFS Endpoint you specify in `vars.yml`.
+    2) Directory named `/Plex` created on the NFS Endpoint you specify in `vars.yml`.
     2) Working load balancer integrated with Kubernetes Services. (https://metallb.universe.tf/)  
     3) Python modules required to use the k8s Ansible module (https://docs.ansible.com/ansible/latest/modules/k8s_module.html).    
         * pip install openshift kubernetes pyyaml 
