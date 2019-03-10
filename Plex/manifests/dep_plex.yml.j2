@@ -82,19 +82,19 @@ spec:
                         mountPath: /unsorted
                       - name: plex-transcode
                         mountPath: /transcode
-                  readinessProbe:
-                      httpGet:
-                          path: /identity
-                          port: 32400
-                      periodSeconds: 10
-                      failureThreshold: 3
-                  livenessProbe:
-                      httpGet:
-                          path: /identity
-                          port: 32400
-                      initialDelaySeconds: 60
-                      periodSeconds: 10
-                      failureThreshold: 5
+#                  readinessProbe:
+#                      httpGet:
+#                          path: /identity
+#                          port: 32400
+#                      periodSeconds: 10
+#                      failureThreshold: 3
+#                  livenessProbe:
+#                      httpGet:
+#                          path: /identity
+#                          port: 32400
+#                      initialDelaySeconds: 60
+#                      periodSeconds: 10
+#                      failureThreshold: 5
                   resources:
                       requests:
                           memory: {{ mem_request }}
