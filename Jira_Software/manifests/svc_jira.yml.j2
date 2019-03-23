@@ -1,20 +1,20 @@
 apiVersion: v1
 kind: Service
 metadata:
-    name: personal-website
+    name: jira
     annotations:
         metallb.universe.tf/address-pool: {{ load_balancer_address_pool }}
     namespace: {{ namespace }}
     labels:
-        app: personal-website
+        app: jira
 spec:
     type: LoadBalancer
     externalTrafficPolicy: Local
     selector:
-        app: personal-website
+        app: jira
     loadBalancerIP: {{ load_balancer_ip }}
     ports:
-    - name: "http-apache"
+    - name: "http-web"
       protocol: TCP
-      targetPort: 80
-      port: 80
+      targetPort: 8080
+      port: 8080

@@ -5,6 +5,7 @@ metadata:
     namespace: {{ namespace }}
     labels:
         app: sonarr
+        version: latest
         type: third-party
         facing: internal
 spec:
@@ -30,7 +31,7 @@ spec:
                       - name: TZ
                         value: "{{ timezone }}"
                   ports:
-                      - name: "sonarr-web"
+                      - name: "http-web"
                         containerPort: 8989
                         protocol: TCP
                   volumeMounts:

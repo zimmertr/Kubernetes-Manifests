@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: jira
+    namespace: {{ namespace }}
+    labels:
+        app: jira
+        version: latest
+        type: third-party
+        facing: internal
+spec:
+    replicas: 1
+    strategy:
+        type: Recreate
+    selector:
+        matchLabels:
+            app: jira
+    template:
+        metadata:
+            labels:
+                app: jira
+        spec:  
+            initContainers:
+                - name: chown-data
+                  image: busybox
+                  command: ["chown", "2:2", "-R", "/var/atlassian/jira"]
+                  volumeMounts:
+                      - name: jira-data
+                        mountPath: /var/atlassian/jira
+            containers:
+                - name: jira
+                  image: cptactionhank/atlassian-jira-software:latest
+                  ports:
+                      - name: "http-web"
+                        containerPort: 8080
+                        protocol: TCP
+                  volumeMounts:
+                      - name: jira-data
+                        mountPath: /var/atlassian/jira
+                  # readinessProbe:
+                  #     httpGet:
+                  #         path: /
+                  #         port: 8080
+                  #     periodSeconds: 10
+                  #     failureThreshold: 3
+                  # livenessProbe:
+                  #     httpGet:
+                  #         path: /
+                  #         port: 8080
+                  #     initialDelaySeconds: 60
+                  #     periodSeconds: 10
+                  #     failureThreshold: 5
+                  resources:
+                      requests:
+                          cpu: {{ jira_cpu_request }}
+                          memory: {{ jira_mem_request }}
+                      limits:
+                          cpu: {{ jira_cpu_limit }}                        
+                          memory: {{ jira_mem_limit }}
+            volumes:
+                - name: jira-data
+                  persistentVolumeClaim:
+                    claimName: jira-data

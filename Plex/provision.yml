@@ -6,7 +6,7 @@
         include_vars:
             file: ./vars.yml
 
-      - name: Deploying the plex manifests to Kubernetes.
+      - name: Deploying the manifests to Kubernetes.
         k8s:
             definition: "{{ lookup('template', './manifests/{{ item }}') | from_yaml }}"
         with_items:
@@ -36,4 +36,4 @@
             host: "{{ hostname }}"
             port: 32400
             timeout: 300
-            msg: "Webserver not available after 5 minutes. Something has probably gone wrong."
+            msg: "Application was not available after 5 minutes. Something has probably gone wrong."
