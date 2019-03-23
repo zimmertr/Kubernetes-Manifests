@@ -5,6 +5,7 @@ metadata:
     namespace: {{ namespace }}
     labels:
         app: deluge
+        version: latest
         type: third-party
         facing: internal
 spec:
@@ -30,16 +31,16 @@ spec:
                       - name: TZ
                         value: "{{ timezone }}"
                   ports:
-                      - name: "deluge-traffic1"
+                      - name: "traffic-1"
                         containerPort: 7850
                         protocol: TCP
-                      - name: "deluge-traffic2"
+                      - name: "traffic-2"
                         containerPort: 7851
                         protocol: TCP
-                      - name: "deluge-web"
+                      - name: "http-deluge-web"
                         containerPort: 8112
                         protocol: TCP
-                      - name: "deluge-daemon"
+                      - name: "daemon"
                         containerPort: 58846
                         protocol: TCP
                   volumeMounts:
