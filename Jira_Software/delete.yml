@@ -11,9 +11,12 @@
             definition: "{{ lookup('template', './manifests/{{ item }}') | from_yaml }}"
             state: absent            
         with_items:
-            - "pv_sonarr_config.yml.j2"
-            - "pv_sonarr_tv_shows.yml.j2"
-            - "pvc_sonarr_config.yml.j2"
-            - "pvc_sonarr_tv_shows.yml.j2"
-            - "dep_sonarr.yml.j2"
-            - "svc_sonarr.yml.j2" 
+            - "pvc_postgres_data.yml.j2"
+            - "pvc_jira_data.yml.j2"
+            - "pv_postgres_data.yml.j2"
+            - "pv_jira_data.yml.j2"          
+            - "dep_jira.yml.j2"
+            - "dep_postgres.yml.j2"
+            - "svc_jira.yml.j2" 
+            - "svc_postgres.yml.j2" 
+            - "sec_postgres_password.yml.j2"

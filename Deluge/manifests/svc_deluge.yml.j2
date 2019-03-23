@@ -14,19 +14,19 @@ spec:
         app: deluge
     loadBalancerIP: {{ load_balancer_ip }}
     ports:
-    - name: "deluge-traffic1"
+    - name: "traffic-1"
       protocol: TCP
       targetPort: 7850
       port: 7850
-    - name: "deluge-traffic2"
+    - name: "traffic-2"
       protocol: TCP
       targetPort: 7851
       port: 7851
-    - name: "deluge-web"
+    - name: "http-deluge-web"
       protocol: TCP
       targetPort: 8112
       port: 8112
-    - name: "deluge-daemon"
+    - name: "daemon"
       protocol: TCP
       targetPort: 58846
       port: 58846

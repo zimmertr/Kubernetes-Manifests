@@ -5,6 +5,7 @@ metadata:
     namespace: {{ namespace }}
     labels:
         app: radarr
+        version: latest
         type: third-party
         facing: internal
 spec:
@@ -30,7 +31,7 @@ spec:
                       - name: TZ
                         value: "{{ timezone }}"
                   ports:
-                      - name: "radarr-web"
+                      - name: "http-web"
                         containerPort: 7878
                         protocol: TCP
                   volumeMounts:

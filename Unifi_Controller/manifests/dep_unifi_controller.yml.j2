@@ -5,6 +5,7 @@ metadata:
     namespace: {{ namespace }}
     labels:
         app: unifi-controller
+        version: 5.9
         type: third-party
         facing: internal
 spec:
@@ -55,9 +56,9 @@ spec:
                         containerPort: 8080
                       - name: "unknown-port"
                         containerPort: 8081
-                      - name: "web-interface"
+                      - name: "http-web"
                         containerPort: 8443
-                      - name: "https-redirect"
+                      - name: "http-s-redirect"
                         containerPort: 8843
                       - name: "http-redirect"
                         containerPort: 8880
