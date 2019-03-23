@@ -1,4 +1,4 @@
-## Personal Website 
+## Jira Software 
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/zimmertr/Kubernetes-Manifests/master/Jira_Software/screenshot.png" width="800">
