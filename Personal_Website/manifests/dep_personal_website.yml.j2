@@ -5,6 +5,7 @@ metadata:
     namespace: {{ namespace }}
     labels:
         app: personal-website
+        version: latest
         type: custom
         facing: external
 spec:
@@ -42,7 +43,7 @@ spec:
                 - name: httpd
                   image: zimmertr/personal-website:latest
                   ports:
-                      - name: "website-http"
+                      - name: "http-apache"
                         containerPort: 80
                         protocol: TCP
                   volumeMounts:
