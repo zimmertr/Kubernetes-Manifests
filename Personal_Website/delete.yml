@@ -6,7 +6,7 @@
         include_vars:
             file: ./vars.yml
 
-      - name: Deleting the Personal Website manifests from Kubernetes.
+      - name: Deleting the manifests from Kubernetes.
         k8s:
             definition: "{{ lookup('template', './manifests/{{ item }}') | from_yaml }}"
             state: absent            
