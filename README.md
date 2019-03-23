@@ -11,6 +11,10 @@ A collection of Kubernetes Manifests separated by project for use with deploying
 [These manifests](Deluge/) are used to deploy Deluge to Kubernetes. It leverages MetalLB to configure a bare metal load balancer as well as an exported NFS mountpoint that Kubernetes can bind persistent volumes to in order to store the configuration and interact with other files related to the server. 
 
 
+**Jira Software**
+
+[These manifests](Jira_Software) are used to deploy an instance of Jira Software. They rely on MetalLB to configure a load balancer as well as an exported NFS mountpoint that Kubernetes can bind to in order to store Persistent Volumes for the configuration as well as the other files that the server will interact with. Please be aware, Jira Software requires at minimum a trial [license](https://www.atlassian.com/software/jira/pricing?tab=self-managed) to operate. 
+
 **Personal Website**
 
 [These manifests](Personal_Website/) are used to deploy my personal website to Kubernetes. They rely on MetalLB to configure a load balancer as well as an exported NFS mountpoint that Kubernetes can bind to with a persistent volume in order to serve up public files. The variables file used for the deployment allows the user to provide a Google Analytics tracking ID as well as a Weather Underground API key for use with the terminal emulator. 
