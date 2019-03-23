@@ -6,7 +6,7 @@
         include_vars:
             file: ./vars.yml
 
-      - name: Deploying the Unifi Controller manifests to Kubernetes.
+      - name: Deploying the manifests to Kubernetes.
         k8s:
             definition: "{{ lookup('template', './manifests/{{ item }}') | from_yaml }}"
         with_items:
@@ -33,4 +33,4 @@
             #Controller takes between 3-8 to start up. 
             #Will give time for k8s probes to fail before failing.                    
             timeout: 600
-            msg: "Webserver not available after 10 minutes. Something has probably gone wrong."
+            msg: "Application was not available after 10 minutes. Something has probably gone wrong."
