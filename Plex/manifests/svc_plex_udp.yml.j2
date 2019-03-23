@@ -15,7 +15,7 @@ spec:
         app: plex
     loadBalancerIP: {{ load_balancer_ip }}
     ports:
-      - name: "plex-dlna-udp-1"
+      - name: "dlna-server-udp"
         targetPort: 1900
         port: 1900
         protocol: UDP
