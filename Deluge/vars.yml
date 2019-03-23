@@ -40,7 +40,3 @@ mem_request: '2048Mi'
 # The resource limitations for the pods.
 cpu_limit: '1.5'
 mem_limit: '6144Mi'
-
-
-
-# Add timezone, uid, & gid env variables
