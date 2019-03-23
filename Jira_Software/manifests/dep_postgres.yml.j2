@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: postgres
+    namespace: {{ namespace }}
+    labels:
+        app: postgres
+        version: latest
+        type: offical
+        facing: internal
+spec:
+    replicas: 1
+    strategy:
+        type: Recreate
+    selector:
+        matchLabels:
+            app: postgres
+    template:
+        metadata:
+            labels:
+                app: postgres
+        spec:         
+            containers:
+                - name: postgres
+                  image: postgres:latest
+                  env:
+                      - name: POSTGRES_PASSWORD
+                        valueFrom:
+                            secretKeyRef:
+                                key: postgres_password
+                                name: jira-postgres-password
+                      - name: POSTGRES_USER
+                        value: "jira"
+                  ports:
+                      - name: "tcp-postgres"
+                        containerPort: 5432
+                        protocol: TCP
+                  volumeMounts:
+                      - name: postgres-data
+                        mountPath: /var/lib/postgresql/data
+                  # readinessProbe:
+                  #     tcpSocket:
+                  #         port: 5432
+                  #     initialDelaySeconds: 30
+                  #     periodSeconds: 10
+                  #     failureThreshold: 1  
+                  # livenessProbe:
+                  #     tcpSocket:
+                  #         port: 5432
+                  #     initialDelaySeconds: 30
+                  #     periodSeconds: 10
+                  #     failureThreshold: 1  
+                  resources:
+                      limits:
+                          cpu: {{ postgres_cpu_limit }}                        
+                          memory: {{ postgres_mem_limit }}
+            volumes:
+                - name: postgres-data
+                  persistentVolumeClaim:
+                    claimName: postgres-data

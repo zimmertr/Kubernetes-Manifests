@@ -1,0 +1,22 @@
+---
+- hosts: localhost
+  gather_facts: False
+  tasks:
+      - name: Including the variables.
+        include_vars:
+            file: ./vars.yml
+
+      - name: Deleting the manifests from Kubernetes.
+        k8s:
+            definition: "{{ lookup('template', './manifests/{{ item }}') | from_yaml }}"
+            state: absent            
+        with_items:
+            - "pvc_postgres_data.yml.j2"
+            - "pvc_jira_data.yml.j2"
+            - "pv_postgres_data.yml.j2"
+            - "pv_jira_data.yml.j2"          
+            - "dep_jira.yml.j2"
+            - "dep_postgres.yml.j2"
+            - "svc_jira.yml.j2" 
+            - "svc_postgres.yml.j2" 
+            - "sec_postgres_password.yml.j2"
