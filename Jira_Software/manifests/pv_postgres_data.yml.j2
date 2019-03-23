@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+    name: postgres-data
+    namespace: {{ namespace }}
+spec:
+    capacity:
+        storage: 100Gi
+    accessModes:
+        - ReadWriteMany
+    nfs:
+        server: {{ nfs_server }}
+        path: {{ postgres_data_dir }}
+    storageClassName: nfs
