@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-    name: jira-data
+    name: jira-software-data
     namespace: {{ namespace }}
 spec:
     accessModes:
@@ -10,4 +10,4 @@ spec:
         requests:
             storage: 10Gi 
     storageClassName: nfs            
-    volumeName: jira-data
+    volumeName: jira-software-data
