@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: confluence
+    namespace: {{ namespace }}
+    labels:
+        app: confluence
+        version: latest
+        type: official
+        facing: internal
+spec:
+    replicas: 1
+    strategy:
+        type: Recreate
+    selector:
+        matchLabels:
+            app: confluence
+    template:
+        metadata:
+            labels:
+                app: confluence
+        spec:  
+            containers:
+                - name: confluence
+                  image: atlassian/confluence-server
+                  ports:
+                      - name: "http-web"
+                        containerPort: 8090
+                        protocol: TCP
+                      - name: "tcp-synchrony"
+                        containerPort: 8091
+                        protocol: TCP
+                  volumeMounts:
+                      - name: confluence-data
+                        mountPath: /var/atlassian/application-data/confluence
+                  # readinessProbe:
+                  #     httpGet:
+                  #         path: /
+                  #         port: 8080
+                  #     periodSeconds: 10
+                  #     failureThreshold: 3
+                  # livenessProbe:
+                  #     httpGet:
+                  #         path: /
+                  #         port: 8080
+                  #     initialDelaySeconds: 60
+                  #     periodSeconds: 10
+                  #     failureThreshold: 5
+                  # resources:
+                  #     requests:
+                  #         cpu: {{ confluence_cpu_request }}
+                  #         memory: {{ confluence_mem_request }}
+                  #     limits:
+                  #         cpu: {{ confluence_cpu_limit }}                        
+                  #         memory: {{ confluence_mem_limit }}
+            volumes:
+                - name: confluence-data
+                  persistentVolumeClaim:
+                    claimName: confluence-data
