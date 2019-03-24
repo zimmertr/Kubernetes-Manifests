@@ -4,7 +4,7 @@ metadata:
     name: postgres
     namespace: {{ namespace }}
     labels:
-        app: postgres
+        app: confluence-postgres
         version: latest
         type: offical
         facing: internal
@@ -28,15 +28,15 @@ spec:
                         valueFrom:
                             secretKeyRef:
                                 key: postgres_password
-                                name: jira-software-postgres-password
+                                name: confluence-postgres-password
                       - name: POSTGRES_USER
-                        value: "jira"
+                        value: "confluence"
                   ports:
                       - name: "tcp-postgres"
                         containerPort: 5432
                         protocol: TCP
                   volumeMounts:
-                      - name: jira-software-postgres-data
+                      - name: confluence-postgres-data
                         mountPath: /var/lib/postgresql/data
                   # readinessProbe:
                   #     tcpSocket:
@@ -55,6 +55,6 @@ spec:
                           cpu: {{ postgres_cpu_limit }}                        
                           memory: {{ postgres_mem_limit }}
             volumes:
-                - name: jira-software-postgres-data
+                - name: confluence-postgres-data
                   persistentVolumeClaim:
-                    claimName: jira-software-postgres-data
+                    claimName: confluence-postgres-data

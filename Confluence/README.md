@@ -1,12 +1,12 @@
 ## Jira Software 
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/zimmertr/Kubernetes-Manifests/master/Jira_Software/screenshot.png" width="800">
+  <img src="https://raw.githubusercontent.com/zimmertr/Kubernetes-Manifests/master/Confluence/screenshot.png" width="800">
 </p>
 
 **Summary:**
 
-These manifests are used to deploy an instance of Jira Software. They rely on MetalLB to configure a load balancer as well as an exported NFS mountpoint that Kubernetes can bind to in order to store Persistent Volumes for the configuration as well as the other files that the server will interact with. Please be aware, Jira Software requires at minimum a trial [license](https://www.atlassian.com/software/jira/pricing?tab=self-managed) to operate. 
+These manifests are used to deploy an instance of Confluence. They rely on MetalLB to configure a load balancer as well as an exported NFS mountpoint that Kubernetes can bind to in order to store Persistent Volumes for the configuration as well as the other files that the server will interact with. Please be aware, Jira Software requires at minimum a trial [license](https://www.atlassian.com/software/confluence/pricing?tab=self-managed) to operate. 
 
 Approximate Deployment Time: 1-5 minutes
 
@@ -24,16 +24,19 @@ Approximate Deployment Time: 1-5 minutes
     1) Make sure you satisfy the above requirements.   
     2) Fill out the `vars.yml` file with the parameters specific to your environment.  
     3) Execute the playbook: `ansible-playbook provision.yml`.  
-    4) Navigate to `hostname`:8080/ and click `I'll set it up myself`.
+    4) Navigate to `hostname`:8080/ and click `Production Installation`.
+    5) If you have a license for an additional App, feel free to select it now. Otherwise, click `Next`.
+    6) Insert your Confluence License and click `Next`.
     5) Select `My Own Database` and configure the database like so:
         - Database Type: PostgreSQL
+        - Setup Type: Simple
         - Hostname: postgres
         - Port: 5432
-        - Database: jira
-        - Username: jira
+        - Database name: confluence
+        - Username: confluence
         - Password: >Password set in vars.yml<
-    6) Click 'Next' and wait for the Postgres database to be configured by Jira.
-        - You tail `tail` the logs for the Jira pod on Kubernetes to watch the progress.
+    6) Click 'Next' and wait for the Postgres database to be configured by Confluence.
+        - You tail `tail` the logs for the Confluence pod on Kubernetes to watch the progress.
     7) From there, you can click `Next` and finish configuring the software as normal.
 
 **Deletion:**  
