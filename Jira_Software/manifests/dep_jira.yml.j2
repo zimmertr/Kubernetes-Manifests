@@ -25,7 +25,7 @@ spec:
                   image: busybox
                   command: ["chown", "2:2", "-R", "/var/atlassian/jira"]
                   volumeMounts:
-                      - name: jira-data
+                      - name: jira-software-data
                         mountPath: /var/atlassian/jira
             containers:
                 - name: jira
@@ -35,7 +35,7 @@ spec:
                         containerPort: 8080
                         protocol: TCP
                   volumeMounts:
-                      - name: jira-data
+                      - name: jira-software-data
                         mountPath: /var/atlassian/jira
                   # readinessProbe:
                   #     httpGet:
@@ -58,6 +58,6 @@ spec:
                           cpu: {{ jira_cpu_limit }}                        
                           memory: {{ jira_mem_limit }}
             volumes:
-                - name: jira-data
+                - name: jira-software-data
                   persistentVolumeClaim:
-                    claimName: jira-data
+                    claimName: jira-software-data

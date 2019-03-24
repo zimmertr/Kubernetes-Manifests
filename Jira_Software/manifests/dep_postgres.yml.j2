@@ -28,7 +28,7 @@ spec:
                         valueFrom:
                             secretKeyRef:
                                 key: postgres_password
-                                name: jira-postgres-password
+                                name: jira-software-postgres-password
                       - name: POSTGRES_USER
                         value: "jira"
                   ports:
@@ -36,7 +36,7 @@ spec:
                         containerPort: 5432
                         protocol: TCP
                   volumeMounts:
-                      - name: postgres-data
+                      - name: jira-software-postgres-data
                         mountPath: /var/lib/postgresql/data
                   # readinessProbe:
                   #     tcpSocket:
@@ -55,6 +55,6 @@ spec:
                           cpu: {{ postgres_cpu_limit }}                        
                           memory: {{ postgres_mem_limit }}
             volumes:
-                - name: postgres-data
+                - name: jira-software-postgres-data
                   persistentVolumeClaim:
-                    claimName: postgres-data
+                    claimName: jira-software-postgres-data
