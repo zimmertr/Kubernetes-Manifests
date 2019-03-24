@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-    name: postgres-data
+    name: jira-software-postgres-data
     namespace: {{ namespace }}
 spec:
     accessModes:
@@ -10,4 +10,4 @@ spec:
         requests:
             storage: 100Gi 
     storageClassName: nfs            
-    volumeName: postgres-data
+    volumeName: jira-software-postgres-data
