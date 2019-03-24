@@ -6,6 +6,10 @@ A collection of Kubernetes Manifests separated by project for use with deploying
 
 ## Projects
 
+**Confluence**
+
+[These manifests](Confluence) are used to deploy an instance of Confluence. They rely on MetalLB to configure a load balancer as well as an exported NFS mountpoint that Kubernetes can bind to in order to store Persistent Volumes for the configuration as well as the other files that the server will interact with. Please be aware, Confluence requires at minimum a trial [license](https://www.atlassian.com/software/confluence/pricing?tab=self-managed) to operate. 
+
 **Deluge**
 
 [These manifests](Deluge/) are used to deploy Deluge to Kubernetes. It leverages MetalLB to configure a bare metal load balancer as well as an exported NFS mountpoint that Kubernetes can bind persistent volumes to in order to store the configuration and interact with other files related to the server. 
