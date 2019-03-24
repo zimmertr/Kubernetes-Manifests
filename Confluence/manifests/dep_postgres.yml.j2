@@ -50,10 +50,10 @@ spec:
                   #     initialDelaySeconds: 30
                   #     periodSeconds: 10
                   #     failureThreshold: 1  
-                  # resources:
-                  #     limits:
-                  #         cpu: {{ postgres_cpu_limit }}                        
-                  #         memory: {{ postgres_mem_limit }}
+                  resources:
+                      limits:
+                          cpu: {{ postgres_cpu_limit }}                        
+                          memory: {{ postgres_mem_limit }}
             volumes:
                 - name: confluence-postgres-data
                   persistentVolumeClaim:

@@ -46,13 +46,13 @@ spec:
                   #     initialDelaySeconds: 60
                   #     periodSeconds: 10
                   #     failureThreshold: 5
-                  # resources:
-                  #     requests:
-                  #         cpu: {{ confluence_cpu_request }}
-                  #         memory: {{ confluence_mem_request }}
-                  #     limits:
-                  #         cpu: {{ confluence_cpu_limit }}                        
-                  #         memory: {{ confluence_mem_limit }}
+                  resources:
+                      requests:
+                          cpu: {{ confluence_cpu_request }}
+                          memory: {{ confluence_mem_request }}
+                      limits:
+                          cpu: {{ confluence_cpu_limit }}                        
+                          memory: {{ confluence_mem_limit }}
             volumes:
                 - name: confluence-data
                   persistentVolumeClaim:
