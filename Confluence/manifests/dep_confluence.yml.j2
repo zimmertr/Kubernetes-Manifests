@@ -1,12 +1,12 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-    name: jira
+    name: confluence
     namespace: {{ namespace }}
     labels:
-        app: jira
+        app: confluence
         version: latest
-        type: third-party
+        type: official
         facing: internal
 spec:
     replicas: 1
@@ -14,29 +14,25 @@ spec:
         type: Recreate
     selector:
         matchLabels:
-            app: jira
+            app: confluence
     template:
         metadata:
             labels:
-                app: jira
+                app: confluence
         spec:  
-            initContainers:
-                - name: chown-data
-                  image: busybox
-                  command: ["chown", "2:2", "-R", "/var/atlassian/jira"]
-                  volumeMounts:
-                      - name: jira-software-data
-                        mountPath: /var/atlassian/jira
             containers:
-                - name: jira
-                  image: cptactionhank/atlassian-jira-software:latest
+                - name: confluence
+                  image: atlassian/confluence-server
                   ports:
                       - name: "http-web"
-                        containerPort: 8080
+                        containerPort: 8090
+                        protocol: TCP
+                      - name: "tcp-synchrony"
+                        containerPort: 8091
                         protocol: TCP
                   volumeMounts:
-                      - name: jira-software-data
-                        mountPath: /var/atlassian/jira
+                      - name: confluence-data
+                        mountPath: /var/atlassian/application-data/confluence
                   # readinessProbe:
                   #     httpGet:
                   #         path: /
@@ -52,12 +48,12 @@ spec:
                   #     failureThreshold: 5
                   resources:
                       requests:
-                          cpu: {{ jira_cpu_request }}
-                          memory: {{ jira_mem_request }}
+                          cpu: {{ confluence_cpu_request }}
+                          memory: {{ confluence_mem_request }}
                       limits:
-                          cpu: {{ jira_cpu_limit }}                        
-                          memory: {{ jira_mem_limit }}
+                          cpu: {{ confluence_cpu_limit }}                        
+                          memory: {{ confluence_mem_limit }}
             volumes:
-                - name: jira-software-data
+                - name: confluence-data
                   persistentVolumeClaim:
-                    claimName: jira-software-data
+                    claimName: confluence-data
