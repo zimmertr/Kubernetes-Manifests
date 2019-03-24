@@ -1,4 +1,4 @@
-## Jira Software 
+## Confluence
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/zimmertr/Kubernetes-Manifests/master/Confluence/screenshot.png" width="800">
