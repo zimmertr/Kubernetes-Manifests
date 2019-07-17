@@ -21,8 +21,9 @@ spec:
                 app: postgres
         spec:         
             containers:
+                # 9.6 is the highest supported build. Jira will reject any newer database.
                 - name: postgres
-                  image: postgres:latest
+                  image: postgres:9.6
                   env:
                       - name: POSTGRES_PASSWORD
                         valueFrom:
