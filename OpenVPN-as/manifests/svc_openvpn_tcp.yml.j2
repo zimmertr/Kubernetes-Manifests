@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Service
+metadata:
+    name: openvpn-tcp
+    annotations:
+        metallb.universe.tf/address-pool: {{ load_balancer_address_pool }}
+        metallb.universe.tf/allow-shared-ip: "true"        
+    namespace: {{ namespace }}
+    labels:
+        app: openvpn
+spec:
+    type: LoadBalancer
+    externalTrafficPolicy: Local
+    selector:
+        app: openvpn
+    loadBalancerIP: {{ load_balancer_ip }}
+    ports:
+    - name: "http-web"
+      protocol: TCP
+      targetPort: 943
+      port: 943
+    - name: "tcp-traffic"
+      protocol: TCP
+      targetPort: 9443
+      port: 9443
