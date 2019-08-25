@@ -1,4 +1,4 @@
-## Jira Software 
+## Jira
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/zimmertr/Kubernetes-Manifests/master/Jira_Software/screenshot.png" width="800">
@@ -6,23 +6,25 @@
 
 **Summary:**
 
-These manifests are used to deploy an instance of Jira Software. They rely on MetalLB to configure a load balancer as well as an exported NFS mountpoint that Kubernetes can bind to in order to store Persistent Volumes for the configuration as well as the other files that the server will interact with. Please be aware, Jira Software requires at minimum a trial [license](https://www.atlassian.com/software/jira/pricing?tab=self-managed) to operate. 
+These manifests are used to deploy an instance of *Atlassian Jira Software*. 
 
 Approximate Deployment Time: 1-5 minutes
 
 **Requirements:**  
 
-    1) Exported NFS Server with which Kubernetes can communicate.  
-    2) Directory structsure created on the NFS Endpoint you specify in `vars.yml`.
-    3) Working load balancer integrated with Kubernetes Services. (https://metallb.universe.tf/)  
+    1) Load Balancer integration so that the Service can expose the pods.
+    2) NFS Server to which Kubernetes can bind Persistent Volumes.
+    3) Directory structsure created on the NFS Endpoint you specify in `vars.yml`.
     4) Python modules required to use the k8s Ansible module (https://docs.ansible.com/ansible/latest/modules/k8s_module.html).    
-        * pip install openshift kubernetes pyyaml 
-        * If you're on MacOS, you might have to do this instead (https://github.com/ansible/ansible/issues/43637#issuecomment-443495763).
+        - pip install openshift kubernetes pyyaml 
+        - If you're on MacOS, you might have to do this instead (https://github.com/ansible/ansible/issues/43637#issuecomment-443495763).    
+    5) Jira Software requires at minimum a trial [license](https://www.atlassian.com/software/jira/pricing?tab=self-managed) to operate. 
 
 **Instructions:**  
 
-    1) Make sure you satisfy the above requirements.   
-    2) Fill out the `vars.yml` file with the parameters specific to your environment.  
+    1) Modify `vars.yml` with parameters according to your environment.
+        - The DNS A record is provided to test connectivity to the software after deployment. If one is not provided, this step will fail but the software will likely still be available at the provided IP Address.
+    2) Create the necessary directories defined in `vars.yml` on your NFS server.
     3) Execute the playbook: `ansible-playbook provision.yml`.  
     4) Navigate to `hostname`:8080/ and click `I'll set it up myself`.
     5) Select `My Own Database` and configure the database like so:
@@ -33,8 +35,13 @@ Approximate Deployment Time: 1-5 minutes
         - Username: jira
         - Password: >Password set in vars.yml<
     6) Click 'Next' and wait for the Postgres database to be configured by Jira.
+        - If Jira fails to connect with Postgres, allow additional time for the Postgres container to finish starting.
         - You tail `tail` the logs for the Jira pod on Kubernetes to watch the progress.
     7) From there, you can click `Next` and finish configuring the software as normal.
+
+**TODO:**
+
+    1) Figure out a way to allow this to scale to more than one pod.
 
 **Deletion:**  
 
