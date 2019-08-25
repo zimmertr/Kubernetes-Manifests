@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: openvpn
+    namespace: {{ namespace }}
+    labels:
+        app: openvpn
+        version: latest
+        type: third-party
+        facing: external
+spec:
+    replicas: 1
+    strategy:
+        type: Recreate
+    selector:
+        matchLabels:
+            app: openvpn
+    template:
+        metadata:
+            labels:
+                app: openvpn
+        spec:         
+            containers:
+                - name: openvpn
+                  image: linuxserver/openvpn-as:latest
+                  env:
+                      - name: PUID
+                        value: "{{ fileserver_uid }}"
+                      - name: PGID
+                        value: "{{ fileserver_gid }}"
+                      - name: TZ
+                        value: "{{ timezone }}"
+                  ports:
+                      - name: "http-web"
+                        containerPort: 943
+                        protocol: TCP
+                      - name: "tcp-traffic"
+                        containerPort: 9443
+                        protocol: TCP
+                      - name: "udp-traffic"
+                        containerPort: 1194
+                        protocol: UDP
+                  volumeMounts:
+                      - name: openvpn-config
+                        mountPath: /config
+                  resources:
+                      limits:
+                          cpu: {{ cpu_limit }}                        
+                          memory: {{ mem_limit }}
+            volumes:
+                - name: openvpn-config
+                  persistentVolumeClaim:
+                    claimName: openvpn-config
