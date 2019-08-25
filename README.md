@@ -19,10 +19,10 @@ It is necessary to create the directories used for your Persistent Volumes on yo
 
 | Project | Notes |
 | ------- | ------------ |
-| [Atlassian Confluence](Confluence/) | Requires at least a [trial license](https://www.atlassian.com/software/confluence/pricing?tab=self-managed)
-| [Atlassian Jira Software](Jira_Software/) | Requires at least a [trial license](https://www.atlassian.com/software/jira/pricing?tab=self-managed)
+| [Atlassian Confluence](Confluence/) | * Requires at least a [trial license](https://www.atlassian.com/software/confluence/pricing?tab=self-managed)
+| [Atlassian Jira Software](Jira_Software/) | * Requires at least a [trial license](https://www.atlassian.com/software/jira/pricing?tab=self-managed)
 | [Deluge](Deluge/) | |
-| [OpenVPN Access Server](OpenVPN-as/) | Has a very long start up time. |
+| [OpenVPN Access Server](OpenVPN-as/) | * Has a very long start up time.<br> * Has NET_ADMIN privileges. |
 | [Personal Website](Personal_Website/) | |
 | [Plex Media Server](Plex/) | |
 | [Radarr](Radarr/) | |
