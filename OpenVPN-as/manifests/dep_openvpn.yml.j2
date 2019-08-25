@@ -23,6 +23,10 @@ spec:
             containers:
                 - name: openvpn
                   image: linuxserver/openvpn-as:latest
+                  securityContext:
+                      capabilities:
+                        add:
+                          - NET_ADMIN
                   env:
                       - name: PUID
                         value: "{{ fileserver_uid }}"
