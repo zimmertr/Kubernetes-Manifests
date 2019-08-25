@@ -6,33 +6,31 @@
 
 **Summary:**
 
-These manifests are used to deploy an instance of Sonarr. They rely on MetalLB to configure a load balancer as well as an exported NFS mountpoint that Kubernetes can bind to in order to store Persistent Volumes for the configuration as well as the other files that the server will interact with. 
+These manifests are used to deploy an instance of *Sonarr*. 
 
 Approximate Deployment Time: 1-5 minutes
 
-* [Project Docker Containers](https://github.com/linuxserver/docker-sonarr)
-
 **Requirements:**  
 
-    1) Exported NFS Server with which Kubernetes can communicate.  
-    2) Directory named `/Sonarr` created on the NFS Endpoint you specify in `vars.yml`.
-    2) Working load balancer integrated with Kubernetes Services. (https://metallb.universe.tf/)  
-    3) Python modules required to use the k8s Ansible module (https://docs.ansible.com/ansible/latest/modules/k8s_module.html).    
-        * pip install openshift kubernetes pyyaml 
-        * If you're on MacOS, you might have to do this instead (https://github.com/ansible/ansible/issues/43637#issuecomment-443495763).
+    1) Load Balancer integration so that the Service can expose the pods.
+    2) NFS Server to which Kubernetes can bind Persistent Volumes.
+    3) Directory structsure created on the NFS Endpoint you specify in `vars.yml`.
+    4) Python modules required to use the k8s Ansible module (https://docs.ansible.com/ansible/latest/modules/k8s_module.html).    
+        - pip install openshift kubernetes pyyaml 
+        - If you're on MacOS, you might have to do this instead (https://github.com/ansible/ansible/issues/43637#issuecomment-443495763).
 
 **Instructions:**  
 
-    1) Make sure you satisfy the above requirements.   
-    2) Fill out the `vars.yml` file with the parameters specific to your environment.  
+    1) Modify `vars.yml` with parameters according to your environment.
+        - The DNS A record is provided to test connectivity to the software after deployment. If one is not provided, this step will fail but the software will likely still be available at the provided IP Address.
+    2) Create the necessary directories defined in `vars.yml` on your NFS server.
     3) Execute the playbook: `ansible-playbook provision.yml`.  
+    4) Navigate to `hostname`:8989/ to access the software. 
 
+**TODO:**
 
-**Problems:**
+    1) Figure out a way to allow this to scale to more than one pod.
 
-    1) Scaling this up to more than one pod causes issues. 
-
-    
 **Deletion:**  
 
     1) You can roll back this deployment with the `delete.yml` playbook: `ansible-playbook delete.yml`.
