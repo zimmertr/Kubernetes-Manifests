@@ -40,6 +40,15 @@ Approximate Deployment Time: 10-20 minutes
 11. Click `Web Server` and upload your certificate information. Click `Save` and then click `Update Running Server` to apply the changes to the server.
     * You may lose access for several seconds and you will need to log in again after the server restarts. 
 
+**Tips:**
+
+1. If you wish to change any of the ports that OpenVPN-as uses, for example moving the web interface from 943 to 443, you will need to also update the corresponding ports in the Service and Deployment files as well. 
+
+```
+kubectl edit -n openvpn-as svc openvpn-tcp
+kubectl edit -n openvpn-as deploy openvpn
+```
+
 **TODO:**
 
 1. Figure out a way to allow this to scale to more than one pod.
