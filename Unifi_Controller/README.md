@@ -6,35 +6,34 @@
 
 **Summary:**
 
-These manifests are used to deploy an instance of Unifi Controller and MongoDB. They rely on MetalLB to configure a load balancer as well as an exported NFS mountpoint that Kubernetes can bind to in order to store Persistent Volumes for the configuration as well as the other files that the server will interact with. 
+These manifests are used to deploy an instance of the *Unifi Controller*. 
 
 Approximate Deployment Time: 10-15 minutes
 
-* [Project Docker Containers](https://github.com/linuxserver/docker-unifi)
+**Requirements:**  
 
-**Requirements:**
+    1) Load Balancer integration so that the Service can expose the pods.
+    2) NFS Server to which Kubernetes can bind Persistent Volumes.
+    3) Directory structsure created on the NFS Endpoint you specify in `vars.yml`.
+    4) Python modules required to use the k8s Ansible module (https://docs.ansible.com/ansible/latest/modules/k8s_module.html).    
+        - pip install openshift kubernetes pyyaml 
+        - If you're on MacOS, you might have to do this instead (https://github.com/ansible/ansible/issues/43637#issuecomment-443495763).
 
-    1) Exported NFS Server with which Kubernetes can communicate.  
-    2) Directory named `/Unifi` created on the NFS Endpoint you specify in `vars.yml`.
-    2) Working load balancer integrated with Kubernetes Services. (https://metallb.universe.tf/)  
-    3) Python modules required to use the k8s Ansible module (https://docs.ansible.com/ansible/latest/modules/k8s_module.html).    
-        * pip install openshift kubernetes pyyaml 
-        * If you're on MacOS, you might have to do this instead (https://github.com/ansible/ansible/issues/43637#issuecomment-443495763).
-
-**Instructions:**
+**Instructions:**  
 
 *Optional:*
 
     1) Export a backup of your existing Unifi Controller settings to a .unf file.
-    2) If you plan on running the controller on a different network than your AP's, you can likely set DHCP options for remote discovery on your router. Instructions can be found here: https://help.ubnt.com/hc/en-us/articles/204909754-UniFi-Device-Adoption-Methods-for-Remote-UniFi-Controllers
+    2) If you plan on running the controller on a different network than your AP's, you can likely set DHCP options for remote discovery on your router. Instructions can be found [here](https://help.ubnt.com/hc/en-us/articles/204909754-UniFi-Device-Adoption-Methods-for-Remote-UniFi-Controllers).
 
 *Required:*
 
-    1) Stop any existing Unifi Controllers on the same network.
-    2) Make sure you satisfy the above requirements.   
-    3) Fill out the `vars.yml` file with the parameters specific to your environment.  
+    1) Modify `vars.yml` with parameters according to your environment.
+        - The DNS A record is provided to test connectivity to the software after deployment. If one is not provided, this step will fail but the software will likely still be available at the provided IP Address.
+    2) Create the necessary directories defined in `vars.yml` on your NFS server.
+    3) Stop any existing Unifi Controllers on the same network.   
     4) Execute the playbook: `ansible-playbook provision.yml`.  
-    5) Once it has been deployed, connect to the LB IP/DNS and you will be greeted by the Welcome Wizard.
+    5) Navigate to `https://hostname`:8443/ to access the software.
     6) If you took a backup, feel free to restore it. You will need to delete your devices, however, as the relationship will have been broken.
         - Devices -> Device -> Config -> Manage Device -> Forget
     7) Reset your Ubiquiti devices to factory defaults.
@@ -46,16 +45,10 @@ Approximate Deployment Time: 10-15 minutes
 **TODO:**
 
     1) Test to see if password allows for special characters correctly.  
+    2) Figure out a way to allow this to scale to more than one pod.
+        - Load Balancing the controller [does not appear to be supported](https://community.ubnt.com/t5/UniFi-Feature-Requests/Unifi-Controller-Redundancy/idi-p/680341).
 
-
-**Problems:**
-
-    1) Scaling this up to more than one pod causes issues. Load Balancing the controller does not appear to be supported. 
-        - https://community.ubnt.com/t5/UniFi-Feature-Requests/Unifi-Controller-Redundancy/idi-p/680341
-        - Currently trying to decentralize the MongoDB instance to resolve this.
-        - Installing a proper certificate may remediate the issue.
-
-**Deletion:**
+**Deletion:**  
 
     1) You can roll back this deployment with the `delete.yml` playbook: `ansible-playbook delete.yml`.
-        - Please note, this will not remove the deployed namespace because I cannot be sure you didn't specify an existing namespace. I would hate to delete your `default` for example. So you must manually clean that up. `kubectl delete ns >namespace name<`
+        - Please note, this will not remove the deployed namespace because I could not be sure you didn't specify an existing namespace. I would hate to delete your `default` for example. So you must manually clean that up. `kubectl delete ns >namespace name<`

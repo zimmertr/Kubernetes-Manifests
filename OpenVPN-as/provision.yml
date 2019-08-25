@@ -1,0 +1,25 @@
+---
+- hosts: localhost
+  gather_facts: False
+  tasks:
+      - name: Including the variables.
+        include_vars:
+            file: ./vars.yml
+
+      - name: Deploying the manifests to Kubernetes.
+        k8s:
+            definition: "{{ lookup('template', './manifests/{{ item }}') | from_yaml }}"
+        with_items:
+            - "ns_openvpn.yml.j2"
+            - "pv_openvpn_config.yml.j2"
+            - "pvc_openvpn_config.yml.j2"
+            - "dep_openvpn.yml.j2"
+            - "svc_openvpn_tcp.yml.j2"
+            - "svc_openvpn_udp.yml.j2"
+
+      - name: Waiting for the deployment to be ready.
+        wait_for:
+            host: "{{ hostname }}"
+            port: 943
+            timeout: 1200
+            msg: "Application was not available after 20 minutes. Something has probably gone wrong."
