@@ -18,6 +18,7 @@ Approximate Deployment Time: 10-20 minutes
 4. Python modules required to use the k8s [Ansible module](https://docs.ansible.com/ansible/latest/modules/k8s_module.html).    
     * pip install openshift kubernetes pyyaml 
     * If you're on MacOS, you might have to do [this](https://github.com/ansible/ansible/issues/43637#issuecomment-443495763) instead.
+5. Requires `NET_ADMIN` privileges in order to perform various network-related tasks.
 
 **Instructions:**  
 
@@ -34,9 +35,10 @@ Approximate Deployment Time: 10-20 minutes
     * Click `Save Settings` to submit the new user configuration.
 8. Log out of the Access Server and log in with your new user account. Return to the `User Permissions` page and check the `Delete` checkbox for the Admin user. Click `Save Settings` to finish removing this user account.
 9. Click `Configuration` -> `Network Settings` and update the `Hostname or IP Address` field to the hostname that clients will use to connect to the VPN. Click `Save Settings`.
-10. Click `VPN Settings` and update the configuration areas according to your environment. Click `Save Settings`. At the bare minimum you will likely update the Routing section to include your specific subnets.
-11. Click `Web Server` and upload your certificate information. Click `Save`.
-9. Click `Status` -> `Status Overview` and start the VPN server by clicking `Start the Server`. 
+10. Click `VPN Settings` and update the configuration areas according to your environment. Click `Save Settings`. 
+    * At the bare minimum you will likely update the Routing section to include your specific subnets.
+11. Click `Web Server` and upload your certificate information. Click `Save` and then click `Update Running Server` to apply the changes to the server.
+    * You may lose access for several seconds and you will need to log in again after the server restarts. 
 
 **TODO:**
 
