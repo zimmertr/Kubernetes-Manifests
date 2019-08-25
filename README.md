@@ -2,7 +2,7 @@
 
 ## Summary
 
-A collection of Kubernetes Manifests used to deploy common enterprise and homelab-related software. Fully automated and declarative via Ansible. Personally used in conjunction with my home Kubernetes Cluster](https://github.com/zimmertr/Bootstrap-Kubernetes-with-QEMU).
+A collection of Kubernetes Manifests used to deploy common enterprise and homelab-related software. Fully automated and declarative via Ansible. Personally used in conjunction with my home [Kubernetes Cluster](https://github.com/zimmertr/Bootstrap-Kubernetes-with-QEMU).
 
 All projects require that your Kubernetes cluster has a Load Balancer integration and the ability to bind with an NFS server. I use [MetalLB](https://metallb.universe.tf) and [NFS-Provisioner](https://github.com/kubernetes-incubator/external-storage/tree/master/nfs-client), both of which can be deployed to your cluster automatically using these Ansible projects:
 
