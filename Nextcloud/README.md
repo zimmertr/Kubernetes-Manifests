@@ -1,14 +1,14 @@
-## Sonarr
+## Nextcloud
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/zimmertr/Kubernetes-Manifests/master/Sonarr/screenshot.png" width="800">
+  <img src="https://raw.githubusercontent.com/zimmertr/Kubernetes-Manifests/master/Nextcloud/screenshot.png" width="800">
 </p>
 
 **Summary:**
 
-These manifests are used to deploy an instance of *Sonarr*. 
+These manifests are used to deploy an instance of *Nextcloud*. 
 
-Approximate Deployment Time: 1-5 minutes
+Approximate Deployment Time: 20-30 minutes
 
 **Requirements:**  
 
@@ -23,12 +23,19 @@ Approximate Deployment Time: 1-5 minutes
 
 1. Modify `vars.yml` with parameters according to your environment.
 2. Create the necessary directories defined in `vars.yml` on your NFS server.
-3. Execute the playbook: `ansible-playbook provision.yml`.  
-4. Navigate to http://host.name:8989/ to access the software. 
+3. Execute the playbook: `ansible-playbook provision.yml`. 
+4. Deployment takes a long time, after 20-30 minutes navigate to https://host.name:/ to access the software. You can check the progress by grabbing the logs from the pod's STDOUT.
+5. Set the `Username` and `Password` fields and open the `Storage & database` section. Click `PostgreSQL` and set the following values:
+    * Database user: `nextcloud`
+    * Database password: `>password in vars.yml<`
+    * Database name: `nextcloud`
+    * Database host: `postgres:5432`
+6. Navigate to https://luna.sol.milkyway/login and log in with your new credentials.
+7. Select the cog wheel on the top right and click `Settings`. Configure Nextcloud as necessary.
+
 
 **TODO:**
-
-1. Figure out a way to allow this to scale to more than one pod.
+1. Evaluate whether or not `postgres_password` supports special characters.
 
 **Deletion:**  
 
