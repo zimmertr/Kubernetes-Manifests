@@ -23,10 +23,9 @@ Approximate Deployment Time: 1-5 minutes
 **Instructions:**  
 
 1. Modify `vars.yml` with parameters according to your environment.
-    * The DNS A record is provided to test connectivity to the software after deployment. If one is not provided, this step will fail but the software will likely still be available at the provided IP Address.
 2. Create the necessary directories defined in `vars.yml` on your NFS server.
 3. Execute the playbook: `ansible-playbook provision.yml`.  
-4. Navigate to `hostname`:8080/ and click `Production Installation`.
+4. Navigate to http://host.name:8080/ and click `Production Installation`.
 5. If you have a license for an additional App, feel free to select it now. Otherwise, click `Next`.
 6. Insert your Confluence License and click `Next`.
 7. Select `My Own Database` and configure the database like so:
