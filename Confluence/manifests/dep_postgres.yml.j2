@@ -39,18 +39,6 @@ spec:
                   volumeMounts:
                       - name: confluence-postgres-data
                         mountPath: /var/lib/postgresql/data
-                  # readinessProbe:
-                  #     tcpSocket:
-                  #         port: 5432
-                  #     initialDelaySeconds: 30
-                  #     periodSeconds: 10
-                  #     failureThreshold: 1  
-                  # livenessProbe:
-                  #     tcpSocket:
-                  #         port: 5432
-                  #     initialDelaySeconds: 30
-                  #     periodSeconds: 10
-                  #     failureThreshold: 1  
                   resources:
                       limits:
                           cpu: {{ postgres_cpu_limit }}                        
