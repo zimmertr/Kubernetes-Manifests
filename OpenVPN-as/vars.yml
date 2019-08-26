@@ -23,9 +23,6 @@ fileserver_uid: '1002'
 # The GID used for accessing content on the fileserver.
 fileserver_gid: '1007'
 
-# The NFS mountpoint to be used as the root of the fileserver.
-fileserver_root: '/SaturnPool/'
-
 # The NFS mountpoint to be used for preserving the configuration of the application.
 config_dir: '/SaturnPool/Kubernetes/OpenVPN'
 
