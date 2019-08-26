@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: postgres
+    namespace: {{ namespace }}
+    labels:
+        app: nextcloud-postgres
+        version: latest
+        type: offical
+        facing: internal
+spec:
+    replicas: 1
+    strategy:
+        type: Recreate
+    selector:
+        matchLabels:
+            app: postgres
+    template:
+        metadata:
+            labels:
+                app: postgres
+        spec:         
+            containers:
+                # 10 is the highest supported build. 
+                - name: postgres
+                  image: postgres:10
+                  env:
+                      - name: POSTGRES_PASSWORD
+                        valueFrom:
+                            secretKeyRef:
+                                key: postgres_password
+                                name: nextcloud-postgres-password
+                      - name: POSTGRES_USER
+                        value: "nextcloud"
+                      # Postgres container creates DB automatically based on POSTGRES_USER variable.
+                      # Nextcloud fails to start if database already exists. Therefore, it is necessary
+                      # to override the POSTGRES_USER-created db so it can be created by Nextcloud.
+                      - name: POSTGRES_DB
+                        value: "unused"
+                  ports:
+                      - name: "tcp-postgres"
+                        containerPort: 5432
+                        protocol: TCP
+                  volumeMounts:
+                      - name: nextcloud-postgres
+                        mountPath: /var/lib/postgresql/data 
+                  resources:
+                      limits:
+                          cpu: {{ postgres_cpu_limit }}                        
+                          memory: {{ postgres_mem_limit }}
+            volumes:
+                - name: nextcloud-postgres
+                  persistentVolumeClaim:
+                    claimName: nextcloud-postgres
