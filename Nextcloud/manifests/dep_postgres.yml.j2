@@ -4,7 +4,7 @@ metadata:
     name: postgres
     namespace: {{ namespace }}
     labels:
-        app: confluence-postgres
+        app: nextcloud-postgres
         version: latest
         type: offical
         facing: internal
@@ -21,29 +21,34 @@ spec:
                 app: postgres
         spec:         
             containers:
-                # 9.6 is the highest supported build. Jira will reject any newer database.
+                # 10 is the highest supported build. 
                 - name: postgres
-                  image: postgres:9.6
+                  image: postgres:10
                   env:
                       - name: POSTGRES_PASSWORD
                         valueFrom:
                             secretKeyRef:
                                 key: postgres_password
-                                name: confluence-postgres-password
+                                name: nextcloud-postgres-password
                       - name: POSTGRES_USER
-                        value: "confluence"
+                        value: "nextcloud"
+                      # Postgres container creates DB automatically based on POSTGRES_USER variable.
+                      # Nextcloud fails to start if database already exists. Therefore, it is necessary
+                      # to override the POSTGRES_USER-created db so it can be created by Nextcloud.
+                      - name: POSTGRES_DB
+                        value: "unused"
                   ports:
                       - name: "tcp-postgres"
                         containerPort: 5432
                         protocol: TCP
                   volumeMounts:
-                      - name: confluence-postgres-data
-                        mountPath: /var/lib/postgresql/data
+                      - name: nextcloud-postgres
+                        mountPath: /var/lib/postgresql/data 
                   resources:
                       limits:
                           cpu: {{ postgres_cpu_limit }}                        
                           memory: {{ postgres_mem_limit }}
             volumes:
-                - name: confluence-postgres-data
+                - name: nextcloud-postgres
                   persistentVolumeClaim:
-                    claimName: confluence-postgres-data
+                    claimName: nextcloud-postgres

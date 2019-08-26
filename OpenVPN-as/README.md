@@ -23,10 +23,9 @@ Approximate Deployment Time: 10-20 minutes
 **Instructions:**  
 
 1. Modify `vars.yml` with parameters according to your environment.
-    * The DNS A record is provided to test connectivity to the software after deployment. If one is not provided, this step will fail but the software will likely still be available at the provided IP Address.
 2. Create the necessary directories defined in `vars.yml` on your NFS server.
 3. Execute the playbook: `ansible-playbook provision.yml`.  
-4. Navigate to `https://hostname`:943/admin to access the software.
+4. Navigate to https://host.name:943/admin to access the software.
 5. Log in with the default credentials: `admin` : `password`.
 6. Read the License Agreement and click `Agree` to continue.
 7. Click `User Management` -> `User Permissions` and create a new user.
