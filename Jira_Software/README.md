@@ -23,10 +23,9 @@ Approximate Deployment Time: 1-5 minutes
 **Instructions:**  
 
 1. Modify `vars.yml` with parameters according to your environment.
-    * The DNS A record is provided to test connectivity to the software after deployment. If one is not provided, this step will fail but the software will likely still be available at the provided IP Address.
 2. Create the necessary directories defined in `vars.yml` on your NFS server.
 3. Execute the playbook: `ansible-playbook provision.yml`.  
-4. Navigate to `hostname`:8080/ and click `I'll set it up myself`.
+4. Navigate to http://host.name:8080/ and click `I'll set it up myself`.
 5. Select `My Own Database` and configure the database like so:
     * Database Type: PostgreSQL
     * Hostname: postgres

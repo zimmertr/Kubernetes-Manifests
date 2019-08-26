@@ -29,11 +29,10 @@ Approximate Deployment Time: 10-15 minutes
 *Required:*
 
 1. Modify `vars.yml` with parameters according to your environment.
-    * The DNS A record is provided to test connectivity to the software after deployment. If one is not provided, this step will fail but the software will likely still be available at the provided IP Address.
 2. Create the necessary directories defined in `vars.yml` on your NFS server.
 3. Stop any existing Unifi Controllers on the same network.   
 4. Execute the playbook: `ansible-playbook provision.yml`.  
-5. Navigate to `https://hostname`:8443/ to access the software.
+5. Navigate to https://host.name:8443/ to access the software.
 6. If you took a backup, feel free to restore it. You will need to delete your devices, however, as the relationship will have been broken.
     * Devices -> Device -> Config -> Manage Device -> Forget
 7. Reset your Ubiquiti devices to factory defaults.

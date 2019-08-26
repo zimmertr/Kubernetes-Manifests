@@ -24,7 +24,7 @@ Approximate Deployment Time: 1-5 minutes
 1. Modify `vars.yml` with parameters according to your environment.
 2. Create the necessary directories defined in `vars.yml` on your NFS server.
 3. Execute the playbook: `ansible-playbook provision.yml`.  
-4. Navigate to `http://hostname:8181/` to access the software.
+4. Navigate to http://host.name:8181/ to access the software.
 5. Step through the Setup Wizard to configure Tautulli.
 
 **Deletion:**  
