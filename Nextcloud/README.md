@@ -30,12 +30,33 @@ Approximate Deployment Time: 20-30 minutes
     * Database password: `>password in vars.yml<`
     * Database name: `nextcloud`
     * Database host: `postgres:5432`
-6. Navigate to https://luna.sol.milkyway/login and log in with your new credentials.
-7. Select the cog wheel on the top right and click `Settings`. Configure Nextcloud as necessary.
-
+6. Navigate to https://host.name/login and log in with your new credentials.
+7. Optionally select the user icon on the top right and click `Apps`. Select `Disabled Apps` and enable `External Storage`. 
+8. Select the user icon on the top right and click `Settings`. Select `External Storages` in the Administration section. Add a new Folder Name with the following configuration:
+    * Folder Name: `>Your Choice<`
+    * External Storage: `Local`
+    * Authentication: `>Your Choice<`
+    * Configuration: `/data`
+9. If you intend to make Nextcloud available from a different hostname, you will need to make some tweaks to `config.php` located at `/www/nextcloud/config`. Specifically, it is necessary to update the `trusted_domains` array and `overwrite.cli.url` directive as well as add a new `overwritehost` directive. For example, your configuration might look like this afterwards:
+    ```
+    'trusted_domains' =>
+      array (
+        0 => 'nextcloud.tjzimmerman.com',
+        1 => 'luna.sol.milkyway',
+        2 => 'tjzimmerman.dev',
+      ),
+      'overwrite.cli.url' => 'https://nextcloud.tjzimmerman.com',
+      'overwritehost' => 'nextcloud.tjzimmerman.com',
+    ```
+    After making these changes, it is necessary to recreate the pod so that Nextcloud reloads your configuration changes. I normally accomplish this by running the following two commands:
+    ```
+    $> kubectl scale -n nextcloud deployment --replicas 0 nextcloud
+    $> kubectl scale -n nextcloud deployment --replicas 1 nextcloud
+    ```
 
 **TODO:**
 1. Evaluate whether or not `postgres_password` supports special characters.
+2. Automate changes to `config.php` with optional declarative values in `vars.yml`.
 
 **Deletion:**  
 
