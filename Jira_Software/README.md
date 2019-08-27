@@ -41,6 +41,7 @@ Approximate Deployment Time: 1-5 minutes
 **TODO:**
 
 1. Figure out a way to allow this to scale to more than one pod.
+2. Create init container to enforce that Jira does not start up before Postgres is ready.
 
 **Deletion:**  
 
