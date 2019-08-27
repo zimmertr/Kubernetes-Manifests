@@ -51,6 +51,7 @@ kubectl edit -n openvpn-as deploy openvpn
 **TODO:**
 
 1. Figure out a way to allow this to scale to more than one pod.
+2. Established VPN connections are not currently able to route anywhere. Unsure why. Need to fix this.
 
 **Deletion:**  
 
