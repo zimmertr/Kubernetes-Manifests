@@ -41,6 +41,10 @@ Approximate Deployment Time: 1-5 minutes
     * You tail `tail` the logs for the Confluence pod on Kubernetes to watch the progress.
 9. From there, you can click `Next` and finish configuring the software as normal.
 
+**TODO:**
+1. Figure out how to make Confluence scale to more than one pod.
+2. Create init container to enforce that Confluence does not start up before Postgres is ready.
+
 **Deletion:**  
 
 1. You can roll back this deployment with the `delete.yml` playbook: `ansible-playbook delete.yml`.
