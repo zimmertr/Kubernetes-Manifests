@@ -46,6 +46,7 @@ Approximate Deployment Time: 10-15 minutes
 1. Test to see if password allows for special characters correctly.  
 2. Figure out a way to allow this to scale to more than one pod.
     * Load Balancing the controller [does not appear to be supported](https://community.ubnt.com/t5/UniFi-Feature-Requests/Unifi-Controller-Redundancy/idi-p/680341).
+3. Create init container to enforce that Unifi Controller does not start up before Mongo is ready.
 
 **Deletion:**  
 
