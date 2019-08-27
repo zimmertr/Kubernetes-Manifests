@@ -28,5 +28,5 @@ It is necessary to create the directories used for your Persistent Volumes on yo
 | [Plex Media Server](Plex/) | * Application is particularly resource intensive. |
 | [Radarr](Radarr/) | |
 | [Sonarr](Sonarr/) | |
-| [Tautulli](Tautulli/) | Requires a Plex Media Server deployment to use. |
+| [Tautulli](Tautulli/) | * Requires a Plex Media Server deployment to use. |
 | [Unifi Controller](Unifi_Controller/) | |
