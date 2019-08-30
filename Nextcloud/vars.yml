@@ -2,7 +2,7 @@
 namespace: 'nextcloud'
 
 # The MetalLB Address Pool from which you want to obtain an IP address.
-load_balancer_address_pool: 'VLAN50'
+load_balancer_address_pool: 'VLAN60'
 
 # # The IP address within the Address Pool to which you want to bind the service. 
 load_balancer_ip: '192.168.60.20'
