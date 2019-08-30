@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: mysql
+    namespace: {{ namespace }}
+    labels:
+        app: piwigo-mysql
+        version: latest
+        type: offical
+        facing: internal
+spec:
+    replicas: 1
+    strategy:
+        type: Recreate
+    selector:
+        matchLabels:
+            app: mysql
+    template:
+        metadata:
+            labels:
+                app: mysql
+        spec:         
+            containers:
+                - name: mysql
+                  # Newest supported version is 5.
+                  image: mysql:5
+                  env:
+                      - name: MYSQL_DATABASE
+                        value: "piwigo"
+                      - name: MYSQL_USER
+                        value: "piwigo"
+                      - name: MYSQL_PASSWORD
+                        valueFrom:
+                            secretKeyRef:
+                                key: mysql_password
+                                name: piwigo-mysql-password
+                      - name: MYSQL_ROOT_PASSWORD
+                        valueFrom:
+                            secretKeyRef:
+                                key: mysql_password
+                                name: piwigo-mysql-password
+                  ports:
+                      - name: "tcp-mysql"
+                        containerPort: 3306
+                        protocol: TCP
+                  volumeMounts:
+                      - name: piwigo-mysql
+                        mountPath: /var/lib/mysql
+                  # resources:
+                  #     limits:
+                  #         cpu: {{ mysql_cpu_limit }}                        
+                  #         memory: {{ mysql_mem_limit }}
+            volumes:
+                - name: piwigo-mysql
+                  persistentVolumeClaim:
+                    claimName: piwigo-mysql
