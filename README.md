@@ -25,6 +25,7 @@ It is necessary to create the directories used for your Persistent Volumes on yo
 | [Nextcloud](Nextcloud/) | * Has a very long start up time. |
 | [OpenVPN Access Server](OpenVPN-as/) | * Has a very long start up time.<br> * Has NET_ADMIN capabilities over the worker node. |
 | [Personal Website](Personal_Website/) | |
+| [Piwigo](Piwigo/) | |
 | [Plex Media Server](Plex/) | * Application is particularly resource intensive. |
 | [Radarr](Radarr/) | |
 | [Sonarr](Sonarr/) | |
