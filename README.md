@@ -22,6 +22,7 @@ It is necessary to create the directories used for your Persistent Volumes on yo
 | [Atlassian Confluence](Confluence/) | * Requires at least a [trial license](https://www.atlassian.com/software/confluence/pricing?tab=self-managed)<br> * Application is particularly resource intensive. |
 | [Atlassian Jira Software](Jira_Software/) | * Requires at least a [trial license](https://www.atlassian.com/software/jira/pricing?tab=self-managed)<br> * Application is particularly resource intensive. |
 | [Deluge](Deluge/) | |
+| [Grocy](Grocy/) | |
 | [Nextcloud](Nextcloud/) | * Has a very long start up time. |
 | [OpenVPN Access Server](OpenVPN-as/) | * Has a very long start up time.<br> * Has NET_ADMIN capabilities over the worker node. |
 | [Personal Website](Personal_Website/) | |
