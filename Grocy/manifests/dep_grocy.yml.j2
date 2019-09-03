@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: grocy
+    namespace: {{ namespace }}
+    labels:
+        app: grocy
+        version: latest
+        type: third-party
+        facing: external
+spec:
+    replicas: 1
+    strategy:
+        type: Recreate
+    selector:
+        matchLabels:
+            app: grocy
+    template:
+        metadata:
+            labels:
+                app: grocy
+        spec:         
+            containers:
+                - name: grocy
+                  image: linuxserver/grocy:latest
+                  env:
+                      - name: PUID
+                        value: "{{ fileserver_uid }}"
+                      - name: PGID
+                        value: "{{ fileserver_gid }}"
+                      - name: TZ
+                        value: "{{ timezone }}"
+                  ports:
+                      - name: "http-web"
+                        containerPort: 80
+                        protocol: TCP
+                  volumeMounts:
+                      - name: grocy-config
+                        mountPath: /config           
+            volumes:
+                - name: grocy-config
+                  persistentVolumeClaim:
+                    claimName: grocy-config
