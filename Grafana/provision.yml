@@ -13,17 +13,21 @@
             - "ns_grafana.yml.j2"
             - "cm_prometheus_configuration.yml.j2"
             - "sec_postgres_password.yml.j2"
+            - "sec_influxdb_password.yml.j2"
             - "sec_grafana_password.yml.j2"
             - "sec_smtp_password.yml.j2"
             - "pv_prometheus_data.yml.j2"
             - "pv_postgres_data.yml.j2"
+            - "pv_influxdb_data.yml.j2"
             - "pv_grafana_data.yml.j2"
             - "pv_grafana_config.yml.j2"
             - "pvc_prometheus_data.yml.j2"
             - "pvc_postgres_data.yml.j2"
+            - "pvc_influxdb_data.yml.j2"
             - "pvc_grafana_config.yml.j2"
             - "pvc_grafana_data.yml.j2"
             - "dep_postgres.yml.j2"
+            - "dep_influxdb.yml.j2"
             - "dep_alertmanager.yml.j2"
             - "dep_prometheus.yml.j2"
             - "dep_grafana.yml.j2"
@@ -31,6 +35,7 @@
             - "svc_alertmanager.yml.j2"
             - "svc_prometheus.yml.j2"
             - "svc_postgres.yml.j2" 
+            - "svc_influxdb.yml.j2" 
 
       - name: Waiting for Alertmanager to be ready.
         wait_for:
@@ -67,3 +72,20 @@
                 isDefault: true
             force_basic_auth: yes
             body_format: json
+        ignore_errors: yes
+
+      - name: Registering InfluxDB as a datasource for Grafana.
+        uri:
+            url: http://{{ grafana_hostname }}:3000/api/datasources
+            method: POST
+            user: "{{ grafana_username }}"
+            password: "{{ grafana_password }}"
+            body:
+                name: "InfluxDB"
+                type: "influxdb"
+                url: "http://influxdb:8086"
+                access: "proxy"
+                isDefault: true
+            force_basic_auth: yes
+            body_format: json
+        ignore_errors: yes
