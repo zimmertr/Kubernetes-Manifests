@@ -28,6 +28,15 @@ Approximate Deployment Time: 1-5 minutes
     * Grafana: http://host.name:3000/
     * Prometheus: http://host.name:9090/
     * Alertmanager: http://host.name:9093/
+5. If you left the plugins variable as default, the Kubernetes Application would have been installed. Enable it from the home page, select the application, and click `New Cluster`. From here, you'll need to decode some base64 data in your Kube Config file. Specifically the `certificate-authority-data`, `client-certificate-data`, and `client-key-data` fields. After you have generated the decoded certificates, configure the cluster as follows:
+    * URL: `https://master.host.name:6443`
+    * Access: `Server`
+    * Auth: Check `TLS Client Auth`, `Skip TLS Verify`, & `With CA Cert`
+    * CA Cert: `Decoded certificate-authority-data`
+    * Client Cert: `Decoded client-certificate-data`
+    * Client Key: `Decoded client-key-data`
+6. Click `Save & Test` to apply the changes. Then click `Deploy` to deploy the configuration to Kubernetes. 
+7. The WorldPing application would have also been installed. Enable it the same way, configure the application with a WorldPing API Key, and click `New Endpoint`. Provide your `Endpoint Name` and click `Begin Auto-Discovery` to determine which checks are available. Be mindful that the free version of WorldPing only allows for 1 million checks per month, and the shortest duration for a check you can choose is 120 seconds. If you over provision your checks they will eventually stop working. 
 
 **TODO:**
 
