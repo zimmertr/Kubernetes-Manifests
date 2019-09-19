@@ -6,7 +6,7 @@
 
 **Summary:**
 
-These manifests are used to deploy an instance of *Grafana, Prometheus, and Alertmanager*. 
+These manifests are used to deploy an instance of *Grafana, InfluxDB, Prometheus, and Alertmanager*. 
 
 Approximate Deployment Time: 1-5 minutes
 
@@ -41,6 +41,7 @@ Approximate Deployment Time: 1-5 minutes
 **TODO:**
 
 1. Figure out a way to allow this to scale to more than one pod.
+2. Improve automatic configuration of InlfluxDB.
 
 **Deletion:**  
 

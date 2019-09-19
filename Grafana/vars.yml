@@ -40,19 +40,22 @@ smtp_port: "587"
 smtp_username: "thomaszimmerman93@gmail.com"
 
 # The password used to authenticate against the SMTP server.
-smtp_password: "lhxnoyvultukmznt"
+smtp_password: "PASSWORD"
 
 # The username to be used for Grafana.
 grafana_username: 'tj'
 
 # The password to be used for Grafan.
-grafana_password: 'Ysc998aAt4siIpp5'
+grafana_password: 'PASSWORD'
 
 # The password to be used for the Postgres database. 
-postgres_password: 'iQ787U9GJ4vRMsv4'
+postgres_password: 'PASSWORD'
+
+# The password to be used for the InfluxDB datbase.
+influxdb_password: 'PASSWORD'
 
 # The Google Analytics tracking ID to be used for monitoring website traffic. 
-google_analytics_tracking_id: '***REMOVED***'
+google_analytics_tracking_id: 'TRACKINGID'
 
 # The comma-separated list of Grafana Plugins you wish to install.
 # Found here: https://grafana.com/grafana/plugins?type=datasource
@@ -72,3 +75,6 @@ config_dir: '/SaturnPool/Kubernetes/Grafana/config'
 
 # The NFS mountpoint to be used for preserving the data of the application.
 data_dir: '/SaturnPool/Kubernetes/Grafana/data'
+
+# The NFS mountpoint to be used for preserving the InfluxDB metrics.
+influxdb_dir: '/SaturnPool/Kubernetes/Grafana/influxdb'
