@@ -1,0 +1,35 @@
+---
+- hosts: localhost
+  gather_facts: False
+  tasks:
+      - name: Including the variables.
+        include_vars:
+            file: ./vars.yml
+
+      - name: Deleting the manifests from Kubernetes.
+        k8s:
+            definition: "{{ lookup('template', './manifests/{{ item }}') | from_yaml }}"
+            state: absent            
+        with_items:
+            - "pvc_prometheus_data.yml.j2"
+            - "pvc_postgres_data.yml.j2"
+            - "pvc_grafana_config.yml.j2"
+            - "pvc_grafana_data.yml.j2"
+            - "pvc_grafana_logs.yml.j2"
+            - "pv_prometheus_data.yml.j2"
+            - "pv_postgres_data.yml.j2"
+            - "pv_grafana_data.yml.j2"
+            - "pv_grafana_logs.yml.j2"
+            - "pv_grafana_config.yml.j2"
+            - "dep_grafana.yml.j2"
+            - "dep_prometheus.yml.j2"
+            - "dep_alertmanager.yml.j2"
+            - "dep_postgres.yml.j2"
+            - "svc_grafana.yml.j2" 
+            - "svc_prometheus.yml.j2" 
+            - "svc_alertmanager.yml.j2"
+            - "svc_postgres.yml.j2"
+            - "sec_postgres_password.yml.j2"
+            - "sec_grafana_password.yml.j2"
+            - "sec_smtp_password.yml.j2"
+            - "cm_prometheus_configuration.yml.j2"
