@@ -74,6 +74,8 @@ spec:
                                 name: grafana-smtp-password
                       - name: GF_SMTP_FROM_ADDRESS
                         value: "grafana@{{ grafana_hostname }}"
+                      - name: GF_INSTALL_PLUGINS
+                        value: "{{ installed_plugins }}"
                   ports:
                       - name: "http-web"
                         containerPort: 3000
