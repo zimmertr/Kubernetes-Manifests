@@ -32,8 +32,6 @@ Approximate Deployment Time: 1-5 minutes
 **TODO:**
 
 1. Figure out a way to allow this to scale to more than one pod.
-2. Configure proper probes so Grafana doesn't enter `crashloopbackoff` waiting for Postgres.
-3. Automatically configure Prometheus as a data source for Grafana on first launch.
 
 **Deletion:**  
 

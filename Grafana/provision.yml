@@ -18,13 +18,11 @@
             - "pv_prometheus_data.yml.j2"
             - "pv_postgres_data.yml.j2"
             - "pv_grafana_data.yml.j2"
-            - "pv_grafana_logs.yml.j2"
             - "pv_grafana_config.yml.j2"
             - "pvc_prometheus_data.yml.j2"
             - "pvc_postgres_data.yml.j2"
             - "pvc_grafana_config.yml.j2"
             - "pvc_grafana_data.yml.j2"
-            - "pvc_grafana_logs.yml.j2"
             - "dep_postgres.yml.j2"
             - "dep_alertmanager.yml.j2"
             - "dep_prometheus.yml.j2"
@@ -54,3 +52,18 @@
             port: 3000
             timeout: 300
             msg: "Grafana was not available after 5 minutes. Something has probably gone wrong."
+
+      - name: Registering Prometheus as a Datasource for Grafana.
+        uri:
+            url: http://{{ grafana_hostname }}:3000/api/datasources
+            method: POST
+            user: "{{ grafana_username }}"
+            password: "{{ grafana_password }}"
+            body:
+                name: "Prometheus"
+                type: "prometheus"
+                url: "http://prometheus:9090"
+                access: "proxy"
+                isDefault: true
+            force_basic_auth: yes
+            body_format: json
