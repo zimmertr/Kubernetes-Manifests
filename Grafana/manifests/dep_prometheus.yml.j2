@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: prometheus
+    namespace: {{ namespace }}
+    labels:
+        app: grafana-prometheus
+        version: latest
+        type: offical
+        facing: internal
+spec:
+    replicas: 1
+    strategy:
+        type: Recreate
+    selector:
+        matchLabels:
+            app: prometheus
+    template:
+        metadata:
+            labels:
+                app: prometheus
+        spec:        
+            initContainers:
+                - name: prometheus-configuration-injector
+                  image: busybox
+                  command: ['sh', '-c', 'cp /prometheus.yml /prometheus/prometheus.yml && chown {{ prometheus_uid }}:{{ prometheus_uid }} -R /prometheus']
+                  volumeMounts:
+                      - name: grafana-prometheus-configuration
+                        mountPath: /prometheus.yml
+                        subPath: prometheus.yml
+                      - name: grafana-prometheus-data
+                        mountPath: /prometheus                           
+            containers:
+                - name: prometheus
+                  image: prom/prometheus
+                  ports:
+                      - name: "tcp-prometheus"
+                        containerPort: 9090
+                        protocol: TCP
+                  volumeMounts:
+                      - name: grafana-prometheus-data
+                        mountPath: /prometheus
+            volumes:
+                - name: grafana-prometheus-data
+                  persistentVolumeClaim:
+                    claimName: grafana-prometheus-data
+                - name: grafana-prometheus-configuration
+                  persistentVolumeClaim:
+                  configMap:
+                    name: grafana-prometheus-configuration 
