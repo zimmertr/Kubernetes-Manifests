@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: influxdb
+    namespace: {{ namespace }}
+    labels:
+        app: grafana-influxdb
+        version: latest
+        type: offical
+        facing: internal
+spec:
+    replicas: 1
+    strategy:
+        type: Recreate
+    selector:
+        matchLabels:
+            app: influxdb
+    template:
+        metadata:
+            labels:
+                app: influxdb
+        spec:         
+            containers:
+                - name: influxdb
+                  image: influxdb:latest
+                  env:
+                      - name: INFLUXDB_ADMIN_ENABLED
+                        value: "true"
+                      - name: INFLUXDB_DB
+                        value: "grafana"
+                      - name: INFLUXDB_ADMIN_USER
+                        value: "grafana"
+                      - name: INFLUXDB_ADMIN_PASSWORD
+                        valueFrom:
+                            secretKeyRef:
+                                key: influxdb_admin_password
+                                name: grafana-influxdb-password
+                  ports:
+                      - name: "tcp-influxdb"
+                        containerPort: 8086
+                        protocol: TCP
+                      - name: "tcp-admin"
+                        containerPort: 8083
+                        protocol: TCP
+                  volumeMounts:
+                      - name: grafana-influxdb-data
+                        mountPath: /var/lib/influxdb/
+            volumes:
+                - name: grafana-influxdb-data
+                  persistentVolumeClaim:
+                    claimName: grafana-influxdb-data
