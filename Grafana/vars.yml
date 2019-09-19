@@ -1,0 +1,73 @@
+# The namespace to be created and used for the deployment. 
+namespace: 'grafana'
+
+# The MetalLB Address Pool from which you want to obtain an IP address.
+load_balancer_address_pool: 'VLAN50'
+
+# The IP address within the Address Pool to which you want to bind the service for Grafana. 
+grafana_load_balancer_ip: '192.168.50.10'
+
+# The IP address within the Address Pool to which you want to bind the service for Prometheus.
+prometheus_load_balancer_ip: '192.168.50.11'
+
+# The IP address within the Address Pool to which you want to bind the service for Alertmanager.
+alertmanager_load_balancer_ip: '192.168.50.12'
+
+# The hostname with which you want to associate Grafana.
+grafana_hostname: 'mimas.sol.milkyway'
+
+# The hostname with which you want to assocaite Prometheus.
+prometheus_hostname: 'enceladus.sol.milkyway'
+
+# The hostname with which yo uwant to associate Alertmanager.
+alertmanager_hostname: 'dione.sol.milkyway'
+
+# The UID that is used to run Grafana within the Docker container.
+# If you are getting permission denied issues on startup, search for an updated UID or file an issue.
+grafana_uid: '472'
+
+# The UID that is used to run Prometheus within the Docker container.
+# If you are getting permission denied issues on startup, search for an updated UID or file an issue.
+prometheus_uid: '65534'
+
+# The SMTP server used to send mail from Grafana.
+smtp_server: "smtp.gmail.com"
+
+# The port that the SMTP server uses for communication.
+smtp_port: "587"
+
+# The username used to authenticate against the SMTP server.
+smtp_username: "thomaszimmerman93@gmail.com"
+
+# The password used to authenticate against the SMTP server.
+smtp_password: "PASSWORD"
+
+# The username to be used for Grafana.
+grafana_username: 'tj'
+
+# The password to be used for Grafan.
+grafana_password: 'PASSWORD'
+
+# The password to be used for the Postgres database. 
+postgres_password: 'PASSWORD'
+
+# The Google Analytics tracking ID to be used for monitoring website traffic. 
+google_analytics_tracking_id: 'TRACKINGID'
+
+# The hostname or IP address of the NFS server on which you want to store Persistent Volume content.
+nfs_server: 'saturn.sol.milkyway'
+
+# The NFS mountpoint to be used for preserving the database.
+postgres_data_dir: '/SaturnPool/Kubernetes/Grafana/postgres'
+
+# The NFS mountpoint to be used for preserving the configuration of Prometheus.
+prometheus_data_dir: '/SaturnPool/Kubernetes/Grafana/prometheus'
+
+# The NFS mountpoint to be used for preserving the configuration of the application.
+config_dir: '/SaturnPool/Kubernetes/Grafana/config'
+
+# The NFS mountpoint to be used for preserving the data of the application.
+data_dir: '/SaturnPool/Kubernetes/Grafana/data'
+
+# The NFS mountpoint to be used for preserving the logs of the application.
+logs_dir: '/SaturnPool/Kubernetes/Grafana/logs'

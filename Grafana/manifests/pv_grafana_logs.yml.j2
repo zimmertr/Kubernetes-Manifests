@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+    name: grafana-logs
+    namespace: {{ namespace }}
+spec:
+    capacity:
+        storage: 2Gi
+    accessModes:
+        - ReadWriteMany
+    nfs:
+        server: {{ nfs_server }}
+        path: {{ logs_dir }}
+    storageClassName: nfs
