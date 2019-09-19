@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: alertmanager
+    namespace: {{ namespace }}
+    labels:
+        app: grafana-alertmanager
+        version: latest
+        type: offical
+        facing: internal
+spec:
+    replicas: 1
+    strategy:
+        type: Recreate
+    selector:
+        matchLabels:
+            app: alertmanager
+    template:
+        metadata:
+            labels:
+                app: alertmanager
+        spec:         
+            containers:
+                - name: alertmanager
+                  image: prom/alertmanager
+                  ports:
+                      - name: "tcp-alertmanagr"
+                        containerPort: 9093
+                        protocol: TCP
