@@ -1,0 +1,112 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: grafana
+    namespace: {{ namespace }}
+    labels:
+        app: grafana
+        version: latest
+        type: official
+        facing: internal
+spec:
+    replicas: 1
+    strategy:
+        type: Recreate
+    selector:
+        matchLabels:
+            app: grafana
+    template:
+        metadata:
+            labels:
+                app: grafana
+        spec:      
+            initContainers:
+                - name: chown-data
+                  image: busybox
+                  command: ['sh', '-c', 'mkdir -p /etc/grafana/ && touch /etc/grafana/grafana.ini && chown {{ grafana_uid }} -R /etc/grafana /var/lib/grafana /var/log/grafana']
+                  volumeMounts:
+                      - name: grafana-config
+                        mountPath: /etc/grafana
+                      - name: grafana-data
+                        mountPath: /var/lib/grafana
+                      - name: grafana-logs
+                        mountPath: /var/log/grafana               
+            containers:
+                - name: grafana
+                  image: grafana/grafana:latest
+                  env:
+                      - name: GF_SERVER_DOMAIN
+                        value: "{{ grafana_hostname }}"
+                      - name: GF_SERVER_ROOT_URL
+                        value: "http://{{ grafana_hostname }}"
+                      - name: GF_DATABASE_TYPE
+                        value: "postgres"
+                      - name: GF_DATABASE_HOST
+                        value: "postgres:5432"
+                      - name: GF_DATABASE_USER
+                        value: "grafana"
+                      - name: GF_DATABASE_PASSWORD
+                        valueFrom:
+                            secretKeyRef:
+                                key: postgres_password
+                                name: grafana-postgres-password
+                      - name: GF_ANALYTICS_REPORTING_ENABLED
+                        value: "false"
+                      - name: GF_ANALYTICS_GOOGLE_ANALYTICS_UA_ID
+                        value: "{{ google_analytics_tracking_id }}"
+                      - name: GF_SECURITY_ADMIN_USER
+                        value: "{{ grafana_username }}"
+                      - name: GF_SECURITY_ADMIN_PASSWORD
+                        valueFrom:
+                            secretKeyRef:
+                                key: grafana_password
+                                name: grafana-password
+                      - name: GF_USERS_ALLOW_SIGN_UP
+                        value: "false"
+                      - name: GF_SMTP_ENABLED
+                        value: "true"
+                      - name: GF_SMTP_HOST
+                        value: "{{ smtp_server }}:{{ smtp_port }}"
+                      - name: GF_SMTP_USER
+                        value: "{{ smtp_username }}"
+                      - name: GF_SMTP_PASSWORD
+                        valueFrom:
+                            secretKeyRef:
+                                key: smtp_password
+                                name: grafana-smtp-password
+                      - name: GF_SMTP_FROM_ADDRESS
+                        value: "grafana@{{ grafana_hostname }}"
+                  ports:
+                      - name: "http-web"
+                        containerPort: 3000
+                        protocol: TCP
+                  volumeMounts:
+                      - name: grafana-config
+                        mountPath: /etc/grafana
+                      - name: grafana-data
+                        mountPath: /var/lib/grafana
+                      - name: grafana-logs
+                        mountPath: /var/log/grafana
+                  # readinessProbe:
+                  #     httpGet:
+                  #         path: /
+                  #         port: 3000
+                  #     periodSeconds: 10
+                  #     failureThreshold: 3
+                  # livenessProbe:
+                  #     httpGet:
+                  #         path: /
+                  #         port: 3000
+                  #     initialDelaySeconds: 60
+                  #     periodSeconds: 10
+                  #     failureThreshold: 5
+            volumes:
+                - name: grafana-config
+                  persistentVolumeClaim:
+                    claimName: grafana-config
+                - name: grafana-data
+                  persistentVolumeClaim:
+                    claimName: grafana-data
+                - name: grafana-logs
+                  persistentVolumeClaim:
+                    claimName: grafana-logs
