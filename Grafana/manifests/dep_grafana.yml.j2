@@ -23,14 +23,12 @@ spec:
             initContainers:
                 - name: chown-data
                   image: busybox
-                  command: ['sh', '-c', 'mkdir -p /etc/grafana/ && touch /etc/grafana/grafana.ini && chown {{ grafana_uid }} -R /etc/grafana /var/lib/grafana /var/log/grafana']
+                  command: ['sh', '-c', 'mkdir -p /etc/grafana/ && touch /etc/grafana/grafana.ini && chown {{ grafana_uid }} -R /etc/grafana /var/lib/grafana']
                   volumeMounts:
                       - name: grafana-config
                         mountPath: /etc/grafana
                       - name: grafana-data
-                        mountPath: /var/lib/grafana
-                      - name: grafana-logs
-                        mountPath: /var/log/grafana               
+                        mountPath: /var/lib/grafana              
             containers:
                 - name: grafana
                   image: grafana/grafana:latest
@@ -85,8 +83,6 @@ spec:
                         mountPath: /etc/grafana
                       - name: grafana-data
                         mountPath: /var/lib/grafana
-                      - name: grafana-logs
-                        mountPath: /var/log/grafana
                   # readinessProbe:
                   #     httpGet:
                   #         path: /
@@ -107,6 +103,3 @@ spec:
                 - name: grafana-data
                   persistentVolumeClaim:
                     claimName: grafana-data
-                - name: grafana-logs
-                  persistentVolumeClaim:
-                    claimName: grafana-logs
