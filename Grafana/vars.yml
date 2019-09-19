@@ -68,6 +68,3 @@ config_dir: '/SaturnPool/Kubernetes/Grafana/config'
 
 # The NFS mountpoint to be used for preserving the data of the application.
 data_dir: '/SaturnPool/Kubernetes/Grafana/data'
-
-# The NFS mountpoint to be used for preserving the logs of the application.
-logs_dir: '/SaturnPool/Kubernetes/Grafana/logs'
