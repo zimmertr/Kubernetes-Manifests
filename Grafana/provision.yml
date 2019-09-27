@@ -6,69 +6,12 @@
         include_vars:
             file: ./vars.yml
 
-      - name: Creating a directory in ~/.kube to hold certificate data.
-        file:
-            path: ~/.kube/grafana-prometheus-scraper/
-            state: directory
-
-      - name: Generating a Private Key for the Grafana User.
-        openssl_privatekey:
-            path: ~/.kube/grafana-prometheus-scraper/key
-
-      - name: Generating a CSR for the Grafana User.
-        openssl_csr:
-            path: ~/.kube/grafana-prometheus-scraper/csr
-            privatekey_path: ~/.kube/grafana-prometheus-scraper/key
-            common_name: grafana-prometheus-scraper
-            organization_name: grafana
-
-      - name: Sending the CSR to the Kubernetes API Server.
-        shell: |
-            cat <<EOF | kubectl apply -f -
-            apiVersion: certificates.k8s.io/v1beta1
-            kind: CertificateSigningRequest
-            metadata:
-              name: grafana-prometheus-scraper
-            spec:
-              request: $(cat ~/.kube/grafana-prometheus-scraper/csr | base64 | tr -d '\n')
-              usages:
-              - digital signature
-              - key encipherment
-              - server auth
-            EOF
-
-      - name: Approving the CSR.
-        shell: kubectl certificate approve grafana-prometheus-scraper
-
-      - name: Retrieving the new certificate
-        shell: |
-            kubectl get csr grafana-prometheus-scraper -o yaml | grep 'status:                                                      
-            certificate:' | awk '{print $2}' | base64 --decode > ~/.kube/grafana-prometheus-scraper/cert
-
-      # The next two tasks are necessary because the arguments for `kubectl config set-x` do not respect relative paths.
-      - name: Registering the certificate location.
-        shell: find ~/.kube/grafana-prometheus-scraper/cert -type f
-        register: cert_path
-
-      - name: Registering the private key location.
-        shell: find ~/.kube/grafana-prometheus-scraper/key -type f
-        register: key_path
-
-      - name: Registering the name of the cluster.
-        shell: kubectl get svc -o=custom-columns=NAME:.metadata.name | sed -n 2p
-        register: cluster_name
-
-      - name: Setting the credentials for the Grafana user.
-        shell: "kubectl config set-credentials grafana-prometheus-scraper --client-certificate={{ cert_path.stdout }} --client-key={{ key_path.stdout }}"
-
-      - name: Setting the context of the Grafana user.
-        shell: "kubectl config set-context grafana-prometheus-scraper --namespace=grafana --cluster={{ cluster_name.stdout }} --user=grafana-prometheus-scraper"
-
       - name: Deploying the manifests to Kubernetes.
         k8s:
             definition: "{{ lookup('template', './manifests/{{ item }}') | from_yaml }}"
         with_items:
             - "ns_grafana.yml.j2"
+            - "sa_prometheus.yml.j2"
             - "cr_prometheus.yml.j2"
             - "crb_prometheus.yml.j2"
             - "cm_prometheus_configuration.yml.j2"
