@@ -19,7 +19,8 @@ spec:
         metadata:
             labels:
                 app: prometheus
-        spec:        
+        spec:      
+            serviceAccountName: grafana-prometheus-scraper  
             initContainers:
                 - name: prometheus-configuration-injector
                   image: busybox

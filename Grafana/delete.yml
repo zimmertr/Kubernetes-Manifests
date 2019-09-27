@@ -38,17 +38,4 @@
             - "cm_prometheus_configuration.yml.j2"
             - "cr_prometheus.yml.j2"
             - "crb_prometheus.yml.j2"
-
-      - name: Removing the Grafana certificate directory.
-        file:
-            state: absent
-            path: ~/.kube/grafana-prometheus-scraper
-
-      - name: Unsetting the Grafana user.
-        shell: kubectl config unset users.grafana-prometheus-scraper
-
-      - name: Unsetting the Grafana user context.
-        shell: kubectl config unset contexts.grafana-prometheus-scraper
-
-      - name: Removing the certificate for Grafana.
-        shell: kubectl delete csr grafana-prometheus-scraper
+            - "sa_prometheus.yml.j2"
