@@ -8,7 +8,7 @@
 
 These manifests are used to deploy an instance of *Atlassian Confluence*. 
 
-Approximate Deployment Time: 1-5 minutes
+Approximate Deployment Time: 10-15 minutes
 
 **Requirements:**  
 
@@ -25,25 +25,12 @@ Approximate Deployment Time: 1-5 minutes
 1. Modify `vars.yml` with parameters according to your environment.
 2. Create the necessary directories defined in `vars.yml` on your NFS server.
 3. Execute the playbook: `ansible-playbook provision.yml`.  
-4. Navigate to http://host.name:8080/ and click `Production Installation`.
-5. If you have a license for an additional App, feel free to select it now. Otherwise, click `Next`.
-6. Insert your Confluence License and click `Next`.
-7. Select `My Own Database` and configure the database like so:
-    * Database Type: PostgreSQL
-    * Setup Type: Simple
-    * Hostname: postgres
-    * Port: 5432
-    * Database name: confluence
-    * Username: confluence
-    * Password: >Password set in vars.yml<
-8. Click 'Next' and wait for the Postgres database to be configured by Confluence.
-    * If Confluence fails to connect with Postgres, allow additional time for the Postgres container to finish starting.
-    * You tail `tail` the logs for the Confluence pod on Kubernetes to watch the progress.
-9. From there, you can click `Next` and finish configuring the software as normal.
+4. Confluence will not start up until Postgres is available. Confluence will automatically configure Postgres on startup.
+5. Navigate to http://host.name:8080/ and wait for Confluence to finish initializing. 
+6. After you've been forwarded to Confluence Setup, step through the prompts to configure the software as usual.
 
 **TODO:**
 1. Figure out how to make Confluence scale to more than one pod.
-2. Create init container to enforce that Confluence does not start up before Postgres is ready.
 
 **Deletion:**  
 
