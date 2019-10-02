@@ -50,19 +50,6 @@ spec:
                         mountPath: /downloads
                       - name: deluge-fileserver
                         mountPath: /SaturnPool
-                  readinessProbe:
-                      httpGet:
-                          path: /
-                          port: 8112
-                      periodSeconds: 10
-                      failureThreshold: 1
-                  livenessProbe:
-                      httpGet:
-                          path: /
-                          port: 8112
-                      initialDelaySeconds: 60
-                      periodSeconds: 10
-                      failureThreshold: 5
                   resources:
                       requests:
                           memory: {{ mem_request }}
