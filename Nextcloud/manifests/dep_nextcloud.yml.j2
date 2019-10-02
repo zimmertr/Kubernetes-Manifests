@@ -19,7 +19,11 @@ spec:
         metadata:
             labels:
                 app: nextcloud
-        spec:         
+        spec:      
+            initContainers:
+                - name: postgres-wait
+                  image: postgres
+                  command: ['sh', '-c', 'until pg_isready -h postgres -p 5432 -U nextcloud; do sleep 1; done;']
             containers:
                 - name: nextcloud
                   image: linuxserver/nextcloud:latest
