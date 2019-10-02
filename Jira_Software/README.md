@@ -8,7 +8,7 @@
 
 These manifests are used to deploy an instance of *Atlassian Jira Software*. 
 
-Approximate Deployment Time: 1-5 minutes
+Approximate Deployment Time: 10-15 minutes
 
 **Requirements:**  
 
@@ -25,23 +25,13 @@ Approximate Deployment Time: 1-5 minutes
 1. Modify `vars.yml` with parameters according to your environment.
 2. Create the necessary directories defined in `vars.yml` on your NFS server.
 3. Execute the playbook: `ansible-playbook provision.yml`.  
-4. Navigate to http://host.name:8080/ and click `I'll set it up myself`.
-5. Select `My Own Database` and configure the database like so:
-    * Database Type: PostgreSQL
-    * Hostname: postgres
-    * Port: 5432
-    * Database: jira
-    * Username: jira
-    * Password: >Password set in vars.yml<
-6. Click 'Next' and wait for the Postgres database to be configured by Jira.
-    * If Jira fails to connect with Postgres, allow additional time for the Postgres container to finish starting.
-    * You tail `tail` the logs for the Jira pod on Kubernetes to watch the progress.
-7. From there, you can click `Next` and finish configuring the software as normal.
+4. Jira will not start up until Postgres is available. Jira will automatically configure Postgres on startup.
+5. Navigate to http://host.name:8080/ wait for Jira to finish initializing. 
+6. After you've been forwarded to Jira Setup, step through the prompts to configure the software as usual.
 
 **TODO:**
 
 1. Figure out a way to allow this to scale to more than one pod.
-2. Create init container to enforce that Jira does not start up before Postgres is ready.
 
 **Deletion:**  
 
