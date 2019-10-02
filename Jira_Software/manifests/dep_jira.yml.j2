@@ -6,7 +6,7 @@ metadata:
     labels:
         app: jira
         version: latest
-        type: third-party
+        type: official
         facing: internal
 spec:
     replicas: 1
@@ -21,42 +21,42 @@ spec:
                 app: jira
         spec:  
             initContainers:
-                - name: chown-data
-                  image: busybox
-                  command: ["chown", "2:2", "-R", "/var/atlassian/jira"]
-                  volumeMounts:
-                      - name: jira-software-data
-                        mountPath: /var/atlassian/jira
+                - name: postgres-wait
+                  image: postgres
+                  command: ['sh', '-c', 'until pg_isready -h postgres -p 5432 -U jira; do sleep 1; done;']
             containers:
                 - name: jira
-                  image: cptactionhank/atlassian-jira-software:latest
+                  image: atlassian/jira-software:latest
+                  env:
+                      - name: ATL_DB_TYPE
+                        value: "postgres72"
+                      - name: ATL_DB_DRIVER
+                        value: "org.postgresql.Driver"
+                      - name: ATL_JDBC_URL
+                        value: "jdbc:postgresql://postgres:5432/jira"
+                      - name: ATL_JDBC_USER
+                        value: "jira"
+                      - name: ATL_JDBC_PASSWORD
+                        valueFrom:
+                            secretKeyRef:
+                                key: postgres_password
+                                name: jira-software-postgres-password
+                      - name: JVM_MAXIMUM_MEMORY
+                        value: {{ jira_mem_limit }}m
                   ports:
                       - name: "http-web"
                         containerPort: 8080
                         protocol: TCP
                   volumeMounts:
                       - name: jira-software-data
-                        mountPath: /var/atlassian/jira
-                  # readinessProbe:
-                  #     httpGet:
-                  #         path: /
-                  #         port: 8080
-                  #     periodSeconds: 10
-                  #     failureThreshold: 3
-                  # livenessProbe:
-                  #     httpGet:
-                  #         path: /
-                  #         port: 8080
-                  #     initialDelaySeconds: 60
-                  #     periodSeconds: 10
-                  #     failureThreshold: 5
+                        mountPath: /var/atlassian/application-data/jira
                   resources:
                       requests:
                           cpu: {{ jira_cpu_request }}
-                          memory: {{ jira_mem_request }}
+                          memory: {{ jira_mem_request }}Mi
                       limits:
                           cpu: {{ jira_cpu_limit }}                        
-                          memory: {{ jira_mem_limit }}
+                          memory: {{ jira_mem_limit }}Mi
             volumes:
                 - name: jira-software-data
                   persistentVolumeClaim:
