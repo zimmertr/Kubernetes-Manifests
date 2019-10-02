@@ -21,7 +21,7 @@ spec:
                 app: postgres
         spec:         
             containers:
-                # 9.6 is the highest supported build. Jira will reject any newer database.
+                # 9.6 is the highest supported build. Confluence will reject any newer database.
                 - name: postgres
                   image: postgres:9.6
                   env:
@@ -42,7 +42,7 @@ spec:
                   resources:
                       limits:
                           cpu: {{ postgres_cpu_limit }}                        
-                          memory: {{ postgres_mem_limit }}
+                          memory: {{ postgres_mem_limit }}Mi
             volumes:
                 - name: confluence-postgres-data
                   persistentVolumeClaim:
