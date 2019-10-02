@@ -19,10 +19,28 @@ spec:
         metadata:
             labels:
                 app: confluence
-        spec:  
+        spec:   
+            initContainers:
+                - name: postgres-wait
+                  image: postgres
+                  command: ['sh', '-c', 'until pg_isready -h postgres -p 5432 -U confluence; do sleep 1; done;']
             containers:
                 - name: confluence
                   image: atlassian/confluence-server
+                  env:
+                      - name: ATL_DB_TYPE
+                        value: "postgresql"
+                      - name: ATL_JDBC_URL
+                        value: "jdbc:postgresql://postgres:5432/confluence"
+                      - name: ATL_JDBC_USER
+                        value: "confluence"
+                      - name: ATL_JDBC_PASSWORD
+                        valueFrom:
+                            secretKeyRef:
+                                key: postgres_password
+                                name: confluence-postgres-password
+                      - name: JVM_MAXIMUM_MEMORY
+                        value: {{ confluence_mem_limit }}m
                   ports:
                       - name: "http-web"
                         containerPort: 8090
@@ -33,26 +51,13 @@ spec:
                   volumeMounts:
                       - name: confluence-data
                         mountPath: /var/atlassian/application-data/confluence
-                  # readinessProbe:
-                  #     httpGet:
-                  #         path: /
-                  #         port: 8080
-                  #     periodSeconds: 10
-                  #     failureThreshold: 3
-                  # livenessProbe:
-                  #     httpGet:
-                  #         path: /
-                  #         port: 8080
-                  #     initialDelaySeconds: 60
-                  #     periodSeconds: 10
-                  #     failureThreshold: 5
                   resources:
                       requests:
                           cpu: {{ confluence_cpu_request }}
-                          memory: {{ confluence_mem_request }}
+                          memory: {{ confluence_mem_request }}Mi
                       limits:
                           cpu: {{ confluence_cpu_limit }}                        
-                          memory: {{ confluence_mem_limit }}
+                          memory: {{ confluence_mem_limit }}Mi
             volumes:
                 - name: confluence-data
                   persistentVolumeClaim:
