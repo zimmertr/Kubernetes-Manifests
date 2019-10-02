@@ -25,12 +25,12 @@ postgres_data_dir: '/SaturnPool/Kubernetes/Jira/postgres'
 # The resource requests for the pods.
 # 1 = 1 vCPU affinity
 jira_cpu_request: '1'
-jira_mem_request: '2048Mi'
+jira_mem_request: '2048'
 
 # The resource limitations for the pods.
 # 1 = 1 vCPU affinity
 jira_cpu_limit: '2'
 postgres_cpu_limit: '.5'
 
-jira_mem_limit: '4098Mi'
-postgres_mem_limit: '512Mi'
+jira_mem_limit: '4098'
+postgres_mem_limit: '512'
