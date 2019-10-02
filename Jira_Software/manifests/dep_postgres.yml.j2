@@ -54,7 +54,7 @@ spec:
                   resources:
                       limits:
                           cpu: {{ postgres_cpu_limit }}                        
-                          memory: {{ postgres_mem_limit }}
+                          memory: {{ postgres_mem_limit }}Mi
             volumes:
                 - name: jira-software-postgres-data
                   persistentVolumeClaim:
