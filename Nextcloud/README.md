@@ -57,7 +57,6 @@ Approximate Deployment Time: 20-30 minutes
 **TODO:**
 1. Evaluate whether or not `postgres_password` supports special characters.
 2. Automate changes to `config.php` with optional declarative values in `vars.yml`.
-3. Create init container to enforce that Nextcloud does not start up before Postgres is ready.
 
 **Deletion:**  
 
