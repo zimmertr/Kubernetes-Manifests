@@ -24,11 +24,8 @@ spec:
             initContainers:
                 - name: prometheus-configuration-injector
                   image: busybox
-                  command: ['sh', '-c', 'cp /prometheus.yml /prometheus/prometheus.yml && chown {{ prometheus_uid }}:{{ prometheus_uid }} -R /prometheus']
+                  command: ['sh', '-c', 'chown {{ prometheus_uid }}:{{ prometheus_uid }} -R /prometheus']
                   volumeMounts:
-                      - name: grafana-prometheus-configuration
-                        mountPath: /prometheus.yml
-                        subPath: prometheus.yml
                       - name: grafana-prometheus-data
                         mountPath: /prometheus                           
             containers:
@@ -41,6 +38,9 @@ spec:
                   volumeMounts:
                       - name: grafana-prometheus-data
                         mountPath: /prometheus
+                      - name: grafana-prometheus-configuration
+                        mountPath: /etc/prometheus/prometheus.yml
+                        subPath: prometheus.yml                        
             volumes:
                 - name: grafana-prometheus-data
                   persistentVolumeClaim:
