@@ -59,7 +59,7 @@ google_analytics_tracking_id: 'TRACKINGID'
 
 # The comma-separated list of Grafana Plugins you wish to install.
 # Found here: https://grafana.com/grafana/plugins?type=datasource
-installed_plugins: 'grafana-kubernetes-app,raintank-worldping-app,grafana-clock-panel,grafana-piechart-panel,agenty-flowcharting-panel,mtanda-histogram-panel,mxswat-separator-panel,snuids-trafficlights-panel'
+installed_plugins: 'raintank-worldping-app,grafana-clock-panel,grafana-piechart-panel,agenty-flowcharting-panel,mtanda-histogram-panel,mxswat-separator-panel,snuids-trafficlights-panel'
 
 # The hostname or IP address of the NFS server on which you want to store Persistent Volume content.
 nfs_server: 'saturn.sol.milkyway'
