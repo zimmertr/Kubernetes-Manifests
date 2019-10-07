@@ -6,46 +6,72 @@
         include_vars:
             file: ./vars.yml
 
-      - name: Deploying the manifests to Kubernetes.
+      - name: Deploying the Service Accounts to Kubernetes.
         k8s:
             definition: "{{ lookup('template', './manifests/{{ item }}') | from_yaml }}"
         with_items:
             - "ns_grafana.yml.j2"
+            - "sa_cadvisor.yml.j2"
             - "sa_kube_state_metrics.yml.j2"
             - "sa_prometheus.yml.j2"
+            - "cr_cadvisor.yml.j2"
             - "cr_kube_state_metrics.yml.j2"
             - "cr_prometheus.yml.j2"
+            - "crb_cadvisor.yml.j2"
             - "crb_kube_state_metrics.yml.j2"
             - "crb_prometheus.yml.j2"
+
+      - name: Retrieving the Bearer Token for the kube-state-metrics user.
+        shell: "kubectl describe -n grafana secrets kube-state-metrics-token | grep token: | awk '{print $2}'"
+        register: token
+
+      - name: Deploying the remaining manifests to Kubernetes.
+        k8s:
+            definition: "{{ lookup('template', './manifests/{{ item }}') | from_yaml }}"
+        with_items:
+            - "cm_grafana_dashboard_configuration.yml.j2"
+            - "cm_grafana_datasource_configuration.yml.j2"
+            - "cm_grafana_dashboards_1.yml.j2"
+            - "cm_grafana_dashboards_2.yml.j2"
             - "cm_prometheus_configuration.yml.j2"
+            - "cm_telegraf_configuration.yml.j2"
+            - "cm_influxdb_configuration.yml.j2"
+            - "cm_unifi_poller_configuration.yml.j2"
+            - "sec_kube_state_metrics_token.yml.j2"
+            - "sec_varken_api_keys.yml.j2"
             - "sec_postgres_password.yml.j2"
             - "sec_influxdb_password.yml.j2"
             - "sec_grafana_password.yml.j2"
             - "sec_smtp_password.yml.j2"
+            - "sec_pihole_exporter.yml.j2"
+            - "psp_cadvisor.yml.j2"
             - "pv_prometheus_data.yml.j2"
             - "pv_postgres_data.yml.j2"
             - "pv_influxdb_data.yml.j2"
-            - "pv_grafana_data.yml.j2"
-            - "pv_grafana_config.yml.j2"
             - "pvc_prometheus_data.yml.j2"
             - "pvc_postgres_data.yml.j2"
             - "pvc_influxdb_data.yml.j2"
-            - "pvc_grafana_config.yml.j2"
-            - "pvc_grafana_data.yml.j2"
+            - "ds_cadvisor.yml.j2"
             - "ds_node_exporter.yml.j2"
             - "dep_kube_state_metrics.yml.j2"
             - "dep_postgres.yml.j2"
             - "dep_influxdb.yml.j2"
+            - "dep_telegraf.yml.j2"
             - "dep_alertmanager.yml.j2"
             - "dep_prometheus.yml.j2"
+            - "dep_varken_exporter.yml.j2"
             - "dep_grafana.yml.j2"
-            - "svc_node_exporter.yml.j2"
+            - "dep_unifi_poller.yml.j2"
+            - "dep_pihole_exporter.yml.j2"
             - "svc_kube_state_metrics.yml.j2"
             - "svc_grafana.yml.j2"
             - "svc_alertmanager.yml.j2"
             - "svc_prometheus.yml.j2"
-            - "svc_postgres.yml.j2" 
-            - "svc_influxdb.yml.j2" 
+            - "svc_postgres.yml.j2"
+            - "svc_influxdb_tcp.yml.j2"
+            - "svc_influxdb_udp.yml.j2"
+            - "svc_telegraf.yml.j2"
+            - "svc_pihole_exporter.yml.j2"
 
       - name: Waiting for Alertmanager to be ready.
         wait_for:
@@ -61,41 +87,16 @@
             timeout: 300
             msg: "Prometheus was not available after 5 minutes. Something has probably gone wrong."
 
+      - name: Waiting for InfluxDB to be ready.
+        wait_for:
+            host: "{{ influxdb_hostname }}"
+            port: 8086
+            timeout: 300
+            msg: "InfluxDB was not available after 5 minutes. Something has probably gone wrong."
+
       - name: Waiting for Grafana to be ready.
         wait_for:
             host: "{{ grafana_hostname }}"
             port: 3000
-            timeout: 300
-            msg: "Grafana was not available after 5 minutes. Something has probably gone wrong."
-
-      - name: Registering Prometheus as a Datasource for Grafana.
-        uri:
-            url: http://{{ grafana_hostname }}:3000/api/datasources
-            method: POST
-            user: "{{ grafana_username }}"
-            password: "{{ grafana_password }}"
-            body:
-                name: "Prometheus"
-                type: "prometheus"
-                url: "http://prometheus:9090"
-                access: "proxy"
-                isDefault: true
-            force_basic_auth: yes
-            body_format: json
-        ignore_errors: yes
-
-      - name: Registering InfluxDB as a datasource for Grafana.
-        uri:
-            url: http://{{ grafana_hostname }}:3000/api/datasources
-            method: POST
-            user: "{{ grafana_username }}"
-            password: "{{ grafana_password }}"
-            body:
-                name: "InfluxDB"
-                type: "influxdb"
-                url: "http://influxdb:8086"
-                access: "proxy"
-                isDefault: true
-            force_basic_auth: yes
-            body_format: json
-        ignore_errors: yes
+            timeout: 600
+            msg: "Grafana was not available after 10 minutes. Something has probably gone wrong."

@@ -17,6 +17,8 @@ rules:
           - persistentvolumes
           - namespaces
           - endpoints
+          - nodes/proxy
+          - nodes/metrics
       verbs: ["list", "watch"]
     - apiGroups: ["extensions"]
       resources:

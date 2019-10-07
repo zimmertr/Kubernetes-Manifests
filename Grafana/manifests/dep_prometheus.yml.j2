@@ -19,15 +19,8 @@ spec:
         metadata:
             labels:
                 app: prometheus
-        spec:      
-            serviceAccountName: grafana-prometheus-scraper  
-            initContainers:
-                - name: prometheus-configuration-injector
-                  image: busybox
-                  command: ['sh', '-c', 'chown {{ prometheus_uid }}:{{ prometheus_uid }} -R /prometheus']
-                  volumeMounts:
-                      - name: grafana-prometheus-data
-                        mountPath: /prometheus                           
+        spec:
+            serviceAccountName: grafana-prometheus-scraper
             containers:
                 - name: prometheus
                   image: prom/prometheus
@@ -40,7 +33,22 @@ spec:
                         mountPath: /prometheus
                       - name: grafana-prometheus-configuration
                         mountPath: /etc/prometheus/prometheus.yml
-                        subPath: prometheus.yml                        
+                        subPath: prometheus.yml
+                      - name: grafana-prometheus-configuration
+                        mountPath: /etc/prometheus/node_rules.yaml
+                        subPath: node_rules.yaml
+                      - name: grafana-prometheus-configuration
+                        mountPath: /etc/prometheus/node_alerts.yaml
+                        subPath: node_alerts.yaml
+                      - name: grafana-prometheus-configuration
+                        mountPath: /etc/prometheus/kubernetes_rules.yaml
+                        subPath: kubernetes_rules.yaml
+                      - name: grafana-prometheus-configuration
+                        mountPath: /etc/prometheus/kubernetes_alerts.yaml
+                        subPath: kubernetes_alerts.yaml
+                      - name: grafana-kube-state-metrics-token
+                        mountPath: /etc/prometheus/token
+                        subPath: token
             volumes:
                 - name: grafana-prometheus-data
                   persistentVolumeClaim:
@@ -48,4 +56,7 @@ spec:
                 - name: grafana-prometheus-configuration
                   persistentVolumeClaim:
                   configMap:
-                    name: grafana-prometheus-configuration 
+                    name: grafana-prometheus-configuration
+                - name: grafana-kube-state-metrics-token
+                  secret:
+                    secretName: grafana-kube-state-metrics-token
