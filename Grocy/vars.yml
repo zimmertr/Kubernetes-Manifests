@@ -1,10 +1,10 @@
-# The namespace to be created and used for the deployment. 
+# The namespace to be created and used for the deployment.
 namespace: 'grocy'
 
 # The MetalLB Address Pool from which you want to obtain an IP address.
-load_balancer_address_pool: 'VLAN50'
+load_balancer_address_pool: 'VLAN60'
 
-# # The IP address within the Address Pool to which you want to bind the service. 
+# # The IP address within the Address Pool to which you want to bind the service.
 load_balancer_ip: '192.168.60.30'
 
 # The hostname with which you want to test connectivity to the IP Address after the deployment has completed.

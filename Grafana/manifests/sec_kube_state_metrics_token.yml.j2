@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Secret
+metadata:
+    name: grafana-kube-state-metrics-token
+    namespace: "{{ namespace }}"
+data:
+    token: "{{ token.stdout | b64encode  }}"

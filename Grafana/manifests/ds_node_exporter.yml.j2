@@ -2,30 +2,30 @@ apiVersion: apps/v1
 kind: DaemonSet
 metadata:
     name: node-exporter
-    namespace: grafana
+    namespace: kube-system
     labels:
         k8s-app: node-exporter
         kubernetes.io/cluster-service: "true"
         addonmanager.kubernetes.io/mode: Reconcile
-        version: v0.15.2
 spec:
     selector:
         matchLabels:
             k8s-app: node-exporter
-            version: v0.15.2
     updateStrategy:
         type: OnDelete
     template:
         metadata:
             labels:
                 k8s-app: node-exporter
-                version: v0.15.2
         spec:
             priorityClassName: system-node-critical
+            tolerations:
+                - key: node-role.kubernetes.io/master
+                  effect: NoSchedule
+                  operator: Exists
             containers:
                 - name: prometheus-node-exporter
-                  image: "prom/node-exporter:v0.15.2"
-                  imagePullPolicy: "IfNotPresent"
+                  image: prom/node-exporter
                   args:
                       - --path.procfs=/host/proc
                       - --path.sysfs=/host/sys

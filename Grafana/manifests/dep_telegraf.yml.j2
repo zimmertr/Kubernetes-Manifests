@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: telegraf
+    namespace: {{ namespace }}
+    labels:
+        app: grafana-telegraf
+        version: latest
+        type: offical
+        facing: internal
+spec:
+    replicas: 1
+    strategy:
+        type: Recreate
+    selector:
+        matchLabels:
+            app: telegraf
+    template:
+        metadata:
+            labels:
+                app: telegraf
+        spec:
+            containers:
+                - name: telegraf
+                  image: telegraf:latest
+                  ports:
+                      - name: "tcp-statsd"
+                        containerPort: 8125
+                        protocol: TCP
+                      - name: "tcp-traffic"
+                        containerPort: 8094
+                        protocol: TCP
+                      - name: "udp-traffic"
+                        containerPort: 8092
+                        protocol: UDP
+                  volumeMounts:
+                      - name: grafana-telegraf-configuration
+                        mountPath: /etc/telegraf/telegraf.conf
+                        subPath: telegraf.conf
+            volumes:
+                - name: grafana-telegraf-configuration
+                  persistentVolumeClaim:
+                  configMap:
+                    name: grafana-telegraf-configuration

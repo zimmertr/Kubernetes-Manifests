@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+    name: pihole-exporter
+    namespace: grafana
+    labels:
+        app: pihole-exporter
+spec:
+    selector:
+        app: pihole-exporter
+    ports:
+        - name: pihole-exporter
+          port: 9617
+          protocol: TCP
+          targetPort: 9617
