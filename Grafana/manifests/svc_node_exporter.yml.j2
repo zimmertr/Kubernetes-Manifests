@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
     name: node-exporter
-    namespace: grafana
+    namespace: kube-system
     annotations:
         prometheus.io/scrape: "true"
     labels:
