@@ -19,6 +19,11 @@ data:
           - job_name: 'prometheus'
             static_configs:
             - targets: ['localhost:9090']
+          
+          - job_name: 'node-exporter'
+            static_configs:
+            - targets: ['node-exporter.kube-system.svc.cluster.local:9100'] 
+            metrics_path: "/metrics"
                     
           - job_name: 'kubernetes-apiservers'
             kubernetes_sd_configs:
@@ -126,7 +131,7 @@ data:
             - source_labels: [__meta_kubernetes_namespace]
               target_label: kubernetes_namespace
             - source_labels: [__meta_kubernetes_ingress_name]
-              target_label: kubernetes_name
+              target_label: kubernetes_name           
 
           - job_name: 'kubernetes-pods'
             kubernetes_sd_configs:
