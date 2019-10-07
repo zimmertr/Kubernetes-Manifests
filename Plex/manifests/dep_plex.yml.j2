@@ -19,7 +19,7 @@ spec:
         metadata:
             labels:
                 app: plex
-        spec:         
+        spec:
             containers:
                 - name: plex
                   image: plexinc/pms-docker:latest
@@ -81,8 +81,8 @@ spec:
                         mountPath: /anime
                       - name: plex-unsorted
                         mountPath: /unsorted
-                      - name: plex-transcode
-                        mountPath: /transcode
+#                      - name: plex-transcode
+#                        mountPath: /transcode
 #                  readinessProbe:
 #                      httpGet:
 #                          path: /identity
@@ -125,6 +125,6 @@ spec:
                 - name: plex-unsorted
                   persistentVolumeClaim:
                     claimName: plex-unsorted
-                - name: plex-transcode
-                  persistentVolumeClaim:
-                    claimName: plex-transcode
+#                - name: plex-transcode
+#                  persistentVolumeClaim:
+#                    claimName: plex-transcode

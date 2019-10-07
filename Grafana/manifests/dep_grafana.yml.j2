@@ -19,19 +19,11 @@ spec:
         metadata:
             labels:
                 app: grafana
-        spec:      
+        spec:
             initContainers:
                 - name: postgres-wait
                   image: postgres
                   command: ['sh', '-c', 'until pg_isready -h postgres -p 5432 -U grafana; do sleep 1; done;']
-                - name: chown-data
-                  image: busybox
-                  command: ['sh', '-c', 'mkdir -p /etc/grafana/ && touch /etc/grafana/grafana.ini && chown {{ grafana_uid }} -R /etc/grafana /var/lib/grafana']
-                  volumeMounts:
-                      - name: grafana-config
-                        mountPath: /etc/grafana
-                      - name: grafana-data
-                        mountPath: /var/lib/grafana              
             containers:
                 - name: grafana
                   image: grafana/grafana:latest
@@ -84,27 +76,68 @@ spec:
                         containerPort: 3000
                         protocol: TCP
                   volumeMounts:
-                      - name: grafana-config
-                        mountPath: /etc/grafana
-                      - name: grafana-data
-                        mountPath: /var/lib/grafana
-                  # readinessProbe:
-                  #     httpGet:
-                  #         path: /
-                  #         port: 3000
-                  #     periodSeconds: 10
-                  #     failureThreshold: 3
-                  # livenessProbe:
-                  #     httpGet:
-                  #         path: /
-                  #         port: 3000
-                  #     initialDelaySeconds: 60
-                  #     periodSeconds: 10
-                  #     failureThreshold: 5
+                      - name: grafana-dashboard-configuration
+                        mountPath: /etc/grafana/provisioning/dashboards/dashboard.yml
+                        subPath: dashboard.yml
+                      - name: grafana-datasource-configuration
+                        mountPath: /etc/grafana/provisioning/datasources/datasource.yml
+                        subPath: datasource.yml
+                      - name: grafana-dashboards-1
+                        mountPath: /etc/grafana/provisioning/dashboards/Hardware/proxmox_summary.json
+                        subPath: proxmox_summary.json
+                      - name: grafana-dashboards-1
+                        mountPath: /etc/grafana/provisioning/dashboards/Hardware/ups_summary.json
+                        subPath: ups_summary.json
+                      - name: grafana-dashboards-2
+                        mountPath: /etc/grafana/provisioning/dashboards/Servers/plex_summary.json
+                        subPath: plex_summary.json
+                      - name: grafana-dashboards-2
+                        mountPath: /etc/grafana/provisioning/dashboards/Servers/pihole_summary.json
+                        subPath: pihole_summary.json
+                      - name: grafana-dashboards-2
+                        mountPath: /etc/grafana/provisioning/dashboards/Servers/jira_summary.json
+                        subPath: jira_summary.json
+                      - name: grafana-dashboards-2
+                        mountPath: /etc/grafana/provisioning/dashboards/Servers/availability_summary.json
+                        subPath: availability_summary.json
+                      - name: grafana-dashboards-2
+                        mountPath: /etc/grafana/provisioning/dashboards/Servers/ssl_certificate_summary.json
+                        subPath: ssl_certificate_summary.json
+                      - name: grafana-dashboards-2
+                        mountPath: /etc/grafana/provisioning/dashboards/Miscellaneous/weather_summary.json
+                        subPath: weather_summary.json
+                      - name: grafana-dashboards-2
+                        mountPath: /etc/grafana/provisioning/dashboards/Miscellaneous/github_summary.json
+                        subPath: github_summary.json
+                      - name: grafana-dashboards-1
+                        mountPath: /etc/grafana/provisioning/dashboards/Ubiquiti/unifi_client_insights.json
+                        subPath: unifi_client_insights.json
+                      - name: grafana-dashboards-1
+                        mountPath: /etc/grafana/provisioning/dashboards/Ubiquiti/unifi_network_sites.json
+                        subPath: unifi_network_sites.json
+                      - name: grafana-dashboards-1
+                        mountPath: /etc/grafana/provisioning/dashboards/Ubiquiti/unifi_switch_insights.json
+                        subPath: unifi_switch_insights.json
+                      - name: grafana-dashboards-1
+                        mountPath: /etc/grafana/provisioning/dashboards/Ubiquiti/unifi_ap_insights.json
+                        subPath: unifi_ap_insights.json
+                      - name: grafana-dashboards-1
+                        mountPath: /etc/grafana/provisioning/dashboards/Ubiquiti/ubiquiti_edgerouter_insights.json
+                        subPath: ubiquiti_edgerouter_insights.json
             volumes:
-                - name: grafana-config
+                - name: grafana-dashboard-configuration
                   persistentVolumeClaim:
-                    claimName: grafana-config
-                - name: grafana-data
+                  configMap:
+                    name: grafana-dashboard-configuration
+                - name: grafana-datasource-configuration
                   persistentVolumeClaim:
-                    claimName: grafana-data
+                  configMap:
+                    name: grafana-datasource-configuration
+                - name: grafana-dashboards-1
+                  persistentVolumeClaim:
+                  configMap:
+                    name: grafana-dashboards-1
+                - name: grafana-dashboards-2
+                  persistentVolumeClaim:
+                  configMap:
+                    name: grafana-dashboards-2

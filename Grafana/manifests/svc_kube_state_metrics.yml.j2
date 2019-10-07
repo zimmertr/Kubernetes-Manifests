@@ -3,9 +3,8 @@ kind: Service
 metadata:
     labels:
         app.kubernetes.io/name: kube-state-metrics
-        app.kubernetes.io/version: v1.8.0
     name: kube-state-metrics
-    namespace: grafana
+    namespace: {{ namespace }}
 spec:
     clusterIP: None
     ports:

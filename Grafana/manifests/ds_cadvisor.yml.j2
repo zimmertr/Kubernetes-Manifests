@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+    annotations:
+        seccomp.security.alpha.kubernetes.io/pod: docker/default
+    labels:
+        app: cadvisor
+    name: cadvisor
+    namespace: "{{ namespace }}"
+spec:
+    selector:
+        matchLabels:
+            app: cadvisor
+            name: cadvisor
+    template:
+        metadata:
+            labels:
+                app: cadvisor
+                name: cadvisor
+        spec:
+            automountServiceAccountToken: false
+            tolerations:
+                - key: node-role.kubernetes.io/master
+                  effect: NoSchedule
+                  operator: Exists
+            containers:
+                - image: k8s.gcr.io/cadvisor:v0.30.2
+                  name: cadvisor
+                  ports:
+                      - containerPort: 8080
+                        hostPort: 10250
+                        name: http
+                        protocol: TCP
+                  volumeMounts:
+                      - mountPath: /rootfs
+                        name: rootfs
+                        readOnly: true
+                      - mountPath: /var/run
+                        name: var-run
+                        readOnly: true
+                      - mountPath: /sys
+                        name: sys
+                        readOnly: true
+                      - mountPath: /var/lib/docker
+                        name: docker
+                        readOnly: true
+                      - mountPath: /dev/disk
+                        name: disk
+                        readOnly: true
+            serviceAccountName: cadvisor
+            terminationGracePeriodSeconds: 30
+            volumes:
+                - hostPath:
+                      path: /
+                  name: rootfs
+                - hostPath:
+                      path: /var/run
+                  name: var-run
+                - hostPath:
+                      path: /sys
+                  name: sys
+                - hostPath:
+                      path: /var/lib/docker
+                  name: docker
+                - hostPath:
+                      path: /dev/disk
+                  name: disk
