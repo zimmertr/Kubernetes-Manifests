@@ -13,14 +13,20 @@ prometheus_load_balancer_ip: '192.168.50.11'
 # The IP address within the Address Pool to which you want to bind the service for Alertmanager.
 alertmanager_load_balancer_ip: '192.168.50.12'
 
+# The IP address within the Address Pool to which you want to bind the services for InfluxDB.
+influxdb_load_balancer_ip: '192.168.50.13'
+
 # The hostname with which you want to associate Grafana.
 grafana_hostname: 'mimas.sol.milkyway'
 
 # The hostname with which you want to assocaite Prometheus.
 prometheus_hostname: 'enceladus.sol.milkyway'
 
-# The hostname with which yo uwant to associate Alertmanager.
+# The hostname with which you want to associate Alertmanager.
 alertmanager_hostname: 'dione.sol.milkyway'
+
+# The hostname with which you want to associate InfluxDB.
+influxdb_hostname: 'rhea.sol.milkyway'
 
 # The UID that is used to run Grafana within the Docker container.
 # If you are getting permission denied issues on startup, search for an updated UID or file an issue.
@@ -70,6 +76,9 @@ postgres_data_dir: '/SaturnPool/Kubernetes/Grafana/postgres'
 # The NFS mountpoint to be used for preserving the configuration of Prometheus.
 prometheus_data_dir: '/SaturnPool/Kubernetes/Grafana/prometheus'
 
+# The NFS mountpoint to be used for preserving the configuration of Telegraf.
+telegraf_data_dir: '/SaturnPool/Kubernetes/Grafana/telegraf'
+
 # The NFS mountpoint to be used for preserving the configuration of the application.
 config_dir: '/SaturnPool/Kubernetes/Grafana/config'
 
@@ -78,3 +87,95 @@ data_dir: '/SaturnPool/Kubernetes/Grafana/data'
 
 # The NFS mountpoint to be used for preserving the InfluxDB metrics.
 influxdb_dir: '/SaturnPool/Kubernetes/Grafana/influxdb'
+
+
+####Telegraf Configuration####
+
+# The default interval at which the Telegraf Agent collects data from an input.
+agent_interval: "10s"
+
+# The list of External DNS Servers you wish to use for the `dns_query` input.
+external_dns_servers: "'1.1.1.1', '8.8.8.8'"
+
+# The list of External domains you wish to use for the `dns_query` & `ping` inputs.
+external_domains: "'tjzimmerman.com', 'www.tjzimmerman.com', 'tjzimmerman.dev', 'www.tjzimmerman.dev', vpn.tjzimmerman.com', 'nextcloud.tjzimmerman.com'"
+
+# The list of Internal DNS Servers you wish to use for the `dns_query` input.
+internal_dns_servers: "'192.168.1.100', '192.168.1.110'"
+
+# The list of Internal domains you wish to use for the `dns_query` & `ping` inputs.
+internal_domains: "ariel.sol.milkyway', 'aurora.sol.milkyway', 'callisto.sol.milkyway', 'ceres.sol.milkyway', 'charon.sol.milkyway', 'daphne.sol.milkyway', 'deimos.sol.milkyway', 'dione.sol.milkyway', 'doris.sol.milkyway', 'enceladus.sol.milkyway', 'eris.sol.milkyway', 'europa.sol.milkyway', 'explorer.sol.milkyway', 'ganymede.sol.milkyway', 'haumea.sol.milkyway', 'hebe.sol.milkyway', 'hubble.sol.milkyway', 'io.sol.milkyway', 'janus.sol.milkyway', 'juno.sol.milkyway', 'jupiter.sol.milkyway', 'luna.sol.milkyway', 'mars.sol.milkyway', 'mimas.sol.milkyway', 'nemesis.sol.milkyway', 'nix.sol.milkyway', 'phobos.sol.milkyway', 'pirs.sol.milkyway', 'pluto.sol.milkyway', 'psyche.sol.milkyway', 'rhea.sol.milkyway', 'saturn.sol.milkyway', 'sol.sol.milkyway', 'sputnik.sol.milkyway', 'sylvia.sol.milkyway', 'titan.sol.milkyway', 'ursula.sol.milkyway', 'venus.sol.milkyway', 'vesta.sol.milkyway', 'voyager.sol.milkyway', 'powerdns-admin.sputnik.sol.milkyway', 'poewrdns-authoritative.sputnik.sol.milkyway', 'powerdns-recursor.sputnik.sol.milkyway', 'unifi-controller.sputnik.sol.milkyway', 'unms.sputnik.sol.milkyway'"
+
+# The list of GitHub repositories to monitor with the `github` input.
+github_repositories: "'zimmertr/Bootstrap-Kubernetes-with-QEMU', 'zimmertr/Kubernetes-Manifests', 'zimmertr/Personal-Website-With-JS-Terminal-Emulator', 'zimmertr/LibreNMS-Example-Alerts', 'zimmertr/i3wm-Configuration'"
+
+# The Access Token used to monitor with the `github` input.
+github_access_token: "ACCESSTOKEN"
+
+# The API Key to be used with the `openweathermap` input.
+openweathermap_api_key: "APIKEY"
+
+# The list of cities to monitor from the `openweathermap` input.
+# Seattle, Cle Elum, Grand Rapids, West Branch, Nashville
+openweathermap_city_ids: "'5809844', '5790229', '4994358', '5014413', '4644585'"
+
+# The connection string for a TCP Socket to be monitored with the `net_response` input.
+# External
+net_response_vpn: "vpn.tjzimmerman.com:443"
+net_response_nextcloud: "nextcloud.tjzimmerman.com:443"
+net_response_wwwcom: "www.tjzimmerman.com:443"
+net_response_wwwdev: "www.tjzimmerman.dev:443"
+net_response_com: "tjzimmerman.com:443"
+net_response_dev: "tjzimmerman.dev:443"
+
+# Internal
+net_response_proxmox: "saturn.sol.milkyway:8006"
+net_response_plex: "janus.sol.milkyway:32400"
+net_response_deluge: "io.sol.milkyway:8200"
+net_response_website: "nix.sol.milkyway:80"
+net_response_confluence: "europa.sol.milkyway:8090"
+net_response_grafana: "mimas.sol.milkyway:3000"
+net_response_jira: "ariel.sol.milkyway:8080"
+net_response_pihole: "explorer.sol.milkyway:80"
+net_response_unifi: "unifi-controller.sputnik.sol.milkyway:443"
+net_response_powerdns: "powerdns-admin.sputnik.sol.milkyway:443"
+net_response_prometheus: "enceladus.sol.milkyway:9090"
+net_response_radarr: "deimos.sol.milkyway:7878"
+net_response_sonarr: "phobos.sol.milkyway:8989"
+net_response_tautulli: "charon.sol.milkyway:8181"
+net_response_alertmanager: "dione.sol.milkyway:9093"
+net_response_influxdb: "rhea.sol.milkyway:8086"
+
+# Private - Kubernetes
+net_response_node_exporter: "node-exporter.kube-system.svc.cluster.local:9100"
+net_response_kube_state_metrics: "kube-state-metrics.grafana.svc.cluster.local:8080"
+net_response_metrics_scraper: "dashboard-metrics-scraper.kubernetes-dashboard.svc.cluster.local:8000"
+net_response_dashboard: "kubernetes-dashboard.kubernetes-dashboard.svc.cluster.local:443"
+net_response_kubedns_53: "kube-dns.kube-system.svc.cluster.local:53"
+net_response_kubedns_9153: "kube-dns.kube-system.svc.cluster.local:9153"
+net_response_kubelet: "kubelet.kube-system.svc.cluster.local:10250"
+net_response_postgres_confluence: "postgres.confluence.svc.cluster.local:5432"
+net_response_postgres_grafana: "postgres.grafana.svc.cluster.local:5432"
+net_response_postgres_jira: "postgres.jira-software.svc.cluster.local:5432"
+net_response_postgres_nextcloud: "postgres.nextcloud.svc.cluster.local:5432"
+
+# The list of SSL Certificates to monitor with the `x509_cert` input.
+ssl_certificates: "'tcp://tjzimmerman.com:443', 'tcp://pluto.sol.milkyway:6443', 'tcp://unifi-controller.sputnik.sol.milkyway:443'"
+
+# The connection string for the PostgreSQL database to monitor with the `postgresql` inputs.
+postgres_nextcloud_connection_string: "postgres://nextcloud:PASSWORD@postgres/nextcloud?sslmode=disable"
+postgres_jira_connection_string: "postgres://jira:PASSWORD@postgres/jira?sslmode=disable"
+postgres_grafana_connection_string: "postgres://grafana:{{ postgres_password }}@postgres/grafana?sslmode=disable"
+postgres_confluence_connection_string: "postgres://confluence:PASSWORD@postgres/confluence?sslmode=disable"
+
+# The connection string & community string to use to monitor hardware devices with the `snmp` inputs.
+snmp_edgerouter_connection_string: "sol.sol.milkyway:161"
+snmp_edgerouter_community_string: "COMMUNITYSTRING"
+snmp_unifi_switch_connection_string: "voyager.sol.milkyway:161"
+snmp_unifi_switch_community_string: "COMMUNITYSTRING"
+snmp_unifi_ap_connection_string: "hubble.sol.milkyway:161"
+snmp_unifi_ap_community_string: "COMMUNITYSTRING"
+snmp_cyberpower_500_connection_string: ""
+snmp_cyberpower_500_community_string: "COMMUNITYSTRING"
+snmp_cyberpower_1500_connection_string: ""
+snmp_cyberpower_1500_connection_string: "COMMUNITYSTRING"

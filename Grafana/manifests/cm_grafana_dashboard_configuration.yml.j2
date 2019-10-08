@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+    name: grafana-dashboard-configuration
+    namespace: {{ namespace  }}
+data:
+    dashboards.conf: |
+        apiVersion: 1
+
+        providers:
+        - name: 'Proxmox'
+          org_id: 1
+          folder: 'Proxmox'
+          type: 'file'
+          options:
+            folder: '/var/lib/grafana/dashboards/Proxmox'
+
+        - name: 'Ubiquiti'
+          org_id: 1
+          folder: 'Ubiquiti'
+          type: 'file'
+          options:
+            folder: '/var/lib/grafana/dashboards/Ubiquiti'

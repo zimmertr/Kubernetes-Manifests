@@ -17,7 +17,12 @@
             - "cr_prometheus.yml.j2"
             - "crb_kube_state_metrics.yml.j2"
             - "crb_prometheus.yml.j2"
+            - "cm_grafana_dashboard_configuration.yml.j2"
+            - "cm_grafana_dashboards.yml.j2"
             - "cm_prometheus_configuration.yml.j2"
+            - "cm_telegraf_configuration.yml.j2"
+            - "cm_influxdb_configuration.yml.j2"
+            - "cm_unifi_poller_configuration.yml.j2"
             - "sec_postgres_password.yml.j2"
             - "sec_influxdb_password.yml.j2"
             - "sec_grafana_password.yml.j2"
@@ -36,16 +41,20 @@
             - "dep_kube_state_metrics.yml.j2"
             - "dep_postgres.yml.j2"
             - "dep_influxdb.yml.j2"
+            - "dep_telegraf.yml.j2"
             - "dep_alertmanager.yml.j2"
             - "dep_prometheus.yml.j2"
             - "dep_grafana.yml.j2"
+            - "dep_unifi_poller.yml.j2"
             - "svc_node_exporter.yml.j2"
             - "svc_kube_state_metrics.yml.j2"
             - "svc_grafana.yml.j2"
             - "svc_alertmanager.yml.j2"
             - "svc_prometheus.yml.j2"
-            - "svc_postgres.yml.j2" 
-            - "svc_influxdb.yml.j2" 
+            - "svc_postgres.yml.j2"
+            - "svc_influxdb_tcp.yml.j2"
+            - "svc_influxdb_udp.yml.j2"
+            - "svc_telegraf.yml.j2"
 
       - name: Waiting for Alertmanager to be ready.
         wait_for:
@@ -61,41 +70,44 @@
             timeout: 300
             msg: "Prometheus was not available after 5 minutes. Something has probably gone wrong."
 
+      - name: Waiting for InfluxDB to be ready.
+        wait_for:
+            host: "{{ influxdb_hostname }}"
+            port: 8086
+            timeout: 300
+            msg: "InfluxDB was not available after 5 minutes. Something has probably gone wrong."
+
       - name: Waiting for Grafana to be ready.
         wait_for:
             host: "{{ grafana_hostname }}"
             port: 3000
-            timeout: 300
-            msg: "Grafana was not available after 5 minutes. Something has probably gone wrong."
+            timeout: 600
+            msg: "Grafana was not available after 10 minutes. Something has probably gone wrong."
 
-      - name: Registering Prometheus as a Datasource for Grafana.
-        uri:
-            url: http://{{ grafana_hostname }}:3000/api/datasources
-            method: POST
-            user: "{{ grafana_username }}"
-            password: "{{ grafana_password }}"
-            body:
-                name: "Prometheus"
-                type: "prometheus"
-                url: "http://prometheus:9090"
-                access: "proxy"
-                isDefault: true
-            force_basic_auth: yes
-            body_format: json
-        ignore_errors: yes
+      - name: Registering Telegraf database for InfluxDB as a Datasource in Grafana.
+        grafana_datasource:
+            name: "Prometheus"
+            grafana_url: "http://{{ grafana_hostname }}:3000"
+            grafana_user: "{{ grafana_username }}"
+            grafana_password: "{{ grafana_password }}"
+            ds_type: "prometheus"
+            ds_url: "http://prometheus:9090"
+            validate_certs: no
+            is_default: yes
 
-      - name: Registering InfluxDB as a datasource for Grafana.
-        uri:
-            url: http://{{ grafana_hostname }}:3000/api/datasources
-            method: POST
-            user: "{{ grafana_username }}"
-            password: "{{ grafana_password }}"
-            body:
-                name: "InfluxDB"
-                type: "influxdb"
-                url: "http://influxdb:8086"
-                access: "proxy"
-                isDefault: true
-            force_basic_auth: yes
-            body_format: json
-        ignore_errors: yes
+      - name: Registering the InfluxDB Datasources in Grafana.
+        grafana_datasource:
+            name: "InfluxDB-{{ item }}"
+            grafana_url: "http://{{ grafana_hostname }}:3000"
+            grafana_user: "{{ grafana_username }}"
+            grafana_password: "{{ grafana_password }}"
+            ds_type: "influxdb"
+            ds_url: "http://{{ influxdb_hostname }}:8086"
+            database: "{{ item }}"
+            user: "telegraf"
+            password: "{{ influxdb_password }}"
+            validate_certs: no
+        with_items:
+            - "{{ influxdb_db }}"
+            - proxmox
+            - unifi

@@ -9,7 +9,7 @@
       - name: Deleting the manifests from Kubernetes.
         k8s:
             definition: "{{ lookup('template', './manifests/{{ item }}') | from_yaml }}"
-            state: absent            
+            state: absent
         with_items:
             - "pvc_prometheus_data.yml.j2"
             - "pvc_postgres_data.yml.j2"
@@ -26,13 +26,17 @@
             - "dep_alertmanager.yml.j2"
             - "dep_postgres.yml.j2"
             - "dep_influxdb.yml.j2"
+            - "dep_telegraf.yml.j2"
             - "dep_kube_state_metrics.yml.j2"
+            - "dep_unifi_poller.yml.j2"
             - "ds_node_exporter.yml.j2"
-            - "svc_grafana.yml.j2" 
-            - "svc_prometheus.yml.j2" 
+            - "svc_telegraf.yml.j2"
+            - "svc_grafana.yml.j2"
+            - "svc_prometheus.yml.j2"
             - "svc_alertmanager.yml.j2"
             - "svc_postgres.yml.j2"
-            - "svc_influxdb.yml.j2"
+            - "svc_influxdb_tcp.yml.j2"
+            - "svc_influxdb_udp.yml.j2"
             - "svc_node_exporter.yml.j2"
             - "svc_kube_state_metrics.yml.j2"
             - "sec_postgres_password.yml.j2"
@@ -40,6 +44,11 @@
             - "sec_grafana_password.yml.j2"
             - "sec_smtp_password.yml.j2"
             - "cm_prometheus_configuration.yml.j2"
+            - "cm_telegraf_configuration.yml.j2"
+            - "cm_influxdb_configuration.yml.j2"
+            - "cm_grafana_dashboard_configuration.yml.j2"
+            - "cm_grafana_dashboards.yml.j2"
+            - "cm_unifi_poller_configuration.yml.j2"
             - "cr_prometheus.yml.j2"
             - "cr_kube_state_metrics.yml.j2"
             - "crb_prometheus.yml.j2"

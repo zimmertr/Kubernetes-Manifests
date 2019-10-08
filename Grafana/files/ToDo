@@ -1,0 +1,55 @@
+Kubernetes
+    - Either node-exporter or kube-state-metrics appear to not be collecting all necessary metrics for Grafana
+
+InfluxDB-telegraf
+    - Sputnik & Explorer are not sending all of their metrics. CPU is missing, for example
+
+Provision.yml
+    - Created Datasources are not immutable. Consider migrating api calls to datasources directory on grafana pod like dashboards.
+    - Ensure order of resources makes sense
+
+delete.yml
+    - Ensure order of resources makes sense
+
+vars.yml
+    - There are way too many variables in vars.yml. How can telegraf stuff be abstracted away?
+    - File needs to be reorganized
+
+Other:
+    - Ensure lastpass secrets are all up to date
+    - Ensure all resource names in Kubernetes are properly defined with prefixes
+    - Ensure that all Telegraf instances are not sending any error messages
+    - Remove name_suffixes from Telegraf metrics when unnecessary
+    - Evaluate complexity of making repo immutable for other users & refactor as necessary
+    - Integrate Ingress controller to minimize number of LB Services
+    - Rotate all passwords since probably exposed on Git repo
+    - Configure telegraf on Jupiter
+    - Evaluate Log Monitoring stuff
+
+
+Docs:
+    - Configuring External Metrics Server on Proxmox
+    - Configuring Telegraf on your clients
+    - Configuring Unifi Controller to add read only user account
+        - https://github.com/davidnewhall/unifi-poller/wiki/Installation
+
+
+Dashboards to Create
+    - Github Repos
+    - Weather Status
+    - Google Analytics
+
+Things to monitor:
+    - Server Temp per core
+    - UPS Power Consumption & Active Cost
+    - Add LXC stuff to Proxmox Summary
+    - PiHole
+    - Jira
+    - Confluence
+    - Plex
+    - Deluge
+    - Nextcloud
+    - Sonarr
+    - Radarr
+    - OpenVPN
+    - Personal Website

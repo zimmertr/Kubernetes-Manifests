@@ -1,0 +1,440 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+    name: grafana-telegraf-configuration
+    namespace: {{ namespace  }}
+data:
+    telegraf.conf: |
+        [global_tags]
+          host = "kubernetes_deployment"
+
+        [agent]
+          interval = "{{ agent_interval }}"
+          round_interval = true
+          metric_batch_size = 1000
+          metric_buffer_limit = 10000
+          collection_jitter = "0s"
+          flush_interval = "10s"
+          flush_jitter = "0s"
+          precision = ""
+          hostname = ""
+          omit_hostname = false
+
+        [[outputs.influxdb]]
+          urls = ["http://influxdb:8086"]
+          database = "{{ influxdb_db }}"
+          skip_database_creation = true
+          username = "{{ influxdb_user }}"
+          password = "{{ influxdb_password }}"
+
+        [[aggregators.basicstats]]
+          period = "30s"
+          stats = ["count", "min", "max", "mean", "stdev", "s2", "sum"]
+
+        [[aggregators.final]]
+          period = "30s"
+          series_timeout = "5m"
+
+        [[inputs.dns_query]]
+          name_suffix = "_external"
+          servers = {{ external_dns_servers }}
+          domains = {{ external_domains| regex_findall('{https://}') }}
+          record_type = "A"
+          port = 53
+          timeout = 5
+
+        [[inputs.ping]]
+          name_suffix = "_external"
+          urls = {{ external_domains| regex_findall('{https://}') }}
+          count = 1
+          method = "native"
+          binary = "ping"
+
+        [[inputs.dns_query]]
+          name_suffix = "_internal"
+          servers = {{ internal_dns_servers }}
+          domains = {{ internal_domains }}
+          record_type = "A"
+          port = 53
+          timeout = 5
+
+        [[inputs.ping]]
+          name_suffix = "_internal"
+          urls = {{ internal_domains }}
+          count = 1
+          method = "native"
+          binary = "ping"
+
+        [[inputs.net_response]]
+          name_suffix = "_vpn.tjzimmerman.com"
+          protocol = "tcp"
+          address = "{{ net_response_vpn }}"
+          timeout = "10s"
+          read_timeout = "10s"
+          fielddrop = ["result_type", "string_found"]
+          [inputs.net_response.tags]
+            facing = "external"
+
+        [[inputs.net_response]]
+          name_suffix = "_nextcloud.tjzimmerman.com"
+          protocol = "tcp"
+          address = "{{ net_response_nextcloud }}"
+          timeout = "10s"
+          read_timeout = "10s"
+          fielddrop = ["result_type", "string_found"]
+          [inputs.net_response.tags]
+            facing = "external"
+
+        [[inputs.net_response]]
+          name_suffix = "_www.tjzimmerman.com"
+          protocol = "tcp"
+          address = "{{ net_response_wwwcom }}"
+          timeout = "10s"
+          read_timeout = "10s"
+          fielddrop = ["result_type", "string_found"]
+          [inputs.net_response.tags]
+            facing = "external"
+
+        [[inputs.net_response]]
+          name_suffix = "_www.tjzimmerman.dev"
+          protocol = "tcp"
+          address = "{{ net_response_wwwdev }}"
+          timeout = "10s"
+          read_timeout = "10s"
+          fielddrop = ["result_type", "string_found"]
+          [inputs.net_response.tags]
+            facing = "external"
+
+        [[inputs.net_response]]
+          name_suffix = "_tjzimmerman.com"
+          protocol = "tcp"
+          address = "{{ net_response_com }}"
+          timeout = "10s"
+          read_timeout = "10s"
+          fielddrop = ["result_type", "string_found"]
+          [inputs.net_response.tags]
+            facing = "external"
+
+        [[inputs.net_response]]
+          name_suffix = "_tjzimmerman.dev"
+          protocol = "tcp"
+          address = "{{ net_response_dev }}"
+          timeout = "10s"
+          read_timeout = "10s"
+          fielddrop = ["result_type", "string_found"]
+          [inputs.net_response.tags]
+            facing = "external"
+
+        [[inputs.net_response]]
+          name_suffix = "_proxmox"
+          protocol = "tcp"
+          address = "{{ net_response_proxmox }}"
+          timeout = "10s"
+          read_timeout = "10s"
+          fielddrop = ["result_type", "string_found"]
+          [inputs.net_response.tags]
+            facing = "internal"
+
+        [[inputs.net_response]]
+          name_suffix = "_plex"
+          protocol = "tcp"
+          address = "{{ net_response_plex }}"
+          timeout = "10s"
+          read_timeout = "10s"
+          fielddrop = ["result_type", "string_found"]
+          [inputs.net_response.tags]
+            facing = "internal"
+
+        [[inputs.net_response]]
+          name_suffix = "_deluge"
+          protocol = "tcp"
+          address = "{{ net_response_deluge }}"
+          timeout = "10s"
+          read_timeout = "10s"
+          fielddrop = ["result_type", "string_found"]
+          [inputs.net_response.tags]
+            facing = "internal"
+
+        [[inputs.net_response]]
+          name_suffix = "_website"
+          protocol = "tcp"
+          address = "{{ net_response_website }}"
+          timeout = "10s"
+          read_timeout = "10s"
+          fielddrop = ["result_type", "string_found"]
+          [inputs.net_response.tags]
+            facing = "internal"
+
+        [[inputs.net_response]]
+          name_suffix = "_confluence"
+          protocol = "tcp"
+          address = "{{ net_response_confluence }}"
+          timeout = "10s"
+          read_timeout = "10s"
+          fielddrop = ["result_type", "string_found"]
+          [inputs.net_response.tags]
+            facing = "internal"
+
+        [[inputs.net_response]]
+          name_suffix = "_grafana"
+          protocol = "tcp"
+          address = "{{ net_response_grafana }}"
+          timeout = "10s"
+          read_timeout = "10s"
+          fielddrop = ["result_type", "string_found"]
+          [inputs.net_response.tags]
+            facing = "internal"
+
+        [[inputs.net_response]]
+          name_suffix = "_jira"
+          protocol = "tcp"
+          address = "{{ net_response_jira }}"
+          timeout = "10s"
+          read_timeout = "10s"
+          fielddrop = ["result_type", "string_found"]
+          [inputs.net_response.tags]
+            facing = "internal"
+
+        [[inputs.net_response]]
+          name_suffix = "_pihole"
+          protocol = "tcp"
+          address = "{{ net_response_pihole }}"
+          timeout = "10s"
+          read_timeout = "10s"
+          fielddrop = ["result_type", "string_found"]
+          [inputs.net_response.tags]
+            facing = "internal"
+
+        [[inputs.net_response]]
+          name_suffix = "_unifi"
+          protocol = "tcp"
+          address = "{{ net_response_unifi }}"
+          timeout = "10s"
+          read_timeout = "10s"
+          fielddrop = ["result_type", "string_found"]
+          [inputs.net_response.tags]
+            facing = "internal"
+
+        [[inputs.net_response]]
+          name_suffix = "_powerdns"
+          protocol = "tcp"
+          address = "{{ net_response_powerdns }}"
+          timeout = "10s"
+          read_timeout = "10s"
+          fielddrop = ["result_type", "string_found"]
+          [inputs.net_response.tags]
+            facing = "internal"
+
+        [[inputs.net_response]]
+          name_suffix = "_prometheus"
+          protocol = "tcp"
+          address = "{{ net_response_prometheus }}"
+          timeout = "10s"
+          read_timeout = "10s"
+          fielddrop = ["result_type", "string_found"]
+          [inputs.net_response.tags]
+            facing = "internal"
+
+        [[inputs.net_response]]
+          name_suffix = "_radarr"
+          protocol = "tcp"
+          address = "{{ net_response_radarr }}"
+          timeout = "10s"
+          read_timeout = "10s"
+          fielddrop = ["result_type", "string_found"]
+          [inputs.net_response.tags]
+            facing = "internal"
+
+        [[inputs.net_response]]
+          name_suffix = "_sonarr"
+          protocol = "tcp"
+          address = "{{ net_response_sonarr }}"
+          timeout = "10s"
+          read_timeout = "10s"
+          fielddrop = ["result_type", "string_found"]
+          [inputs.net_response.tags]
+            facing = "internal"
+
+        [[inputs.net_response]]
+          name_suffix = "_tautulli"
+          protocol = "tcp"
+          address = "{{ net_response_tautulli }}"
+          timeout = "10s"
+          read_timeout = "10s"
+          fielddrop = ["result_type", "string_found"]
+          [inputs.net_response.tags]
+            facing = "internal"
+
+        [[inputs.net_response]]
+          name_suffix = "_alertmanager"
+          protocol = "tcp"
+          address = "{{ net_response_alertmanager }}"
+          timeout = "10s"
+          read_timeout = "10s"
+          fielddrop = ["result_type", "string_found"]
+          [inputs.net_response.tags]
+            facing = "internal"
+
+        [[inputs.net_response]]
+          name_suffix = "_influxdb"
+          protocol = "tcp"
+          address = "{{ net_response_influxdb }}"
+          timeout = "10s"
+          read_timeout = "10s"
+          fielddrop = ["result_type", "string_found"]
+          [inputs.net_response.tags]
+            facing = "internal"
+
+        [[inputs.net_response]]
+          name_suffix = "_node_exporter"
+          protocol = "tcp"
+          address = "{{ net_response_node_exporter }}"
+          timeout = "10s"
+          read_timeout = "10s"
+          fielddrop = ["result_type", "string_found"]
+          [inputs.net_response.tags]
+            facing = "kubernetes"
+
+        [[inputs.net_response]]
+          name_suffix = "_kube_state_metrics"
+          protocol = "tcp"
+          address = "{{ net_response_kube_state_metrics }}"
+          timeout = "10s"
+          read_timeout = "10s"
+          fielddrop = ["result_type", "string_found"]
+          [inputs.net_response.tags]
+            facing = "kubernetes"
+
+        [[inputs.net_response]]
+          name_suffix = "_metrics_scraper"
+          protocol = "tcp"
+          address = "{{ net_response_metrics_scraper }}"
+          timeout = "10s"
+          read_timeout = "10s"
+          fielddrop = ["result_type", "string_found"]
+          [inputs.net_response.tags]
+            facing = "kubernetes"
+
+        [[inputs.net_response]]
+          name_suffix = "_dashboard"
+          protocol = "tcp"
+          address = "{{ net_response_dashboard }}"
+          timeout = "10s"
+          read_timeout = "10s"
+          fielddrop = ["result_type", "string_found"]
+          [inputs.net_response.tags]
+            facing = "kubernetes"
+
+        [[inputs.net_response]]
+          name_suffix = "_kubedns_53"
+          protocol = "tcp"
+          address = "{{ net_response_kubedns_53 }}"
+          timeout = "10s"
+          read_timeout = "10s"
+          fielddrop = ["result_type", "string_found"]
+          [inputs.net_response.tags]
+            facing = "kubernetes"
+
+        [[inputs.net_response]]
+          name_suffix = "_kubedns_9153"
+          protocol = "tcp"
+          address = "{{ net_response_kubedns_9153 }}"
+          timeout = "10s"
+          read_timeout = "10s"
+          fielddrop = ["result_type", "string_found"]
+          [inputs.net_response.tags]
+            facing = "kubernetes"
+
+        [[inputs.net_response]]
+          name_suffix = "_kubelet"
+          protocol = "tcp"
+          address = "{{ net_response_kubelet }}"
+          timeout = "10s"
+          read_timeout = "10s"
+          fielddrop = ["result_type", "string_found"]
+          [inputs.net_response.tags]
+            facing = "kubernetes"
+
+        [[inputs.net_response]]
+          name_suffix = "_postgres_confluence"
+          protocol = "tcp"
+          address = "{{ net_response_postgres_confluence }}"
+          timeout = "10s"
+          read_timeout = "10s"
+          fielddrop = ["result_type", "string_found"]
+          [inputs.net_response.tags]
+            facing = "kubernetes"
+
+        [[inputs.net_response]]
+          name_suffix = "_postgres_grafana"
+          protocol = "tcp"
+          address = "{{ net_response_postgres_grafana }}"
+          timeout = "10s"
+          read_timeout = "10s"
+          fielddrop = ["result_type", "string_found"]
+          [inputs.net_response.tags]
+            facing = "kubernetes"
+
+        [[inputs.net_response]]
+          name_suffix = "_postgres_jira"
+          protocol = "tcp"
+          address = "{{ net_response_postgres_jira }}"
+          timeout = "10s"
+          read_timeout = "10s"
+          fielddrop = ["result_type", "string_found"]
+          [inputs.net_response.tags]
+            facing = "kubernetes"
+
+        [[inputs.net_response]]
+          name_suffix = "_postgres_nextcloud"
+          protocol = "tcp"
+          address = "{{ net_response_postgres_nextcloud }}"
+          timeout = "10s"
+          read_timeout = "10s"
+          fielddrop = ["result_type", "string_found"]
+          [inputs.net_response.tags]
+            facing = "kubernetes"
+
+        [[inputs.github]]
+          repositories = {{ github_repositories }}
+          access_token = "{{ github_access_token }}"
+          http_timeout = "5s"
+
+        [[inputs.openweathermap]]
+          app_id = "{{ openweathermap_api_key }}"
+          city_id = {{ openweathermap_city_ids }}
+          fetch = ["weather", "forecast"]
+          base_url = "https://api.openweathermap.org/"
+          response_timeout = "5s"
+          units = "imperial"
+          interval = "10m"
+
+        [[inputs.x509_cert]]
+          sources = {{ ssl_certificates }}
+          timeout = "5s"
+
+        [[inputs.http_response]]
+          urls = {{ external_domains }}
+          response_timeout = "5s"
+          method = "GET"
+          follow_redirects = true
+
+        # [[inputs.postgresql]]
+        #   name_suffix = "_nextcloud"
+        #   address = "{{ postgres_nextcloud_connection_string }}"
+        #   max_lifetime = "0s"
+
+        # [[inputs.postgresql]]
+        #   name_suffix = "_jira"
+        #   address = "{{ postgres_jira_connection_string }}"
+        #   max_lifetime = "0s"
+
+        # [[inputs.postgresql]]
+        #   name_suffix = "_grafana"
+        #   address = "{{ postgres_grafana_connection_string }}"
+        #   max_lifetime = "0s"
+
+        # [[inputs.postgresql]]
+        #   name_suffix = "_CONFLUENCE"
+        #   address = "{{ postgres_confluence_connection_string }}"
+        #   max_lifetime = "0s"

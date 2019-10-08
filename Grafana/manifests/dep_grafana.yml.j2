@@ -19,19 +19,19 @@ spec:
         metadata:
             labels:
                 app: grafana
-        spec:      
+        spec:
             initContainers:
                 - name: postgres-wait
                   image: postgres
                   command: ['sh', '-c', 'until pg_isready -h postgres -p 5432 -U grafana; do sleep 1; done;']
                 - name: chown-data
                   image: busybox
-                  command: ['sh', '-c', 'mkdir -p /etc/grafana/ && touch /etc/grafana/grafana.ini && chown {{ grafana_uid }} -R /etc/grafana /var/lib/grafana']
+                  command: ['sh', '-c', 'mkdir -p /etc/grafana/ && mkdir -p /etc/grafana/provisioning/dashboards/Proxmox && mkdir -p /etc/grafana/provisioning/datasources && mkdir -p /etc/grafana/provisioning/notifiers  && mkdir -p /etc/grafana/provisioning/dashboards/Ubiquiti && touch /etc/grafana/grafana.ini && chown {{ grafana_uid }} -R /etc/grafana /var/lib/grafana']
                   volumeMounts:
                       - name: grafana-config
                         mountPath: /etc/grafana
                       - name: grafana-data
-                        mountPath: /var/lib/grafana              
+                        mountPath: /var/lib/grafana
             containers:
                 - name: grafana
                   image: grafana/grafana:latest
@@ -88,19 +88,27 @@ spec:
                         mountPath: /etc/grafana
                       - name: grafana-data
                         mountPath: /var/lib/grafana
-                  # readinessProbe:
-                  #     httpGet:
-                  #         path: /
-                  #         port: 3000
-                  #     periodSeconds: 10
-                  #     failureThreshold: 3
-                  # livenessProbe:
-                  #     httpGet:
-                  #         path: /
-                  #         port: 3000
-                  #     initialDelaySeconds: 60
-                  #     periodSeconds: 10
-                  #     failureThreshold: 5
+                      - name: grafana-dashboard-configuration
+                        mountPath: /etc/grafana/provisioning/dashboards/dashboards.conf
+                        subPath: dashboards.conf
+                      - name: grafana-dashboards
+                        mountPath: /var/lib/grafana/dashboards/Proxmox/proxmox_summary.yaml
+                        subPath: proxmox_summary.yaml
+                      - name: grafana-dashboards
+                        mountPath: /var/lib/grafana/dashboards/Ubiquiti/unifi_client_insights.yaml
+                        subPath: unifi_client_insights.yaml
+                      - name: grafana-dashboards
+                        mountPath: /var/lib/grafana/dashboards/Ubiquiti/unifi_network_sites.yaml
+                        subPath: unifi_network_sites.yaml
+                      - name: grafana-dashboards
+                        mountPath: /var/lib/grafana/dashboards/Ubiquiti/unifi_switch_insights.yaml
+                        subPath: unifi_switch_insights.yaml
+                      - name: grafana-dashboards
+                        mountPath: /var/lib/grafana/dashboards/Ubiquiti/unifi_ap_sites.yaml
+                        subPath: unifi_ap_sites.yaml
+                      - name: grafana-dashboards
+                        mountPath: /var/lib/grafana/dashboards/Ubiquiti/ubiquiti_edgerouter_insights.yaml
+                        subPath: ubiquiti_edgerouter_insights.yaml
             volumes:
                 - name: grafana-config
                   persistentVolumeClaim:
@@ -108,3 +116,11 @@ spec:
                 - name: grafana-data
                   persistentVolumeClaim:
                     claimName: grafana-data
+                - name: grafana-dashboard-configuration
+                  persistentVolumeClaim:
+                  configMap:
+                    name: grafana-dashboard-configuration
+                - name: grafana-dashboards
+                  persistentVolumeClaim:
+                  configMap:
+                    name: grafana-dashboards
