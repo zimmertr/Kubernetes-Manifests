@@ -33,7 +33,7 @@ postgres_dir: '/SaturnPool/Kubernetes/Nextcloud/data'
 storage_dir: '/SaturnPool/'
 
 # The password for the Postgres database used to store your NextCloud metadata.
-postgres_password: '***REMOVED***'
+postgres_password: 'PASSWORD'
 
 # The resource limitations for the pods.
 # 1 = 1 vCPU affinity

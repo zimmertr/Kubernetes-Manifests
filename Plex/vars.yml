@@ -17,7 +17,7 @@ timezone: 'America/Los_Angeles'
 # The claim token used to claim your Plex Media Server. Be sure to generate this immediatly before deployment
 # as it will expire 4 minutes after it is created.
 # https://www.plex.tv/claim/
-claim_token: '***REMOVED***'
+claim_token: 'CLAIMTOKEN'
 
 # A comma separated list of network CIDRs that should be allowed to connect to Plex Media Server without authorization.
 allowed_networks: '192.168.20.0/24,192.168.30.0/24'

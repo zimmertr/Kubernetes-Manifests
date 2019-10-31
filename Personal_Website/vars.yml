@@ -17,10 +17,10 @@ nfs_server: 'saturn.sol.milkyway'
 public_files_dir: '/SaturnPool/Kubernetes/Apache/Files'
 
 # The Google Analytics tracking ID to be used for monitoring website traffic.
-google_analytics_tracking_id: '***REMOVED***'
+google_analytics_tracking_id: 'TRACKINGID'
 
 # The Wunderground API Key to be used for weather-related metrics.
-wunderground_api_key: '***REMOVED***'
+wunderground_api_key: 'APIKEY'
 
 # The resource limitations for the pods.
 # 1 = 1 vCPU affinity

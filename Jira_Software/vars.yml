@@ -11,7 +11,7 @@ load_balancer_ip: '192.168.50.70'
 hostname: 'ariel.sol.milkyway'
 
 # The password to be used for the Postgres database.
-postgres_password: '***REMOVED***'
+postgres_password: 'PASSWORD'
 
 # The hostname or IP address of the NFS server on which you want to store Persistent Volume content.
 nfs_server: 'saturn.sol.milkyway'
