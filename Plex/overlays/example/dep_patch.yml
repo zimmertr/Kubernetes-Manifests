@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: plex
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: plex
+    template:
+        metadata:
+            labels:
+                app: plex
+        spec:
+            containers:
+                - name: plex
+                  image: plexinc/pms-docker:latest
+                  resources:
+                      requests:
+                          memory: 2048Mi
+                          cpu: 1
+                      limits:
+                          memory: 4096Mi
+                          cpu: 4
