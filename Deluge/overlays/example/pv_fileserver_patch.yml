@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+    name: deluge-fileserver
+spec:
+    nfs:
+        server: EXAMPLE.NFS.SERVER
+        path: /EXAMPLE/MOUNT/PATH

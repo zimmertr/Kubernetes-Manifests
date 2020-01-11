@@ -1,14 +1,13 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-    name: deluge-fileserver
-    namespace: {{ namespace }}
+    name: deluge-downloads
 spec:
     capacity:
         storage: 15Ti
     accessModes:
         - ReadWriteMany
     nfs:
-        server: {{ nfs_server }}
-        path: {{ fileserver_root }}
+        server: saturn.sol.milkyway
+        path: /SaturnPool/Downloads/
     storageClassName: nfs
