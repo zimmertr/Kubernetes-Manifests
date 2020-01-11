@@ -45,7 +45,7 @@
             - "sec_grafana_password.yml.j2"
             - "sec_smtp_password.yml.j2"
             - "sec_varken_api_keys.yml.j2"
-            - "sec_kube_state_metrics_token.yml.j2"
+            - "sec_grafana_tokens.yml.j2"
             - "cm_prometheus_configuration.yml.j2"
             - "cm_telegraf_configuration.yml.j2"
             - "cm_influxdb_configuration.yml.j2"

@@ -61,6 +61,10 @@ postgres_password: 'PASSWORD'
 # Node Exporter runs on 9100 with this configuration.
 node_exporter_targets: "['ceres:9100', 'eris:9100', 'haumea:9100', 'pluto:9100']"
 
+# The list of Cadvisor targets for Prometheus to scrape.
+# Cadvisor runs on 10251 with this configuration.
+cadvisor_targets: "['ceres:10251', 'eris:10251', 'haumea:10251', 'pluto:10251']"
+
 # The primary database to be created on InfluxDB
 influxdb_db: 'influxdb'
 
@@ -194,8 +198,8 @@ github_access_token: "ACCESSTOKEN"
 openweathermap_api_key: "APIKEY"
 
 # The list of cities to monitor from the `openweathermap` input.
-# Seattle, Cle Elum, Grand Rapids, West Branch, Nashville
-openweathermap_city_ids: '["5809844", "5790229", "4994358", "5014413", "4644585"]'
+# Seattle, Los Angeles, Grand Rapids, West Branch, Nashville
+openweathermap_city_ids: '["5809844", "5359777", "4994358", "5014413", "4644585"]'
 
 # The connection string for a TCP Socket to be monitored with the `net_response` input.
 # External
