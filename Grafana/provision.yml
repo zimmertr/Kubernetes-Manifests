@@ -22,8 +22,12 @@
             - "crb_prometheus.yml.j2"
 
       - name: Retrieving the Bearer Token for the kube-state-metrics user.
-        shell: "kubectl describe -n grafana secrets kube-state-metrics-token | grep token: | awk '{print $2}'"
-        register: token
+        shell: "kubectl describe -n {{ namespace }} secrets kube-state-metrics-token | grep token: | awk '{print $2}'"
+        register: kube_state_metrics_token
+
+      - name: Retrieving the Bearer Token for the cadvisor user.
+        shell: "kubectl describe -n {{ namespace }} secrets cadvisor-token | grep token: | awk '{print $2}'"
+        register: cadvisor_token
 
       - name: Deploying the remaining manifests to Kubernetes.
         k8s:
@@ -37,7 +41,7 @@
             - "cm_telegraf_configuration.yml.j2"
             - "cm_influxdb_configuration.yml.j2"
             - "cm_unifi_poller_configuration.yml.j2"
-            - "sec_kube_state_metrics_token.yml.j2"
+            - "sec_grafana_tokens.yml.j2"
             - "sec_varken_api_keys.yml.j2"
             - "sec_postgres_password.yml.j2"
             - "sec_influxdb_password.yml.j2"
