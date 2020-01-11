@@ -2,16 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
     name: deluge
-    namespace: {{ namespace }}
-    labels:
-        app: deluge
-        version: latest
-        type: third-party
-        facing: internal
 spec:
     replicas: 1
-    strategy:
-        type: Recreate
     selector:
         matchLabels:
             app: deluge
@@ -19,17 +11,13 @@ spec:
         metadata:
             labels:
                 app: deluge
-        spec:         
+        spec:
             containers:
                 - name: deluge
                   image: linuxserver/deluge:latest
-                  env:
-                      - name: PUID
-                        value: "{{ fileserver_uid }}"
-                      - name: PGID
-                        value: "{{ fileserver_gid }}"
-                      - name: TZ
-                        value: "{{ timezone }}"
+                  envFrom:
+                  - configMapRef:
+                      name: deluge-vars
                   ports:
                       - name: "traffic-1"
                         containerPort: 7850
@@ -52,11 +40,11 @@ spec:
                         mountPath: /SaturnPool
                   resources:
                       requests:
-                          memory: {{ mem_request }}
-                          cpu: {{ cpu_request }}
+                          memory: 2048Mi
+                          cpu: .25
                       limits:
-                          memory: {{ mem_limit }}
-                          cpu: {{ cpu_limit }}
+                          memory: 6144Mi
+                          cpu: 1.5
             volumes:
                 - name: deluge-config
                   persistentVolumeClaim:

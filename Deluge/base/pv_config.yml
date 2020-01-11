@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+    name: deluge-config
+spec:
+    capacity:
+        storage: 1Gi
+    accessModes:
+        - ReadWriteMany
+    nfs:
+        server: saturn.sol.milkyway
+        path: /SaturnPool/Kubernetes/Deluge
+    storageClassName: nfs
