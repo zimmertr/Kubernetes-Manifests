@@ -1,0 +1,33 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+    - ../../base
+
+patchesStrategicMerge:
+    - dep_patch.yml
+    - pv_anime_patch.yml
+    - pv_audiobooks_patch.yml
+    - pv_config_patch.yml
+    - pv_movies_patch.yml
+    - pv_music_patch.yml
+    - pv_tv_shows_patch.yml
+    - pv_unsorted_patch.yml
+
+namePrefix: example
+
+namespace: example-plex-media-server
+
+commonLabels:
+    Environment: Example
+
+configMapGenerator:
+    - name: env-vars
+      behavior: replace
+      literals:
+        - TZ='America/Los_Angeles'
+        - PLEX_UID='5555'
+        - PLEX_GID='5555'
+        - ADVERTISE_IP='192.168.50.30'
+        - HOSTNAME='example.host.name'
+        - ALLOWED_NETWORKS='192.168.20.0/24,192.168.30.0/24'
+        - PLEX_CLAIM='EXAMPLETOKEN'

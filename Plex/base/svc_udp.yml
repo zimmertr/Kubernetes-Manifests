@@ -3,9 +3,8 @@ kind: Service
 metadata:
     name: plex-udp
     annotations:
-        metallb.universe.tf/address-pool: {{ load_balancer_address_pool }}
+        metallb.universe.tf/address-pool: VLAn50
         metallb.universe.tf/allow-shared-ip: "true"
-    namespace: {{ namespace }}
     labels:
         app: plex
 spec:
@@ -13,7 +12,7 @@ spec:
     externalTrafficPolicy: Local
     selector:
         app: plex
-    loadBalancerIP: {{ load_balancer_ip }}
+    loadBalancerIP: 192.168.50.30
     ports:
       - name: "dlna-server-udp"
         targetPort: 1900

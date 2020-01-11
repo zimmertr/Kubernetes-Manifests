@@ -1,13 +1,12 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-    name: plex-anime
-    namespace: {{ namespace }}
+    name: plex-music
 spec:
     accessModes:
         - ReadWriteMany
     resources:
         requests:
             storage: 15Ti
-    storageClassName: nfs            
-    volumeName: plex-anime
+    storageClassName: nfs
+    volumeName: plex-music
