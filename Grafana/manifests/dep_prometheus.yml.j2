@@ -46,9 +46,12 @@ spec:
                       - name: grafana-prometheus-configuration
                         mountPath: /etc/prometheus/kubernetes_alerts.yaml
                         subPath: kubernetes_alerts.yaml
-                      - name: grafana-kube-state-metrics-token
-                        mountPath: /etc/prometheus/token
-                        subPath: token
+                      - name: grafana-tokens
+                        mountPath: /etc/prometheus/kube_state_metrics_token
+                        subPath: kube_state_metrics_token
+                      - name: grafana-tokens
+                        mountPath: /etc/prometheus/cadvisor_token
+                        subPath: cadvisor_token
             volumes:
                 - name: grafana-prometheus-data
                   persistentVolumeClaim:
@@ -57,6 +60,6 @@ spec:
                   persistentVolumeClaim:
                   configMap:
                     name: grafana-prometheus-configuration
-                - name: grafana-kube-state-metrics-token
+                - name: grafana-tokens
                   secret:
-                    secretName: grafana-kube-state-metrics-token
+                    secretName: grafana-tokens
