@@ -2,12 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
     name: plex
-    namespace: {{ namespace }}
-    labels:
-        app: plex
-        version: latest
-        type: official
-        facing: internal
 spec:
     replicas: 1
     strategy:
@@ -23,21 +17,9 @@ spec:
             containers:
                 - name: plex
                   image: plexinc/pms-docker:latest
-                  env:
-                      - name: TZ
-                        value: "{{ timezone }}"
-                      - name: PLEX_CLAIM
-                        value: {{ claim_token }}
-                      - name: ADVERTISE_IP
-                        value: "http://{{ load_balancer_ip }}:32400/"
-                      - name: HOSTNAME
-                        value: "{{ hostname }}"
-                      - name: PLEX_UID
-                        value: "{{ fileserver_uid }}"
-                      - name: PLEX_GID
-                        value: "{{ fileserver_gid }}"
-                      - name: ALLOWED_NETWORKS
-                        value: "{{ allowed_networks }}"
+                  envFrom:
+                  - configMapRef:
+                      name: env-vars
                   ports:
                       - name: "dlna-server-udp"
                         containerPort: 1900
@@ -81,28 +63,13 @@ spec:
                         mountPath: /anime
                       - name: plex-unsorted
                         mountPath: /unsorted
-#                      - name: plex-transcode
-#                        mountPath: /transcode
-#                  readinessProbe:
-#                      httpGet:
-#                          path: /identity
-#                          port: 32400
-#                      periodSeconds: 10
-#                      failureThreshold: 3
-#                  livenessProbe:
-#                      httpGet:
-#                          path: /identity
-#                          port: 32400
-#                      initialDelaySeconds: 60
-#                      periodSeconds: 10
-#                      failureThreshold: 5
                   resources:
                       requests:
-                          memory: {{ mem_request }}
-                          cpu: {{ cpu_request }}
+                          memory: 2048Mi
+                          cpu: 1
                       limits:
-                          memory: {{ mem_limit }}
-                          cpu: {{ cpu_limit }}
+                          memory: 10240Mi
+                          cpu: 2
             volumes:
                 - name: plex-audiobooks
                   persistentVolumeClaim:
@@ -125,6 +92,3 @@ spec:
                 - name: plex-unsorted
                   persistentVolumeClaim:
                     claimName: plex-unsorted
-#                - name: plex-transcode
-#                  persistentVolumeClaim:
-#                    claimName: plex-transcode
