@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: deluge
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: deluge
+    template:
+        metadata:
+            labels:
+                app: deluge
+        spec:
+            containers:
+                - name: deluge
+                  ports:
+                      - name: "traffic-1"
+                        containerPort: 10000
+                        protocol: TCP
+                      - name: "traffic-2"
+                        containerPort: 10001
+                        protocol: TCP
+                  volumeMounts:
+                      - name: deluge-fileserver
+                        mountPath: /EXAMPLE_PATH
+                  resources:
+                      limits:
+                          memory: 4096Mi

@@ -2,12 +2,11 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
     name: deluge-config
-    namespace: {{ namespace }}
 spec:
     accessModes:
         - ReadWriteMany
     resources:
         requests:
-            storage: 2Gi 
-    storageClassName: nfs            
+            storage: 1Gi
+    storageClassName: nfs
     volumeName: deluge-config

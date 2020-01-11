@@ -3,8 +3,7 @@ kind: Service
 metadata:
     name: deluge
     annotations:
-        metallb.universe.tf/address-pool: {{ load_balancer_address_pool }}
-    namespace: {{ namespace }}
+        metallb.universe.tf/address-pool: VLAN50
     labels:
         app: deluge
 spec:
@@ -12,7 +11,7 @@ spec:
     externalTrafficPolicy: Local
     selector:
         app: deluge
-    loadBalancerIP: {{ load_balancer_ip }}
+    loadBalancerIP: 192.168.50.20
     ports:
     - name: "traffic-1"
       protocol: TCP
