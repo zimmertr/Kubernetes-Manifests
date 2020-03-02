@@ -8,4 +8,4 @@ spec:
     accessModes:
         - ReadWriteMany
     hostPath:
-        path: /SaturnPool/Kubernetes/Plex
+        path: /SaturnPool/Kubernetes/Plex/config/Library/Application Support/Plex Media Server/Logs
