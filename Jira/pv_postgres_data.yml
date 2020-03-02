@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+    name: jira-postgres-data
+spec:
+    capacity:
+        storage: 100Gi
+    accessModes:
+        - ReadWriteMany
+    hostPath:
+        path: /SaturnPool/Kubenretes/Jira/postgres
