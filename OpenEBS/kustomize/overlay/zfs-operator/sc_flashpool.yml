@@ -1,0 +1,9 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: flashpool
+allowVolumeExpansion: true
+parameters:
+  poolname: "flashpool"
+  recordsize: "4k"
+provisioner: zfs.csi.openebs.io

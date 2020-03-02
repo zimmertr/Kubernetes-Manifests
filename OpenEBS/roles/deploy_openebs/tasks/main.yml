@@ -1,0 +1,23 @@
+---
+# tasks file for deploy_openebs
+
+- name: Downloading the OpenEBS manifest.
+  get_url:
+    url: "{{ openebs_manifest_url }}"
+    dest: "{{ playbook_dir }}/kustomize/base/deployment.yml"
+
+- name: Applying the OpenEBS manifest.
+  command: "kubectl apply -k {{ playbook_dir }}/kustomize/base"
+
+# Current operator manifest doens't support CentOS. Hotfix is included statically.
+# - name: Downloading the ZFS Operator manifest.
+#   get_url:
+#     url: "https://raw.githubusercontent.com/openebs/zfs-localpv/master/deploy/zfs-operator.yaml"
+#     dest:  "{{ playbook_dir }}/kustomize/overlay/zfs-operator/"
+#   when:
+#     - deploy_zfs_driver is defined
+
+- name: Configuring OpenEBS to be able to use ZFS.
+  command: "kubectl apply -k {{ playbook_dir }}/kustomize/overlay/zfs-operator"
+  when:
+    - deploy_zfs_driver is defined
