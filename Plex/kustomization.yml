@@ -1,0 +1,37 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+    - ns.yml
+    - dep.yml
+    - svc_tcp.yml
+    - svc_udp.yml
+    - pv_anime.yml
+    - pvc_anime.yml
+    - pv_audiobooks.yml
+    - pvc_audiobooks.yml
+    - pv_config.yml
+    - pvc_config.yml
+    - pv_movies.yml
+    - pvc_movies.yml
+    - pv_music.yml
+    - pvc_music.yml
+    - pv_tv_shows.yml
+    - pvc_tv_shows.yml
+    - pv_unsorted.yml
+    - pvc_unsorted.yml
+
+namespace: plex-media-server
+
+commonLabels:
+    app: plex
+
+configMapGenerator:
+    - name: env-vars
+      literals:
+        - TZ='America/Los_Angeles'
+        - PLEX_UID='1002'
+        - PLEX_GID='1007'
+        - ADVERTISE_IP='192.168.20.230'
+        - HOSTNAME='janus.sol.milkyway'
+        - ALLOWED_NETWORKS='192.168.20.0/24,192.168.30.0/24'
+        - PLEX_CLAIM='https://www.plex.tv/claim/'
