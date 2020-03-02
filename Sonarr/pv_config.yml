@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+    name: sonarr-config
+spec:
+    capacity:
+        storage: 2Gi
+    accessModes:
+        - ReadWriteMany
+    hostPath:
+        path: /SaturnPool/Kubernetes/Sonarr

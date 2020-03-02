@@ -1,0 +1,3 @@
+---
+# vars file for deploy_openebs
+openebs_manifest_url: 'https://openebs.github.io/charts/openebs-operator-1.7.0.yaml'
