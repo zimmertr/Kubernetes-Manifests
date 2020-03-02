@@ -1,0 +1,16 @@
+---
+# tasks file for prepare_os
+
+- name: Installing package dependencies.
+  yum:
+    name: iscsi-initiator-utils
+    state: latest
+
+- name: Enabling the iscsid Systemd unit.
+  systemd:
+    state: started
+    enabled: yes
+    name: iscsid
+
+- name: Setting the admin context for the kubectl.
+  command: kubectl config use-context kubernetes-admin@kubernetes

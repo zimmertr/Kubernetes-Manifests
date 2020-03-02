@@ -2,10 +2,12 @@
 namespace: 'personal-website'
 
 # The MetalLB Address Pool from which you want to obtain an IP address.
-load_balancer_address_pool: 'VLAN60'
+#load_balancer_address_pool: 'VLAN60'
+load_balancer_address_pool: 'layer2'
 
 # The IP address within the Address Pool to which you want to bind the service.
-load_balancer_ip: '192.168.60.10'
+#load_balancer_ip: '192.168.60.10'
+load_balancer_ip: '192.168.40.210'
 
 # The hostname with which you want to test connectivity to the IP Address after the deployment has completed.
 hostname: 'nix.sol.milkyway'
@@ -17,10 +19,10 @@ nfs_server: 'saturn.sol.milkyway'
 public_files_dir: '/SaturnPool/Kubernetes/Apache/Files'
 
 # The Google Analytics tracking ID to be used for monitoring website traffic.
-google_analytics_tracking_id: 'TRACKINGID'
+google_analytics_tracking_id: 'UA-123281732-1'
 
 # The Wunderground API Key to be used for weather-related metrics.
-wunderground_api_key: 'APIKEY'
+wunderground_api_key: '2462a69f2083cd5a'
 
 # The resource limitations for the pods.
 # 1 = 1 vCPU affinity
