@@ -1,35 +1,16 @@
-# Kubernetes Manifests 
+# Kubernetes Manifests
 
 ## Summary
 
-A collection of Kubernetes Manifests used to deploy common enterprise and homelab-related software. Fully automated and declarative via Ansible. Personally used in conjunction with my home [Kubernetes Cluster](https://github.com/zimmertr/Bootstrap-Kubernetes-with-QEMU).
+A collection of Kustomize projects for deploying applications to Kubernetes.
 
-All projects require that your Kubernetes cluster has a Load Balancer integration and the ability to bind with an NFS server. I use [MetalLB](https://metallb.universe.tf) and [NFS-Provisioner](https://github.com/kubernetes-incubator/external-storage/tree/master/nfs-client), both of which can be deployed to your cluster automatically using these Ansible projects:
+### Pre-Instructions
 
-* [MetalLB](https://github.com/zimmertr/Bootstrap-Kubernetes-with-QEMU/blob/master/playbooks/optional/deploy_metallb.yml)
-* [NFS-Provisioner](https://github.com/zimmertr/Bootstrap-Kubernetes-with-QEMU/blob/master/playbooks/optional/deploy_nfs_provisioner.yml)
+# SSH
 
-It is necessary to create the directories used for your Persistent Volumes on your NFS server before deploying a project. If you do not do this, then the PVCs will never be able to bind to your server. For example, before deploying Jira Software, I would run the following command against my NFS Server: 
+### OpenEBS
 
-`$> mkdir -p /SaturnPool/Kubernetes/Jira/{postgres,data}`
-
-## Projects
-
-*Click on a link for additional project information.*
-
-| Project | Notes |
-| ------- | ------------ |
-| [Atlassian Confluence](Confluence/) | * Requires at least a [trial license](https://www.atlassian.com/software/confluence/pricing?tab=self-managed)<br> * Application is particularly resource intensive. |
-| [Atlassian Jira Software](Jira_Software/) | * Requires at least a [trial license](https://www.atlassian.com/software/jira/pricing?tab=self-managed)<br> * Application is particularly resource intensive. |
-| [Deluge](Deluge/) | |
-| [Grafana](Grafana/) | * Postgres starts up slower than Grafana, `crashloopbackoff` will occur.<br> * Will resolve itself after Postgres accepts connections and Grafana retries. |
-| [Grocy](Grocy/) | |
-| [Nextcloud](Nextcloud/) | * Has a very long start up time. |
-| [OpenVPN Access Server](OpenVPN-as/) | * Has a very long start up time.<br> * Has NET_ADMIN capabilities over the worker node. |
-| [Personal Website](Personal_Website/) | |
-| [Piwigo](Piwigo/) | |
-| [Plex Media Server](Plex/) | * Application is particularly resource intensive. |
-| [Radarr](Radarr/) | |
-| [Sonarr](Sonarr/) | |
-| [Tautulli](Tautulli/) | * Requires a Plex Media Server deployment to use. |
-| [Unifi Controller](Unifi_Controller/) | |
+1. OpenEBS requires that you install dependencies on the operating systems of the worker nodes prior to installation.
+```
+ansible-playbook -i ansible/inventory.ini ansible/deploy_openebs.yml
+```
