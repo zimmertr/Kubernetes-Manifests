@@ -8,4 +8,4 @@ spec:
     accessModes:
         - ReadWriteMany
     hostPath:
-        path: /SaturnPool/Kubenretes/Jira/postgres
+        path: /SaturnPool/Kubernetes/Jira/postgres
