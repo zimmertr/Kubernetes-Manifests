@@ -19,6 +19,8 @@ spec:
                   # 9.4 is the highest supported build. Jira will reject any newer database.
                   image: postgres:9.4
                   envFrom:
+                  - configMapRef:
+                      name: env-vars
                   - secretRef:
                       name: jira-postgres-password
                   ports:
