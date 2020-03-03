@@ -25,6 +25,7 @@ configMapGenerator:
         - ATL_JDBC_USER="jira"
         - JVM_MAXIMUM_MEMORY=8096m
         - JVM_MINIMUM_MEMORY=1024m
+        - POSTGRES_USER=jira
 
 secretGenerator:
     - name: jira-postgres-password
