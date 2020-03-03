@@ -18,12 +18,23 @@ spec:
                 - name: postgres-wait
                   image: postgres
                   command: ['sh', '-c', 'until pg_isready -h postgres -p 5432 -U jira; do sleep 1; done;']
+                - name: fix-permissions
+                  image: busybox
+                  command: ["sh", "-c", "chown -cR 2001:2001 /var/atlassian/"]
+                  volumeMounts:
+                      - name: jira-data
+                        mountPath: /var/atlassian/application-data/jira
             containers:
                 - name: jira
+                  securityContext:
+                    runAsUser: 2001
+                    runAsGroup: 2001
                   image: atlassian/jira-software:latest
                   envFrom:
                   - configMapRef:
                       name: env-vars
+                  - secretRef:
+                      name: jira-postgres-password
                   ports:
                       - name: "http-web"
                         containerPort: 8080
