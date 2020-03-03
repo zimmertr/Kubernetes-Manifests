@@ -2,12 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
     name: confluence
-    namespace: {{ namespace }}
-    labels:
-        app: confluence
-        version: latest
-        type: official
-        facing: internal
 spec:
     replicas: 1
     strategy:
@@ -19,28 +13,28 @@ spec:
         metadata:
             labels:
                 app: confluence
-        spec:   
+        spec:
             initContainers:
                 - name: postgres-wait
                   image: postgres
                   command: ['sh', '-c', 'until pg_isready -h postgres -p 5432 -U confluence; do sleep 1; done;']
+                - name: fix-permissions
+                  image: busybox
+                  command: ["sh", "-c", "chown -cR 2002:2002 /var/atlassian/"]
+                  volumeMounts:
+                      - name: confluence-data
+                        mountPath: /var/atlassian/application-data/confluence
             containers:
                 - name: confluence
+                  securityContext:
+                    runAsUser: 2002
+                    runAsGroup: 2002
                   image: atlassian/confluence-server
-                  env:
-                      - name: ATL_DB_TYPE
-                        value: "postgresql"
-                      - name: ATL_JDBC_URL
-                        value: "jdbc:postgresql://postgres:5432/confluence"
-                      - name: ATL_JDBC_USER
-                        value: "confluence"
-                      - name: ATL_JDBC_PASSWORD
-                        valueFrom:
-                            secretKeyRef:
-                                key: postgres_password
-                                name: confluence-postgres-password
-                      - name: JVM_MAXIMUM_MEMORY
-                        value: {{ confluence_mem_limit }}m
+                  envFrom:
+                  - configMapRef:
+                      name: confluence-env-vars
+                  - secretRef:
+                      name: confluence-postgres-password
                   ports:
                       - name: "http-web"
                         containerPort: 8090
@@ -53,11 +47,11 @@ spec:
                         mountPath: /var/atlassian/application-data/confluence
                   resources:
                       requests:
-                          cpu: {{ confluence_cpu_request }}
-                          memory: {{ confluence_mem_request }}Mi
+                          cpu: .5
+                          memory: "1024Mi"
                       limits:
-                          cpu: {{ confluence_cpu_limit }}                        
-                          memory: {{ confluence_mem_limit }}Mi
+                          cpu: 2
+                          memory: "8096Mi"
             volumes:
                 - name: confluence-data
                   persistentVolumeClaim:

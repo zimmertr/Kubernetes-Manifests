@@ -3,4 +3,4 @@
 #openebs_manifest_url: ''
 
 # Uncomment to enable ZFS Driver.
-deploy_zfs_driver: true
+#deploy_zfs_driver: true
