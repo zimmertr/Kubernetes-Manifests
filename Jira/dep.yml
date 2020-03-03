@@ -32,7 +32,7 @@ spec:
                   image: atlassian/jira-software:latest
                   envFrom:
                   - configMapRef:
-                      name: env-vars
+                      name: jira-env-vars
                   - secretRef:
                       name: jira-postgres-password
                   ports:
