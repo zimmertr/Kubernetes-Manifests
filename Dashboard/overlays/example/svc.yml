@@ -1,0 +1,14 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: kubernetes-dashboard
+spec:
+  type: LoadBalancer
+  selector:
+      k8s-app: kubernetes-dashboard
+  loadBalancerIP: 192.168.20.215
+  ports:
+    - name: "http-web"
+      protocol: TCP
+      port: 8443
+      targetPort: 8443

@@ -1,0 +1,9 @@
+galaxy_info:
+  author: TJ Zimmerman
+  description: Generate the certificates required for a Kubernetes Dashboard.
+  license: GPL-3.0-only
+  min_ansible_version: 2.9
+  platforms:
+  - name: CentOS
+    versions:
+    - 7.7
