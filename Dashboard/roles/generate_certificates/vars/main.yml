@@ -1,0 +1,4 @@
+---
+# vars file for generate_certificates
+
+#subject_alt_name: 'DNS:amalthea'
