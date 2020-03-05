@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: radarr
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: radarr
+    template:
+        metadata:
+            labels:
+                app: radarr
+        spec:
+            containers:
+                - name: radarr
+                  image: linuxserver/radarr:latest
+                  ports:
+                      - name: "http-web"
+                        containerPort: 7878
+                        protocol: TCP

@@ -1,0 +1,24 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+bases:
+    - ../../base/
+
+resources:
+    - pv.yml
+    - pvc.yml
+
+patchesStrategicMerge:
+    - dep.yml
+    - svc.yml
+
+namespace: radarr
+
+commonLabels:
+    app: radarr
+
+configMapGenerator:
+    - name: radarr-env-vars
+      literals:
+        - TZ='America/Los_Angeles'
+        - PUID='1002'
+        - PGID='1007'

@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: tautulli
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: tautulli
+    template:
+        metadata:
+            labels:
+                app: tautulli
+        spec:
+            containers:
+                - name: tautulli
+                  image: linuxserver/tautulli:latest
+                  ports:
+                      - name: "http-web"
+                        containerPort: 8181
+                        protocol: TCP
