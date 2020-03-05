@@ -3,17 +3,14 @@ kind: Service
 metadata:
     name: openvpn-udp
     annotations:
-        metallb.universe.tf/address-pool: {{ load_balancer_address_pool }}
-        metallb.universe.tf/allow-shared-ip: "true" 
-    namespace: {{ namespace }}
+        metallb.universe.tf/allow-shared-ip: "true"
     labels:
         app: openvpn
 spec:
     type: LoadBalancer
-    externalTrafficPolicy: Local
     selector:
         app: openvpn
-    loadBalancerIP: {{ load_balancer_ip }}
+    loadBalancerIP: 192.168.20.237
     ports:
     - name: "udp-traffic"
       protocol: UDP
