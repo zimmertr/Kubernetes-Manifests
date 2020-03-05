@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: deluge
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: deluge
+    template:
+        metadata:
+            labels:
+                app: deluge
+        spec:
+            containers:
+                - name: deluge
+                  image: linuxserver/deluge:latest
+                  envFrom:
+                  ports:
+                      - name: "http-deluge-web"
+                        containerPort: 8112
+                        protocol: TCP
