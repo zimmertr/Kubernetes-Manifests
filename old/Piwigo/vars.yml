@@ -1,0 +1,44 @@
+# The namespace to be created and used for the deployment.
+namespace: 'piwigo'
+
+# The MetalLB Address Pool from which you want to obtain an IP address.
+load_balancer_address_pool: 'VLAN50'
+
+# # The IP address within the Address Pool to which you want to bind the service.
+load_balancer_ip: '192.168.50.90'
+
+# The hostname with which you want to test connectivity to the IP Address after the deployment has completed.
+hostname: 'callisto.sol.milkyway'
+
+# The timezone of the location for the deployment.
+# https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+timezone: 'America/Los_Angeles'
+
+# The hostname or IP address of the NFS server on which you want to store Persistent Volume content.
+nfs_server: 'saturn.sol.milkyway'
+
+# The UID used for accessing content on the fileserver.
+fileserver_uid: '1002'
+
+# The GID used for accessing content on the fileserver.
+fileserver_gid: '1007'
+
+# The NFS mountpoint to be used for preserving the configuration of the application.
+config_dir: '/SaturnPool/Kubernetes/Piwigo/config'
+
+# The NFS mountpoint to be used for preserving the MySQL database for the application.
+mysql_dir: '/SaturnPool/Kubernetes/Piwigo/data'
+
+# The NFS mountpoint to be used for hosting photos from your NFS Server on Piwigo.
+photo_dir: '/SaturnPool/Pictures'
+
+# The password for the MySQL database used to store your NextCloud metadata.
+mysql_password: 'REPLACEME'
+
+# The resource limitations for the pods.
+# 1 = 1 vCPU affinity
+piwigo_cpu_limit: '.5'
+mysql_cpu_limit: '.5'
+
+piwigo_mem_limit: '1024Mi'
+mysql_mem_limit: '1024Mi'
