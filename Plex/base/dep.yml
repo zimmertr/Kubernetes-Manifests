@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: plex
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: plex
+    template:
+        metadata:
+            labels:
+                app: plex
+        spec:
+            containers:
+                - name: plex
+                  image: plexinc/pms-docker:latest
+                  envFrom:
+                  - configMapRef:
+                      name: plex-env-vars
+                  ports:
+                      - name: "dlna-server-udp"
+                        containerPort: 1900
+                        protocol: UDP
+                      - name: "gdm-discovery-1"
+                        containerPort: 32410
+                        protocol: UDP
+                      - name: "gdm-discovery-2"
+                        containerPort: 32412
+                        protocol: UDP
+                      - name: "gdm-discovery-3"
+                        containerPort: 32413
+                        protocol: UDP
+                      - name: "gdm-discovery-4"
+                        containerPort: 32414
+                        protocol: UDP
+                      - name: "plex-home-thetr"
+                        containerPort: 3005
+                        protocol: TCP
+                      - name: "plex-roku-contr"
+                        containerPort: 8324
+                        protocol: TCP
+                      - name: "http-web"
+                        containerPort: 32400
+                        protocol: TCP
+                      - name: "dlna-server-tcp"
+                        containerPort: 32469
+                        protocol: TCP
