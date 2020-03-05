@@ -19,7 +19,7 @@ spec:
                   image: plexinc/pms-docker:latest
                   envFrom:
                   - configMapRef:
-                      name: env-vars
+                      name: plex-env-vars
                   ports:
                       - name: "dlna-server-udp"
                         containerPort: 1900
