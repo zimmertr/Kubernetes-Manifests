@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+    name: tautulli-config
+spec:
+    accessModes:
+        - ReadWriteMany
+    resources:
+        requests:
+            storage: 2Gi
+    volumeName: tautulli-config
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+    name: tautulli-plex
+spec:
+    accessModes:
+        - ReadWriteMany
+    resources:
+        requests:
+            storage: 2Gi
+    volumeName: tautulli-plex

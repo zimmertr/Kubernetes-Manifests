@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+    name: tautulli
+spec:
+    type: LoadBalancer
+    externalTrafficPolicy: Local
+    selector:
+        app: tautulli
+    loadBalancerIP: 192.168.20.246
+    ports:
+    - name: "http-web"
+      protocol: TCP
+      targetPort: 8181
+      port: 8181

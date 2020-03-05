@@ -79,7 +79,7 @@ There are a few ways to deploy the Kubernetes Dashboard using this project.
 ```bash
    ansible-playbook deploy_dashboard.yml
    kubectl -n kubernetes-dashboard describe secret $(kubectl -n kubernetes-dashboard get secret | grep REPLACEME | awk '{print $1}')
-   ```
+```
 
 ### MetalLB
 
@@ -117,3 +117,6 @@ Plex is a highly personalized application to deploy. Therefore, the `base` will 
    kubectl apply -k Plex/overlays/myoverlay
    ```
 
+### Tautulli
+
+My deployment of Tatulli assumes I want to monitor a Plex log directory. I assume yours does to. So you will need to modify the `pv.yml` to point to your specific storage location. Furthermore, you will need to modify the `svc.yml` according to your network configuration.

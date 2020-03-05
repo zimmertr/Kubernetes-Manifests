@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: personal-website
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: personal-website
+    template:
+        metadata:
+            labels:
+                app: personal-website
+        spec:
+            containers:
+                - name: weatherpy
+                  image: zimmertr/weatherpy:latest
+                - name: statsbot
+                  image: zimmertr/statsbot:latest
+                - name: httpd
+                  image: zimmertr/personal-website:latest
+                  ports:
+                      - name: "http-apache"
+                        containerPort: 80
+                        protocol: TCP
