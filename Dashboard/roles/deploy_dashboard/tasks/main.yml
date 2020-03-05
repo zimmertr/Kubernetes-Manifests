@@ -1,0 +1,19 @@
+---
+# tasks file for deploy_dashboard
+
+- name: Deploying the Dashboard.
+  shell: kubectl apply -k overlays/example
+
+- name: Removing the existing certificates Secret for the Dashboard.
+  shell: kubectl delete secret -n kubernetes-dashboard kubernetes-dashboard-certs
+
+- name: Creating a Secret to hold the Certificates.
+  shell: kubectl create secret generic kubernetes-dashboard-certs --from-file=/tmp/dashboard_cert -n kubernetes-dashboard
+
+- name: Deleting the existing Dashboard pod to reload the certificate.
+  shell: kubectl delete pod -n kubernetes-dashboard -l k8s-app=kubernetes-dashboard
+
+- name: Deleting the temporary Dashboard Certs directory.
+  file:
+    path: /tmp/dashboard_cert
+    state: absent
