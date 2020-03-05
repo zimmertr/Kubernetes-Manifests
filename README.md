@@ -2,7 +2,7 @@
 
 ## Summary
 
-A collection of Kustomize projects to deploy complex enterprise software to Kubernetes. 
+A collection of Kustomize projects to deploy complex enterprise software to Kubernetes.
 
 <hr>
 
@@ -10,11 +10,13 @@ A collection of Kustomize projects to deploy complex enterprise software to Kube
 
 ## Instructions
 
-To deploy an application, create a Kustomize overlay and populate it with your patches. Then run:
+Most of the time you can deploy an application with a default Kustomization spec.
 
 ```bash
-kubectl apply -k >Application</Overlay
+kubectl apply -k Application/base
 ```
+
+However, in some instances you may want to create a personal overlay or even use Ansible for a little extra lift in deploying a complex application. Those situations are documented below in both `Storage Notes` and `Special Notes`.
 
 <hr>
 
@@ -22,7 +24,7 @@ kubectl apply -k >Application</Overlay
 
 ## Storage Notes
 
-It is bad practice to run processes within containers as root. When people develop container images they often avoid this by running the proccess as a specific user. Sometimes this value is configurable via an enviroment variable and some time it is not. Be sure to consult this table to determine the user account you should be using. In these situations, you will have to `chown` the files on your backing storage before exposing them to Kubernetes via Persistent Volumes. Otherwise your pod will have permissions issues. In most situations you will also need to modify the environment variables set in the `kustomization.yml` file before deploying. 
+It is bad practice to run a process within a container as root. Some container image providers run their process as a specific unprivileged users. In some situations, the user and group ID for this user are configurable with Environment Variables. Other times, the developer will require you to conform the file ownership of your volumes to their schema. In either case, the applications that are affected by this are documented in the table below.
 
 | Application | Description                                                  |
 | ----------- | ------------------------------------------------------------ |
@@ -34,7 +36,7 @@ It is bad practice to run processes within containers as root. When people devel
 | Sonarr      | `chown` your mounted data to a single UID/GID and set the variables in `kustomization.yml`. |
 | Tautulli    | `chown` your mounted data to a single UID/GID and set the variables in `kustomization.yml`. |
 
-<hr> 
+<hr>
 
 
 
@@ -44,9 +46,44 @@ It is bad practice to run processes within containers as root. When people devel
 
 Modify both of the variables within `postgres_password` to have a unique password. The password should be **the same** for both variables as they represent the Postgres password created for the application's database. They are both simply the unique environment variable that their respective container is hardcoded to receive.
 
+## Dashboard
+
+There are a few ways to deploy the Kubernetes Dashboard using this project.
+
+1. Deploy the Dashboard the default way:
+
+   ```bash
+   kubectl apply -k Dashboard/base
+   ```
+
+2. Deploy the Dashboard and add a new Service Account and ClusterRoleBinding in an overlay to allow you to log into the Dashboard as an administrative user.
+
+   1. Copy `Dashboard/overlays/example` to `Dashboard/overlays/myoverlay` and delete `svc.yml` from the directory. Modify the `kustomization.yml` file in your overlay to not include this file in the `resources` section.
+   2. Optionally remove `dep.yml` as well. This is included to provide a single argument to the Dashboard container that prevents it from timing out.
+   3. Modify the value for `name` in `crb.yml` and `sa.yml` to refer to your personal username.
+   4. Deploy the Dashboard using your custom overlay, retrieve the authentication token, and proxy the Dashboard to your workstation. Be sure to replace `REPLACEME` with your chosen username:
+
+   ```bash
+   kubectl apply -k Dashboard/overlays/myoverlay
+   kubectl -n kubernetes-dashboard describe secret $(kubectl -n kubernetes-dashboard get secret | grep REPLACEME | awk '{print $1}')
+   kubectl proxy
+   ```
+
+3. Deploy the Dashboard and allow external access through a Load Balancer.
+
+   1. Copy `Dashboard/overlays/example` to `Dashboard/overlays/myoverlay` and modify the value for `loadBalancerIp` in `svc.yml` to the IP Address to which you wish to bind the service.
+   2. Modify the value for `name` in `crb.yml` and `sa.yml` to refer to your personal username.
+   4. Uncomment and update the `subject_alt_name`  variable in `Dashboard/roles/generate_certificates/vars/main.yml`  to be the hostname or IP Address of your load balancer.
+   5. Deploy the Dashboard using Ansible , expose it with a Load Balancer, and retrieve the authentication token:
+   
+```bash
+   ansible-playbook deploy_dashboard.yml
+   kubectl -n kubernetes-dashboard describe secret $(kubectl -n kubernetes-dashboard get secret | grep REPLACEME | awk '{print $1}')
+   ```
+
 ### MetalLB
 
-Be sure to modify the ConfigMap according to your environment. MetalLB operates in both Layer2 and BGP and your configuration may differ drastically. 
+Be sure to modify the ConfigMap according to your environment. MetalLB operates in both Layer2 and BGP and your configuration may differ drastically.
 
 ### OpenEBS
 
@@ -62,4 +99,21 @@ Honestly this container is in rough shape and you're better off not messing with
 
 ### Plex
 
-Be sure to modify the environment varibles present within `kustomization.yml`. You will need to replace the contents of `PLEX_CLAIM` immediatly before deploying as the token that is generated at https://www.plex.tv/claim/ expires after 4 minutes. Depending on your network connection and computing resources you may cut it close. 
+Plex is a highly personalized application to deploy. Therefore, the `base` will not function in your environment as is. At the very least you will need to provide it several `PersistentVolume` resources to point to your media. This can be done by creating an overlay.
+
+1. Copy `Plex/overlays/example` to `Plex/overlays/myoverlay`.
+
+2. Update the Environmnet Variables present in `kustomization.yml` to reflect your environment. Be sure to obtain a Plex Claim token within 4 minutes of deploying the application or it will expire.
+
+3. Update `svc_tcp.yml` and `svc_udp.yml` according to your environment. My environment exposes each app with a virtual load balancer.
+
+4. Update `pv.yml` and `pvc.yml` to point to all of your personal media. You may add or remove as many volumes as you wish.
+
+5. Update `dep.yml` to point to all of your new Persistent Volumes.
+
+6. Deploy Plex using your custom overlay:
+
+   ```bash
+   kubectl apply -k Plex/overlays/myoverlay
+   ```
+
