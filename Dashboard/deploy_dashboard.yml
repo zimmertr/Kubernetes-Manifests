@@ -1,0 +1,10 @@
+---
+- hosts: localhost
+  tasks:
+    - include_role:
+        name: "{{ role }}"
+      loop:
+        - generate_certificates
+        - deploy_dashboard
+      loop_control:
+        loop_var: role
