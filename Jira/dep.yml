@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: jira
+spec:
+    replicas: 1
+    strategy:
+        type: Recreate
+    selector:
+        matchLabels:
+            app: jira
+    template:
+        metadata:
+            labels:
+                app: jira
+        spec:
+            initContainers:
+                - name: postgres-wait
+                  image: postgres
+                  command: ['sh', '-c', 'until pg_isready -h postgres -p 5432 -U jira; do sleep 1; done;']
+                - name: fix-permissions
+                  image: busybox
+                  command: ["sh", "-c", "chown -cR 2001:2001 /var/atlassian/"]
+                  volumeMounts:
+                      - name: jira-data
+                        mountPath: /var/atlassian/application-data/jira
+            containers:
+                - name: jira
+                  securityContext:
+                    runAsUser: 2001
+                    runAsGroup: 2001
+                  image: atlassian/jira-software:latest
+                  envFrom:
+                  - configMapRef:
+                      name: jira-env-vars
+                  - secretRef:
+                      name: jira-postgres-password
+                  ports:
+                      - name: "http-web"
+                        containerPort: 8080
+                        protocol: TCP
+                  volumeMounts:
+                      - name: jira-data
+                        mountPath: /var/atlassian/application-data/jira
+                  resources:
+                      requests:
+                          cpu: .5
+                          memory: "1024Mi"
+                      limits:
+                          cpu: 2
+                          memory: "8096Mi"
+            volumes:
+                - name: jira-data
+                  persistentVolumeClaim:
+                    claimName: jira-data

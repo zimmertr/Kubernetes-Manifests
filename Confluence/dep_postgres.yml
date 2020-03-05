@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: postgres
+spec:
+    replicas: 1
+    strategy:
+        type: Recreate
+    selector:
+        matchLabels:
+            app: postgres
+    template:
+        metadata:
+            labels:
+                app: postgres
+        spec:
+            containers:
+                # 9.6 is the highest supported build. Confluence will reject any newer database.
+                - name: postgres
+                  image: postgres:9.6
+                  envFrom:
+                  - configMapRef:
+                      name: confluence-env-vars
+                  - secretRef:
+                      name: confluence-postgres-password
+                  ports:
+                      - name: "tcp-postgres"
+                        containerPort: 5432
+                        protocol: TCP
+                  volumeMounts:
+                      - name: confluence-postgres-data
+                        mountPath: /var/lib/postgresql/data
+                  resources:
+                      limits:
+                          cpu: .5
+                          memory: "512Mi"
+            volumes:
+                - name: confluence-postgres-data
+                  persistentVolumeClaim:
+                    claimName: confluence-postgres-data
