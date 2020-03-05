@@ -43,9 +43,9 @@ It is bad practice to run a process within a container as root. Some container i
 
 Modify both of the variables within `postgres_password` to have a unique password. The password should be **the same** for both variables as they represent the Postgres password created for the application's database. They are both simply the unique environment variable that their respective container is hardcoded to receive.
 
-## Dashboard
+### Dashboard
 
-There are a few ways to deploy the Kubernetes Dashboard using this project.
+There are a few ways to deploy the Kubernetes Dashboard using this project. 
 
 1. Deploy the Dashboard the default way:
 
@@ -78,9 +78,19 @@ There are a few ways to deploy the Kubernetes Dashboard using this project.
    kubectl -n kubernetes-dashboard describe secret $(kubectl -n kubernetes-dashboard get secret | grep REPLACEME | awk '{print $1}')
 ```
 
+### Deluge
+
+You will need to provide an overlay to configure your environment variables, persistent storage, and networking.
+
+### Sonarr
+
+You will need to provide an overlay to configure your environment variables, persistent storage, and networking.
+
 ### MetalLB
 
-Be sure to modify the ConfigMap according to your environment. MetalLB operates in both Layer2 and BGP and your configuration may differ drastically.
+Be sure to modify the ConfigMap according to your environment. MetalLB operates in both Layer2 and BGP and your configuration may differ drastically. See here for more information and examples:
+
+https://metallb.universe.tf/configuration/
 
 ### OpenEBS
 
@@ -89,6 +99,29 @@ OpenEBS requires that you install dependencies on the operating systems of the w
 ```bash
 ansible-playbook -i ansible/inventory.ini ansible/deploy_openebs.yml
 ```
+
+### OpenVPN Access Server
+
+OpenVPN is a complicated application to configure when using virtualized networking. The basic gist of it is:
+
+1. Configure your overlay as usual and deploy the application.
+
+   ```bash
+   kubectl apply -k OpenVPN-as/overlays/example
+   ```
+
+2. Log in with the default credentials: `admin` : `password`.
+3. Read the License Agreement and click `Agree` to continue.
+4. Click `User Management` -> `User Permissions` and create a new user.
+   * Click the `Admin` checkbox for this user.
+   * Click the `More Settings` button and enter a `Local Password` for the user.
+   * Click `Save Settings` to submit the new user configuration.
+5. Log out of the Access Server and log in with your new user account. Return to the `User Permissions` page and check the `Delete` checkbox for the Admin user. Click `Save Settings` to finish removing this user account.
+6. Click `Configuration` -> `Network Settings` and update the `Hostname or IP Address` field to the hostname that clients will use to connect to the VPN. Click `Save Settings`.
+7. Click `VPN Settings` and update the configuration areas according to your environment. Click `Save Settings`. 
+   * At the bare minimum you will likely update the Routing section to include your specific subnets.
+8. Click `Web Server` and upload your certificate information. Click `Save` and then click `Update Running Server` to apply the changes to the server.
+   * You may lose access for several seconds and you will need to log in again after the server restarts. 
 
 ### Personal Website
 
@@ -113,6 +146,14 @@ Plex is a highly personalized application to deploy. Therefore, the `base` will 
    ```bash
    kubectl apply -k Plex/overlays/myoverlay
    ```
+
+### Radarr
+
+You will need to provide an overlay to configure your environment variables, persistent storage, and networking.
+
+### Sonarr
+
+You will need to provide an overlay to configure your environment variables, persistent storage, and networking.
 
 ### Tautulli
 
