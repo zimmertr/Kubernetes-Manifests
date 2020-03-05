@@ -2,12 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
     name: openvpn
-    namespace: {{ namespace }}
-    labels:
-        app: openvpn
-        version: latest
-        type: third-party
-        facing: external
 spec:
     replicas: 1
     strategy:
@@ -19,21 +13,17 @@ spec:
         metadata:
             labels:
                 app: openvpn
-        spec:         
+        spec:
             containers:
                 - name: openvpn
                   image: linuxserver/openvpn-as:latest
+                  envFrom:
+                    - configMapRef:
+                        name: openvpn-env-vars
                   securityContext:
                       capabilities:
                         add:
                           - NET_ADMIN
-                  env:
-                      - name: PUID
-                        value: "{{ fileserver_uid }}"
-                      - name: PGID
-                        value: "{{ fileserver_gid }}"
-                      - name: TZ
-                        value: "{{ timezone }}"
                   ports:
                       - name: "http-web"
                         containerPort: 943
@@ -49,8 +39,8 @@ spec:
                         mountPath: /config
                   resources:
                       limits:
-                          cpu: {{ cpu_limit }}                        
-                          memory: {{ mem_limit }}
+                          cpu: .1
+                          memory: 1024Mi
             volumes:
                 - name: openvpn-config
                   persistentVolumeClaim:
