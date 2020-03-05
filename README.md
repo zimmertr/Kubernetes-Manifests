@@ -10,13 +10,10 @@ A collection of Kustomize projects to deploy complex enterprise software to Kube
 
 ## Instructions
 
-Most of the time you can deploy an application with a default Kustomization spec.
-
-```bash
-kubectl apply -k Application/base
+Create a copy of the example overlay for each application and modify it according to your environment. When necessary, take further actions according to the notes below. Deploy the application using Kustomize. For example:
 ```
-
-However, in some instances you may want to create a personal overlay or even use Ansible for a little extra lift in deploying a complex application. Those situations are documented below in both `Storage Notes` and `Special Notes`.
+kubectl apply -k Confluence/overlays/example
+```
 
 <hr>
 
@@ -75,7 +72,7 @@ There are a few ways to deploy the Kubernetes Dashboard using this project.
    2. Modify the value for `name` in `crb.yml` and `sa.yml` to refer to your personal username.
    4. Uncomment and update the `subject_alt_name`  variable in `Dashboard/roles/generate_certificates/vars/main.yml`  to be the hostname or IP Address of your load balancer.
    5. Deploy the Dashboard using Ansible , expose it with a Load Balancer, and retrieve the authentication token:
-   
+
 ```bash
    ansible-playbook deploy_dashboard.yml
    kubectl -n kubernetes-dashboard describe secret $(kubectl -n kubernetes-dashboard get secret | grep REPLACEME | awk '{print $1}')
