@@ -14,9 +14,8 @@
   openssl_csr:
     path: /tmp/dashboard_cert/dashboard.csr
     privatekey_path: /tmp/dashboard_cert/dashboard.key
-    common_name: kubernetes-dashboard
-    subject_alt_name:
-      - "{{ subject_alt_name }}"
+    common_name: "{{ common_name }}"
+    subject_alt_name: '{{ subject_alt_name }}'
 
 - name: Creating a Certificate for the Dashboard.
   openssl_certificate:
