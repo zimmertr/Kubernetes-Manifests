@@ -6,11 +6,13 @@ bases:
 resources:
     - pv.yml
     - pvc.yml
+    - rq.yml
 
 patchesStrategicMerge:
     - dep.yml
     - svc_tcp.yml
     - svc_udp.yml
+    - ns.yml
 
 namespace: openvpn
 

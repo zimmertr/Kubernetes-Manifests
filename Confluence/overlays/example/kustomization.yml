@@ -6,11 +6,13 @@ bases:
 resources:
     - pv.yml
     - pvc.yml
+    - rq.yml
 
 patchesStrategicMerge:
     - dep.yml
     - dep_postgres.yml
     - svc.yml
+    - ns.yml
 
 namespace: confluence
 
@@ -23,7 +25,7 @@ configMapGenerator:
         - ATL_DB_TYPE="postgresql"
         - ATL_JDBC_URL="jdbc:postgresql://postgres:5432/confluence"
         - ATL_JDBC_USER="confluence"
-        - JVM_MAXIMUM_MEMORY=8096m
+        - JVM_MAXIMUM_MEMORY=4096m
         - JVM_MINIMUM_MEMORY=1024m
         - POSTGRES_USER=confluence
 

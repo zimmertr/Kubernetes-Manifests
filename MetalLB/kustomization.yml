@@ -5,3 +5,6 @@ namespace: metallb-system
 resources:
   - https://github.com/danderson/metallb//manifests?ref=v0.8.3
   - configmap.yml
+
+patchesStrategicMerge:
+  - ns.yml

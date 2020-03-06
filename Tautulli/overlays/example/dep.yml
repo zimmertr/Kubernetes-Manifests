@@ -29,10 +29,10 @@ spec:
                         mountPath: /config
                       - name: tautulli-plex
                         mountPath: /logs
-                  resources:
-                      limits:
-                          cpu: .5
-                          memory: "4096Mi"
+                  # resources:
+                  #     limits:
+                  #         cpu: .5
+                  #         memory: "4096Mi"
             volumes:
                 - name: tautulli-config
                   persistentVolumeClaim:

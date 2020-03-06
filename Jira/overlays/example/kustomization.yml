@@ -11,6 +11,7 @@ patchesStrategicMerge:
     - dep.yml
     - dep_postgres.yml
     - svc.yml
+    - ns.yml
 
 namespace: jira
 
@@ -24,7 +25,7 @@ configMapGenerator:
         - ATL_DB_DRIVER="org.postgresql.Driver"
         - ATL_JDBC_URL="jdbc:postgresql://postgres:5432/jira"
         - ATL_JDBC_USER="jira"
-        - JVM_MAXIMUM_MEMORY=8096m
+        - JVM_MAXIMUM_MEMORY=4096m
         - JVM_MINIMUM_MEMORY=1024m
         - POSTGRES_USER=jira
 

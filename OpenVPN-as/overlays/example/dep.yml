@@ -37,10 +37,6 @@ spec:
                   volumeMounts:
                       - name: openvpn-config
                         mountPath: /config
-                  resources:
-                      limits:
-                          cpu: .1
-                          memory: 1024Mi
             volumes:
                 - name: openvpn-config
                   persistentVolumeClaim:

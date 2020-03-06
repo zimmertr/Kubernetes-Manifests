@@ -30,10 +30,6 @@ spec:
                   volumeMounts:
                       - name: confluence-postgres-data
                         mountPath: /var/lib/postgresql/data
-                  resources:
-                      limits:
-                          cpu: .5
-                          memory: "512Mi"
             volumes:
                 - name: confluence-postgres-data
                   persistentVolumeClaim:
