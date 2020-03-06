@@ -1,4 +1,5 @@
 ---
 # defaults file for generate_certificates
 
-subject_alt_name: 'DNS:amalthea'
+common_name: amalthea.sol.milkyway
+subject_alt_name: 'DNS:amalthea,DNS:kubernetes-dashboard'
