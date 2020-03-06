@@ -45,13 +45,6 @@ spec:
                   volumeMounts:
                       - name: confluence-data
                         mountPath: /var/atlassian/application-data/confluence
-                  resources:
-                      requests:
-                          cpu: .5
-                          memory: "1024Mi"
-                      limits:
-                          cpu: 2
-                          memory: "8096Mi"
             volumes:
                 - name: confluence-data
                   persistentVolumeClaim:

@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: deluge
+spec:
+  hard:
+    requests.cpu: "100m"
+    requests.memory: 6000Mi
+    limits.cpu: "250m"
+    limits.memory: 8000Mi
