@@ -63,13 +63,10 @@ spec:
                         mountPath: /anime
                       - name: plex-unsorted
                         mountPath: /unsorted
-                  resources:
-                      requests:
-                          memory: 2048Mi
-                          cpu: 1
-                      limits:
-                          memory: 10240Mi
-                          cpu: 6
+                  # resources:
+                  #     limits:
+                  #         memory: 10240Mi
+                  #         cpu: 6
             volumes:
                 - name: plex-audiobooks
                   persistentVolumeClaim:

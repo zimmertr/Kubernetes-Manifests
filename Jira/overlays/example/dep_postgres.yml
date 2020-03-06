@@ -30,10 +30,6 @@ spec:
                   volumeMounts:
                       - name: jira-postgres-data
                         mountPath: /var/lib/postgresql/data
-                  resources:
-                      limits:
-                          cpu: .5
-                          memory: "512Mi"
             volumes:
                 - name: jira-postgres-data
                   persistentVolumeClaim:

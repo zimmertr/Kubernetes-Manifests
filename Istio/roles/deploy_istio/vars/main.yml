@@ -1,0 +1,4 @@
+---
+# vars file for deploy_istio
+
+#istio_version='1.5.0'

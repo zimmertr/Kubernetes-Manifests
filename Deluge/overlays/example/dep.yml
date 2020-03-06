@@ -38,13 +38,6 @@ spec:
                         mountPath: /downloads
                       - name: deluge-fileserver
                         mountPath: /SaturnPool
-                  resources:
-                      requests:
-                          memory: 2048Mi
-                          cpu: .25
-                      limits:
-                          memory: 8192Mi
-                          cpu: 2
             volumes:
                 - name: deluge-config
                   persistentVolumeClaim:

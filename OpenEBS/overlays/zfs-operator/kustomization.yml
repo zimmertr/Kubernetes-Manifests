@@ -4,3 +4,6 @@ resources:
     - sc_flashpool.yml
     - sc_saturnpool.yml
     - zfs-operator.yaml
+
+patchesStrategicMerge:
+    - ns.yml
