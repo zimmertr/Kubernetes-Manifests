@@ -1,0 +1,14 @@
+---
+# tasks file for deploy_istio
+
+# Variable is passed to CURL to retrieve the correct Istio version from the server. Not possible to do with get_url module.
+- name: Downloading Istio.
+  shell: cd /tmp && curl -L https://git.io/getLatestIstio | ISTIO_VERSION={{ istio_version }} sh -
+
+- name: Deploying Istio.
+  shell: /tmp/istio-{{ istio_version }}/bin/istioctl manifest apply --skip-confirmation
+
+- name: Deleting the temporary Istio files.
+  file:
+      path: /tmp/istio-{{ istio_version }}
+      state: absent

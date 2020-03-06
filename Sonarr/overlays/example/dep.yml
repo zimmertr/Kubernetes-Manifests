@@ -40,10 +40,6 @@ spec:
                       initialDelaySeconds: 60
                       periodSeconds: 10
                       failureThreshold: 5
-                  resources:
-                      limits:
-                          cpu: .5
-                          memory: "2048Mi"
             volumes:
                 - name: sonarr-config
                   persistentVolumeClaim:

@@ -42,13 +42,6 @@ spec:
                   volumeMounts:
                       - name: jira-data
                         mountPath: /var/atlassian/application-data/jira
-                  resources:
-                      requests:
-                          cpu: .5
-                          memory: "1024Mi"
-                      limits:
-                          cpu: 2
-                          memory: "8096Mi"
             volumes:
                 - name: jira-data
                   persistentVolumeClaim:

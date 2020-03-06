@@ -12,3 +12,4 @@ resources:
 
 patchesStrategicMerge:
     - dep.yml
+    - ns.yml
