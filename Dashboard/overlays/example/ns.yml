@@ -3,4 +3,4 @@ kind: Namespace
 metadata:
   name: kubernetes-dashboard
   labels:
-    istio-injection: enabled
+    istio-injection: disabled #https://medium.com/@kenneth.skertchly/expose-kubernetes-dashboard-using-istio-982080b547fc

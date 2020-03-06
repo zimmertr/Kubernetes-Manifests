@@ -8,7 +8,8 @@ Role Variables
 
 | Variable             | Has Default | Example                                                      | Description                                   |
 | -------------------- | ----------- | ------------------------------------------------------------ | --------------------------------------------- |
-| subject_alt_name | Yes         | `DNS:amalthea` | The Subject Alt Name for your new Dashboard certificate |
+| common_name | Yes         | `amalthea.sol.milkyway` | The Common Name for your new Dashboard certificate |
+| subject_alt_name | Yes         | `DNS:amalthea,DNS:kubernetes-dashboard` | The Subject Alt Name for your new Dashboard certificate |
 
 License
 -------
