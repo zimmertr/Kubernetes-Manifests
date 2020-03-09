@@ -1,49 +1,58 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-    name: sonarr
+  name: sonarr
 spec:
-    replicas: 1
-    selector:
-        matchLabels:
-            app: sonarr
-    template:
-        metadata:
-            labels:
-                app: sonarr
-        spec:
-            containers:
-                - name: sonarr
-                  image: linuxserver/sonarr:latest
-                  envFrom:
-                  - configMapRef:
-                      name: sonarr-env-vars
-                  ports:
-                      - name: "http-web"
-                        containerPort: 8989
-                        protocol: TCP
-                  volumeMounts:
-                      - name: sonarr-config
-                        mountPath: /config
-                      - name: sonarr-tv-shows
-                        mountPath: /tv
-                  readinessProbe:
-                      httpGet:
-                          path: /
-                          port: 8989
-                      periodSeconds: 10
-                      failureThreshold: 3
-                  livenessProbe:
-                      httpGet:
-                          path: /
-                          port: 8989
-                      initialDelaySeconds: 60
-                      periodSeconds: 10
-                      failureThreshold: 5
-            volumes:
-                - name: sonarr-config
-                  persistentVolumeClaim:
-                    claimName: sonarr-config
-                - name: sonarr-tv-shows
-                  persistentVolumeClaim:
-                    claimName: sonarr-tv-shows
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: sonarr
+  template:
+    metadata:
+      labels:
+        app: sonarr
+    spec:
+      containers:
+        - name: sonarr
+          image: linuxserver/sonarr:latest
+          envFrom:
+          - configMapRef:
+              name: sonarr-env-vars
+          ports:
+              - name: "http-web"
+                containerPort: 8989
+                protocol: TCP
+          volumeMounts:
+              - name: sonarr-config
+                mountPath: /config
+              - name: sonarr-tv-shows
+                mountPath: /tv
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "250Mi"
+            limits:
+              cpu: "100m"
+              memory: "500Mi"
+          readinessProbe:
+              httpGet:
+                  path: /
+                  port: 8989
+              periodSeconds: 10
+              failureThreshold: 3
+          livenessProbe:
+              httpGet:
+                  path: /
+                  port: 8989
+              initialDelaySeconds: 60
+              periodSeconds: 10
+              failureThreshold: 5
+      volumes:
+        - name: sonarr-config
+          persistentVolumeClaim:
+            claimName: sonarr-config
+        - name: sonarr-tv-shows
+          persistentVolumeClaim:
+            claimName: sonarr-tv-shows

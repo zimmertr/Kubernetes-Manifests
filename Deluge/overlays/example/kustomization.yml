@@ -6,11 +6,11 @@ bases:
 resources:
     - pv.yml
     - pvc.yml
-    - rq.yml
+    - vs.yml
+    - gw.yml
 
 patchesStrategicMerge:
     - dep.yml
-    - svc.yml
     - ns.yml
 
 namespace: deluge
@@ -19,7 +19,7 @@ commonLabels:
     app: deluge
 
 configMapGenerator:
-    - name: env-vars
+    - name: deluge-env-vars
       literals:
         - TZ='America/Los_Angeles'
         - PUID='1002'

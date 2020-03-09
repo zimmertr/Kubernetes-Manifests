@@ -1,0 +1,41 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: "deluge"
+spec:
+  hosts:
+    - io.sol.milkyway
+  gateways:
+    - deluge
+  http:
+    - match:
+      - uri:
+          prefix: "/"
+      route:
+        - destination:
+            host: deluge
+            port:
+              number: 8112
+  tcp:
+    - match:
+      - port: 7850
+      route:
+        - destination:
+            host: deluge
+            port:
+              number: 7850
+    - match:
+      - port: 7851
+      route:
+        - destination:
+            host: deluge
+            port:
+              number: 7851
+    - match:
+      - port: 58846
+      route:
+        - destination:
+            host: deluge
+            port:
+              number: 58846
+
