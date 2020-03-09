@@ -1,43 +1,43 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-    name: openvpn
+  name: openvpn
 spec:
-    replicas: 1
-    strategy:
-        type: Recreate
-    selector:
-        matchLabels:
-            app: openvpn
-    template:
-        metadata:
-            labels:
-                app: openvpn
-        spec:
-            containers:
-                - name: openvpn
-                  image: linuxserver/openvpn-as:latest
-                  envFrom:
-                    - configMapRef:
-                        name: openvpn-env-vars
-                  securityContext:
-                      capabilities:
-                        add:
-                          - NET_ADMIN
-                  ports:
-                      - name: "http-web"
-                        containerPort: 943
-                        protocol: TCP
-                      - name: "tcp-traffic"
-                        containerPort: 9443
-                        protocol: TCP
-                      - name: "udp-traffic"
-                        containerPort: 1194
-                        protocol: UDP
-                  volumeMounts:
-                      - name: openvpn-config
-                        mountPath: /config
-            volumes:
-                - name: openvpn-config
-                  persistentVolumeClaim:
-                    claimName: openvpn-config
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: openvpn
+  template:
+    metadata:
+      labels:
+        app: openvpn
+    spec:
+      containers:
+        - name: openvpn
+          image: linuxserver/openvpn-as:latest
+          envFrom:
+            - configMapRef:
+                name: openvpn-env-vars
+          securityContext:
+            capabilities:
+              add:
+                - NET_ADMIN
+          ports:
+            - name: "http-web"
+              containerPort: 943
+              protocol: TCP
+            - name: "tcp-traffic"
+              containerPort: 9443
+              protocol: TCP
+            - name: "udp-traffic"
+              containerPort: 1194
+              protocol: UDP
+          volumeMounts:
+            - name: openvpn-config
+              mountPath: /config
+      volumes:
+        - name: openvpn-config
+          persistentVolumeClaim:
+            claimName: openvpn-config
