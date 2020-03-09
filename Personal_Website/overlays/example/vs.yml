@@ -1,0 +1,18 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: "personal-website"
+spec:
+  hosts:
+    - nix.sol.milkyway
+  gateways:
+    - personal-website
+  http:
+    - match:
+      - uri:
+          prefix: "/"
+      route:
+        - destination:
+            host: "personal-website"
+            port:
+              number: 80

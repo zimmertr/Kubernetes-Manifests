@@ -1,58 +1,67 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-    name: personal-website
+  name: personal-website
 spec:
-    replicas: 1
-    selector:
-        matchLabels:
-            app: personal-website
-    template:
-        metadata:
-            labels:
-                app: personal-website
-        spec:
-            containers:
-                - name: weatherpy
-                  image: zimmertr/weatherpy:latest
-                  volumeMounts:
-                      - name: personal-website-weatherrc
-                        mountPath: /root/.weatherrc
-                        subPath: .weatherrc
-                - name: statsbot
-                  image: zimmertr/statsbot:latest
-                - name: httpd
-                  image: zimmertr/personal-website:latest
-                  ports:
-                      - name: "http-apache"
-                        containerPort: 80
-                        protocol: TCP
-                  volumeMounts:
-                      - name: personal-website-files
-                        mountPath: /var/www/html/Files/
-                      - name: personal-website-analyticsjs
-                        mountPath: /var/www/html/analytics.js
-                        subPath: analytics.js
-                  readinessProbe:
-                      httpGet:
-                          path: /
-                          port: 80
-                      periodSeconds: 10
-                      failureThreshold: 1
-                  livenessProbe:
-                      httpGet:
-                          path: /
-                          port: 80
-                      initialDelaySeconds: 5
-                      periodSeconds: 10
-                      failureThreshold: 5
-            volumes:
-                - name: personal-website-files
-                  persistentVolumeClaim:
-                    claimName: personal-website-files
-                - name: personal-website-analyticsjs
-                  configMap:
-                    name: personal-website-analytics.js
-                - name: personal-website-weatherrc
-                  configMap:
-                    name: personal-website-weatherrc
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: personal-website
+  template:
+    metadata:
+      labels:
+        app: personal-website
+    spec:
+      containers:
+        - name: weatherpy
+          image: zimmertr/weatherpy:latest
+          volumeMounts:
+            - name: personal-website-weatherrc
+              mountPath: /root/.weatherrc
+              subPath: .weatherrc
+        - name: statsbot
+          image: zimmertr/statsbot:latest
+        - name: httpd
+          image: zimmertr/personal-website:latest
+          ports:
+            - name: "http-apache"
+              containerPort: 80
+              protocol: TCP
+          volumeMounts:
+            - name: personal-website-files
+              mountPath: /var/www/html/Files/
+            - name: personal-website-analyticsjs
+              mountPath: /var/www/html/analytics.js
+              subPath: analytics.js
+          resources:
+            requests:
+              cpu: "50m"
+              memory: "100Mi"
+            limits:
+              cpu: "100m"
+              memory: "200Mi"
+          readinessProbe:
+            httpGet:
+                path: /
+                port: 80
+            periodSeconds: 10
+            failureThreshold: 1
+          livenessProbe:
+            httpGet:
+                path: /
+                port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            failureThreshold: 5
+      volumes:
+        - name: personal-website-files
+          persistentVolumeClaim:
+            claimName: personal-website-files
+        - name: personal-website-analyticsjs
+          configMap:
+            name: personal-website-analytics.js
+        - name: personal-website-weatherrc
+          configMap:
+            name: personal-website-weatherrc

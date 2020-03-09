@@ -1,50 +1,72 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-    name: deluge
+  name: deluge
 spec:
-    replicas: 1
-    selector:
-        matchLabels:
-            app: deluge
-    template:
-        metadata:
-            labels:
-                app: deluge
-        spec:
-            containers:
-                - name: deluge
-                  image: linuxserver/deluge:latest
-                  envFrom:
-                  - configMapRef:
-                      name: env-vars
-                  ports:
-                      - name: "traffic-1"
-                        containerPort: 7850
-                        protocol: TCP
-                      - name: "traffic-2"
-                        containerPort: 7851
-                        protocol: TCP
-                      - name: "http-deluge-web"
-                        containerPort: 8112
-                        protocol: TCP
-                      - name: "daemon"
-                        containerPort: 58846
-                        protocol: TCP
-                  volumeMounts:
-                      - name: deluge-config
-                        mountPath: /config
-                      - name: deluge-downloads
-                        mountPath: /downloads
-                      - name: deluge-fileserver
-                        mountPath: /SaturnPool
-            volumes:
-                - name: deluge-config
-                  persistentVolumeClaim:
-                    claimName: deluge-config
-                - name: deluge-downloads
-                  persistentVolumeClaim:
-                    claimName: deluge-downloads
-                - name: deluge-fileserver
-                  persistentVolumeClaim:
-                    claimName: deluge-fileserver
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: deluge
+  template:
+    metadata:
+      labels:
+        app: deluge
+    spec:
+      containers:
+        - name: deluge
+          image: linuxserver/deluge:latest
+          envFrom:
+            - configMapRef:
+                name: deluge-env-vars
+          ports:
+            - name: "tcp-traffic-1"
+              containerPort: 7850
+              protocol: TCP
+            - name: "tcp-traffic-2"
+              containerPort: 7851
+              protocol: TCP
+            - name: "http-deluge-web"
+              containerPort: 8112
+              protocol: TCP
+            - name: "tcp-daemon"
+              containerPort: 58846
+              protocol: TCP
+          volumeMounts:
+            - name: deluge-config
+              mountPath: /config
+            - name: deluge-downloads
+              mountPath: /downloads
+            - name: deluge-fileserver
+              mountPath: /SaturnPool
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "3Gi"
+            limits:
+              cpu: "200m"
+              memory: "5Gi"
+          readinessProbe:
+            httpGet:
+                path: /
+                port: 8112
+            periodSeconds: 10
+            failureThreshold: 1
+          livenessProbe:
+            httpGet:
+                path: /
+                port: 8112
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            failureThreshold: 2
+      volumes:
+        - name: deluge-config
+          persistentVolumeClaim:
+            claimName: deluge-config
+        - name: deluge-downloads
+          persistentVolumeClaim:
+            claimName: deluge-downloads
+        - name: deluge-fileserver
+          persistentVolumeClaim:
+            claimName: deluge-fileserver
