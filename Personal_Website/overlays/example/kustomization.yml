@@ -6,12 +6,12 @@ bases:
 resources:
     - pv.yml
     - pvc.yml
-    - rq.yml
+    - vs.yml
+    - gw.yml
 
 patchesStrategicMerge:
     - ns.yml
     - dep.yml
-    - svc.yml
 
 namespace: personal-website
 

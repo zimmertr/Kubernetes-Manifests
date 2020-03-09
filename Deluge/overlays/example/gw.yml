@@ -1,0 +1,32 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: deluge
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+    - port:
+        number: 80
+        name: http
+        protocol: HTTP
+      hosts:
+        - "io.sol.milkyway"
+    - port:
+        number: 7850
+        name: tcp-in
+        protocol: TCP
+      hosts:
+        - "io.sol.milkyway"
+    - port:
+        number: 7851
+        name: tcp-out
+        protocol: TCP
+      hosts:
+        - "io.sol.milkyway"
+    - port:
+        number: 58846
+        name: tcp-daemon-in
+        protocol: TCP
+      hosts:
+        - "io.sol.milkyway"

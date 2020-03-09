@@ -1,54 +1,63 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-    name: radarr
+  name: radarr
 spec:
-    replicas: 1
-    selector:
-        matchLabels:
-            app: radarr
-    template:
-        metadata:
-            labels:
-                app: radarr
-        spec:
-            containers:
-                - name: radarr
-                  image: linuxserver/radarr:latest
-                  envFrom:
-                  - configMapRef:
-                      name: radarr-env-vars
-                  ports:
-                      - name: "http-web"
-                        containerPort: 7878
-                        protocol: TCP
-                  volumeMounts:
-                      - name: radarr-config
-                        mountPath: /config
-                      - name: radarr-fileserver
-                        mountPath: /downloads
-                      - name: radarr-movies
-                        mountPath: /movies
-                  readinessProbe:
-                      httpGet:
-                          path: /
-                          port: 7878
-                      periodSeconds: 10
-                      failureThreshold: 3
-                  livenessProbe:
-                      httpGet:
-                          path: /
-                          port: 7878
-                      initialDelaySeconds: 60
-                      periodSeconds: 10
-                      failureThreshold: 5
-            volumes:
-                - name: radarr-config
-                  persistentVolumeClaim:
-                    claimName: radarr-config
-                - name: radarr-fileserver
-                  persistentVolumeClaim:
-                    claimName: radarr-fileserver
-                - name: radarr-movies
-                  persistentVolumeClaim:
-                    claimName: radarr-movies
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: radarr
+  template:
+    metadata:
+      labels:
+        app: radarr
+    spec:
+      containers:
+        - name: radarr
+          image: linuxserver/radarr:latest
+          envFrom:
+            - configMapRef:
+                name: radarr-env-vars
+          ports:
+            - name: "http-web"
+              containerPort: 7878
+              protocol: TCP
+          volumeMounts:
+            - name: radarr-config
+              mountPath: /config
+            - name: radarr-fileserver
+              mountPath: /downloads
+            - name: radarr-movies
+              mountPath: /movies
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "250Mi"
+            limits:
+              cpu: "100m"
+              memory: "500Mi"
+          readinessProbe:
+            httpGet:
+                path: /
+                port: 7878
+            periodSeconds: 10
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+                path: /
+                port: 7878
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            failureThreshold: 5
+      volumes:
+        - name: radarr-config
+          persistentVolumeClaim:
+            claimName: radarr-config
+        - name: radarr-fileserver
+          persistentVolumeClaim:
+            claimName: radarr-fileserver
+        - name: radarr-movies
+          persistentVolumeClaim:
+            claimName: radarr-movies
