@@ -3,4 +3,4 @@ kind: Namespace
 metadata:
   name: metallb-system
   labels:
-    istio-injection: enabled
+    istio-injection: disabled
