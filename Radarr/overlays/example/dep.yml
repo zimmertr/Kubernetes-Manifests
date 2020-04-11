@@ -38,19 +38,19 @@ spec:
             limits:
               cpu: "100m"
               memory: "500Mi"
-          readinessProbe:
-            httpGet:
-                path: /
-                port: 7878
-            periodSeconds: 10
-            failureThreshold: 3
-          livenessProbe:
-            httpGet:
-                path: /
-                port: 7878
-            initialDelaySeconds: 60
-            periodSeconds: 10
-            failureThreshold: 5
+          # readinessProbe:
+          #   httpGet:
+          #       path: /
+          #       port: 7878
+          #   periodSeconds: 10
+          #   failureThreshold: 3
+          # livenessProbe:
+          #   httpGet:
+          #       path: /
+          #       port: 7878
+          #   initialDelaySeconds: 60
+          #   periodSeconds: 10
+          #   failureThreshold: 5
       volumes:
         - name: radarr-config
           persistentVolumeClaim:

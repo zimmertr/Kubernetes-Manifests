@@ -32,4 +32,4 @@ spec:
     accessModes:
         - ReadWriteMany
     hostPath:
-        path: /SaturnPool/Kubernetes/Movies
+        path: /SaturnPool/Movies
