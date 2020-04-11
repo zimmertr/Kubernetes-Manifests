@@ -5,10 +5,18 @@
 - name: Downloading Istio.
   shell: cd /tmp && curl -L https://git.io/getLatestIstio | ISTIO_VERSION={{ istio_version }} sh -
 
+# - name: Templating an istioControlPlane configuration file.
+#   template:
+#     src: icp.yml
+#     dest: /tmp/icp.yml
+
 - name: Deploying Istio.
   shell: /tmp/istio-{{ istio_version }}/bin/istioctl manifest apply --skip-confirmation
+  # shell: /tmp/istio-{{ istio_version }}/bin/istioctl manifest apply --skip-confirmation -f /tmp/icp.yml
 
 - name: Deleting the temporary Istio files.
   file:
       path: /tmp/istio-{{ istio_version }}
       state: absent
+
+# - name: Clean up template
