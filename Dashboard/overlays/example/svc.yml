@@ -4,11 +4,13 @@ metadata:
   name: kubernetes-dashboard
 spec:
   type: LoadBalancer
-  selector:
-      k8s-app: kubernetes-dashboard
   loadBalancerIP: 192.168.20.215
   ports:
-    - name: "http-web"
-      protocol: TCP
+    - $patch: delete
+      port: 443
+      targetPort: 8443
+    - name: "https-web"
       port: 8443
       targetPort: 8443
+  selector:
+    k8s-app: kubernetes-dashboard
