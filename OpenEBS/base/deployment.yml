@@ -196,9 +196,9 @@ spec:
         #- name: OPENEBS_IO_LOCALPV_HOSTPATH_DIR
         #  value: "/var/openebs/local"
         - name: OPENEBS_IO_JIVA_CONTROLLER_IMAGE
-          value: "quay.io/openebs/jiva:1.7.0"
+          value: "quay.io/openebs/jiva:1.7.1"
         - name: OPENEBS_IO_JIVA_REPLICA_IMAGE
-          value: "quay.io/openebs/jiva:1.7.0"
+          value: "quay.io/openebs/jiva:1.7.1"
         - name: OPENEBS_IO_JIVA_REPLICA_COUNT
           value: "3"
         - name: OPENEBS_IO_CSTOR_TARGET_IMAGE

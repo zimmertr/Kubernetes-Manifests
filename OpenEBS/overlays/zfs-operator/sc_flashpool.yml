@@ -4,6 +4,7 @@ metadata:
   name: flashpool
 allowVolumeExpansion: true
 parameters:
-  poolname: "flashpool"
+  fstype: "zfs"
+  poolname: "FlashPool"
   recordsize: "4k"
 provisioner: zfs.csi.openebs.io
