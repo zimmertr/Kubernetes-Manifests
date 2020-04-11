@@ -4,6 +4,7 @@ metadata:
   name: saturnpool
 allowVolumeExpansion: true
 parameters:
-  poolname: "saturnpool"
+  fstype: "zfs"
+  poolname: "SaturnPool"
   recordsize: "4k"
 provisioner: zfs.csi.openebs.io

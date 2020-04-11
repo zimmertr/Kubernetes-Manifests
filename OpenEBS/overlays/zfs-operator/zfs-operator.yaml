@@ -513,11 +513,17 @@ rules:
     resources: ["secrets"]
     verbs: ["get", "list"]
   - apiGroups: [""]
+    resources: ["namespaces"]
+    verbs: ["*"]
+  - apiGroups: [""]
     resources: ["persistentvolumes", "services"]
-    verbs: ["get", "list", "watch", "create", "delete"]
+    verbs: ["get", "list", "watch", "create", "delete", "update", "patch"]
   - apiGroups: [""]
     resources: ["persistentvolumeclaims"]
     verbs: ["get", "list", "watch", "update"]
+  - apiGroups: [""]
+    resources: ["persistentvolumeclaims/status"]
+    verbs: ["update", "patch"]
   - apiGroups: ["storage.k8s.io"]
     resources: ["storageclasses", "csinodes"]
     verbs: ["get", "list", "watch"]
@@ -577,6 +583,19 @@ spec:
       priorityClassName: system-cluster-critical
       serviceAccount: openebs-zfs-controller-sa
       containers:
+        - name: csi-resizer
+          image: quay.io/k8scsi/csi-resizer:v0.4.0
+          args:
+            - "--v=5"
+            - "--csi-address=$(ADDRESS)"
+            - "--leader-election"
+          env:
+            - name: ADDRESS
+              value: /var/lib/csi/sockets/pluginproxy/csi.sock
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+            - name: socket-dir
+              mountPath: /var/lib/csi/sockets/pluginproxy/
         - name: csi-snapshotter
           image: quay.io/k8scsi/csi-snapshotter:v2.0.1
           imagePullPolicy: IfNotPresent
@@ -638,7 +657,7 @@ spec:
             - name: socket-dir
               mountPath: /var/lib/csi/sockets/pluginproxy/
         - name: openebs-zfs-plugin
-          image: quay.io/openebs/zfs-driver:ci
+          image: pawanpraka1/zfs-driver:centos
           imagePullPolicy: IfNotPresent
           env:
             - name: OPENEBS_CONTROLLER_DRIVER
@@ -647,6 +666,10 @@ spec:
               value: unix:///var/lib/csi/sockets/pluginproxy/csi.sock
             - name: OPENEBS_NAMESPACE
               value: openebs
+            - name: OPENEBS_IO_INSTALLER_TYPE
+              value: "zfs-operator"
+            - name: OPENEBS_IO_ENABLE_ANALYTICS
+              value: "true"
           args :
             - "--endpoint=$(OPENEBS_CSI_ENDPOINT)"
             - "--plugin=$(OPENEBS_CONTROLLER_DRIVER)"
@@ -875,7 +898,7 @@ spec:
             capabilities:
               add: ["CAP_MKNOD", "CAP_SYS_ADMIN", "SYS_ADMIN"]
             allowPrivilegeEscalation: true
-          image: quay.io/openebs/zfs-driver:ci
+          image: pawanpraka1/zfs-driver:centos
           imagePullPolicy: IfNotPresent
           args:
             - "--nodeid=$(OPENEBS_NODE_ID)"
@@ -902,15 +925,15 @@ spec:
             - name: zfs-bin
               mountPath: /sbin/zfs
             - name: libzpool
-              mountPath: /lib/libzpool.so.2
+              mountPath: /lib64/libzpool.so.2
             - name: libzfscore
-              mountPath: /lib/libzfs_core.so.1
+              mountPath: /lib64/libzfs_core.so.1
             - name: libzfs
-              mountPath: /lib/libzfs.so.2
+              mountPath: /lib64/libzfs.so.2
             - name: libuutil
-              mountPath: /lib/libuutil.so.1
+              mountPath: /lib64/libuutil.so.1
             - name: libnvpair
-              mountPath: /lib/libnvpair.so.1
+              mountPath: /lib64/libnvpair.so.1
             - name: pods-mount-dir
               mountPath: /var/lib/kubelet/pods
               # needed so that any mounts setup inside this container are
