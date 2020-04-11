@@ -8,8 +8,8 @@ namespace: kubernetes-dashboard
 resources:
     - sa.yml
     - crb.yml
-    - svc.yml
 
 patchesStrategicMerge:
     - dep.yml
     - ns.yml
+    - svc.yml
