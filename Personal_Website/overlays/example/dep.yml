@@ -42,19 +42,19 @@ spec:
             limits:
               cpu: "100m"
               memory: "200Mi"
-          readinessProbe:
-            httpGet:
-                path: /
-                port: 80
-            periodSeconds: 10
-            failureThreshold: 1
-          livenessProbe:
-            httpGet:
-                path: /
-                port: 80
-            initialDelaySeconds: 5
-            periodSeconds: 10
-            failureThreshold: 5
+          # readinessProbe:
+          #   httpGet:
+          #       path: /
+          #       port: 80
+          #   periodSeconds: 10
+          #   failureThreshold: 1
+          # livenessProbe:
+          #   httpGet:
+          #       path: /
+          #       port: 80
+          #   initialDelaySeconds: 5
+          #   periodSeconds: 10
+          #   failureThreshold: 5
       volumes:
         - name: personal-website-files
           persistentVolumeClaim:
