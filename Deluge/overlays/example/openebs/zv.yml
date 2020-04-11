@@ -1,0 +1,50 @@
+apiVersion: openebs.io/v1alpha1
+kind: ZFSVolume
+metadata:
+  name: downloads
+spec:
+  atime: "off"
+  capacity: "13194139533312"
+  compression: "lz4"
+  dedup: "off"
+  encryption: "off"
+  fsType: "zfs"
+  ownerNodeID: saturn.sol.milkyway
+  poolName: SaturnPool
+  recordsize: 128k
+  thinProvision: "off"
+  volumeType: DATASET
+# ---
+# apiVersion: openebs.io/v1alpha1
+# kind: ZFSVolume
+# metadata:
+#   name: fileserver
+# spec:
+#   atime: "off"
+#   capacity: "13194139533312"
+#   compression: "lz4"
+#   dedup: "off"
+#   encryption: "off"
+#   fsType: "zfs"
+#   ownerNodeID: saturn.sol.milkyway
+#   poolName: SaturnPool
+#   recordsize: 128k
+#   thinProvision: "off"
+#   volumeType: DATASET
+---
+apiVersion: openebs.io/v1alpha1
+kind: ZFSVolume
+metadata:
+  name: config
+spec:
+  atime: "off"
+  capacity: "5368709120"
+  compression: "off"
+  dedup: "off"
+  encryption: "off"
+  fsType: "zfs"
+  ownerNodeID: saturn.sol.milkyway
+  poolName: FlashPool/Kubernetes/Deluge
+  recordsize: 128k
+  thinProvision: "off"
+  volumeType: DATASET

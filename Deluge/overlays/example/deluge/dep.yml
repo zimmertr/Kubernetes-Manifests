@@ -47,19 +47,6 @@ spec:
             limits:
               cpu: "200m"
               memory: "5Gi"
-          readinessProbe:
-            httpGet:
-                path: /
-                port: 8112
-            periodSeconds: 10
-            failureThreshold: 1
-          livenessProbe:
-            httpGet:
-                path: /
-                port: 8112
-            initialDelaySeconds: 5
-            periodSeconds: 10
-            failureThreshold: 2
       volumes:
         - name: deluge-config
           persistentVolumeClaim:
