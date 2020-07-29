@@ -1,3 +1,6 @@
+---------
+7/28/2020
+---------
 2:00PM
     - Deployed a new Kubernetes cluster using my tooling
         - https://github.com/zimmertr/Bootstrap-Kubernetes-with-QEMU
@@ -46,6 +49,12 @@
     - Testing Kustomize project
     - Troubleshooting Kustomize secret issues
     - Troubleshooting Load Balancer issues (Metallb wrong vlan)
+
+
+
+---------
+7/29/2020
+---------
 
 10:45AM
     - Troubleshooting DNS issues - Pods can't resolve external DNS
