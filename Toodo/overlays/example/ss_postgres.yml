@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgres
+spec:
+  replicas: 1
+  serviceName: postgres
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+        tier: backend
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:9.6.18
+          envFrom:
+            - configMapRef:
+                name: toodo-env-vars
+            - secretRef:
+                name: toodo-secrets
+          ports:
+            - name: "tcp-postgres"
+              containerPort: 5432
+              protocol: TCP
+          volumeMounts:
+            - name: toodo-postgres
+              mountPath: /var/lib/postgresql/data
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "1Gi"
+            limits:
+              cpu: "2000m"
+              memory: "2Gi"
+  volumeClaimTemplates:
+  - metadata:
+      name: toodo-postgres
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: nfs
+      resources:
+        requests:
+          storage: 10Gi

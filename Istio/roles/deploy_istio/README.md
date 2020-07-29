@@ -8,7 +8,7 @@ Role Variables
 
 | Variable             | Has Default | Example                                                      | Description                                   |
 | -------------------- | ----------- | ------------------------------------------------------------ | --------------------------------------------- |
-| istio_version | Yes         | 1.5.0 | The version of Istio to deploy.
+| istio_version | Yes         | 1.6.5 | The version of Istio to deploy.
 
 License
 -------
