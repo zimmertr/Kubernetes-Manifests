@@ -7,5 +7,6 @@ spec:
         storage: 1Gi
     accessModes:
         - ReadOnlyMany
+    storageClassName: nfs
     hostPath:
-        path: /SaturnPool/Kubernetes/Apache/Files
+        path: /DataPool/Kubernetes/Apache/Files

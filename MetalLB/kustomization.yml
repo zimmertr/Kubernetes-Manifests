@@ -3,7 +3,7 @@ kind: Kustomization
 namespace: metallb-system
 
 resources:
-  - https://github.com/danderson/metallb//manifests?ref=v0.8.3
+  - https://github.com/danderson/metallb//manifests?ref=v0.9.3
   - configmap.yml
 
 patchesStrategicMerge:

@@ -1,6 +1,6 @@
 ---
 # vars file for create_install_medium
-#openebs_manifest_url: ''
+openebs_manifest_url: 'https://openebs.github.io/charts/openebs-operator.yaml'
 
 # Uncomment to enable ZFS Driver.
-#deploy_zfs_driver: true
+deploy_zfs_driver: true
