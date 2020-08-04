@@ -16,7 +16,7 @@ spec:
           command: ['sh', '-c', 'until pg_isready -h postgres -p 5432 -U toodo; do sleep 1; done;']
       containers:
       - name: toodo-schema-builder
-        image: harbor.tjzimmerman.dev/tks/toodo:demo
+        image: harbor.tjzimmerman.dev/tks/toodo:new_demo
         command: ["/bin/app",  "migrate"]
         resources:
           requests:
