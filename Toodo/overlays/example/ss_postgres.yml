@@ -36,6 +36,19 @@ spec:
             limits:
               cpu: "2000m"
               memory: "2Gi"
+          # readinessProbe:
+          #   httpGet:
+          #       path: /
+          #       port: 5432
+          #   periodSeconds: 10
+          #   failureThreshold: 3
+          # livenessProbe:
+          #   httpGet:
+          #       path: /
+          #       port: 5432
+          #   initialDelaySeconds:
+          #   periodSeconds: 10
+          #   failureThreshold: 5
   volumeClaimTemplates:
   - metadata:
       name: toodo-postgres

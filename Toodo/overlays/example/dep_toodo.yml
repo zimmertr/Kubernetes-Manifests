@@ -23,7 +23,7 @@ spec:
           command: ['sh', '-c', 'until pg_isready -h postgres -p 5432 -U toodo; do sleep 1; done;']
       containers:
         - name: toodo
-          image: harbor.tjzimmerman.dev/tks/toodo:demo
+          image: harbor.tjzimmerman.dev/tks/toodo:new_demo
           envFrom:
             - configMapRef:
                 name: toodo-env-vars
@@ -38,3 +38,16 @@ spec:
             limits:
               cpu: "200m"
               memory: "200Mi"
+          # readinessProbe:
+          #   httpGet:
+          #       path: /
+          #       port: 3000
+          #   periodSeconds: 10
+          #   failureThreshold: 3
+          # livenessProbe:
+          #   httpGet:
+          #       path: /
+          #       port: 3000
+          #   initialDelaySeconds: 5
+          #   periodSeconds: 10
+          #   failureThreshold: 5
