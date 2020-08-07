@@ -1,0 +1,21 @@
+0:00 - Show Proxmox & Hypervisor Information
+0:20 - Show Bootstrap Kubernetes with QEMU Source Code
+0:45 - Deploy Kubernetes to Proxmox using Ansible
+1:10 - Show VM Hardware Details
+13:00 - Show Kubernetes Deployment Details / Wait for Cluster to Become Operational
+14:35 - Deploy MetalLB
+16:00 - Deploy Dynamic NFS Persistent Volume Provisioner & Storage Class using Ansible
+17:00 - Deploy Istio using Ansible
+19:00 - Show NGINX Ingress Gateway IP via MetalLB & Associated Hostname
+19:30 - Show Harbor Deployment Source Code
+20:20 - Show Harbor Deployment, PKI, and Project
+20:50 - Build Toodo Container Image, Tag, and Push to Harbor
+21:30 - Show New Container Image in Harbor
+22:00 - Show Toodo Kustomize Project Source Code
+23:20 - Updating Toodo to Use Newly Built Container Image
+23:50 - Showing Postgres Data Persistence on NFS Server
+24:10 - Show Schema Builder Job & Update to Newly Built Container Image
+24:30 - Deploy Toodo to Kubernetes Using Kustomize
+25:00 - Watch the Logs & Describe the Pods While the Application Comes Online
+27:20 - Show Toodo Online -- Demonstrate Functional DB, Frontend Scalability, Backend Data Persistence, Session Stickyness
+31:30 - Show Results from Previous Locust Benchmarks
