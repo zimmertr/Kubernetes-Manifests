@@ -1,10 +1,19 @@
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
+# kustomization.yml
 namespace: metallb-system
 
 resources:
-  - https://github.com/danderson/metallb//manifests?ref=v0.9.3
-  - configmap.yml
+  - github.com/metallb/metallb//manifests?ref=v0.9.3
 
-patchesStrategicMerge:
-  - ns.yml
+configMapGenerator:
+- name: config
+  files:
+    - ./config
+
+# Generated with $(openssl rand -base64 128)
+secretGenerator:
+- name: memberlist
+  files:
+    - ./secretkey
+
+generatorOptions:
+ disableNameSuffixHash: true

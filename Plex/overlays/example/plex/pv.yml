@@ -7,8 +7,10 @@ spec:
         storage: 15Ti
     accessModes:
         - ReadWriteMany
-    hostPath:
-        path: /SaturnPool/Anime
+    nfs:
+        path: /mnt/DataPool/Anime
+        server: earth.sol.milkyway
+    storageClassName: nfs
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -19,8 +21,24 @@ spec:
         storage: 15Ti
     accessModes:
         - ReadWriteMany
-    hostPath:
-        path: /SaturnPool/Audiobooks
+    nfs:
+        path: /mnt/DataPool/Audiobooks
+        server: earth.sol.milkyway
+    storageClassName: nfs
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+    name: plex-cartoons
+spec:
+    capacity:
+        storage: 15Ti
+    accessModes:
+        - ReadWriteMany
+    nfs:
+        path: /mnt/DataPool/Cartoons
+        server: earth.sol.milkyway
+    storageClassName: nfs
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -31,8 +49,10 @@ spec:
         storage: 2Gi
     accessModes:
         - ReadWriteMany
-    hostPath:
-        path: /SaturnPool/Kubernetes/Plex/config
+    nfs:
+        path: /mnt/DataPool/Kubernetes/Plex/config
+        server: earth.sol.milkyway
+    storageClassName: nfs
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -43,8 +63,10 @@ spec:
         storage: 15Ti
     accessModes:
         - ReadWriteMany
-    hostPath:
-        path: /SaturnPool/Movies
+    nfs:
+        path: /mnt/DataPool/Movies
+        server: earth.sol.milkyway
+    storageClassName: nfs
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -55,8 +77,10 @@ spec:
         storage: 15Ti
     accessModes:
         - ReadWriteMany
-    hostPath:
-        path: /SaturnPool/Music
+    nfs:
+        path: /mnt/DataPool/Music
+        server: earth.sol.milkyway
+    storageClassName: nfs
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -67,8 +91,10 @@ spec:
         storage: 15Ti
     accessModes:
         - ReadWriteMany
-    hostPath:
-        path: /SaturnPool/TV Shows
+    nfs:
+        path: /mnt/DataPool/TV_Shows
+        server: earth.sol.milkyway
+    storageClassName: nfs
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -79,5 +105,7 @@ spec:
         storage: 15Ti
     accessModes:
         - ReadWriteMany
-    hostPath:
-        path: /SaturnPool/Downloads/Unsorted
+    nfs:
+        path: /mnt/DataPool/Downloads/Unsorted
+        server: earth.sol.milkyway
+    storageClassName: nfs

@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: rutorrent-udp
+  annotations:
+      metallb.universe.tf/allow-shared-ip: "true"
+  labels:
+    app: rutorrent
+spec:
+  type: LoadBalancer
+  loadBalancerIP: 192.168.50.151
+  selector:
+    app: rutorrent
+  ports:
+  - name: "rutorrent-bt2"
+    protocol: UDP
+    targetPort: 6881
+    port: 6881
+

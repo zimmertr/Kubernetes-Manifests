@@ -1,0 +1,19 @@
+---
+- hosts: k8s_cp:k8s_nodes
+  gather_facts: False
+  tasks:
+    - name: Installing nfs-common.
+      become: yes
+      apt:
+          name: nfs-common
+
+- hosts: localhost
+  gather_facts: False
+  tasks:
+      - name: Deploying the NFS Provisioner manifests to Kubernetes
+        command: "kubectl apply -k {{ playbook_dir }}/overlays/{{ name }}"
+        loop:
+          - datapool
+          # - flashpool
+        loop_control:
+          loop_var: name

@@ -7,6 +7,7 @@ metadata:
     app: deluge
 spec:
   type: LoadBalancer
+  loadBalancerIP: 192.168.50.151
   selector:
     app: deluge
   ports:
@@ -14,4 +15,8 @@ spec:
     protocol: TCP
     targetPort: 8112
     port: 8112
+  - name: "tcp-deluge-d"
+    protocol: TCP
+    targetPort: 58846
+    port: 58846
 

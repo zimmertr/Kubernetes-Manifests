@@ -11,4 +11,4 @@ spec:
         name: http
         protocol: HTTP
       hosts:
-        - "nix.sol.milkyway"
+        - "tks-ing.sol.milkyway"

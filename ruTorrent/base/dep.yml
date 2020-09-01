@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rutorrent
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rutorrent
+  template:
+    metadata:
+      labels:
+        app: rutorrent
+    spec:
+      containers:
+        - name: rutorrent
+          image: linuxserver/rutorrent:latest
+          envFrom:
+          ports:
+            - name: "http-rutorrent-web"
+              containerPort: 80
+              protocol: TCP
