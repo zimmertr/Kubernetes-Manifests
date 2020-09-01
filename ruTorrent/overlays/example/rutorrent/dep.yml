@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rutorrent
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: rutorrent
+  template:
+    metadata:
+      labels:
+        app: rutorrent
+    spec:
+      containers:
+        - name: rutorrent
+          image: linuxserver/rutorrent:latest
+          envFrom:
+            - configMapRef:
+                name: rutorrent-env-vars
+          ports:
+            - name: "rutorrent-web"
+              containerPort: 80
+              protocol: TCP
+            - name: "rutorrent-scgi"
+              containerPort: 5000
+              protocol: TCP
+            - name: "rutorrent-bt"
+              containerPort: 51413
+              protocol: TCP
+            - name: "rutorrent-bt2"
+              containerPort: 6881
+              protocol: UDP
+          volumeMounts:
+            - name: rutorrent-config
+              mountPath: /config
+            # - name: rutorrent-downloads
+            #   mountPath: /downloads
+            - name: rutorrent-fileserver
+              mountPath: /datapool
+          # resources:
+          #   requests:
+          #     cpu: "100m"
+          #     memory: "3Gi"
+          #   limits:
+          #     cpu: "200m"
+          #     memory: "5Gi"
+      volumes:
+        - name: rutorrent-config
+          persistentVolumeClaim:
+            claimName: rutorrent-config
+        # - name: rutorrent-downloads
+        #   persistentVolumeClaim:
+        #     claimName: rutorrent-downloads
+        - name: rutorrent-fileserver
+          persistentVolumeClaim:
+            claimName: rutorrent-fileserver

@@ -51,6 +51,8 @@ spec:
           volumeMounts:
             - name: plex-audiobooks
               mountPath: /audiobooks
+            - name: plex-cartoons
+              mountPath: /cartoons
             - name: plex-config
               mountPath: /config
             - name: plex-tv-shows
@@ -63,26 +65,26 @@ spec:
               mountPath: /anime
             - name: plex-unsorted
               mountPath: /unsorted
-          resources:
-            requests:
-              cpu: "100m"
-              memory: "250Mi"
-            limits:
-              cpu: "4000m"
-              memory: "4Gi"
-          readinessProbe:
-              httpGet:
-                  path: /
-                  port: 32400
-              periodSeconds: 10
-              failureThreshold: 3
-          livenessProbe:
-              httpGet:
-                  path: /
-                  port: 32400
-              initialDelaySeconds: 60
-              periodSeconds: 10
-              failureThreshold: 5
+          # resources:
+          #   requests:
+          #     cpu: "100m"
+          #     memory: "250Mi"
+          #   limits:
+          #     cpu: "4000m"
+          #     memory: "4Gi"
+          # readinessProbe:
+          #     httpGet:
+          #         path: /
+          #         port: 32400
+          #     periodSeconds: 10
+          #     failureThreshold: 3
+          # livenessProbe:
+          #     httpGet:
+          #         path: /
+          #         port: 32400
+          #     initialDelaySeconds: 60
+          #     periodSeconds: 10
+          #     failureThreshold: 5
       volumes:
         - name: plex-audiobooks
           persistentVolumeClaim:
@@ -90,6 +92,9 @@ spec:
         - name: plex-config
           persistentVolumeClaim:
             claimName: plex-config
+        - name: plex-cartoons
+          persistentVolumeClaim:
+            claimName: plex-cartoons
         - name: plex-tv-shows
           persistentVolumeClaim:
             claimName: plex-tv-shows

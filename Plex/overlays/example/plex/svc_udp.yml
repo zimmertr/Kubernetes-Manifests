@@ -10,7 +10,7 @@ spec:
     type: LoadBalancer
     selector:
         app: plex
-    loadBalancerIP: 192.168.20.230
+    loadBalancerIP: 192.168.50.155
     ports:
       - name: "dlna-server-udp"
         targetPort: 1900

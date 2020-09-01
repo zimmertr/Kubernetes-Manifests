@@ -8,5 +8,6 @@ spec:
     accessModes:
         - ReadOnlyMany
     storageClassName: nfs
-    hostPath:
-        path: /DataPool/Kubernetes/Apache/Files
+    nfs:
+      path: /mnt/DataPool/Kubernetes/Apache/Files
+      server: earth.sol.milkyway
