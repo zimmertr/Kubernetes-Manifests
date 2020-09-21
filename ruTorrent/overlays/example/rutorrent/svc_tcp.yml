@@ -8,7 +8,7 @@ metadata:
     app: rutorrent
 spec:
   type: LoadBalancer
-  loadBalancerIP: 192.168.50.151
+  loadBalancerIP: 192.168.50.152
   selector:
     app: rutorrent
   ports:
