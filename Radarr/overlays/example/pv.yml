@@ -7,20 +7,26 @@ spec:
         storage: 2Gi
     accessModes:
         - ReadWriteMany
-    hostPath:
-        path: /SaturnPool/Kubernetes/Radarr
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-    name: radarr-fileserver
-spec:
-    capacity:
-        storage: 15Ti
-    accessModes:
-        - ReadWriteMany
-    hostPath:
-        path: /SaturnPool/
+    storageClassName: nfs
+    nfs:
+        path: /mnt/DataPool/Kubernetes/Radarr
+        server: earth.sol.milkyway
+# ---
+# apiVersion: v1
+# kind: PersistentVolume
+# metadata:
+#     name: radarr-fileserver
+# spec:
+#     capacity:
+#         storage: 15Ti
+#     accessModes:
+#         - ReadWriteMany
+#     hostPath:
+#         path: /mnt/DataPool/
+    # storageClassName: nfs
+    # nfs:
+    #     path: /mnt/DataPool/Kubernetes/ruTorrent
+    #     server: earth.sol.milkyway
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -31,5 +37,7 @@ spec:
         storage: 15Ti
     accessModes:
         - ReadWriteMany
-    hostPath:
-        path: /SaturnPool/Movies
+    storageClassName: nfs
+    nfs:
+        path: /mnt/DataPool/Movies
+        server: earth.sol.milkyway
