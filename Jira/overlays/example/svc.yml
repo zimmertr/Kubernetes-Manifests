@@ -6,7 +6,7 @@ spec:
     type: LoadBalancer
     selector:
         app: jira
-    loadBalancerIP: 192.168.20.207
+    loadBalancerIP: 192.168.50.157
     ports:
     - name: "http-web"
       protocol: TCP

@@ -16,8 +16,7 @@ spec:
         spec:
             containers:
                 - name: postgres
-                  # 9.4 is the highest supported build. Jira will reject any newer database.
-                  image: postgres:9.4
+                  image: postgres:11
                   envFrom:
                   - configMapRef:
                       name: jira-env-vars
