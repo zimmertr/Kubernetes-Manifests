@@ -15,9 +15,8 @@ spec:
                 app: postgres
         spec:
             containers:
-                # 9.6 is the highest supported build. Confluence will reject any newer database.
                 - name: postgres
-                  image: postgres:9.6
+                  image: postgres:10
                   envFrom:
                   - configMapRef:
                       name: confluence-env-vars

@@ -7,7 +7,7 @@ spec:
     externalTrafficPolicy: Local
     selector:
         app: confluence
-    loadBalancerIP: 192.168.20.208
+    loadBalancerIP: 192.168.50.158
     ports:
     - name: "http-web"
       protocol: TCP

@@ -7,8 +7,10 @@ spec:
         storage: 10Gi
     accessModes:
         - ReadWriteMany
-    hostPath:
-        path: /SaturnPool/Kubernetes/Confluence/data
+    nfs:
+        path: /mnt/DataPool/Kubernetes/Confluence/postgres
+        server: earth.sol.milkyway
+    storageClassName: nfs
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -19,5 +21,7 @@ spec:
         storage: 100Gi
     accessModes:
         - ReadWriteMany
-    hostPath:
-        path: /SaturnPool/Kubernetes/Confluence/postgres
+    nfs:
+        path: /mnt/DataPool/Kubernetes/Confluence/data
+        server: earth.sol.milkyway
+    storageClassName: nfs
