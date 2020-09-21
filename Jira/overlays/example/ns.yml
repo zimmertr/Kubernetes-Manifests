@@ -2,5 +2,3 @@ apiVersion: v1
 kind: Namespace
 metadata:
   name: jira
-  labels:
-    istio-injection: enabled
