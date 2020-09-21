@@ -6,7 +6,6 @@ bases:
 resources:
     - pv.yml
     - pvc.yml
-    - rq.yml
 
 patchesStrategicMerge:
     - dep.yml
