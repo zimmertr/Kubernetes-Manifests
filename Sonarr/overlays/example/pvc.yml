@@ -21,3 +21,27 @@ spec:
         requests:
             storage: 15Ti
     volumeName: sonarr-tv-shows
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+    name: sonarr-anime
+spec:
+    accessModes:
+        - ReadWriteMany
+    resources:
+        requests:
+            storage: 15Ti
+    volumeName: sonarr-anime
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+    name: sonarr-cartoons
+spec:
+    accessModes:
+        - ReadWriteMany
+    resources:
+        requests:
+            storage: 15Ti
+    volumeName: sonarr-cartoons

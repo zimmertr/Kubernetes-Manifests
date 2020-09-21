@@ -7,8 +7,10 @@ spec:
         storage: 2Gi
     accessModes:
         - ReadWriteMany
-    hostPath:
-        path: /SaturnPool/Kubernetes/Sonarr
+    storageClassName: nfs
+    nfs:
+        path: /mnt/DataPool/Kubernetes/Sonarr/
+        server: earth.sol.milkyway
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -19,5 +21,35 @@ spec:
         storage: 15Ti
     accessModes:
         - ReadWriteMany
-    hostPath:
-        path: /SaturnPool/TV Shows
+    storageClassName: nfs
+    nfs:
+        path: /mnt/DataPool/TV_Shows
+        server: earth.sol.milkyway
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+    name: sonarr-anime
+spec:
+    capacity:
+        storage: 15Ti
+    accessModes:
+        - ReadWriteMany
+    storageClassName: nfs
+    nfs:
+        path: /mnt/DataPool/Anime
+        server: earth.sol.milkyway
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+    name: sonarr-cartoons
+spec:
+    capacity:
+        storage: 15Ti
+    accessModes:
+        - ReadWriteMany
+    storageClassName: nfs
+    nfs:
+        path: /mnt/DataPool/Cartoons
+        server: earth.sol.milkyway
