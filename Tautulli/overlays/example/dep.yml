@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: tautulli
-          image: linuxserver/tautulli:latest
+          image: tautulli/tautulli:latest
           envFrom:
             - configMapRef:
                 name: tautulli-env-vars
@@ -28,7 +28,7 @@ spec:
             - name: tautulli-config
               mountPath: /config
             - name: tautulli-plex
-              mountPath: /logs
+              mountPath: /plex_logs
           resources:
             requests:
               cpu: "100m"

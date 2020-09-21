@@ -6,14 +6,15 @@ bases:
 resources:
     - pv.yml
     - pvc.yml
-    - vs.yml
-    - gw.yml
+    # - vs.yml
+    # - gw.yml
 
 namespace: tautulli
 
 patchesStrategicMerge:
     - ns.yml
     - dep.yml
+    - svc.yml
 
 commonLabels:
     app: tautulli
