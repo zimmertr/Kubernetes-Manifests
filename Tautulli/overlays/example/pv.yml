@@ -7,8 +7,10 @@ spec:
         storage: 2Gi
     accessModes:
         - ReadWriteMany
-    hostPath:
-        path: /SaturnPool/Kubernetes/Plex/config/Library/Application Support/Plex Media Server/Logs
+    storageClassName: nfs
+    nfs:
+        path: /mnt/DataPool/Kubernetes/Plex/config/Library/Application Support/Plex Media Server/Logs
+        server: earth.sol.milkyway
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -19,5 +21,7 @@ spec:
         storage: 2Gi
     accessModes:
         - ReadWriteMany
-    hostPath:
-        path: /SaturnPool/Kubernetes/Tautulli
+    storageClassName: nfs
+    nfs:
+        path: /mnt/DataPool/Kubernetes/Tautulli/
+        server: earth.sol.milkyway
