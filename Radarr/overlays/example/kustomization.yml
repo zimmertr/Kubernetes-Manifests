@@ -6,12 +6,13 @@ bases:
 resources:
     - pv.yml
     - pvc.yml
-    - vs.yml
-    - gw.yml
+    # - vs.yml
+    # - gw.yml
 
 patchesStrategicMerge:
     - dep.yml
     - ns.yml
+    - svc.yml
 
 namespace: radarr
 
