@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: sonarr
+  labels:
+    app: sonarr
+spec:
+  type: LoadBalancer
+  loadBalancerIP: 192.168.50.153
+  selector:
+    app: sonarr
+  ports:
+  - name: "sonarr-web"
+    protocol: TCP
+    targetPort: 8989
+    port: 8989
+

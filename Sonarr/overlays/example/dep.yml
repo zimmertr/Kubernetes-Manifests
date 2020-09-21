@@ -29,13 +29,17 @@ spec:
                 mountPath: /config
               - name: sonarr-tv-shows
                 mountPath: /tv
-          resources:
-            requests:
-              cpu: "100m"
-              memory: "250Mi"
-            limits:
-              cpu: "100m"
-              memory: "500Mi"
+              - name: sonarr-anime
+                mountPath: /anime
+              - name: sonarr-cartoons
+                mountPath: /cartoons
+          # resources:
+          #   requests:
+          #     cpu: "100m"
+          #     memory: "250Mi"
+          #   limits:
+          #     cpu: "100m"
+          #     memory: "500Mi"
           # readinessProbe:
           #     httpGet:
           #         path: /
@@ -56,3 +60,9 @@ spec:
         - name: sonarr-tv-shows
           persistentVolumeClaim:
             claimName: sonarr-tv-shows
+        - name: sonarr-anime
+          persistentVolumeClaim:
+            claimName: sonarr-anime
+        - name: sonarr-cartoons
+          persistentVolumeClaim:
+            claimName: sonarr-cartoons
