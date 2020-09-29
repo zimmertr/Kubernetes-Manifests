@@ -8,7 +8,7 @@ spec:
   accessModes:
     - ReadWriteMany
   nfs:
-    path: /mnt/DataPool/Kubernetes/Confluence/postgres
+    path: /mnt/DataPool/Kubernetes/Confluence/data
     server: earth.sol.milkyway
   storageClassName: nfs
 ---
@@ -22,6 +22,6 @@ spec:
   accessModes:
     - ReadWriteMany
   nfs:
-    path: /mnt/DataPool/Kubernetes/Confluence/data
+    path: /mnt/DataPool/Kubernetes/Confluence/postgres
     server: earth.sol.milkyway
   storageClassName: nfs
