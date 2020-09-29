@@ -1,48 +1,47 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-    name: jira
+  name: jira
 spec:
-    replicas: 1
-    selector:
-        matchLabels:
-            app: jira
-    template:
-        metadata:
-            labels:
-                app: jira
-        spec:
-            initContainers:
-                - name: postgres-wait
-                  image: postgres
-                  command: ['sh', '-c', 'until pg_isready -h postgres -p 5432 -U jira; do sleep 1; done;']
-            containers:
-                - name: jira
-                  image: atlassian/jira-software:latest
-                  ports:
-                      - name: "http-web"
-                        containerPort: 8080
-                        protocol: TCP
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jira
+  template:
+    metadata:
+      labels:
+        app: jira
+    spec:
+      initContainers:
+        - name: postgres-wait
+          image: postgres
+          command: ['sh', '-c', 'until pg_isready -h postgres -p 5432 -U jira; do sleep 1; done;']
+      containers:
+        - name: jira
+          image: atlassian/jira-software:latest
+          ports:
+            - name: "http-web"
+              containerPort: 8080
+              protocol: TCP
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-    name: postgres
+  name: postgres
 spec:
-    replicas: 1
-    selector:
-        matchLabels:
-            app: postgres
-    template:
-        metadata:
-            labels:
-                app: postgres
-        spec:
-            containers:
-                - name: postgres
-                  # 9.4 is the highest supported build. Jira will reject any newer database.
-                  image: postgres:9.4
-                  ports:
-                      - name: "tcp-postgres"
-                        containerPort: 5432
-                        protocol: TCP
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:9.4
+          ports:
+            - name: "tcp-postgres"
+              containerPort: 5432
+              protocol: TCP

@@ -1,51 +1,50 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-    name: confluence
+  name: confluence
 spec:
-    replicas: 1
-    selector:
-        matchLabels:
-            app: confluence
-    template:
-        metadata:
-            labels:
-                app: confluence
-        spec:
-            initContainers:
-                - name: postgres-wait
-                  image: postgres
-                  command: ['sh', '-c', 'until pg_isready -h postgres -p 5432 -U confluence; do sleep 1; done;']
-            containers:
-                - name: confluence
-                  image: atlassian/confluence-server
-                  ports:
-                      - name: "http-web"
-                        containerPort: 8090
-                        protocol: TCP
-                      - name: "tcp-synchrony"
-                        containerPort: 8091
-                        protocol: TCP
+  replicas: 1
+  selector:
+    matchLabels:
+      app: confluence
+  template:
+    metadata:
+      labels:
+        app: confluence
+    spec:
+      initContainers:
+        - name: postgres-wait
+          image: postgres
+          command: ['sh', '-c', 'until pg_isready -h postgres -p 5432 -U confluence; do sleep 1; done;']
+      containers:
+        - name: confluence
+          image: atlassian/confluence-server
+          ports:
+            - name: "http-web"
+              containerPort: 8090
+              protocol: TCP
+            - name: "tcp-synchrony"
+              containerPort: 8091
+              protocol: TCP
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-    name: postgres
+  name: postgres
 spec:
-    replicas: 1
-    selector:
-        matchLabels:
-            app: postgres
-    template:
-        metadata:
-            labels:
-                app: postgres
-        spec:
-            containers:
-                # 9.6 is the highest supported build. Confluence will reject any newer database.
-                - name: postgres
-                  image: postgres:9.6
-                  ports:
-                      - name: "tcp-postgres"
-                        containerPort: 5432
-                        protocol: TCP
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:9.6
+          ports:
+            - name: "tcp-postgres"
+              containerPort: 5432
+              protocol: TCP

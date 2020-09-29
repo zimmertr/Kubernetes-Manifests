@@ -1,11 +1,11 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-    - ns.yml
-    - dep.yml
-    - svc.yml
+  - ns.yml
+  - dep.yml
+  - svc.yml
 
 namespace: confluence
 
-commonLabels:
-    app: confluence
+# commonLabels:
+#   app: confluence

@@ -1,27 +1,27 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-    name: jira-postgres-data
+  name: jira-postgres-data
 spec:
-    capacity:
-        storage: 100Gi
-    accessModes:
-        - ReadWriteMany
-    nfs:
-        path: /mnt/DataPool/Kubernetes/Jira/postgres
-        server: earth.sol.milkyway
-    storageClassName: nfs
+  capacity:
+    storage: 100Gi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    path: /mnt/DataPool/Kubernetes/Jira/postgres
+    server: earth.sol.milkyway
+  storageClassName: nfs
 ---
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-    name: jira-data
+  name: jira-data
 spec:
-    capacity:
-        storage: 10Gi
-    accessModes:
-        - ReadWriteMany
-    nfs:
-        path: /mnt/DataPool/Kubernetes/Jira/data
-        server: earth.sol.milkyway
-    storageClassName: nfs
+  capacity:
+    storage: 10Gi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    path: /mnt/DataPool/Kubernetes/Jira/data
+    server: earth.sol.milkyway
+  storageClassName: nfs
