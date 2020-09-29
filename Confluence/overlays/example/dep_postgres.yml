@@ -1,35 +1,35 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-    name: postgres
+  name: postgres
 spec:
-    replicas: 1
-    strategy:
-        type: Recreate
-    selector:
-        matchLabels:
-            app: postgres
-    template:
-        metadata:
-            labels:
-                app: postgres
-        spec:
-            containers:
-                - name: postgres
-                  image: postgres:10
-                  envFrom:
-                  - configMapRef:
-                      name: confluence-env-vars
-                  - secretRef:
-                      name: confluence-postgres-password
-                  ports:
-                      - name: "tcp-postgres"
-                        containerPort: 5432
-                        protocol: TCP
-                  volumeMounts:
-                      - name: confluence-postgres-data
-                        mountPath: /var/lib/postgresql/data
-            volumes:
-                - name: confluence-postgres-data
-                  persistentVolumeClaim:
-                    claimName: confluence-postgres-data
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:10
+          envFrom:
+            - configMapRef:
+                name: confluence-env-vars
+            - secretRef:
+                name: confluence-postgres-password
+          ports:
+            - name: "tcp-postgres"
+              containerPort: 5432
+              protocol: TCP
+          volumeMounts:
+            - name: confluence-postgres-data
+              mountPath: /var/lib/postgresql/data
+      volumes:
+        - name: confluence-postgres-data
+          persistentVolumeClaim:
+            claimName: confluence-postgres-data

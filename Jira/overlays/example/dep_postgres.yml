@@ -1,35 +1,35 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-    name: postgres
+  name: postgres
 spec:
-    replicas: 1
-    strategy:
-        type: Recreate
-    selector:
-        matchLabels:
-            app: postgres
-    template:
-        metadata:
-            labels:
-                app: postgres
-        spec:
-            containers:
-                - name: postgres
-                  image: postgres:11
-                  envFrom:
-                  - configMapRef:
-                      name: jira-env-vars
-                  - secretRef:
-                      name: jira-postgres-password
-                  ports:
-                      - name: "tcp-postgres"
-                        containerPort: 5432
-                        protocol: TCP
-                  volumeMounts:
-                      - name: jira-postgres-data
-                        mountPath: /var/lib/postgresql/data
-            volumes:
-                - name: jira-postgres-data
-                  persistentVolumeClaim:
-                    claimName: jira-postgres-data
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:11
+          envFrom:
+            - configMapRef:
+                name: jira-env-vars
+            - secretRef:
+                name: jira-postgres-password
+          ports:
+            - name: "tcp-postgres"
+              containerPort: 5432
+              protocol: TCP
+          volumeMounts:
+            - name: jira-postgres-data
+              mountPath: /var/lib/postgresql/data
+      volumes:
+        - name: jira-postgres-data
+          persistentVolumeClaim:
+            claimName: jira-postgres-data
