@@ -3,7 +3,7 @@ kind: Kustomization
 namespace:
 
 resources:
-  -
+  - ds.yml
 
 commonLabels:
     app: node-exporter
