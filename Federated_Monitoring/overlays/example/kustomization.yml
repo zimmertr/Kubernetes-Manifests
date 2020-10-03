@@ -7,6 +7,3 @@ resources:
     # - cAdvisor
     # - Kube_State_Metrics
     # - Node_Exporter
-
-# commonLabels:
-    # app: federated_monitoring
