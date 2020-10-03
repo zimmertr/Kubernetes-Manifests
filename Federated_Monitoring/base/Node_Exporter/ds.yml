@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: node-exporter
+  namespace: kube-system
+spec:
+  template:
+    metadata:
+      labels:
+        app: node-exporter
+      name: node-exporter
+    spec:
+      containers:
+      - image: prom/node-exporter
+        name: node-exporter
+        args:
+          - --path.procfs=/host/proc
+          - --path.sysfs=/host/sys
+          - --web.listen-address=0.0.0.0:9100
+        ports:
+        - containerPort: 9100
+          hostPort: 9100
+          name: metrics
+        volumeMounts:
+        - name: proc
+          mountPath: /host/proc
+          readOnly: true
+        - name: sys
+          mountPath: /host/sys
+          readOnly: true
+      volumes:
+        - name: proc
+          hostPath:
+            path: /proc
+        - name: sys
+          hostPath:
+            path: /sys
+      hostNetwork: true
+      hostPID: true
