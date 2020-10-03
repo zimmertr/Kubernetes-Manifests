@@ -3,6 +3,6 @@ kind: Kustomization
 
 resources:
     - Prometheus
-    # - cAdvisor
+    - cAdvisor
     - Kube_State_Metrics
     - Node_Exporter
