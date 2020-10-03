@@ -5,4 +5,4 @@ resources:
     - Prometheus
     # - cAdvisor
     - Kube_State_Metrics
-    # - Node_Exporter
+    - Node_Exporter
