@@ -3,7 +3,7 @@ global:
   evaluation_interval: 15s
 
 scrape_configs:
-  - job_name: 'prometheus-federated'
+  - job_name: 'prometheus'
     static_configs:
       - targets: ['localhost:9090']
 
@@ -14,3 +14,10 @@ scrape_configs:
   - job_name: 'kube-state-metrics-telemetry'
     static_configs:
       - targets: ['kube-state-metrics.federated-monitoring.svc.cluster.local:8081']
+
+  - job_name: 'node-exporter'
+    metrics_path: "/metrics"
+    static_configs:
+      - targets: ['tks-node-1.sol.milkyway:9100']
+      - targets: ['tks-node-2.sol.milkyway:9100']
+      - targets: ['tks-node-3.sol.milkyway:9100']
