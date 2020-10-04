@@ -1,0 +1,99 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: unifi-controller
+    namespace: {{ namespace }}
+    labels:
+        app: unifi-controller
+        version: 5.9
+        type: third-party
+        facing: internal
+spec:
+    replicas: 1
+    strategy:
+        type: Recreate
+    selector:
+        matchLabels:
+            app: unifi-controller
+    template:
+        metadata:
+            labels:
+                app: unifi-controller
+        spec:    
+            initContainers:
+                - name: unifi-controller-system-properties-injector
+                  image: busybox
+                  command: ['sh', '-c', 'mkdir -p /data_dir/data && cp /system.properties /data_dir/data/system.properties']
+                  volumeMounts:
+                      - name: unifi-controller-system-properties
+                        mountPath: /system.properties
+                        subPath: system.properties    
+                      - name: unifi-controller-data
+                        mountPath: /data_dir/
+            containers:
+                - name: unifi-controller
+                  image: linuxserver/unifi-controller:5.9
+                  env:
+                      - name: PUID
+                        value: "{{ fileserver_uid }}"
+                      - name: PGID
+                        value: "{{ fileserver_gid }}"
+                      - name: TZ
+                        value: "{{ timezone }}"
+                  ports:
+                      - name: "l2-discoverable"
+                        containerPort: 1900
+                        protocol: UDP
+                      - name: "stun"
+                        containerPort: 3478
+                        protocol: UDP
+                      - name: "ap-discovery"
+                        containerPort: 10001
+                        protocol: UDP
+                      - name: "speed-test"
+                        containerPort: 6789
+                      - name: "internal-comms"
+                        containerPort: 8080
+                      - name: "unknown-port"
+                        containerPort: 8081
+                      - name: "http-web"
+                        containerPort: 8443
+                      - name: "http-s-redirect"
+                        containerPort: 8843
+                      - name: "http-redirect"
+                        containerPort: 8880
+                  volumeMounts:
+                      - name: unifi-controller-data
+                        mountPath: /config
+                      - name: unifi-controller-backups
+                        mountPath: /backups
+                  readinessProbe:
+                      httpGet:
+                          path: /status
+                          port: 8080
+                      periodSeconds: 10
+                      failureThreshold: 1                   
+                  livenessProbe:
+                      httpGet:
+                          path: /status
+                          port: 8080
+                      initialDelaySeconds: 360
+                      periodSeconds: 30
+                      failureThreshold: 5
+                  resources:
+                      requests:
+                          memory: {{ unifi_mem_request }}
+                          cpu: {{ unifi_cpu_request }}
+                      limits:
+                          memory: {{ unifi_mem_limit }}
+                          cpu: {{ unifi_cpu_limit }}
+            volumes:
+                - name: unifi-controller-data
+                  persistentVolumeClaim:
+                    claimName: unifi-controller-data
+                - name: unifi-controller-backups
+                  persistentVolumeClaim:
+                    claimName: unifi-controller-backups                    
+                - name: unifi-controller-system-properties
+                  configMap:
+                    name: unifi-controller-system-properties                    

@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+    name: unifi-controller-system-properties
+    namespace: {{ namespace }}
+data:
+    system.properties: |
+        # Enable debug logging
+        #debug.device=debug
+        #debug.mgmt=debug
+        #debug.sdn=debug
+        #debug.system=debug
+        
+        # Inform IP Address
+        system_ip={{ load_balancer_ip }}
+        
+        # Autobackup directory
+        autobackup.dir=/backups
+        
+        # External MongoDB information
+        db.mongo.local=false
+        db.mongo.uri=mongodb://ubnt:{{ mongodb_password }}@unifi-controller-mongodb:27017/unifi
+        statdb.mongo.uri=mongodb://ubnt:{{ mongodb_password }}@unifi-controller-mongodb:27017/unifi_stat
+        unifi.db.name=unifi
