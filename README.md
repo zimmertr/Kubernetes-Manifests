@@ -1,4 +1,4 @@
-# TKS-Deploy_Kubernetes_Apps
+# TKS - Deploy Kubernetes Apps
 
 This repository can be used on its own but it is intended to be used as a submodule of [TKS](https://github.com/zimmertr/TKS). TKS enables enthusiasts and administrators alike to easily provision highly available and production-ready Kubernetes clusters and other modern infrastructure on Proxmox VE. 
 
