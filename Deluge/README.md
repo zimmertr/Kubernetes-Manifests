@@ -1,9 +1,9 @@
 # Deluge
 
-**Website**: https://deluge-torrent.org/
-**Container Image:** https://hub.docker.com/r/linuxserver/deluge
-
 This application is meant to be deployed to Kubernetes using Kustomize. 
+
+* **Website**: https://deluge-torrent.org/
+* **Container Image:** https://hub.docker.com/r/linuxserver/deluge
 
 <hr>
 
