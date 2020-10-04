@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: Service
+metadata:
+    name: unifi-controller-tcp
+    annotations:
+        metallb.universe.tf/allow-shared-ip: "true"
+        metallb.universe.tf/address-pool: {{ load_balancer_address_pool }}    
+    namespace: {{ namespace }}
+    labels:
+        app: unifi-controller
+spec:
+    type: LoadBalancer
+    externalTrafficPolicy: Local
+    selector:
+        app: unifi-controller
+    loadBalancerIP: {{ load_balancer_ip }}
+    ports:
+    - name: "speed-test"
+      protocol: TCP
+      targetPort: 6789
+      port: 6789
+    - name: "internal-comms"
+      protocol: TCP
+      targetPort: 8080
+      port: 8080
+    - name: "unknown-port"
+      protocol: TCP
+      targetPort: 8081
+      port: 8081
+    - name: "http-web"
+      protocol: TCP
+      targetPort: 8443
+      port: 8443
+    - name: "http-s-redirect"
+      protocol: TCP
+      targetPort: 8843
+      port: 8843
+    - name: "http-redirect"
+      protocol: TCP
+      targetPort: 8880
+      port: 8880
+    - name: "local-comms"
+      protocol: TCP
+      targetPort: 27117
+      port: 27117

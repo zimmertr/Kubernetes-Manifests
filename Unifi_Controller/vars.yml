@@ -1,0 +1,51 @@
+# The namespace to be created and used for the deployment.
+namespace: 'unifi-controller'
+
+# The MetalLB Address Pool from which you want to obtain an IP address.
+load_balancer_address_pool: 'VLAN20'
+
+# The IP address within the Address Pool to which you want to bind the service.
+load_balancer_ip: '192.168.20.10'
+
+# The hostname with which you want to test connectivity to the IP Address after the deployment has completed.
+hostname: 'unifi.sol.milkyway'
+
+# The timezone of the location for the deployment.
+# https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+timezone: 'America/Los_Angeles'
+
+# The password to be used for the MongoDB database.
+mongodb_password: 'REPLACEME'
+
+# The hostname or IP address of the NFS server on which you want to store Persistent Volume content.
+nfs_server: 'saturn.sol.milkyway'
+
+# The UID used for accessing content on the fileserver.
+fileserver_uid: '1002'
+
+# The GID used for accessing content on the fileserver.
+fileserver_gid: '1007'
+
+# The NFS mountpoint to be used for preserving the configuration of the application.
+data_dir: '/SaturnPool/Kubernetes/Unifi/data'
+
+# The NFS mountpoint to be used for storing the Unifi Controller's backups.
+backups_dir: '/SaturnPool/Kubernetes/Unifi/backups'
+
+# The NFS mountpoint to be used for storing the MongoDB database.
+mongodb_dir: '/SaturnPool/Kubernetes/Unifi/mongodb'
+
+# The resource requests the the pods.
+# 1 = 1 vCPU affinity
+unifi_cpu_request: '.02'
+mongodb_cpu_request: '.03'
+
+unifi_mem_request: '512Mi'
+mongodb_mem_request: '512Mi'
+
+# The resource limitations for the pods.
+unifi_cpu_limit: '.2'
+mongodb_cpu_limit: '.2'
+
+unifi_mem_limit: '3072Mi'
+mongodb_mem_limit: '3072Mi'
