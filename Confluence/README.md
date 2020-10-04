@@ -1,9 +1,9 @@
 # Confluence
 
-**Website**: https://www.atlassian.com/software/confluence
-**Container Image:** https://hub.docker.com/r/atlassian/confluence-server/
-
 This application is meant to be deployed to Kubernetes using Kustomize. 
+
+* **Website**: https://www.atlassian.com/software/confluence
+* **Container Image:** https://hub.docker.com/r/atlassian/confluence-server/
 
 <hr>
 

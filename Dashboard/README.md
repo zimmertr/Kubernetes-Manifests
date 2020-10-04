@@ -1,9 +1,9 @@
 # Kubernetes Dashboard
 
-**Website**: https://github.com/kubernetes/dashboard
-**Container Image:** https://hub.docker.com/r/kubernetesui/dashboard
-
 This application is meant to be deployed to Kubernetes using Ansible & Kustomize. 
+
+* **Website**: https://github.com/kubernetes/dashboard
+* **Container Image:** https://hub.docker.com/r/kubernetesui/dashboard
 
 <hr>
 
