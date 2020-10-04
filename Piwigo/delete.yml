@@ -1,0 +1,24 @@
+---
+- hosts: localhost
+  gather_facts: False
+  tasks:
+      - name: Including the variables.
+        include_vars:
+            file: ./vars.yml
+
+      - name: Deleting the manifests from Kubernetes.
+        k8s:
+            definition: "{{ lookup('template', './manifests/{{ item }}') | from_yaml }}"
+            state: absent            
+        with_items:
+            - "sec_mysql_password.yml.j2"   
+            - "pv_mysql.yml.j2"
+            - "pvc_mysql.yml.j2"               
+            - "pv_piwigo_config.yml.j2"
+            - "pvc_piwigo_config.yml.j2"
+            - "pv_piwigo_photos.yml.j2"
+            - "pvc_piwigo_photos.yml.j2"
+            - "dep_mysql.yml.j2"
+            - "dep_piwigo.yml.j2"
+            - "svc_mysql.yml.j2"
+            - "svc_piwigo.yml.j2"
