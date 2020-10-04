@@ -56,34 +56,6 @@ Deploy the Dashboard and allow external access through a Load Balancer.
       kubectl -n kubernetes-dashboard describe secret $(kubectl -n kubernetes-dashboard get secret | grep REPLACEME | awk '{print $1}')
       ```
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ## Notes
 
 * Confluence anticipates that all volume mounted files be owned by UID and GID 2002. Be sure to set this before deploying. 
