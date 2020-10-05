@@ -44,7 +44,7 @@ In all cases, a supplemental README is provided with further details about confi
 | [Dashboard](Dashboard/README.md) | Ansible / Kustomize |Ansible is used to generate certificates. Kustomize is used to deploy the application.|
 | [Deluge](Deluge/README.md) | Kustomize ||
 | [Federated Monitoring (Grafana)](Federated-Monitoring/README.md) | Kustomize ||
-| [Grafana](Grafana/README.md) | Grafana | This project has been retired in favor of [Federated Monitoring (Grafana)](Federated-Monitoring/README.md). |
+| [Grafana](Grafana/README.md) | Ansible | This project has been retired in favor of [Federated Monitoring (Grafana)](Federated-Monitoring/README.md). |
 | [Grocy](Grocy/README.md) | Kustomize ||
 | [Istio](Istio/README.md) | Ansible |Ansible is used to download and deploy the requested version of Istio using `istioctl`.|
 | [Jira](Jira/README.md) | Kustomize ||
