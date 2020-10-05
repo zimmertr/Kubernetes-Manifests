@@ -48,18 +48,18 @@ In all cases, a supplemental README is provided with further details about confi
 | [Istio](Istio/README.md) | Ansible |Ansible is used to download and deploy the requested version of Istio using `istioctl`.|
 | [Jira](Jira/README.md) | Kustomize ||
 | [MetalLB](MetalLB/README.md) | Kustomize ||
-| [Nextcloud](Nextcloud/README.md) | Ansible |Ansible is used as I have not yet ported this solution to Kustomize.|
+| [Nextcloud](Nextcloud/README.md) | Ansible |Out of Date -- Needs to be ported to Kustomize.|
 | [NFS Provisioner](NFS-Provisioner/README.md) | Ansible / Kustomize |Ansible is used to install `nfs-common` on the worker nodes. Kustomize is used to deploy the application.|
 | [OpenEBS](OpenEBS/README.md) | Ansible / Kustomize |Ansible is used to install `iscsid` and configure the worker nodes. Kustomize is used to deploy the application.|
-| [OpenVPN-as](OpenVPN-as/README.md) | Ansible |Ansible is used as I have not yet ported this solution to Kustomize.|
+| [OpenVPN-as](OpenVPN-as/README.md) | Ansible |Out of Date -- Needs to be ported to Kustomize.|
 | [Personal Website](Personal-Website/README.md) | Kustomize ||
-| [Piwigo](Piwigo/README.md) | Ansible |Ansible is used as I have not yet ported this solution to Kustomize.|
+| [Piwigo](Piwigo/README.md) | Ansible |Out of Date -- Needs to be ported to Kustomize.|
 | [Plex Media Server](Plex-Media-Server/README.md) | Kustomize ||
 | [Radarr](Radarr/README.md) | Kustomize ||
 | [ruTorrent](ruTorrent/README.md) | Kustomize ||
 | [Sonarr](Sonarr/README.md) | Kustomize ||
 | [Tautulli](Tautulli/README.md) | Kustomize ||
 | [Toodo](Toodo/README.md) | Kustomize ||
-| [Unifi-Controller](Unifi-Controller/README.md) | Ansible |Ansible is used as I have not yet ported this solution to Kustomize.|
+| [Unifi-Controller](Unifi-Controller/README.md) | Ansible |Out of Date -- Needs to be ported to Kustomize.|
 
 Projects located in `./old/` have been retired.
