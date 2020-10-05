@@ -54,6 +54,7 @@ In all cases, a supplemental README is provided with further details about confi
 | [OpenEBS](OpenEBS/README.md) | Ansible / Kustomize |Ansible is used to install `iscsid` and configure the worker nodes. Kustomize is used to deploy the application.|
 | [OpenVPN-as](OpenVPN-as/README.md) | Ansible |Out of Date -- Needs to be ported to Kustomize.|
 | [Personal Website](Personal-Website/README.md) | Kustomize ||
+| [Pi-Hole Exporter](PiHole-Exporter/README.md) | Kustomize ||
 | [Piwigo](Piwigo/README.md) | Ansible |Out of Date -- Needs to be ported to Kustomize.|
 | [Plex Media Server](Plex-Media-Server/README.md) | Kustomize ||
 | [Radarr](Radarr/README.md) | Kustomize ||
