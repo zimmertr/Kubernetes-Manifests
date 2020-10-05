@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: varken
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: varken
+  template:
+    metadata:
+      labels:
+        app: varken
+    spec:
+      containers:
+        - name: varken
+          image: boerderij/varken
+          envFrom:
+            - configMapRef:
+                name: varken-env-vars
+            - secretRef:
+                name: varken-secret-vars

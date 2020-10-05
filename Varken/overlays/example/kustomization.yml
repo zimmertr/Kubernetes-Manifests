@@ -1,0 +1,52 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: varken
+bases:
+    - ../../base/
+
+patchesStrategicMerge:
+    - dep.yml
+
+secretGenerator:
+  - name: varken-secret-vars
+    envs:
+      - varken_secret_vars
+
+configMapGenerator:
+    - name: varken-env-vars
+      literals:
+        - VRKN_GLOBAL_SONARR_SERVER_IDS='1'
+        - VRKN_GLOBAL_RADARR_SERVER_IDS='1'
+        - VRKN_GLOBAL_TAUTULLI_SERVER_IDS='1'
+        - VRKN_GLOBAL_LIDARR_SERVER_IDS='false'
+        - VRKN_GLOBAL_OMBI_SERVER_IDS='false'
+        - VRKN_GLOBAL_SICKCHILL_SERVER_IDS='false'
+        - VRKN_GLOBAL_UNIFI_SERVER_IDS='false'
+        - VRKN_INFLUXDB_URL='mimas.sol.milkyway'
+        - VRKN_INFLUXDB_PORT='8086'
+        - VRKN_INFLUXDB_SSL='false'
+        - VRKN_INFLUXDB_VERIFY_SSL='false'
+        - VRKN_INFLUXDB_USERNAME='tks'
+        - VRKN_TAUTULLI_1_URL='charon.sol.milkyway:8181'
+        - VRKN_TAUTULLI_1_SSL='false'
+        - VRKN_TAUTULLI_1_VERIFY_SSL='false'
+        - VRKN_TAUTULLI_1_GET_ACTIVITY='true'
+        - VRKN_TAUTULLI_1_GET_ACTIVITY_RUN_SECONDS='60'
+        - VRKN_TAUTULLI_1_GET_STATS='true'
+        - VRKN_TAUTULLI_1_GET_STATS_RUN_SECONDS='60'
+        - VRKN_SONARR_1_URL='phobos.sol.milkyway:8989'
+        - VRKN_SONARR_1_SSL='false'
+        - VRKN_SONARR_1_VERIFY_SSL='false'
+        - VRKN_SONARR_1_MISSING_DAYS='7'
+        - VRKN_SONARR_1_MISSING_DAYS_RUN_SECONDS='300'
+        - VRKN_SONARR_1_FUTURE_DAYS='1'
+        - VRKN_SONARR_1_FUTURE_DAYS_RUN_SECONDS='300'
+        - VRKN_SONARR_1_QUEUE='true'
+        - VRKN_SONARR_1_QUEUE_RUN_SECONDS='300'
+        - VRKN_RADARR_1_URL='deimos.sol.milkyway:7878'
+        - VRKN_RADARR_1_SSL='false'
+        - VRKN_RADARR_1_VERIFY_SSL='false'
+        - VRKN_RADARR_1_QUEUE='true'
+        - VRKN_RADARR_1_QUEUE_RUN_SECONDS='300'
+        - VRKN_RADARR_1_GET_MISSING='true'
+        - VRKN_RADARR_1_GET_MISSING_RUN_SECONDS='300'

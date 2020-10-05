@@ -62,3 +62,4 @@ In all cases, a supplemental README is provided with further details about confi
 | [Tautulli](Tautulli/README.md) | Kustomize ||
 | [Toodo](Toodo/README.md) | Kustomize ||
 | [Unifi-Controller](Unifi-Controller/README.md) | Ansible |Out of Date -- Needs to be ported to Kustomize.|
+| [Varken](Varken/README.md) | Kustomize | Requires an InfluxDB to store metrics. Consider using [TKS-Deploy_Grafana](https://github.com/zimmertr/TKS-Deploy_Grafana). |
