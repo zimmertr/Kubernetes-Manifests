@@ -62,5 +62,5 @@ In all cases, a supplemental README is provided with further details about confi
 | [Tautulli](Tautulli/README.md) | Kustomize ||
 | [Toodo](Toodo/README.md) | Kustomize ||
 | [Unifi-Controller](Unifi-Controller/README.md) | Ansible |Out of Date -- Needs to be ported to Kustomize.|
-| [Unifi-Poller](Unifi-Poller/README.md) | |
+| [Unifi-Poller](Unifi-Poller/README.md) | Kustomize | |
 | [Varken](Varken/README.md) | Kustomize | |
