@@ -1,0 +1,22 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: unifi-poller
+bases:
+    - ../../base/
+
+patchesStrategicMerge:
+    - dep.yml
+
+secretGenerator:
+  - name: unifi-poller-secret-vars
+    envs:
+      - unifi_poller_secret_vars
+
+configMapGenerator:
+    - name: unifi-poller-env-vars
+      literals:
+        - UP_UNIFI_DEFAULT_URL="https://unifi-controller.sputnik.sol.milkyway/"
+        - UP_PROMETHEUS_DISABLE="true"
+        - UP_INFLUXDB_URL="http://mimas.sol.milkyway:8086"
+        - UP_INFLUXDB_USER="tks"
+        - UP_INFLUXDB_INTERVAL="1m

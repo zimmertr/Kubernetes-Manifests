@@ -1,0 +1,17 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: unifi-poller
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: unifi-poller
+  template:
+    metadata:
+      labels:
+        app: unifi-poller
+    spec:
+      containers:
+        - name: unifi-poller
+          image: golift/unifi-poller
