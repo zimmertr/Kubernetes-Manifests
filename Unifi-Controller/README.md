@@ -1,7 +1,7 @@
 ## Unifi Controller
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/zimmertr/Kubernetes-Manifests/master/Unifi_Controller/screenshot.png" width="800">
+  <img src="https://raw.githubusercontent.com/zimmertr/TKS-Deploy_Kubernetes_Apps/master/Unifi-Controller/screenshot.png" width="800">
 </p>
 
 **Summary:**
