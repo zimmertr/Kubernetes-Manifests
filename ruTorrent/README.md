@@ -1,6 +1,6 @@
 # ruTorrent
 
-This application is meant to be deployed to Kubernetes using Kustomize. 
+This application is meant to be deployed to Kubernetes using Kustomize.
 
 * **Website**: https://github.com/Novik/ruTorrent
 * **Container Image:** https://hub.docker.com/r/linuxserver/rutorrent
@@ -18,5 +18,5 @@ This application is meant to be deployed to Kubernetes using Kustomize.
 An example overlay is provided from my environment. Simply create a new overlay using it as an example and deploy it to your environment like so:
 
    ```bash
-    kustomize build Radarr/overlays/example | kubectl apply -f-
+    kustomize build ruTorrent/overlays/example | kubectl apply -f-
    ```
