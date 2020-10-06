@@ -1,13 +1,11 @@
 #https://github.com/google/cadvisor/tree/master/deploy/kubernetes
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-# namespace: cadvisor
 
 resources:
 - clusterrole.yaml
 - clusterrolebinding.yaml
 - daemonset.yaml
-# - namespace.yaml
 - podsecuritypolicy.yaml
 - serviceaccount.yaml
 

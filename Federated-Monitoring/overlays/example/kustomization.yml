@@ -3,7 +3,14 @@ kind: Kustomization
 namespace: federated-monitoring
 
 resources:
-    - Prometheus
-    # - cAdvisor
-    # - Kube_State_Metrics
-    # - Node_Exporter
+  - ../../base/
+
+patchesStrategicMerge:
+  - HAProxy_Exporter/dep.yml
+  - Prometheus/dep.yml
+  - Prometheus/svc.yml
+
+configMapGenerator:
+  - name: prometheus.yml
+    files:
+      - Prometheus/files/prometheus.yml

@@ -6,5 +6,5 @@ resources:
   - svc.yml
 
 commonLabels:
-    app: prometheus
+    app: haproxy-exporter
 

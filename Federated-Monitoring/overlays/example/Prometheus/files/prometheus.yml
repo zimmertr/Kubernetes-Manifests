@@ -9,6 +9,10 @@ scrape_configs:
         labels:
           origin: 'federated'
 
+  - job_name: 'haproxy-exporter'
+    static_configs:
+      - targets: ['haproxy-exporter:9101']
+
   - job_name: 'kube-state-metrics'
     static_configs:
       - targets: ['kube-state-metrics.federated-monitoring.svc.cluster.local:8080']
