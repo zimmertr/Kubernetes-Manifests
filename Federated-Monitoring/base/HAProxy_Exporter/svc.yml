@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: haproxy-exporter
+  name: haproxy-exporter
+spec:
+  ports:
+  - port: 9101
+  selector:
+    app: haproxy-exporter
