@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: haproxy-exporter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: haproxy-exporter
+  template:
+    metadata:
+      labels:
+        app: haproxy-exporter
+    spec:
+      containers:
+        - name: haproxy-exporter
+          image: prom/haproxy-exporter
+          args:
+            - '--haproxy.scrape-uri=http://tks:P@ssw0rd1!@tks-lb.sol.milkyway:8080/haproxy?stats;csv/'

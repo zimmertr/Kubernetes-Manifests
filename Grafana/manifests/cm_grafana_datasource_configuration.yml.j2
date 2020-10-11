@@ -1,0 +1,114 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+    name: grafana-datasource-configuration
+    namespace: {{ namespace  }}
+data:
+    datasource.yml: |
+        apiVersion: 1
+
+        deleteDatasources:
+          - name: Prometheus
+            orgId: 1
+
+          - name: InfluxDB-{{ influxdb_db }}
+            orgId: 1
+
+          - name: InfluxDB-Unifi
+            orgId: 1
+
+          - name: InfluxDB-UPS
+
+          - name: InfluxDB-Proxmox
+            orgId: 1
+
+          - name: InfluxDB-Odroid
+            orgId: 1
+
+          - name: InfluxDB-Saturn
+            orgId: 1
+
+          - name: InfluxDB-Jupiter
+            orgId: 1
+
+        datasources:
+          - name: Prometheus
+            type: prometheus
+            access: proxy
+            orgId: 1
+            url: http://prometheus:9090
+            isDefault: true
+            version: 1
+            editable: false
+
+          - name: InfluxDB-{{ influxdb_db }}
+            type: influxdb
+            access: proxy
+            database: {{ influxdb_db }}
+            user: {{ influxdb_user }}
+            url: http://{{ influxdb_hostname }}:8086
+            secureJsonData:
+              password: {{ influxdb_password }}
+
+          - name: InfluxDB-Unifi
+            type: influxdb
+            access: proxy
+            database: unifi
+            user: {{ influxdb_user }}
+            url: http://{{ influxdb_hostname }}:8086
+            secureJsonData:
+              password: {{ influxdb_password }}
+
+          - name: InfluxDB-UPS
+            type: influxdb
+            access: proxy
+            database: ups
+            user: {{ influxdb_user }}
+            url: http://{{ influxdb_hostname }}:8086
+            secureJsonData:
+              password: {{ influxdb_password }}
+
+          - name: InfluxDB-Proxmox
+            type: influxdb
+            access: proxy
+            database: proxmox
+            user: {{ influxdb_user }}
+            url: http://{{ influxdb_hostname }}:8086
+            secureJsonData:
+              password: {{ influxdb_password }}
+
+          - name: InfluxDB-Odroid
+            type: influxdb
+            access: proxy
+            database: odroid
+            user: {{ influxdb_user }}
+            url: http://{{ influxdb_hostname }}:8086
+            secureJsonData:
+              password: {{ influxdb_password }}
+
+          - name: InfluxDB-Saturn
+            type: influxdb
+            access: proxy
+            database: saturn
+            user: {{ influxdb_user }}
+            url: http://{{ influxdb_hostname }}:8086
+            secureJsonData:
+              password: {{ influxdb_password }}
+
+          - name: InfluxDB-Jupiter
+            type: influxdb
+            access: proxy
+            database: jupiter
+            user: {{ influxdb_user }}
+            url: http://{{ influxdb_hostname }}:8086
+            secureJsonData:
+              password: {{ influxdb_password }}
+
+          - name: InfluxDB-Varken
+            type: influxdb
+            access: proxy
+            database: varken
+            user: {{ influxdb_user }}
+            url: http://{{ influxdb_hostname }}:8086
+            secureJsonData:
+              password: {{ influxdb_password }}

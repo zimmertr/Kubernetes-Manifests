@@ -1,0 +1,119 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: varken-exporter
+    namespace: {{ namespace }}
+    labels:
+        app: grafana-varken-exporter
+        version: latest
+        type: thirdparty
+        facing: internal
+spec:
+    replicas: 1
+    strategy:
+        type: Recreate
+    selector:
+        matchLabels:
+            app: varken-exporter
+    template:
+        metadata:
+            labels:
+                app: varken-exporter
+        spec:
+            containers:
+                - name: varken-exporter
+                  image: boerderij/varken
+                  env:
+                      - name: TZ
+                        value: "America/Los_Angeles"
+                      - name: VRKN_GLOBAL_SONARR_SERVER_IDS
+                        value: "1"
+                      - name: VRKN_GLOBAL_RADARR_SERVER_IDS
+                        value: "1"
+                      - name: VRKN_GLOBAL_TAUTULLI_SERVER_IDS
+                        value: "1"
+                      - name: VRKN_GLOBAL_LIDARR_SERVER_IDS
+                        value: "false"
+                      - name: VRKN_GLOBAL_OMBI_SERVER_IDS
+                        value: "false"
+                      - name: VRKN_GLOBAL_SICKCHILL_SERVER_IDS
+                        value: "false"
+                      - name: VRKN_GLOBAL_UNIFI_SERVER_IDS
+                        value: "false"
+                      - name: VRKN_INFLUXDB_URL
+                        value: "{{ influxdb_hostname }}"
+                      - name: VRKN_INFLUXDB_PORT
+                        value: "8086"
+                      - name: VRKN_INFLUXDB_SSL
+                        value: "{{ varken_influxdb_ssl }}"
+                      - name: VRKN_INFLUXDB_VERIFY_SSL
+                        value: "{{ varken_influxdb_ssl }}"
+                      - name: VRKN_INFLUXDB_USERNAME
+                        value: "{{ influxdb_user }}"
+                      - name: VRKN_INFLUXDB_PASSWORD
+                        valueFrom:
+                            secretKeyRef:
+                                key: influxdb_admin_password
+                                name: grafana-influxdb-password
+                      - name: VRKN_TAUTULLI_1_URL
+                        value: "{{ varken_tautulli_url }}"
+                      - name: VRKN_TAUTULLI_1_APIKEY
+                        valueFrom:
+                            secretKeyRef:
+                                key: tautulli_api_key
+                                name: grafana-varken-api-keys
+                      - name: VRKN_TAUTULLI_1_SSL
+                        value: "{{ varken_tautulli_ssl }}"
+                      - name: VRKN_TAUTULLI_1_VERIFY_SSL
+                        value: "{{ varken_tautulli_ssl }}"
+                      - name: VRKN_TAUTULLI_1_GET_ACTIVITY
+                        value: "true"
+                      - name: VRKN_TAUTULLI_1_GET_ACTIVITY_RUN_SECONDS
+                        value: "30"
+                      - name: VRKN_TAUTULLI_1_GET_STATS
+                        value: "true"
+                      - name: VRKN_TAUTULLI_1_GET_STATS_RUN_SECONDS
+                        value: "60"
+                      - name: VRKN_SONARR_1_URL
+                        value: "{{ varken_sonarr_url }}"
+                      - name: VRKN_SONARR_1_APIKEY
+                        valueFrom:
+                            secretKeyRef:
+                                key: sonarr_api_key
+                                name: grafana-varken-api-keys
+                      - name: VRKN_SONARR_1_SSL
+                        value: "{{ varken_sonarr_ssl }}"
+                      - name: VRKN_SONARR_1_VERIFY_SSL
+                        value: "{{ varken_sonarr_ssl }}"
+                      - name: VRKN_SONARR_1_MISSING_DAYS
+                        value: "7"
+                      - name: VRKN_SONARR_1_MISSING_DAYS_RUN_SECONDS
+                        value: "300"
+                      - name: VRKN_SONARR_1_FUTURE_DAYS
+                        value: "1"
+                      - name: VRKN_SONARR_1_FUTURE_DAYS_RUN_SECONDS
+                        value: "300"
+                      - name: VRKN_SONARR_1_QUEUE
+                        value: "true"
+                      - name: VRKN_SONARR_1_QUEUE_RUN_SECONDS
+                        value: "300"
+                      - name: VRKN_RADARR_1_URL
+                        value: "{{ varken_radarr_url }}"
+                      - name: VRKN_RADARR_1_APIKEY
+                        valueFrom:
+                            secretKeyRef:
+                                key: radarr_api_key
+                                name: grafana-varken-api-keys
+                      - name: VRKN_RADARR_1_SSL
+                        value: "{{ varken_radarr_ssl }}"
+                      - name: VRKN_RADARR_1_VERIFY_SSL
+                        value: "{{ varken_radarr_ssl }}"
+                      - name: VRKN_RADARR_1_QUEUE
+                        value: "true"
+                      - name: VRKN_RADARR_1_QUEUE_RUN_SECONDS
+                        value: "300"
+                      - name: VRKN_RADARR_1_GET_MISSING
+                        value: "true"
+                      - name: VRKN_RADARR_1_GET_MISSING_RUN_SECONDS
+                        value: "300"
+

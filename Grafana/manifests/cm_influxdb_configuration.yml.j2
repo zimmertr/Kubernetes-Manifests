@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+    name: grafana-influxdb-configuration
+    namespace: {{ namespace }}
+data:
+    zbootstrap.sh: |
+        #!/bin/bash
+        influx -password '{{ influxdb_password }}' -username '{{ influxdb_user }}' -execute '{{ influxdb_cmds }}'
