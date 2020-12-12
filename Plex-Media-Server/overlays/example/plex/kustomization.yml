@@ -22,6 +22,7 @@ configMapGenerator:
     - name: plex-env-vars
       behavior: replace
       literals:
+        - CHANGE_CONFIG_DIR_OWNERSHIP=false
         - TZ=America/Los_Angeles
         - PLEX_UID=1002
         - PLEX_GID=1007
