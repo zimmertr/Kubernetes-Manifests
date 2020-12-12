@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: streetmerchant
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: streetmerchant
+  template:
+    metadata:
+      labels:
+        app: streetmerchant
+    spec:
+      containers:
+        - name: streetmerchant
+          image: ghcr.io/jef/streetmerchant:nightly
+          env:
+            - name: STORES
+              value: "amazon,asus,bandh,bestbuy,corsair,newegg,pny,walmart"
+            - name: SHOW_ONLY_SERIES
+              value: "3080,3090"
+            - name: SMTP_ADDRESS
+              value: "smtp.gmail.com"
+            - name: SMTP_PORT
+              value: "587"
+            - name: PHONE_CARRIER
+              value: "google"
+            - name: PHONE_NUMBER
+              value: "##########"
+            - name: BROWSER_TRUSTED
+              value: "true"
+            - name: COUNTRY
+              value: "usa"
+            - name: EMAIL_PASSWORD
+              value: "##########"
+            - name: EMAIL_TO
+              value: "thomaszimmerman93@gmail.com"
+            - name: EMAIL_USERNAME
+              value: "thomaszimmerman93@gmail.com"
+            - name: MAX_PRICE_SERIES_3080
+              value: "900"
+            - name: MAX_PRICE_SERIES_3090
+              value: "1900"

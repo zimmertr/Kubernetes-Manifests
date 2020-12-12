@@ -60,6 +60,7 @@ In all cases, a supplemental README is provided with further details about confi
 | [Radarr](Radarr/README.md) | Kustomize ||
 | [ruTorrent](ruTorrent/README.md) | Kustomize ||
 | [Sonarr](Sonarr/README.md) | Kustomize ||
+| [StreetMerchant](StreetMerchant/README.md) | Kustomize ||
 | [Tautulli](Tautulli/README.md) | Kustomize ||
 | [Toodo](Toodo/README.md) | Kustomize ||
 | [Unifi-Controller](Unifi-Controller/README.md) | Ansible |Out of Date -- Needs to be ported to Kustomize.|
