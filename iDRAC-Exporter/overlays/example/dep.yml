@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: idrac-exporter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: idrac-exporter
+  template:
+    metadata:
+      labels:
+        app: idrac-exporter
+    spec:
+      containers:
+        - name: idrac-exporter
+          image: telegraf
+          volumeMounts:
+            - name: idrac-exporter-telegraf-conf
+              mountPath: /etc/telegraf/telegraf.conf
+              subPath: telegraf.conf
+      volumes:
+        - name: idrac-exporter-telegraf-conf
+          secret:
+            secretName: idrac-exporter-telegraf-conf

@@ -46,6 +46,7 @@ In all cases, a supplemental README is provided with further details about confi
 | [Federated Monitoring (Grafana)](Federated-Monitoring/README.md) | Kustomize ||
 | [Grafana](Grafana/README.md) | Ansible | This project has been retired in favor of [Federated Monitoring (Grafana)](Federated-Monitoring/README.md). |
 | [Grocy](Grocy/README.md) | Kustomize ||
+| [iDRAC Exporter](iDRAC-Exporter/README.md) | Kustomize ||
 | [Istio](Istio/README.md) | Ansible |Ansible is used to download and deploy the requested version of Istio using `istioctl`.|
 | [Jira](Jira/README.md) | Kustomize ||
 | [MetalLB](MetalLB/README.md) | Kustomize ||
