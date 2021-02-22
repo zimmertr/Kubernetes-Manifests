@@ -29,8 +29,8 @@ scrape_configs:
       - targets: ['tks-node-3.sol.milkyway:9100']
 
   - job_name: 'cadvisor'
-    scrape_interval: 120s
-    scrape_timeout: 120s
+    scrape_interval: 30s
+    scrape_timeout: 30s
     static_configs:
       - targets: ['tks-node-1.sol.milkyway:8080']
       - targets: ['tks-node-2.sol.milkyway:8080']
@@ -38,7 +38,7 @@ scrape_configs:
 
   - job_name: 'rtorrent-exporter'
     metrics_path: '/'
-    scrape_interval: 120s
-    scrape_timeout: 120s
+    scrape_interval: 30s
+    scrape_timeout: 30s
     static_configs:
       - targets: ['rtorrent-exporter.rtorrent-exporter.svc.cluster.local:9135']

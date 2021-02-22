@@ -2,15 +2,15 @@
 
 This application is meant to be deployed to Kubernetes using Kustomize.
 
-* **Website**: https://www.influxdata.com/time-series-platform/telegraf/
-* **Container Image:** https://hub.docker.com/_/telegraf
+* **Website**: https://github.com/mdlayher/rtorrent_exporter
+* **Container Image:** https://hub.docker.com/repository/docker/zimmertr/rtorrent-exporter
 
 <hr>
 
 ## Notes
 
-* You will need a InfluxDB database to use the rTorrent Exporter.
-* You will need an rTorrent compatible server to use the rTorrent Exporter.
+* You will need a Prometheus database to use the rTorrent Exporter.
+* You will need an instance of rTorrent to use the rTorrent Exporter.
 
 <hr>
 
@@ -22,4 +22,4 @@ An example overlay is provided from my environment. Simply create a new overlay 
     kustomize build rTorrent-Exporter/overlays/example | kubectl apply -f-
    ```
 
-Don't forget to update `telegraf.conf` according to your environment. Options are documented [here](https://github.com/influxdata/telegraf/blob/master/docs/CONFIGURATION.md).
+Don't forget to update the deployment arguments according to your environment. Options are documented [here](https://github.com/mdlayher/rtorrent_exporter/blob/6da5c490c27c2832bf4412510bd66edc14f9171b/cmd/rtorrent_exporter/main.go#L15).

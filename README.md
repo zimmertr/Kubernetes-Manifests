@@ -60,6 +60,7 @@ In all cases, a supplemental README is provided with further details about confi
 | [Plex Media Server](Plex-Media-Server/README.md) | Kustomize ||
 | [Radarr](Radarr/README.md) | Kustomize ||
 | [ruTorrent](ruTorrent/README.md) | Kustomize ||
+| [rTorrent-Exporter](rtorrent-Exporter/README.md) | Kustomize ||
 | [Sonarr](Sonarr/README.md) | Kustomize ||
 | [StreetMerchant](StreetMerchant/README.md) | Kustomize ||
 | [Tautulli](Tautulli/README.md) | Kustomize ||
