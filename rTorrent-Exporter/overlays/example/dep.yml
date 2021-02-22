@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rtorrent-exporter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rtorrent-exporter
+  template:
+    metadata:
+      labels:
+        app: rtorrent-exporter
+    spec:
+      containers:
+        - name: rtorrent-exporter
+          image: zimmertr/rtorrent-exporter
+          args:
+            - "-rtorrent.addr=http://io.sol.milkyway/RPC2"
+          ports:
+            - name: "metrics"
+              containerPort: 9135
+              protocol: TCP
