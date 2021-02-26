@@ -1,0 +1,26 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: calibre
+bases:
+  - ../../../base/
+
+resources:
+  - pv.yml
+  - pvc.yml
+
+patchesStrategicMerge:
+  - dep.yml
+  - svc.yml
+
+configMapGenerator:
+  - name: calibre-env-vars
+    literals:
+      - PUID="1002"
+      - PGID="1007"
+      - TZ="America/Los_Angeles"
+      - GUAC_USER=tks
+
+secretGenerator:
+  - name: calibre-password
+    envs:
+      - calibre_password
