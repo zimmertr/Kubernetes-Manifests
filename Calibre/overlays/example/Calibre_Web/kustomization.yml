@@ -1,0 +1,17 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: calibre
+
+resources:
+  - dep.yml
+  - pv.yml
+  - pvc.yml
+  - svc.yml
+
+configMapGenerator:
+  - name: calibre-web-env-vars
+    literals:
+      - PUID="1002"
+      - PGID="1007"
+      - TZ="America/Los_Angeles"
+      - DOCKER_MODS="linuxserver/calibre-web:calibre"
