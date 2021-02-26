@@ -40,6 +40,7 @@ In all cases, a supplemental README is provided with further details about confi
 
 | Application | Deployment Method | Details |
 | ----------- | ----------------- | ------- |
+| [Calibre & Calibre Web](Calibre/README.md) | Kustomize |  |
 | [Confluence](Confluence/README.md) | Kustomize ||
 | [Dashboard](Dashboard/README.md) | Ansible / Kustomize |Ansible is used to generate certificates. Kustomize is used to deploy the application.|
 | [Deluge](Deluge/README.md) | Kustomize ||
