@@ -27,8 +27,6 @@ spec:
           volumeMounts:
             - name: tautulli-config
               mountPath: /config
-            - name: tautulli-plex
-              mountPath: /plex_logs
           resources:
             requests:
               cpu: "100m"
@@ -40,6 +38,3 @@ spec:
         - name: tautulli-config
           persistentVolumeClaim:
             claimName: tautulli-config
-        - name: tautulli-plex
-          persistentVolumeClaim:
-            claimName: tautulli-plex
