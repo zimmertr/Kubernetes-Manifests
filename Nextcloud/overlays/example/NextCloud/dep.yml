@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nextcloud
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nextcloud
+  template:
+    metadata:
+      labels:
+        app: nextcloud
+    spec:
+      initContainers:
+        - name: postgres-wait
+          image: postgres
+          command: ['sh', '-c', 'until pg_isready -h postgres -p 5432 -U nextcloud; do sleep 1; done;']
+        - name: fix-permissions
+          image: busybox
+          command: ["sh", "-c", "chown -cR 1000:1000 /tmp/data/"]
+          volumeMounts:
+            - name: nextcloud-config
+              mountPath: /tmp/data
+      containers:
+        - name: nextcloud
+          image: nextcloud
+          envFrom:
+            - configMapRef:
+                name: nextcloud-env-vars
+            - secretRef:
+                name: nextcloud-password
+          ports:
+            - name: "http-web"
+              containerPort: 80
+              protocol: TCP
+          volumeMounts:
+            - name: nextcloud-config
+              mountPath: /var/www/html/
+            - name: nextcloud-data
+              mountPath: /data
+      volumes:
+        - name: nextcloud-config
+          persistentVolumeClaim:
+            claimName: nextcloud-config
+        - name: nextcloud-data
+          persistentVolumeClaim:
+            claimName: nextcloud-data
