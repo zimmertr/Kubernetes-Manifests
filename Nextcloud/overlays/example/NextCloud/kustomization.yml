@@ -15,18 +15,19 @@ patchesStrategicMerge:
 configMapGenerator:
   - name: nextcloud-env-vars
     literals:
-      # - NEXTCLOUD_ADMIN_USER=tks
-      # - NEXTCLOUD_DATA_DIR="/data/NextCloud/"
+      - NEXTCLOUD_ADMIN_USER=tks
+      - NEXTCLOUD_DATA_DIR="/data/NextCloud/"
       - NEXTCLOUD_TRUSTED_DOMAINS="nextcloud.tjzimmerman.com luna.sol.milkyway"
       - POSTGRES_DB=nextcloud
       - POSTGRES_USER=nextcloud
       - POSTGRES_HOST=postgres
-      # - REDIS_HOST=redis
-      # - SMTP_HOST=smtp.gmail.com
-      # - SMTP_SECURE=tls
-      # - SMTP_PORT=587
-      # - SMTP_NAME=thomaszimmerman93@gmail.com
-      # - MAIL_FROM_ADDRESS=luna@tjzimmerman.com
+      - REDIS_HOST=redis
+      - SMTP_HOST=smtp.gmail.com
+      - SMTP_SECURE=tls
+      - SMTP_PORT=587
+      - SMTP_NAME=thomaszimmerman93@gmail.com
+      - MAIL_FROM_ADDRESS=luna@tjzimmerman.com
+      - MAIL_DOMAIN=tjzimmerman.com
 
 secretGenerator:
   - name: nextcloud-password
