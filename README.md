@@ -51,7 +51,7 @@ In all cases, a supplemental README is provided with further details about confi
 | [Istio](Istio/README.md) | Ansible |Ansible is used to download and deploy the requested version of Istio using `istioctl`.|
 | [Jira](Jira/README.md) | Kustomize ||
 | [MetalLB](MetalLB/README.md) | Kustomize ||
-| [Nextcloud](Nextcloud/README.md) | Kustomize | |
+| [Nextcloud](Nextcloud/README.md) | Kustomize | Some environment variables are not correctly interpolated. |
 | [NFS Provisioner](NFS-Provisioner/README.md) | Ansible / Kustomize |Ansible is used to install `nfs-common` on the worker nodes. Kustomize is used to deploy the application.|
 | [OpenEBS](OpenEBS/README.md) | Ansible / Kustomize |Ansible is used to install `iscsid` and configure the worker nodes. Kustomize is used to deploy the application.|
 | [OpenVPN-as](OpenVPN-as/README.md) | Ansible |Out of Date -- Needs to be ported to Kustomize.|
