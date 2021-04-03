@@ -15,9 +15,11 @@ spec:
       initContainers:
         - name: fix-permissions
           image: busybox
-          command: ["sh", "-c", "chown -cR 33:33 /tmp/data/"]
+          command: ["sh", "-c", "chown -cR 33:33 /tmp/config/ /tmp/data/Kubernetes/NextCloud/userdata/"]
           volumeMounts:
             - name: nextcloud-config
+              mountPath: /tmp/config
+            - name: nextcloud-data
               mountPath: /tmp/data
         - name: postgres-wait
           image: postgres

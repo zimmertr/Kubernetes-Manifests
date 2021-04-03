@@ -16,7 +16,7 @@ configMapGenerator:
   - name: nextcloud-env-vars
     literals:
       - NEXTCLOUD_ADMIN_USER=tks
-      - NEXTCLOUD_DATA_DIR="/data/NextCloud/"
+      - NEXTCLOUD_DATA_DIR="/data/Kubernetes/NextCloud/userdata/"
       - NEXTCLOUD_TRUSTED_DOMAINS="nextcloud.tjzimmerman.com luna.sol.milkyway"
       - POSTGRES_DB=nextcloud
       - POSTGRES_USER=nextcloud
