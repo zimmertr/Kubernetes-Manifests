@@ -13,15 +13,15 @@ spec:
         app: nextcloud
     spec:
       initContainers:
-        - name: postgres-wait
-          image: postgres
-          command: ['sh', '-c', 'until pg_isready -h postgres -p 5432 -U nextcloud; do sleep 1; done;']
         - name: fix-permissions
           image: busybox
-          command: ["sh", "-c", "chown -cR 1000:1000 /tmp/data/"]
+          command: ["sh", "-c", "chown -cR 33:33 /tmp/data/"]
           volumeMounts:
             - name: nextcloud-config
               mountPath: /tmp/data
+        - name: postgres-wait
+          image: postgres
+          command: ['sh', '-c', 'until pg_isready -h postgres -p 5432 -U nextcloud; do sleep 1; done;']
       containers:
         - name: nextcloud
           image: nextcloud

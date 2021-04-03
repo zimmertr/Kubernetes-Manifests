@@ -6,5 +6,5 @@ resources:
     - Postgres
     - Redis
 
-commonLabels:
-    app: nextcloud-app
+# commonLabels:
+#     app: nextcloud-app

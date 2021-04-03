@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: postgres
-          image: postgres:10
+          image: postgres:11
           envFrom:
             - configMapRef:
                 name: nextcloud-postgres-env-vars
