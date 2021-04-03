@@ -1,8 +1,0 @@
-apiVersion: v1
-kind: Secret
-metadata:
-    name: grafana-tokens
-    namespace: "{{ namespace }}"
-data:
-    kube_state_metrics_token: "{{ kube_state_metrics_token.stdout | b64encode  }}"
-    cadvisor_token: "{{ cadvisor_token.stdout | b64encode }}"

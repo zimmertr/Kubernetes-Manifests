@@ -1,7 +1,0 @@
-apiVersion: v1
-kind: Secret
-metadata:
-    name: grafana-pihole-password
-    namespace: "{{ namespace }}"
-data:
-    pihole_password: "{{ pihole_password | b64encode }}"

@@ -1,0 +1,22 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: nextcloud
+
+resources:
+  - dep.yml
+  - pv.yml
+  - pvc.yml
+  - svc.yml
+
+configMapGenerator:
+  - name: nextcloud-postgres-env-vars
+    literals:
+      - POSTGRES_USER=nextcloud
+
+secretGenerator:
+  - name: nextcloud-postgres-password
+    envs:
+      - postgres_password
+
+commonLabels:
+    app: postgres

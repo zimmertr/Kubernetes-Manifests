@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      containers:
+        - name: redis
+          image: bitnami/redis
+          envFrom:
+            - secretRef:
+                name: nextcloud-redis-password
+          ports:
+            - name: "tcp-redis"
+              containerPort: 6379
+              protocol: TCP
+          volumeMounts:
+            - name: nextcloud-redis-data
+              mountPath: /bitnami/redis/data
+      volumes:
+        - name: nextcloud-redis-data
+          persistentVolumeClaim:
+            claimName: nextcloud-redis-data
