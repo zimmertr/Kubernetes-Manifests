@@ -17,7 +17,7 @@ configMapGenerator:
     literals:
       - NEXTCLOUD_ADMIN_USER=tks
       - NEXTCLOUD_DATA_DIR="/data/Kubernetes/NextCloud/userdata/"
-      - NEXTCLOUD_TRUSTED_DOMAINS="nextcloud.tjzimmerman.com luna.sol.milkyway"
+      - NEXTCLOUD_TRUSTED_DOMAINS="files.tjzimmerman.com luna.sol.milkyway"
       - POSTGRES_DB=nextcloud
       - POSTGRES_USER=nextcloud
       - POSTGRES_HOST=postgres
@@ -26,7 +26,7 @@ configMapGenerator:
       - SMTP_SECURE=tls
       - SMTP_PORT=587
       - SMTP_NAME=thomaszimmerman93@gmail.com
-      - MAIL_FROM_ADDRESS=luna@tjzimmerman.com
+      - MAIL_FROM_ADDRESS=luna
       - MAIL_DOMAIN=tjzimmerman.com
 
 secretGenerator:
