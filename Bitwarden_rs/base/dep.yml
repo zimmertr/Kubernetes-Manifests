@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bitwardenrs
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bitwardenrs
+  template:
+    metadata:
+      labels:
+        app: bitwardenrs
+    spec:
+      containers:
+        - name: bitwardenrs
+          image: bitwardenrs/server
+          ports:
+            - name: "http-web"
+              containerPort: 80
+              protocol: TCP

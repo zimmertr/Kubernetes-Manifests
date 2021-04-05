@@ -1,0 +1,39 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: bitwardenrs
+bases:
+  - ../../../base
+
+resources:
+  - pv.yml
+  - pvc.yml
+
+patchesStrategicMerge:
+  - dep.yml
+  - svc.yml
+
+configMapGenerator:
+  - name: bitwardenrs-env-vars
+    literals:
+      - SMTP_HOST=smtp.gmail.com
+      - SMTP_FROM=enceladus@tjzimmerman.com
+      - SMTP_FROM_NAME=enceladus
+      - SMTP_SSL=true
+      - SMTP_PORT=587
+      - SMTP_USERNAME=thomaszimmerman93@gmail.com
+      - DATA_FOLDER=/data
+      - DOMAIN=https://login.tjzimmerman.com
+      - SHOW_PASSWORD_HINT=false
+      - WEB_VAULT_ENABLED=true
+      - SIGNUPS_ALLOWED=false
+      - SIGNUPS_VERIFY=true 
+      - EMAIL_ATTEMPTS_LIMIT=1
+      - EMAIL_EXPIRATION_TIME=600
+
+secretGenerator:
+  - name: bitwardenrs-secrets
+    envs:
+      - bitwardenrs_secrets
+
+commonLabels:
+    app: bitwardenrs

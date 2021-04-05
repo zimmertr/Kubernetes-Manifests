@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bitwardenrs
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bitwardenrs
+  template:
+    metadata:
+      labels:
+        app: bitwardenrs
+    spec:
+      initContainers:
+        - name: postgres-wait
+          image: postgres
+          command: ['sh', '-c', 'until pg_isready -h postgres -p 5432 -U bitwardenrs; do sleep 1; done;']
+      containers:
+        - name: bitwardenrs
+          image: bitwardenrs/server
+          envFrom:
+            - configMapRef:
+                name: bitwardenrs-env-vars
+            - secretRef:
+                name: bitwardenrs-secrets
+          ports:
+            - name: "http-web"
+              containerPort: 80
+              protocol: TCP
+          volumeMounts:
+            - name: bitwardenrs-data
+              mountPath: /data
+      volumes:
+        - name: bitwardenrs-data
+          persistentVolumeClaim:
+            claimName: bitwardenrs-data
