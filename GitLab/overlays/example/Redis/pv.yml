@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: gitlab-redis-data
+spec:
+  capacity:
+    storage: 100Gi
+  accessModes:
+    - ReadWriteMany
+  nfs:
+    path: /mnt/DataPool/Kubernetes/GitLab/redis
+    server: earth.sol.milkyway
+  storageClassName: nfs

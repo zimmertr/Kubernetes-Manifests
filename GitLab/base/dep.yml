@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gitlab
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gitlab
+  template:
+    metadata:
+      labels:
+        app: gitlab
+    spec:
+      containers:
+        - name: gitlab
+          image: gitlab/gitlab-ce
+          ports:
+            - name: "gitlab-http"
+              containerPort: 80
+              protocol: TCP
+            - name: "gitlab-https"
+              containerPort: 443
+              protocol: TCP

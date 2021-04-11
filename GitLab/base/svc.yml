@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: gitlab
+  name: gitlab
+spec:
+  selector:
+    app: gitlab
+  ports:
+  - name: "gitlab-http"
+    targetPort: 80
+    port: 80
+  - name: "gitlab-https"
+    targetPort: 443
+    port: 443

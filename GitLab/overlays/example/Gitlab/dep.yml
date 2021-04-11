@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gitlab
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gitlab
+  template:
+    metadata:
+      labels:
+        app: gitlab
+    spec:
+      initContainers:
+        - name: postgres-wait
+          image: postgres
+          command: ['sh', '-c', 'until pg_isready -h postgres -p 5432 -U gitlab; do sleep 1; done;']
+      containers:
+        - name: gitlab
+          image: gitlab/gitlab-ce
+          envFrom:
+            - secretRef:
+                name: gitlab-password
+            - secretRef:
+                name: gitlab-omnibus-config
+            - configMapRef:
+                name: gitlab-env-vars
+          ports:
+            - name: "gitlab-http"
+              containerPort: 80
+              protocol: TCP
+            - name: "gitlab-https"
+              containerPort: 443
+              protocol: TCP
+          volumeMounts:
+            - name: gitlab-config
+              mountPath: /etc/gitlab
+            - name: gitlab-logs
+              mountPath: /var/log/gitlab
+            - name: gitlab-data
+              mountPath: /var/opt/gitlab
+      volumes:
+        - name: gitlab-config
+          persistentVolumeClaim:
+            claimName: gitlab-config
+        - name: gitlab-logs
+          persistentVolumeClaim:
+            claimName: gitlab-logs
+        - name: gitlab-data
+          persistentVolumeClaim:
+            claimName: gitlab-data
