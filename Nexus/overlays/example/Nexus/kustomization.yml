@@ -1,0 +1,22 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: nexus
+bases:
+  - ../../../base
+
+resources:
+  - pv.yml
+  - pvc.yml
+
+patchesStrategicMerge:
+  - dep.yml
+  - svc.yml
+
+configMapGenerator:
+  - name: nexus-env-vars
+    literals:
+      - INSTALL4J_ADD_VM_PARAMS="-Xms2703m -Xmx2703m -XX:MaxDirectMemorySize=2703m -Djava.util.prefs.userRoot=${NEXUS_DATA}/javaprefs"
+      - NEXUS_CONTEXT="/""
+
+commonLabels:
+    app: nexus

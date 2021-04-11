@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nexus
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nexus
+  template:
+    metadata:
+      labels:
+        app: nexus
+    spec:
+      initContainers:
+        - name: fix-permissions
+          image: busybox
+          command: ["sh", "-c", "chown -cR 200:200 /nexus-data"]
+          volumeMounts:
+            - name: nexus-data
+              mountPath: /tmp/data
+      containers:
+        - name: nexus
+          image: sonatype/nexus3
+          envFrom:
+            - configMapRef:
+                name: nexus-env-vars
+          ports:
+            - name: "nexus-http"
+              containerPort: 8080
+              protocol: TCP
+          volumeMounts:
+            - name: nexus-data
+              mountPath: /nexus-data
+      volumes:
+        - name: nexus-data
+          persistentVolumeClaim:
+            claimName: nexus-data
