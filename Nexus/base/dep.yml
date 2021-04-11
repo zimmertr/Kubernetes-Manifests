@@ -17,5 +17,5 @@ spec:
           image: sonatype/nexus3
           ports:
             - name: "nexus-http"
-              containerPort: 8080
+              containerPort: 8081
               protocol: TCP

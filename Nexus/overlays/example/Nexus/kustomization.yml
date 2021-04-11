@@ -15,8 +15,8 @@ patchesStrategicMerge:
 configMapGenerator:
   - name: nexus-env-vars
     literals:
-      - INSTALL4J_ADD_VM_PARAMS="-Xms2703m -Xmx2703m -XX:MaxDirectMemorySize=2703m -Djava.util.prefs.userRoot=${NEXUS_DATA}/javaprefs"
-      - NEXUS_CONTEXT="/""
+      # - INSTALL4J_ADD_VM_PARAMS="-Xms2703m -Xmx2703m -XX:MaxDirectMemorySize=2703m -Djava.util.prefs.userRoot=${NEXUS_DATA}/javaprefs"
+      # - NEXUS_CONTEXT="/""
 
 commonLabels:
     app: nexus

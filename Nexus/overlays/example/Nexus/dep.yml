@@ -15,7 +15,7 @@ spec:
       initContainers:
         - name: fix-permissions
           image: busybox
-          command: ["sh", "-c", "chown -cR 200:200 /nexus-data"]
+          command: ["sh", "-c", "chown -cR 200:200 /tmp/data"]
           volumeMounts:
             - name: nexus-data
               mountPath: /tmp/data
@@ -27,7 +27,7 @@ spec:
                 name: nexus-env-vars
           ports:
             - name: "nexus-http"
-              containerPort: 8080
+              containerPort: 8081
               protocol: TCP
           volumeMounts:
             - name: nexus-data

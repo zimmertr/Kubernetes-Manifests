@@ -11,7 +11,7 @@ spec:
     app: nexus
   ports:
   - name: "nexus-http"
-    targetPort: 8080
-    port: 8080
+    targetPort: 8081
+    port: 8081
   loadBalancerIP:
     192.168.50.165
