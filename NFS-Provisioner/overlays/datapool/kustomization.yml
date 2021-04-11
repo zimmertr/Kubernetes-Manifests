@@ -10,3 +10,7 @@ patchesStrategicMerge:
     - dep.yml
 
 namespace: nfs-provisioner
+
+images:
+  - name: gcr.io/k8s-staging-sig-storage/nfs-subdir-external-provisioner
+    newTag: v4.0.2
