@@ -1,6 +1,6 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: bitwardenrs
+namespace: vaultwarden
 bases:
   - ../../../base
 
@@ -12,8 +12,12 @@ patchesStrategicMerge:
   - dep.yml
   - svc.yml
 
+images:
+  - name: vaultwarden/server
+    newTag: 1.22.2
+
 configMapGenerator:
-  - name: bitwardenrs-env-vars
+  - name: vaultwarden-env-vars
     literals:
       - SMTP_HOST=smtp.gmail.com
       - SMTP_FROM=enceladus@tjzimmerman.com
@@ -31,9 +35,9 @@ configMapGenerator:
       - EMAIL_EXPIRATION_TIME=600
 
 secretGenerator:
-  - name: bitwardenrs-secrets
+  - name: vaultwarden-secrets
     envs:
-      - bitwardenrs_secrets
+      - vaultwarden_secrets
 
 commonLabels:
-    app: bitwardenrs
+    app: vaultwarden

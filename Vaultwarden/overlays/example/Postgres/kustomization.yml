@@ -1,6 +1,6 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: bitwardenrs
+namespace: vaultwarden
 
 resources:
   - dep.yml
@@ -8,13 +8,17 @@ resources:
   - pvc.yml
   - svc.yml
 
+images:
+  - name: postgres
+    newTag: "11"
+
 configMapGenerator:
-  - name: bitwardenrs-postgres-env-vars
+  - name: vaultwarden-postgres-env-vars
     literals:
-      - POSTGRES_USER=bitwardenrs
+      - POSTGRES_USER=vaultwarden
 
 secretGenerator:
-  - name: bitwardenrs-postgres-password
+  - name: vaultwarden-postgres-password
     envs:
       - postgres_password
 

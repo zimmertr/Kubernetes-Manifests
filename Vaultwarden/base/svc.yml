@@ -2,11 +2,11 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
-    app: bitwardenrs
-  name: bitwardenrs
+    app: vaultwarden
+  name: vaultwarden
 spec:
   selector:
-    app: bitwardenrs
+    app: vaultwarden
   ports:
   - name: "http-web"
     targetPort: 80

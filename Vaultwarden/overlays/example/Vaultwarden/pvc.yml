@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: bitwardenrs-postgres-data
+  name: vaultwarden-data
 spec:
   accessModes:
     - ReadWriteMany
   resources:
     requests:
-      storage: 100Gi
-  volumeName: bitwardenrs-postgres-data
+      storage: 1Gi
+  volumeName: vaultwarden-data

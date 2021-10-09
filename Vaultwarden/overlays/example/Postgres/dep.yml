@@ -16,20 +16,20 @@ spec:
     spec:
       containers:
         - name: postgres
-          image: postgres:11
+          image: postgres
           envFrom:
             - configMapRef:
-                name: bitwardenrs-postgres-env-vars
+                name: vaultwarden-postgres-env-vars
             - secretRef:
-                name: bitwardenrs-postgres-password
+                name: vaultwarden-postgres-password
           ports:
             - name: "tcp-postgres"
               containerPort: 5432
               protocol: TCP
           volumeMounts:
-            - name: bitwardenrs-postgres-data
+            - name: vaultwarden-postgres-data
               mountPath: /var/lib/postgresql/data
       volumes:
-        - name: bitwardenrs-postgres-data
+        - name: vaultwarden-postgres-data
           persistentVolumeClaim:
-            claimName: bitwardenrs-postgres-data
+            claimName: vaultwarden-postgres-data

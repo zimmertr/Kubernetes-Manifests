@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: bitwardenrs
+  name: vaultwarden
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: bitwardenrs
+      app: vaultwarden
   template:
     metadata:
       labels:
-        app: bitwardenrs
+        app: vaultwarden
     spec:
       containers:
-        - name: bitwardenrs
-          image: bitwardenrs/server
+        - name: vaultwarden
+          image: vaultwarden/server
           ports:
             - name: "http-web"
               containerPort: 80
