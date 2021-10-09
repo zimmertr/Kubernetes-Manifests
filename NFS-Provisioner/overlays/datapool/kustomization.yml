@@ -9,8 +9,17 @@ resources:
 patchesStrategicMerge:
     - dep.yml
 
+nameSuffix: -datapool
+
 namespace: nfs-provisioner
 
 images:
   - name: gcr.io/k8s-staging-sig-storage/nfs-subdir-external-provisioner
     newTag: v4.0.2
+
+configMapGenerator:
+  - name: nfs-datapool-env-vars
+    literals:
+      - PROVISIONER_NAME="datapool"
+      - NFS_SERVER="earth.sol.milkyway"
+      - NFS_PATH="/mnt/DataPool/Kubernetes"

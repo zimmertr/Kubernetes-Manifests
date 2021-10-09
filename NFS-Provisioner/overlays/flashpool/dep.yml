@@ -21,13 +21,9 @@ spec:
           volumeMounts:
             - name: nfs-client-root
               mountPath: /persistentvolumes
-          env:
-            - name: PROVISIONER_NAME
-              value: nfs
-            - name: NFS_SERVER
-              value: earth.sol.milkyway
-            - name: NFS_PATH
-              value: /mnt/FlashPool/Kubernetes
+          envFrom:
+            - configMapRef:
+                name: nfs-flashpool-env-vars
       volumes:
         - name: nfs-client-root
           nfs:
