@@ -4,6 +4,10 @@ namespace: pihole-exporter
 bases:
     - ../../base/
 
+images:
+  - name: ekofr/pihole-exporter
+    newTag: v0.0.11
+
 patchesStrategicMerge:
     - dep.yml
     - svc.yml
