@@ -10,4 +10,4 @@ spec:
   nfs:
     path: /mnt/DataPool/Kubernetes/NextCloud/redis
     server: earth.sol.milkyway
-  storageClassName: nfs
+  storageClassName: nfs-datapool

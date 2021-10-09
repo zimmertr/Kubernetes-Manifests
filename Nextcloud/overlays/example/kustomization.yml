@@ -5,6 +5,3 @@ resources:
     - NextCloud
     - Postgres
     - Redis
-
-# commonLabels:
-#     app: nextcloud-app

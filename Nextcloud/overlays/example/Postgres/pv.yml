@@ -10,4 +10,4 @@ spec:
   nfs:
     path: /mnt/DataPool/Kubernetes/NextCloud/postgres
     server: earth.sol.milkyway
-  storageClassName: nfs
+  storageClassName: nfs-datapool
