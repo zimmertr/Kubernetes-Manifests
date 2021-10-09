@@ -2,18 +2,12 @@
 namespace: metallb-system
 
 resources:
-  - github.com/metallb/metallb//manifests?ref=v0.9.3
+  - github.com/metallb/metallb//manifests?ref=v0.10.3
 
 configMapGenerator:
 - name: config
   files:
     - ./config
-
-# Generated with $(openssl rand -base64 128)
-secretGenerator:
-- name: memberlist
-  files:
-    - ./secretkey
 
 generatorOptions:
  disableNameSuffixHash: true
