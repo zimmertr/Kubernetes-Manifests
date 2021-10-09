@@ -4,6 +4,10 @@ namespace: nextcloud
 bases:
   - ../../../base
 
+images:
+  - name: nextcloud
+    newTag: "22"
+
 resources:
   - pv.yml
   - pvc.yml
