@@ -1,4 +1,4 @@
-# Bitwarden_rs
+# Vaultwarden
 
 This application is meant to be deployed to Kubernetes using Kustomize.
 
@@ -9,7 +9,7 @@ This application is meant to be deployed to Kubernetes using Kustomize.
 An example overlay is provided from my environment. Simply create a new overlay using it as an example and deploy it to your environment like so:
 
    ```bash
-    kustomize build Bitwarden_rs/overlays/example | kubectl apply -f-
+    kustomize build Vaultwarden/overlays/example | kubectl apply -f-
    ```
 
 Don't forget to update the kustomizations and password files according to your environment.

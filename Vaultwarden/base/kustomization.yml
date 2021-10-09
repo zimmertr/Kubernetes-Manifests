@@ -5,5 +5,5 @@ resources:
     - dep.yml
     - svc.yml
 
-namespace: bitwardenrs
+namespace: vaultwarden
 
