@@ -15,9 +15,6 @@ patchesStrategicMerge:
 
 namespace: jira
 
-# commonLabels:
-  # app: jira
-
 configMapGenerator:
   - name: jira-env-vars
     literals:
