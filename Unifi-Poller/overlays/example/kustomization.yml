@@ -4,6 +4,10 @@ namespace: unifi-poller
 bases:
     - ../../base/
 
+images:
+  - name: golift/unifi-poller
+    newTag: "2"
+
 patchesStrategicMerge:
     - dep.yml
 

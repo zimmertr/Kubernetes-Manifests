@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: tautulli
-          image: tautulli/tautulli:latest
+          image: tautulli/tautulli
           envFrom:
             - configMapRef:
                 name: tautulli-env-vars

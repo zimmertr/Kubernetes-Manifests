@@ -7,7 +7,7 @@ spec:
         storage: 2Gi
     accessModes:
         - ReadWriteMany
-    storageClassName: nfs
+    storageClassName: nfs-datapool
     nfs:
         path: /mnt/DataPool/Kubernetes/Sonarr/
         server: earth.sol.milkyway
@@ -21,7 +21,7 @@ spec:
         storage: 15Ti
     accessModes:
         - ReadWriteMany
-    storageClassName: nfs
+    storageClassName: nfs-datapool
     nfs:
         path: /mnt/DataPool/TV_Shows
         server: earth.sol.milkyway
@@ -35,7 +35,7 @@ spec:
         storage: 15Ti
     accessModes:
         - ReadWriteMany
-    storageClassName: nfs
+    storageClassName: nfs-datapool
     nfs:
         path: /mnt/DataPool/Anime
         server: earth.sol.milkyway
@@ -49,7 +49,7 @@ spec:
         storage: 15Ti
     accessModes:
         - ReadWriteMany
-    storageClassName: nfs
+    storageClassName: nfs-datapool
     nfs:
         path: /mnt/DataPool/Cartoons
         server: earth.sol.milkyway

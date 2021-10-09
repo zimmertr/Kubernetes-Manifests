@@ -4,8 +4,12 @@ namespace: varken
 bases:
     - ../../base/
 
+images:
+  - name: boerderij/varken
+    newTag: 1.7.7
+
 patchesStrategicMerge:
-    - dep.yml
+  - dep.yml
 
 secretGenerator:
   - name: varken-secret-vars

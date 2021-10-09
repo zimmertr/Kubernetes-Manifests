@@ -7,7 +7,7 @@ spec:
         storage: 2Gi
     accessModes:
         - ReadWriteMany
-    storageClassName: nfs
+    storageClassName: nfs-datapool
     nfs:
         path: /mnt/DataPool/Kubernetes/Tautulli/
         server: earth.sol.milkyway

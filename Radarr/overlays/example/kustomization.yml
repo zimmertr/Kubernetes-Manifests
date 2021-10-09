@@ -3,6 +3,10 @@ kind: Kustomization
 bases:
     - ../../base/
 
+images:
+    - name: linuxserver/radarr
+      newTag: latest
+
 resources:
     - pv.yml
     - pvc.yml

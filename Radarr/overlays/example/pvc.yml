@@ -9,18 +9,6 @@ spec:
         requests:
             storage: 2Gi
     volumeName: radarr-config
-# ---
-# apiVersion: v1
-# kind: PersistentVolumeClaim
-# metadata:
-#     name: radarr-fileserver
-# spec:
-#     accessModes:
-#         - ReadWriteMany
-#     resources:
-#         requests:
-#             storage: 15Ti
-#     volumeName: radarr-fileserver
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim

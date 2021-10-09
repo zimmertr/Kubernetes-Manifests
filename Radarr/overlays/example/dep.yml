@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: radarr
-          image: linuxserver/radarr:latest
+          image: linuxserver/radarr
           envFrom:
             - configMapRef:
                 name: radarr-env-vars
@@ -27,37 +27,12 @@ spec:
           volumeMounts:
             - name: radarr-config
               mountPath: /config
-            # - name: radarr-fileserver
-            #   mountPath: /downloads
             - name: radarr-movies
               mountPath: /movies
-          # resources:
-          #   requests:
-          #     cpu: "100m"
-          #     memory: "250Mi"
-          #   limits:
-          #     cpu: "100m"
-              # memory: "500Mi"
-          # readinessProbe:
-          #   httpGet:
-          #       path: /
-          #       port: 7878
-          #   periodSeconds: 10
-          #   failureThreshold: 3
-          # livenessProbe:
-          #   httpGet:
-          #       path: /
-          #       port: 7878
-          #   initialDelaySeconds: 60
-          #   periodSeconds: 10
-          #   failureThreshold: 5
       volumes:
         - name: radarr-config
           persistentVolumeClaim:
             claimName: radarr-config
-        # - name: radarr-fileserver
-        #   persistentVolumeClaim:
-        #     claimName: radarr-fileserver
         - name: radarr-movies
           persistentVolumeClaim:
             claimName: radarr-movies
