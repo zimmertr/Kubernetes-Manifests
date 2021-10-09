@@ -14,9 +14,9 @@ spec:
     spec:
       containers:
         - name: rutorrent
-          image: linuxserver/rutorrent:latest
+          image: crazymax/rtorrent-rutorrent
           envFrom:
           ports:
             - name: "http-rutorrent-web"
-              containerPort: 80
+              containerPort: 8080
               protocol: TCP
