@@ -4,7 +4,7 @@ metadata:
     name: nfs
     annotations:
         storageclass.kubernetes.io/is-default-class: "true"
-provisioner: nfs
+provisioner: flashpool
 parameters:
     archiveOnDelete: "false"
 reclaimPolicy: "Retain"
