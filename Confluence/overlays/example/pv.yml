@@ -10,7 +10,7 @@ spec:
   nfs:
     path: /mnt/DataPool/Kubernetes/Confluence/data
     server: earth.sol.milkyway
-  storageClassName: nfs
+  storageClassName: nfs-datapool
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -24,4 +24,4 @@ spec:
   nfs:
     path: /mnt/DataPool/Kubernetes/Confluence/postgres
     server: earth.sol.milkyway
-  storageClassName: nfs
+  storageClassName: nfs-datapool
