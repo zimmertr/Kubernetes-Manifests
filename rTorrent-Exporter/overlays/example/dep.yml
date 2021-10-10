@@ -16,7 +16,7 @@ spec:
         - name: rtorrent-exporter
           image: zimmertr/rtorrent-exporter
           args:
-            - "-rtorrent.addr=http://io.sol.milkyway/RPC2"
+            - "-rtorrent.addr=http://io.sol.milkyway:8000/RPC2"
           ports:
             - name: "metrics"
               containerPort: 9135
