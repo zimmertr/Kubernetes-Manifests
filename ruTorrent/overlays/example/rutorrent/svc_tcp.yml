@@ -1,3 +1,4 @@
+# https://github.com/crazy-max/docker-rtorrent-rutorrent#ports
 apiVersion: v1
 kind: Service
 metadata:
@@ -14,19 +15,31 @@ spec:
     protocol: TCP
     targetPort: 8080
     port: 80
-  - name: "rutorrent-hc"
+  - name: "rutorrent-dht"
     protocol: TCP
-    targetPort: 8081
-    port: 8081
+    targetPort: 6881
+    port: 6881
   - name: "rutorrent-wd"
     protocol: TCP
     targetPort: 9000
     port: 9000
   - name: "rutorrent-bt"
     protocol: TCP
-    targetPort: 50000
-    port: 50000
+    targetPort: 57832
+    port: 57832
   - name: "rutorrent-xml"
     protocol: TCP
     targetPort: 8000
     port: 8000
+  - name: "rutor-xml-hc"
+    protocol: TCP
+    targetPort: 8001
+    port: 8001
+  - name: "rutor-web-hc"
+    protocol: TCP
+    targetPort: 8081
+    port: 8081
+  - name: "rutor-wd-hc"
+    protocol: TCP
+    targetPort: 9001
+    port: 9001

@@ -20,3 +20,5 @@ An example overlay is provided from my environment. Simply create a new overlay 
    ```bash
     kustomize build ruTorrent/overlays/example | kubectl apply -f-
    ```
+
+Start the pod and let ruTorrent intialize the configuration directory. Shut it down and move `rtlocal.rc` into place at `rtorrent/data/`. Restart the pod to apply your configuration file. 

@@ -31,20 +31,29 @@ spec:
               containerPort: 9000
               protocol: TCP
             - name: "rutorrent-bt"
-              containerPort: 50000
+              containerPort: 57832
               protocol: TCP
             - name: "rutorrent-xml"
               containerPort: 8000
               protocol: TCP
+            - name: "rutor-xml-hc"
+              containerPort: 8001
+              protocol: TCP
+            - name: "rutor-web-hc"
+              containerPort: 8081
+              protocol: TCP
+            - name: "rutor-wd-hc"
+              containerPort: 9001    
+              protocol: TCP      
           volumeMounts:
-            - name: rutorrent-config
+            - name: rutorrent-data
               mountPath: /data
             - name: rutorrent-fileserver
               mountPath: /datapool
       volumes:
-        - name: rutorrent-config
+        - name: rutorrent-data
           persistentVolumeClaim:
-            claimName: rutorrent-config
+            claimName: rutorrent-data
         - name: rutorrent-fileserver
           persistentVolumeClaim:
             claimName: rutorrent-fileserver

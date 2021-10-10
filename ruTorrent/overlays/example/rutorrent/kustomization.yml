@@ -23,5 +23,8 @@ configMapGenerator:
         - TZ='America/Los_Angeles'
         - PUID='1002'
         - PGID='1007'
-        - RU_HTTP_TIME_OUT=60
-        - RU_RPC_TIME_OUT=10
+        - RU_HTTP_TIME_OUT=120
+        - RU_RPC_TIME_OUT=7
+        - MEMORY_LIMIT=1024M
+        - RT_INC_PORT=57832
+        - RU_PHP_USE_GZIP=true
