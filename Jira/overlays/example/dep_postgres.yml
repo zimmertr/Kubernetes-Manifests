@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: postgres
-          image: postgres:11
+          image: postgres
           envFrom:
             - configMapRef:
                 name: jira-env-vars

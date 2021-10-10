@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: postgres
-          image: postgres:10
+          image: postgres
           envFrom:
             - configMapRef:
                 name: confluence-env-vars

@@ -29,7 +29,7 @@ spec:
           securityContext:
             runAsUser: 2001
             runAsGroup: 2001
-          image: atlassian/jira-software:latest
+          image: atlassian/jira-software
           envFrom:
             - configMapRef:
                 name: jira-env-vars
