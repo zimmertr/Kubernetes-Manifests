@@ -16,44 +16,44 @@ spec:
     spec:
       containers:
         - name: rutorrent
-          image: linuxserver/rutorrent:latest
+          image: crazymax/rtorrent-rutorrent
           envFrom:
             - configMapRef:
                 name: rutorrent-env-vars
           ports:
             - name: "rutorrent-web"
-              containerPort: 80
+              containerPort: 8080
               protocol: TCP
-            - name: "rutorrent-scgi"
-              containerPort: 5000
+            - name: "rutorrent-hc"
+              containerPort: 8081
+              protocol: TCP
+            - name: "rutorrent-wd"
+              containerPort: 9000
               protocol: TCP
             - name: "rutorrent-bt"
-              containerPort: 51413
+              containerPort: 57832
               protocol: TCP
-            - name: "rutorrent-bt2"
-              containerPort: 6881
-              protocol: UDP
+            - name: "rutorrent-xml"
+              containerPort: 8000
+              protocol: TCP
+            - name: "rutor-xml-hc"
+              containerPort: 8001
+              protocol: TCP
+            - name: "rutor-web-hc"
+              containerPort: 8081
+              protocol: TCP
+            - name: "rutor-wd-hc"
+              containerPort: 9001    
+              protocol: TCP      
           volumeMounts:
-            - name: rutorrent-config
-              mountPath: /config
-            # - name: rutorrent-downloads
-            #   mountPath: /downloads
+            - name: rutorrent-data
+              mountPath: /data
             - name: rutorrent-fileserver
               mountPath: /datapool
-          # resources:
-          #   requests:
-          #     cpu: "100m"
-          #     memory: "3Gi"
-          #   limits:
-          #     cpu: "200m"
-          #     memory: "5Gi"
       volumes:
-        - name: rutorrent-config
+        - name: rutorrent-data
           persistentVolumeClaim:
-            claimName: rutorrent-config
-        # - name: rutorrent-downloads
-        #   persistentVolumeClaim:
-        #     claimName: rutorrent-downloads
+            claimName: rutorrent-data
         - name: rutorrent-fileserver
           persistentVolumeClaim:
             claimName: rutorrent-fileserver
