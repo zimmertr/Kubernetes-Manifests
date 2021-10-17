@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vault
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vault
+  template:
+    metadata:
+      labels:
+        app: vault
+    spec:
+      initContainers:
+        - name: postgres-wait
+          image: postgres
+          command: ['sh', '-c', 'until pg_isready -h postgres -p 5432 -U vault; do sleep 1; done;']
+      containers:
+        - name: vault
+          image: vault
+          args: ["server"]
+          # command: ["sh", "-c", "tail -f /dev/null"]
+          securityContext:
+            capabilities:
+              add:
+                - IPC_LOCK
+          ports:
+            - name: "http-web"
+              containerPort: 8200
+              protocol: TCP
+          volumeMounts:
+            - name: vault-config
+              mountPath: /vault/config
+            - name: vault-data
+              mountPath: /vault/data
+            - name: vault-policies
+              mountPath: /vault/policies
+      volumes:
+        - name: vault-config
+          persistentVolumeClaim:
+            claimName: vault-config
+        - name: vault-data
+          persistentVolumeClaim:
+            claimName: vault-data
+        - name: vault-policies
+          persistentVolumeClaim:
+            claimName: vault-policies

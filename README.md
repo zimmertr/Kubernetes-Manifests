@@ -40,7 +40,6 @@ In all cases, a supplemental README is provided with further details about confi
 
 | Application | Deployment Method | Details |
 | ----------- | ----------------- | ------- |
-| [Vaultwarden](Vaultwarden/README.md) | Kustomize |  |
 | [Calibre & Calibre Web](Calibre/README.md) | Kustomize |  |
 | [Confluence](Confluence/README.md) | Kustomize ||
 | [Dashboard](Dashboard/README.md) | Ansible / Kustomize |Ansible is used to generate certificates. Kustomize is used to deploy the application.|
@@ -70,3 +69,5 @@ In all cases, a supplemental README is provided with further details about confi
 | [Unifi-Controller](Unifi-Controller/README.md) | Ansible |Out of Date -- Needs to be ported to Kustomize.|
 | [Unifi-Poller](Unifi-Poller/README.md) | Kustomize | |
 | [Varken](Varken/README.md) | Kustomize | |
+| [Vault](Vault/README.md) | Kustomize ||
+| [Vaultwarden](Vaultwarden/README.md) | Kustomize |  |

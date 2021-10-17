@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+        - name: postgres
+          image: postgres
+          envFrom:
+            - configMapRef:
+                name: vault-postgres-env-vars
+            - secretRef:
+                name: vault-postgres-password
+          ports:
+            - name: "tcp-postgres"
+              containerPort: 5432
+              protocol: TCP
+          volumeMounts:
+            - name: vault-postgres-data
+              mountPath: /var/lib/postgresql/data
+            - name: vault-sql-init
+              mountPath: /docker-entrypoint-initdb.d/init.sh
+              subPath: init.sh
+      volumes:
+        - name: vault-postgres-data
+          persistentVolumeClaim:
+            claimName: vault-postgres-data
+        - name: vault-sql-init
+          configMap:
+            name: vault-sql-init
