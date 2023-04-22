@@ -14,6 +14,7 @@ spec:
     metadata:
       name: "{{ path.basenameNormalized }}"
     spec:
+      project: default
       source:
         repoURL: https://github.com/TJs-Kubernetes-Service/Application_Manifests
         targetRevision: main
