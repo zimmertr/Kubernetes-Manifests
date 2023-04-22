@@ -1,0 +1,6 @@
+etcd:
+  persistence:
+    storageClassName: manual
+loki:
+  persistence:
+    storageClassName: manual
