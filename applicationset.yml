@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: tks
+  namespace: argo-system
+spec:
+  generators:
+  - git:
+      repoURL: https://github.com/TJs-Kubernetes-Service/Application_Manifests
+      revision: main
+      directories:
+        - path: Applications/*/
+  template:
+    metadata:
+      name: "{{ path.basenameNormalized }}"
+    spec:
+      source:
+        repoURL: https://github.com/TJs-Kubernetes-Service/Application_Manifests
+        targetRevision: main
+        path: "{{ path }}"
+      destination:
+        server: https://kubernetes.default.svc
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true

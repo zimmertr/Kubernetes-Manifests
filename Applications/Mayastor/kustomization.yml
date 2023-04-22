@@ -1,0 +1,9 @@
+resources:
+  - resources/namespace.yml
+
+helmCharts:
+  - name: mayastor
+    repo: https://openebs.github.io/mayastor-extensions/ 
+    version: 2.0.1
+    releaseName: mayastor
+    namespace: mayastor-system

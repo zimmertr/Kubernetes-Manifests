@@ -1,0 +1,24 @@
+configs:
+  cm:
+    kustomize.buildOptions: "--enable-helm"
+
+controller:
+  replicas: 1
+
+redis-ha:
+  enabled: true
+
+server:
+  autoscaling:
+    enabled: true
+    minReplicas: 2
+  service:
+    type: LoadBalancer
+
+repoServer:
+  autoscaling:
+    enabled: true
+    minReplicas: 2
+
+applicationSet:
+  replicaCount: 2
