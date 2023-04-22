@@ -1,0 +1,18 @@
+apiVersion: v2
+appVersion: 2.0.1
+dependencies:
+- name: etcd
+  repository: https://charts.bitnami.com/bitnami
+  version: 8.6.0
+- condition: base.jaeger.enabled
+  name: jaeger-operator
+  repository: https://jaegertracing.github.io/helm-charts
+  version: 2.25.0
+- condition: loki-stack.enabled
+  name: loki-stack
+  repository: https://grafana.github.io/helm-charts
+  version: 2.6.4
+description: Mayastor Helm chart for Kubernetes
+name: mayastor
+type: application
+version: 2.0.1

@@ -1,0 +1,98 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-agent-core
+  labels:
+    app: agent-core
+    {{ include "label_prefix" . }}/release: {{ .Release.Name }}
+    {{ include "label_prefix" . }}/version: {{ .Chart.Version }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: agent-core
+      {{ include "label_prefix" . }}/release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: agent-core
+        {{ include "label_prefix" . }}/release: {{ .Release.Name }}
+        {{ include "label_prefix" . }}/version: {{ .Chart.Version }}
+        {{ include "label_prefix" . }}/logging: "true"
+    spec:
+      serviceAccount: {{ .Release.Name }}-service-account
+      imagePullSecrets:
+        {{- include "base_pull_secrets" . }}
+      initContainers:
+        {{- include "base_init_core_containers" . }}
+      {{- if .Values.nodeSelector }}
+      nodeSelector: {{- toYaml .Values.nodeSelector | nindent 8 }}
+      {{- end }}
+      tolerations: {{- toYaml .Values.earlyEvictionTolerations | nindent 8}}
+      priorityClassName: system-cluster-critical # Priority class provided by k8s by default.
+      containers:
+        - name: agent-core
+          resources:
+            limits:
+              cpu: {{ .Values.agents.core.resources.limits.cpu | quote }}
+              memory: {{ .Values.agents.core.resources.limits.memory | quote }}
+            requests:
+              cpu: {{ .Values.agents.core.resources.requests.cpu | quote }}
+              memory: {{ .Values.agents.core.resources.requests.memory | quote }}
+          image: "{{ .Values.image.registry }}/{{ .Values.image.repo }}/{{ .Chart.Name }}-agent-core:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args:
+            - "-s{{ .Release.Name }}-etcd:{{ .Values.etcd.service.port }}"
+            - "--request-timeout={{ .Values.base.default_req_timeout }}"
+            - "--cache-period={{ .Values.base.cache_poll_period }}"{{ if .Values.base.jaeger.enabled }}
+            - "--jaeger={{ .Values.base.jaeger.agent.name }}:{{ .Values.base.jaeger.agent.port }}"{{ end }}
+            - "--grpc-server-addr=0.0.0.0:50051"
+          ports:
+            - containerPort: 50051
+          env:
+            - name: RUST_LOG
+              value: {{ .Values.agents.core.logLevel }}
+            {{- if default .Values.base.logSilenceLevel .Values.agents.core.logSilenceLevel }}
+            - name: RUST_LOG_SILENCE
+              value: {{ default .Values.base.logSilenceLevel .Values.agents.core.logSilenceLevel }}
+            {{- end }}
+            - name: MY_POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: MY_POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+        - name: agent-ha-cluster
+          resources:
+            limits:
+              cpu: {{ .Values.agents.ha.cluster.resources.limits.cpu | quote }}
+              memory: {{ .Values.agents.ha.cluster.resources.limits.memory | quote }}
+            requests:
+              cpu: {{ .Values.agents.ha.cluster.resources.requests.cpu | quote }}
+              memory: {{ .Values.agents.ha.cluster.resources.requests.memory | quote }}
+          image: "{{ .Values.image.registry }}/{{ .Values.image.repo }}/{{ .Chart.Name }}-agent-ha-cluster:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args:
+            - "-g=0.0.0.0:50052"
+            - "--store=http://{{ .Release.Name }}-etcd:{{ .Values.etcd.service.port }}"
+            - "--core-grpc=https://{{ .Release.Name }}-agent-core:50051"{{ if .Values.base.jaeger.enabled }}
+            - "--jaeger={{ .Values.base.jaeger.agent.name }}:{{ .Values.base.jaeger.agent.port }}"{{ end }}
+          ports:
+            - containerPort: 50052
+          env:
+            - name: RUST_LOG
+              value: {{ .Values.agents.core.logLevel }}
+            {{- if default .Values.base.logSilenceLevel .Values.agents.core.logSilenceLevel }}
+            - name: RUST_LOG_SILENCE
+              value: {{ default .Values.base.logSilenceLevel .Values.agents.core.logSilenceLevel }}
+            {{- end }}
+            - name: MY_POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: MY_POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace

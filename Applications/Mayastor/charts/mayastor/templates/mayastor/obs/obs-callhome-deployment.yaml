@@ -1,0 +1,46 @@
+{{- if .Values.obs.callhome.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-obs-callhome
+  labels:
+    app: obs-callhome
+    {{ include "label_prefix" . }}/release: {{ .Release.Name }}
+    {{ include "label_prefix" . }}/version: {{ .Chart.Version }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: obs-callhome
+      {{ include "label_prefix" . }}/release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: obs-callhome
+        {{ include "label_prefix" . }}/release: {{ .Release.Name }}
+        {{ include "label_prefix" . }}/version: {{ .Chart.Version }}
+    spec:
+      serviceAccount: {{ .Release.Name }}-service-account
+      imagePullSecrets:
+        {{- include "base_pull_secrets" . }}
+      {{- if .Values.nodeSelector }}
+      nodeSelector: {{- toYaml .Values.nodeSelector | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: obs-callhome
+          image: "{{ .Values.image.registry }}/{{ .Values.image.repo }}/{{ .Chart.Name }}-obs-callhome:{{ .Values.image.tag }}"
+          args:
+            - "-e http://{{ .Release.Name }}-api-rest:8081"
+            - "-n {{ .Release.Namespace }}"
+          env:
+            - name: RUST_LOG
+              value: {{ .Values.obs.callhome.logLevel }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          resources:
+            limits:
+              cpu: {{ .Values.obs.callhome.resources.limits.cpu | quote }}
+              memory: {{ .Values.obs.callhome.resources.limits.memory | quote }}
+            requests:
+              cpu: {{ .Values.obs.callhome.resources.requests.cpu | quote }}
+              memory: {{ .Values.obs.callhome.resources.requests.memory | quote }}
+{{- end }}

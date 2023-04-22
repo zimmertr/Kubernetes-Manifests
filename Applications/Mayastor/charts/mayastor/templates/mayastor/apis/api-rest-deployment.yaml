@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-api-rest
+  labels:
+    app: api-rest
+    {{ include "label_prefix" . }}/release: {{ .Release.Name }}
+    {{ include "label_prefix" . }}/version: {{ .Chart.Version }}
+spec:
+  replicas: {{ .Values.apis.rest.replicaCount }}
+  selector:
+    matchLabels:
+      app: api-rest
+      {{ include "label_prefix" . }}/release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: api-rest
+        {{ include "label_prefix" . }}/release: {{ .Release.Name }}
+        {{ include "label_prefix" . }}/version: {{ .Chart.Version }}
+        {{ include "label_prefix" . }}/logging: "true"
+    spec:
+      imagePullSecrets:
+        {{- include "base_pull_secrets" . }}
+      initContainers:
+        {{- include "base_init_containers" . }}
+      {{- if .Values.nodeSelector }}
+      nodeSelector: {{- toYaml .Values.nodeSelector | nindent 8 }}
+      {{- end }}
+      tolerations: {{- toYaml .Values.earlyEvictionTolerations | nindent 8 }}
+      priorityClassName: system-cluster-critical # Priority class provided by k8s by default.
+      containers:
+        - name: api-rest
+          resources:
+            limits:
+              cpu: {{ .Values.apis.rest.resources.limits.cpu | quote }}
+              memory: {{ .Values.apis.rest.resources.limits.memory | quote }}
+            requests:
+              cpu: {{ .Values.apis.rest.resources.requests.cpu | quote }}
+              memory: {{ .Values.apis.rest.resources.requests.memory | quote }}
+          image: "{{ .Values.image.registry }}/{{ .Values.image.repo }}/{{ .Chart.Name }}-api-rest:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args:
+            - "--dummy-certificates"
+            - "--no-auth"
+            - "--http=0.0.0.0:8081"
+            - "--request-timeout={{ .Values.base.default_req_timeout }}"{{ if .Values.base.jaeger.enabled }}
+            - "--jaeger={{ .Values.base.jaeger.agent.name }}:{{ .Values.base.jaeger.agent.port }}"{{ end }}
+            - "--core-grpc=https://{{ .Release.Name }}-agent-core:50051"
+          ports:
+            - containerPort: 8080
+            - containerPort: 8081
+          env:
+            - name: RUST_LOG
+              value: {{ .Values.apis.rest.logLevel }}
+            {{- if default .Values.base.logSilenceLevel .Values.apis.rest.logSilenceLevel }}
+            - name: RUST_LOG_SILENCE
+              value: {{ default .Values.base.logSilenceLevel .Values.apis.rest.logSilenceLevel }}
+            {{- end }}

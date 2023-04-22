@@ -1,0 +1,12 @@
+dependencies:
+- name: etcd
+  repository: https://charts.bitnami.com/bitnami
+  version: 8.6.0
+- name: jaeger-operator
+  repository: https://jaegertracing.github.io/helm-charts
+  version: 2.25.0
+- name: loki-stack
+  repository: https://grafana.github.io/helm-charts
+  version: 2.6.4
+digest: sha256:3d832d0ef2dd68bda649805711ef21fd5e5fb3841c1c6b9a4200703475cf6c28
+generated: "2023-03-13T17:37:10.19817861Z"

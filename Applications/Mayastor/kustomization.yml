@@ -7,3 +7,5 @@ helmCharts:
     version: 2.0.1
     releaseName: mayastor
     namespace: mayastor-system
+
+namespace: mayastor-system
