@@ -9,7 +9,7 @@ spec:
       repoURL: https://github.com/TJs-Kubernetes-Service/Application_Manifests
       revision: master
       directories:
-        - path: Applications/*/
+        - path: Applications/*
   template:
     metadata:
       name: "{{ path.basenameNormalized }}"
