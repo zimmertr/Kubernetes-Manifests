@@ -1,6 +1,7 @@
 resources:
   - resources/IPAddressPool.yml
   - resources/L2Advertisement.yml
+  - resources/namespace.yml
 
 helmCharts:
   - name: metallb
