@@ -1,0 +1,26 @@
+apiVersion: "openebs.io/v1alpha1"
+kind: DiskPool
+metadata:
+  name: k8s-node-1
+  namespace: mayastor-system
+spec:
+  node: k8s-node-1
+  disks: ["/dev/sdb"]
+---
+apiVersion: "openebs.io/v1alpha1"
+kind: DiskPool
+metadata:
+  name: k8s-node-2
+  namespace: mayastor-system
+spec:
+  node: k8s-node-2
+  disks: ["/dev/sdb"]
+---
+apiVersion: "openebs.io/v1alpha1"
+kind: DiskPool
+metadata:
+  name: k8s-node-3
+  namespace: mayastor-system
+spec:
+  node: k8s-node-3
+  disks: ["/dev/sdb"]
