@@ -1,7 +1,7 @@
 apiVersion: metallb.io/v1beta1
 kind: IPAddressPool
 metadata:
-  name: VLAN50
+  name: vlan50
   namespace: metallb-system
 spec:
   addresses:
