@@ -8,5 +8,6 @@ helmCharts:
     version: 2.0.1
     releaseName: mayastor
     namespace: mayastor-system
+    valuesFile: values.yml
 
 namespace: mayastor-system

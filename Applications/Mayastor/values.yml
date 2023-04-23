@@ -1,6 +1,7 @@
 etcd:
   persistence:
-    storageClassName: manual
-loki:
+    storageClass: manual
+
+loki-stack:
   persistence:
     storageClassName: manual
