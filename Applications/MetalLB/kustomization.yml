@@ -1,0 +1,12 @@
+resources:
+  - resources/IPAddressPool.yml
+  - resources/L2Advertisement.yml
+
+helmCharts:
+  - name: metallb
+    repo: https://metallb.github.io/metallb
+    version: 0.13.9
+    releaseName: metallb
+    namespace: metallb-system
+
+namespace: metallb-system

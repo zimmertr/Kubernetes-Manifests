@@ -1,0 +1,9 @@
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: VLAN50
+  namespace: metallb-system
+spec:
+  addresses:
+    - 192.168.50.150-192.168.50.250
+
