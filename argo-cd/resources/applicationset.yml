@@ -9,7 +9,7 @@ spec:
         repoURL: https://github.com/zimmertr/Application-Manifests
         revision: main
         directories:
-          - path: /*
+          - path: "*"
   syncPolicy:
     preserveResourcesOnDeletion: false
   template:
