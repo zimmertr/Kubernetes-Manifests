@@ -4,6 +4,7 @@ metadata:
   name: metallb
   namespace: argo-system
 spec:
+  project: default
   source:
     repoURL: https://github.com/zimmertr/Application-Manifests
     targetRevision: HEAD
