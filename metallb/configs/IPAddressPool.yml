@@ -1,0 +1,28 @@
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: vlan40
+  namespace: metallb-system
+spec:
+  addresses:
+    - 192.168.40.2-192.168.40.99
+    - 192.168.40.200-192.168.40.250
+---
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: vlan50
+  namespace: metallb-system
+spec:
+  addresses:
+    - 192.168.50.2-192.168.50.199
+---
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: vlan60
+  namespace: metallb-system
+spec:
+  addresses:
+    - 192.168.60.2-192.168.60.199
+  autoAssign: false
