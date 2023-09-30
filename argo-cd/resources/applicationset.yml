@@ -7,9 +7,9 @@ spec:
   generators:
     - git:
         repoURL: https://github.com/zimmertr/Application-Manifests
-        revision: HEAD
+        revision: main
         directories:
-          - path: /
+          - path: /*
   syncPolicy:
     preserveResourcesOnDeletion: false
   template:
@@ -19,7 +19,7 @@ spec:
       project: default
       source:
         repoURL: https://github.com/zimmertr/Application-Manifests
-        targetRevision: HEAD
+        targetRevision: main
         path: "{{ path }}"
       destination:
         server: https://kubernetes.default.svc
