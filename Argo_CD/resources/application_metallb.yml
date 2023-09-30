@@ -1,0 +1,12 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: metallb
+  namespace: argo-system
+spec:
+  source:
+    repoURL: https://github.com/zimmertr/Application-Manifests
+    targetRevision: HEAD
+    path: metallb
+  destination:
+    server: https://kubernetes.default.svc

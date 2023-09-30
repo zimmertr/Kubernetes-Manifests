@@ -1,5 +1,6 @@
 resources:
-  - namespace.yml
+  - resources/namespace.yml
+  - resources/application_metallb.yml
 
 helmCharts:
   - name: argo-cd
