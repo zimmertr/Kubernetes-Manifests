@@ -1,6 +1,9 @@
-*.un~
-*.retry
-.env
-.DS_STORE
-*ssh.key
-*/charts/
+# Terraform
+.terraform*
+*.tfstate*
+
+# MacOS
+.DS_Store
+
+# Kustomize
+charts/
