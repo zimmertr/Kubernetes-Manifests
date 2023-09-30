@@ -1,12 +1,11 @@
 resources:
   - resources/namespace.yml
-  - resources/application_argo-cd.yml
-  - resources/application_metallb.yml
+  - resources/applicationset.yml
 
 helmCharts:
   - name: argo-cd
     repo: https://argoproj.github.io/argo-helm
-    version: HEAD
+    version: 5.46.7
     releaseName: argocd
     namespace: argo-system
     valuesFile: values.yml
