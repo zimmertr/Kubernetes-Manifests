@@ -6,7 +6,8 @@ resources:
 helmCharts:
   - name: argo-cd
     repo: https://argoproj.github.io/argo-helm
-    version: 5.46.7
+    version: HEAD
+    releaseName: argocd
     namespace: argo-system
     valuesFile: values.yml
     includeCRDs: true

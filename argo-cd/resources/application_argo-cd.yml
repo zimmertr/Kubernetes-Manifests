@@ -10,6 +10,7 @@ spec:
       repoURL: https://argoproj.github.io/argo-helm
       targetRevision: 5.46.7
       helm:
+        releaseName: argocd
         valueFiles:
           - $root/argo-cd/values.yml
     - repoURL: https://github.com/zimmertr/Application-Manifests
