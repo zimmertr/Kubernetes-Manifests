@@ -2,5 +2,3 @@ apiVersion: v1
 kind: Namespace
 metadata:
   name: kubernetes-dashboard
-  labels:
-    pod-security.kubernetes.io/enforce: baseline # https://artifacthub.io/packages/helm/k8s-dashboard/kubernetes-dashboard#pod-security-policy-and-admission
