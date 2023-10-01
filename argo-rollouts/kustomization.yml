@@ -1,0 +1,8 @@
+helmCharts:
+  - name: argo-rollouts
+    repo: https://argoproj.github.io/argo-helm
+    version: 2.32.0 # https://artifacthub.io/packages/helm/argo/argo-rollouts?modal=changelog
+    releaseName: argo-rollouts
+    namespace: argo-system
+    valuesFile: values.yml
+    includeCRDs: true

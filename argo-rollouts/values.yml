@@ -1,0 +1,6 @@
+controller:
+  extraArgs:
+    - --leader-elect
+  metrics:
+    enabled: true
+  replicas: 2
