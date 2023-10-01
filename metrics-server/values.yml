@@ -1,0 +1,4 @@
+metrics:
+  enabled: true
+service:
+  type: LoadBalancer

@@ -1,3 +1,11 @@
 resources:
   - https://raw.githubusercontent.com/alex1989hu/kubelet-serving-cert-approver/main/deploy/standalone-install.yaml
-  - https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+
+helmCharts:
+  - name: metrics-server
+    repo: https://kubernetes-sigs.github.io/metrics-server/
+    version: 3.11.0 # https://artifacthub.io/packages/helm/metrics-server/metrics-server?modal=changelog
+    releaseName: metrics-server
+    namespace: metrics-server
+    valuesFile: values.yml
+    includeCRDs: true
