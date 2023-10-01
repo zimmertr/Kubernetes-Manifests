@@ -7,5 +7,4 @@ helmCharts:
     version: 7.0.0-alpha1 # https://artifacthub.io/packages/helm/k8s-dashboard/kubernetes-dashboard
     releaseName: kubernetes-dashboard
     namespace: kubernetes-dashboard
-    valuesFile: values.yml
     includeCRDs: true
