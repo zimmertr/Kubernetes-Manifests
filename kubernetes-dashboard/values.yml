@@ -1,4 +1,5 @@
-nginx:
-  controller:
-    service:
-      type: LoadBalancer
+app:
+  nginx:
+    controller:
+      service:
+        type: LoadBalancer

@@ -4,7 +4,7 @@ resources:
 helmCharts:
   - name: kubernetes-dashboard
     repo: https://kubernetes.github.io/dashboard/
-    version: 6.0.8 # https://artifacthub.io/packages/helm/k8s-dashboard/kubernetes-dashboard
+    version: 7.0.0-alpha1 # https://artifacthub.io/packages/helm/k8s-dashboard/kubernetes-dashboard
     releaseName: kubernetes-dashboard
     namespace: kubernetes-dashboard
     valuesFile: values.yml
