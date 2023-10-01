@@ -32,3 +32,15 @@ spec:
           selfHeal: true
         syncOptions:
           - CreateNamespace=true
+          - RespectIgnoreDifferences=true
+      ignoreDifferences:
+          - group: admissionregistration.k8s.io
+            kind: ValidatingWebhookConfiguration
+            name: istiod-default-validator
+            jsonPointers:
+              - /webhooks/0/failurePolicy
+          - group: admissionregistration.k8s.io
+            kind: MutatingWebhookConfiguration
+            name: istio-sidecar-injector
+            jqPathExpressions:
+              - .webhooks[].namespaceSelector.matchExpressions[] | select(.key == "control-plane")
