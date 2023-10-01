@@ -1,6 +1,3 @@
-resources:
-  - resources/namespace.yml
-
 helmCharts:
   - name: base
     repo: https://istio-release.storage.googleapis.com/charts
