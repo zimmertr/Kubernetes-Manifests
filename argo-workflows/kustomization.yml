@@ -1,0 +1,8 @@
+helmCharts:
+  - name: argo-workflows
+    repo: https://argoproj.github.io/argo-helm
+    version: 0.33.3 # https://artifacthub.io/packages/helm/argo/argo-workflows?modal=changelog
+    releaseName: argo-workflows
+    namespace: argo-system
+    valuesFile: values.yml
+    includeCRDs: true

@@ -1,0 +1,14 @@
+controller:
+  metricsConfig:
+    enabled: true
+  serviceType: LoadBalancer
+  serviceAnnotations:
+    metallb.universe.tf/loadBalancerIPs: 192.168.40.12
+
+server:
+  autoscaling:
+    enabled: true
+  serviceType: LoadBalancer
+  serviceAnnotations:
+    metallb.universe.tf/loadBalancerIPs: 192.168.40.13
+
