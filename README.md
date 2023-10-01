@@ -16,5 +16,6 @@ To apply everything:
 
 ```bash
 kubectl kustomize --enable-helm argo-cd | kubectl apply -f-
+kubectl apply -f applicationset.yml
 ```
 
