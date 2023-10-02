@@ -8,8 +8,8 @@ spec:
     - 'argocd-server'
   http:
     - match:
-      - uri:
-        prefix: "/argocd"
+        - uri:
+            prefix: "/argocd"
       route:
         - destination:
-          host: argocd-server
+            host: argocd-server
