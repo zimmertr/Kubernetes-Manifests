@@ -1,8 +1,6 @@
 resources:
   - resources/namespace.yml
 
-# namespace: istio-system
-
 # https://artifacthub.io/packages/helm/istio-official/istiod
 helmCharts:
   - name: base
