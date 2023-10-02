@@ -1,5 +1,5 @@
-# resources:
-#   - resources/namespace.yml
+resources:
+  - resources/namespace.yml
 
 # namespace: istio-system
 
