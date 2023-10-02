@@ -1,0 +1,2 @@
+istio_cni:
+  enabaled: true
