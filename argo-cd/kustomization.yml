@@ -2,6 +2,8 @@ resources:
   - resources/namespace.yml
   - resources/virtualservice.yml
 
+namespace: argo-system
+
 helmCharts:
   - name: argo-cd
     repo: https://argoproj.github.io/argo-helm
