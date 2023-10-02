@@ -3,6 +3,8 @@ kind: ApplicationSet
 metadata:
   name: applications
   namespace: argo-system
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
 spec:
   generators:
     - git:
