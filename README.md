@@ -2,7 +2,7 @@
 
 ## Summary
 
-A collection of applications meant to be deployed to Kubernetes.
+A collection of applications meant to be deployed to Kubernetes. Using Proxmox? Consider using [TKS](https://github.com/zimmertr/TJs-Kubernetes-Service) to deploy your cluster! 
 
 ## Instructions
 
