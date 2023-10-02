@@ -5,11 +5,11 @@ metadata:
   namespace: argo-system
 spec:
   hosts:
-    - argocd-server.argo-system.svc.cluster.local
+    - argocd-server
   http:
     - match:
       - uri:
         prefix: "/argocd"
       reoute:
         - destination:
-          host: argocd-server.argo-system.svc.cluster.local
+          host: argocd-server
