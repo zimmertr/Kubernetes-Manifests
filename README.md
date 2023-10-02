@@ -16,6 +16,7 @@ To apply everything:
 
 ```bash
 kubectl kustomize --enable-helm argo-cd | kubectl apply -f-
+watch kubectl get all -n argo-system # Wait for Argo to be finished deploying
 kubectl apply -f applicationset.yml
 ```
 

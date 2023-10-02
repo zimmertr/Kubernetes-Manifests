@@ -1,7 +1,7 @@
 # resources:
 #   - resources/namespace.yml
 
-namespace: istio-system
+# namespace: istio-system
 
 helmCharts:
   - name: base
