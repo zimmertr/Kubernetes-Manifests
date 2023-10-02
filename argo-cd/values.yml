@@ -43,7 +43,3 @@ server:
     minReplicas: 2
   metrics:
     enabled: true
-  service:
-    annotations:
-      metallb.universe.tf/loadBalancerIPs: 192.168.40.10
-    type: LoadBalancer

@@ -1,5 +1,4 @@
 # https://www.talos.dev/v1.5/kubernetes-guides/configuration/deploy-metrics-server/
-
 resources:
   - https://raw.githubusercontent.com/alex1989hu/kubelet-serving-cert-approver/main/deploy/standalone-install.yaml
   - resources/namespace.yml # https://github.com/argoproj/argo-cd/issues/11625#issuecomment-1741915734

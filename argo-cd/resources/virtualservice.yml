@@ -1,0 +1,15 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: argo-cd
+  namespace: argo-system
+spec:
+  hosts:
+    - 'argocd-server'
+  http:
+    - match:
+        - uri:
+            prefix: "/argocd"
+      route:
+        - destination:
+            host: argocd-server

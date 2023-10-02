@@ -1,4 +1,0 @@
-nginx:
-  controller:
-    service:
-      type: LoadBalancer
