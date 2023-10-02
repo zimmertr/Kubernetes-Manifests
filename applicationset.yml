@@ -1,10 +1,27 @@
 apiVersion: argoproj.io/v1alpha1
-kind: ApplicationSet
+kind: AppProject
 metadata:
   name: applications
   namespace: argo-system
   finalizers:
     - resources-finalizer.argocd.argoproj.io
+spec:
+  sourceRepos:
+  - '*'
+  destinations:
+  - namespace: '*'
+    server: '*'
+  clusterResourceWhitelist:
+  - group: '*'
+    kind: '*'
+  orphanedResources:
+    warn: true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: applications
+  namespace: argo-system
 spec:
   generators:
     - git:
@@ -18,7 +35,7 @@ spec:
     metadata:
       name: "{{ path.basenameNormalized }}"
     spec:
-      project: default
+      project: applications
       source:
         repoURL: https://github.com/zimmertr/Application-Manifests
         targetRevision: test
