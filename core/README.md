@@ -26,6 +26,7 @@ kubectl kustomize --enable-helm cilium | kubectl apply -f-
 ```
 
 <hr>
+
 ### Kubelet CSR Approver
 
 Cilium will not be completely ready until you approve the necessary Certificate Signing Requests. This can be done manually with `kubectl certificate approve`, or you can use [Kubelet CSR Approver](https://github.com/postfinance/kubelet-csr-approver). You may need to modify `.Values.providerRegex` according to your Kubernetes node hostnames.
@@ -35,6 +36,7 @@ kubectl kustomize --enable-helm kubelet-csr-approver | kubectl apply -f-
 ```
 
 <hr>
+
 ### Metrics Server
 
 Metrics Server is needed to enable the Metrics API in Kubernetes.
