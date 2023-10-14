@@ -1,5 +1,6 @@
 resources:
   - resources/namespace.yml
+  - resources/cilium_network_policy.yml
 
 helmCharts:
   - name: argo-cd

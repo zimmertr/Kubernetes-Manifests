@@ -1,23 +1,13 @@
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
-  name: my-l7-policy
+  name: argo-cd
+  namespace: argo-system
 spec:
   endpointSelector:
     matchLabels:
-      app: my-app
+      app: argocd-server
   ingress:
-  - fromEndpoints:
-    - matchLabels:
-        app: another-app
-    toPorts:
-    - port: 80
-      protocol: TCP
-    http:
-      match:
-        method: [GET, POST]
-      route:
-      - forwardTo: 10.0.0.2
-        weight: 50
-      - forwardTo: 10.0.0.3
-        weight: 50
+  - toPorts:
+    - ports:
+      - port: "443"
