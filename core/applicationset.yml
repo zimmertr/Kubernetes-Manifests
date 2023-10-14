@@ -1,25 +1,25 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: argo
+  name: core
   namespace: argo-system
 spec:
   generators:
     - git:
         repoURL: https://github.com/zimmertr/Kubernetes-Manifests
-        revision: main
+        revision: develop
         directories:
-          - path: "argo/*"
+          - path: "core/*"
   syncPolicy:
     preserveResourcesOnDeletion: false
   template:
     metadata:
       name: "{{ path.basenameNormalized }}"
     spec:
-      project: applications
+      project: core
       source:
         repoURL: https://github.com/zimmertr/Kubernetes-Manifests
-        targetRevision: main
+        targetRevision: develop
         path: "{{ path }}"
       destination:
         server: https://kubernetes.default.svc
@@ -29,4 +29,3 @@ spec:
           selfHeal: true
         syncOptions:
           - CreateNamespace=true
-          - RespectIgnoreDifferences=true

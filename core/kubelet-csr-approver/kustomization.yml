@@ -1,0 +1,11 @@
+resources:
+  - resources/namespace.yml
+
+helmCharts:
+  - name: kubelet-csr-approver
+    repo: https://postfinance.github.io/kubelet-csr-approver
+    version: 1.0.5 # https://github.com/postfinance/kubelet-csr-approver/releases
+    releaseName: kubelet-csr-approver
+    namespace: kubelet-csr-approver-system
+    valuesFile: values.yml
+    includeCRDs: true

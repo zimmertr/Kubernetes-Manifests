@@ -1,0 +1,11 @@
+resources:
+  - resources/namespace.yml
+
+helmCharts:
+  - name: cilium
+    repo: https://helm.cilium.io/
+    version: 1.15.0-pre.1 # https://artifacthub.io/packages/helm/cilium/cilium
+    releaseName: cilium
+    namespace: cilium-system
+    valuesFile: values.yml
+    includeCRDs: true
