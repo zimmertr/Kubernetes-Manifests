@@ -1,0 +1,16 @@
+resources:
+  - resources/namespace.yml
+  - https://raw.githubusercontent.com/kubernetes-sigs/gateway-api/v0.8.1/config/crd/standard/gateway.networking.k8s.io_gatewayclasses.yaml
+  - https://raw.githubusercontent.com/kubernetes-sigs/gateway-api/v0.8.1/config/crd/standard/gateway.networking.k8s.io_gateways.yaml
+  - https://raw.githubusercontent.com/kubernetes-sigs/gateway-api/v0.8.1/config/crd/standard/gateway.networking.k8s.io_httproutes.yaml
+  - https://raw.githubusercontent.com/kubernetes-sigs/gateway-api/v0.8.1/config/crd/standard/gateway.networking.k8s.io_referencegrants.yaml
+  - https://raw.githubusercontent.com/kubernetes-sigs/gateway-api/v0.8.1/config/crd/experimental/gateway.networking.k8s.io_tlsroutes.yaml
+
+helmCharts:
+  - name: cilium
+    repo: https://helm.cilium.io/
+    version: 1.15.0-pre.1 # https://artifacthub.io/packages/helm/cilium/cilium
+    releaseName: cilium
+    namespace: kube-system
+    valuesFile: values.yml
+    includeCRDs: true

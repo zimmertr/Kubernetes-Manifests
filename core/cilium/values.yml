@@ -1,0 +1,61 @@
+cgroup:
+  autoMount:
+    enabled: false
+  hostRoot: /sys/fs/cgroup
+
+# clusterName: "kubernetes"
+
+# # https://docs.cilium.io/en/latest/network/kubernetes/kubeproxy-free/#nodeport-devices
+# enableRuntimeDeviceDetection: true
+
+# encryption:
+  # enabled: true
+
+gatewayAPI:
+  enabled: true
+
+hubble:
+  relay:
+    enabled: true
+  ui:
+    enabled: true
+
+ingressController:
+  enabled: true
+
+ipam:
+  mode: "kubernetes"
+
+# https://docs.cilium.io/en/latest/network/l2-announcements/#sizing-client-rate-limit
+k8sClientRateLimit:
+  burst: 10
+  qps: 5
+
+k8sServiceHost: localhost
+
+k8sServicePort: 7445
+
+kubeProxyReplacement: true
+
+# https://docs.cilium.io/en/latest/network/l2-announcements/
+l2announcements:
+  enabled: true
+
+securityContext:
+  capabilities:
+    ciliumAgent:
+      - CHOWN
+      - KILL
+      - NET_ADMIN
+      - NET_RAW
+      - IPC_LOCK
+      - SYS_ADMIN
+      - SYS_RESOURCE
+      - DAC_OVERRIDE
+      - FOWNER
+      - SETGID
+      - SETUID
+    cleanCiliumState:
+      - NET_ADMIN
+      - SYS_ADMIN
+      - SYS_RESOURCE
