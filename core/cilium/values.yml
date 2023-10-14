@@ -3,14 +3,6 @@ cgroup:
     enabled: false
   hostRoot: /sys/fs/cgroup
 
-# clusterName: "kubernetes"
-
-# # https://docs.cilium.io/en/latest/network/kubernetes/kubeproxy-free/#nodeport-devices
-# enableRuntimeDeviceDetection: true
-
-# encryption:
-  # enabled: true
-
 gatewayAPI:
   enabled: true
 

@@ -1,0 +1,23 @@
+apiVersion: "cilium.io/v2alpha1"
+kind: CiliumLoadBalancerIPPool
+metadata:
+  name: "vlan40"
+spec:
+  cidrs:
+    - cidr: "192.168.40.0/24"
+---
+apiVersion: "cilium.io/v2alpha1"
+kind: CiliumLoadBalancerIPPool
+metadata:
+  name: "vlan50"
+spec:
+  cidrs:
+    - cidr: "192.168.50.0/24"
+---
+apiVersion: "cilium.io/v2alpha1"
+kind: CiliumLoadBalancerIPPool
+metadata:
+  name: "vlan60"
+spec:
+  cidrs:
+    - cidr: "192.168.60.0/24"

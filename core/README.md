@@ -1,0 +1,46 @@
+# Core
+
+* [Summary](#summary)
+* [Applications](#applications)
+  * [Argo CD](#argo-cd)
+  * [Cilium](#cilium)
+  * [Kubelet CSR Approver](#kubelet-csr-approver)
+  * [Metrics Server](#metrics-server)
+
+<hr>
+
+## Summary
+
+Core is a collection of essential applications required to make TKS functional.
+
+<hr>
+
+## Applications
+
+### Cilium
+
+Cilium is the preferred CNI when using TKS; most of the applications in this repository assume it is being used. At the very least `cilium_load_balancer_ip_pool.yml` will need to be modified according to your environment.
+
+```bash
+kubectl kustomize --enable-helm cilium | kubectl apply -f-
+```
+
+<hr>
+
+### Kubelet CSR Approver
+
+Cilium will not be completely ready until you approve the necessary Certificate Signing Requests. This can be done manually with `kubectl certificate approve`, or you can use [Kubelet CSR Approver](https://github.com/postfinance/kubelet-csr-approver). You may need to modify `.Values.providerRegex` according to your Kubernetes node hostnames.
+
+```bash
+kubectl kustomize --enable-helm kubelet-csr-approver | kubectl apply -f-
+```
+
+<hr>
+
+### Metrics Server
+
+Metrics Server is needed to enable the Metrics API in Kubernetes.
+
+```bash
+kubectl kustomize --enable-helm metrics-server | kubectl apply -f-
+```
