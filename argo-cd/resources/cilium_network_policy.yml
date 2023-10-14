@@ -1,0 +1,23 @@
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: my-l7-policy
+spec:
+  endpointSelector:
+    matchLabels:
+      app: my-app
+  ingress:
+  - fromEndpoints:
+    - matchLabels:
+        app: another-app
+    toPorts:
+    - port: 80
+      protocol: TCP
+    http:
+      match:
+        method: [GET, POST]
+      route:
+      - forwardTo: 10.0.0.2
+        weight: 50
+      - forwardTo: 10.0.0.3
+        weight: 50
