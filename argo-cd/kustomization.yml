@@ -1,6 +1,5 @@
 resources:
   - resources/namespace.yml
-  - resources/virtualservice.yml
 
 helmCharts:
   - name: argo-cd
