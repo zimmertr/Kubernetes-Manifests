@@ -20,15 +20,15 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: applications
+  name: base
   namespace: argo-system
 spec:
   generators:
     - git:
-        repoURL: https://github.com/zimmertr/Application-Manifests
-        revision: test
+        repoURL: https://github.com/zimmertr/Kubernetes-Manifests
+        revision: develop
         directories:
-          - path: "*"
+          - path: "base/*"
   syncPolicy:
     preserveResourcesOnDeletion: false
   template:
@@ -37,8 +37,8 @@ spec:
     spec:
       project: applications
       source:
-        repoURL: https://github.com/zimmertr/Application-Manifests
-        targetRevision: test
+        repoURL: https://github.com/zimmertr/Kubernetes-Manifests
+        targetRevision: develop
         path: "{{ path }}"
       destination:
         server: https://kubernetes.default.svc
@@ -48,15 +48,3 @@ spec:
           selfHeal: true
         syncOptions:
           - CreateNamespace=true
-          - RespectIgnoreDifferences=true
-      ignoreDifferences:
-          - group: admissionregistration.k8s.io
-            kind: ValidatingWebhookConfiguration
-            name: istiod-default-validator
-            jsonPointers:
-              - /webhooks/0/failurePolicy
-          - group: admissionregistration.k8s.io
-            kind: MutatingWebhookConfiguration
-            name: istio-sidecar-injector
-            jqPathExpressions:
-              - .webhooks[].namespaceSelector.matchExpressions[] | select(.key == "control-plane")
