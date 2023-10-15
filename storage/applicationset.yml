@@ -1,0 +1,52 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: storage
+  namespace: argo-system
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  sourceRepos:
+  - '*'
+  destinations:
+  - namespace: '*'
+    server: '*'
+  clusterResourceWhitelist:
+  - group: '*'
+    kind: '*'
+  orphanedResources:
+    warn: true
+---
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: storage
+  namespace: argo-system
+spec:
+  generators:
+    - git:
+        repoURL: https://github.com/zimmertr/Kubernetes-Manifests
+        revision: develop
+        directories:
+          - path: "storage/*"
+  syncPolicy:
+    preserveResourcesOnDeletion: false
+  template:
+    metadata:
+      name: "{{ path.basenameNormalized }}"
+      labels:
+        app-group: storage
+    spec:
+      project: storage
+      source:
+        repoURL: https://github.com/zimmertr/Kubernetes-Manifests
+        targetRevision: develop
+        path: "{{ path }}"
+      destination:
+        server: https://kubernetes.default.svc
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true

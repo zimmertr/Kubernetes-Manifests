@@ -1,0 +1,8 @@
+helmCharts:
+  - name: nfs-subdir-external-provisioner
+    repo: https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner
+    version: 4.0.18 # https://github.com/kubernetes-sigs/nfs-subdir-external-provisioner/releases
+    releaseName: nfs-subdir-external-provisioner
+    namespace: nfs-subdir-external-provisioner-system
+    valuesFile: values.yml
+    includeCRDs: true

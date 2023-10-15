@@ -1,0 +1,6 @@
+nfs:
+  server: earth.sol.milkyway
+  path: /DataPool/
+
+storageClass:
+  defaultClass: true
