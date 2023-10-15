@@ -34,8 +34,8 @@ metadata:
     io.cilium/lb-ipam-ips: 192.168.40.100
 spec:
   ports:
-    - name: http
+    - name: port-80
       port: 80
-    - name: https
+    - name: port-443
       port: 443
   type: LoadBalancer
