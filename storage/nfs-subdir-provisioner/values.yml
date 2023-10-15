@@ -1,0 +1,6 @@
+nfs:
+  server: earth.sol.milkyway
+  path: /mnt/DataPool/Kubernetes
+
+storageClass:
+  defaultClass: true
