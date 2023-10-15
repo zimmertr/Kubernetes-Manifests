@@ -40,7 +40,7 @@ spec:
       project: core
       source:
         repoURL: https://github.com/zimmertr/Kubernetes-Manifests
-        targetrevision: main
+        targetRevision: main
         path: "{{ path }}"
       destination:
         server: https://kubernetes.default.svc
