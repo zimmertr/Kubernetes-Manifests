@@ -35,3 +35,9 @@ Argo CD is deployed manually at first using the same Kustomize pattern:
 kubectl kustomize --enable-helm argo/argo-cd | kubectl apply -f-
 ```
 
+Then you can apply ApplicationSets for a group of applications. For example, Core and Argo:
+
+```bash
+kubectl apply -f core/applicationset.yml
+kubectl apply -f argo/applicationset.yml
+```
