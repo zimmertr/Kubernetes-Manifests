@@ -1,0 +1,41 @@
+# spec.addresses seems to be ignored for me. So instead I manually associate a LoadBalancer service
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: Gateway
+metadata:
+  name: vlan40
+  namespace: gateway-system
+spec:
+  gatewayClassName: cilium
+  addresses:
+    - type: Hostname
+      value: cilium-gateway-vlan40.gateway-system.svc.cluster.local
+  listeners:
+    - name: http
+      protocol: HTTP
+      port: 80
+      allowedRoutes:
+        namespaces:
+          from: All
+    - name: https
+      protocol: HTTPS
+      port: 443
+      allowedRoutes:
+        namespaces:
+          from: All
+      tls:
+        mode: Passthrough
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cilium-gateway-vlan40
+  namespace: gateway-system
+  annotations:
+    io.cilium/lb-ipam-ips: 192.168.40.100
+spec:
+  ports:
+    - name: http
+      port: 80
+    - name: https
+      port: 443
+  type: LoadBalancer
