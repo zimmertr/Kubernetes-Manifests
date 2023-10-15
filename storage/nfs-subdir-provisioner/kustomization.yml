@@ -1,3 +1,6 @@
+resources:
+  - resources/namespace.yml
+
 helmCharts:
   - name: nfs-subdir-external-provisioner
     repo: https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner
