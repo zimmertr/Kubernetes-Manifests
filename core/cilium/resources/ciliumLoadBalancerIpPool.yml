@@ -1,0 +1,7 @@
+apiVersion: "cilium.io/v2alpha1"
+kind: CiliumLoadBalancerIPPool
+metadata:
+  name: "vlan40"
+spec:
+  cidrs:
+    - cidr: "192.168.40.0/24"

@@ -1,24 +1,37 @@
 # Kubernetes Manifests
 
+* [Summary](#summary)
+* [Instructions](#instructions)
+  * [Core](#core)
+  * [Argo CD](#argo-cd)
+
+<hr>
+
 ## Summary
 
 A collection of applications meant to be deployed to Kubernetes.
 
 Using Proxmox? Consider using [TKS](https://github.com/zimmertr/TJs-Kubernetes-Service) to deploy your cluster!
 
+<hr>
+
 ## Instructions
 
-To apply an individual application:
+### Core
+
+Assuming you're using TKS and have disabled Flannel, Core is necessary to install a CNI and enable Metrics Server:
 
 ```bash
-kubectl kustomize --enable-helm $APP | kubectl apply -f-
+kubectl kustomize --enable-helm core/cilium | kubectl apply -f-
+kubectl kustomize --enable-helm core/kubelet-csr-approver | kubectl apply -f-
+kubectl kustomize --enable-helm core/metrics-server | kubectl apply -f-
 ```
 
-To apply everything:
+### Argo CD
+
+Argo CD is deployed manually at first using the same Kustomize pattern:
 
 ```bash
-kubectl kustomize --enable-helm argo-cd | kubectl apply -f-
-watch kubectl get all -n argo-system # Wait for Argo to be finished deploying
-kubectl apply -f applicationset.yml
+kubectl kustomize --enable-helm argo/argo-cd | kubectl apply -f-
 ```
 
