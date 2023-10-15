@@ -1,3 +1,1 @@
-namespace: kubelet-csr-approver-system
-
 providerRegex: "^.*k8s-(cp|node)-[1-9]$"
