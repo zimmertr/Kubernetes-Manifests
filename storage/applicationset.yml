@@ -1,3 +1,9 @@
+# https://github.com/argoproj/argo-cd/issues/11625
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: nfs-provisioner
+---
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
