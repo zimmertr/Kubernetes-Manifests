@@ -1,0 +1,95 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+    name: plex-anime
+spec:
+    accessModes:
+        - ReadWriteOnce
+    resources:
+        requests:
+            storage: 1Ti
+    volumeName: plex-anime
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+    name: plex-audiobooks
+spec:
+    accessModes:
+        - ReadWriteOnce
+    resources:
+        requests:
+            storage: 1Ti
+    volumeName: plex-audiobooks
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+    name: plex-cartoons
+spec:
+    accessModes:
+        - ReadWriteOnce
+    resources:
+        requests:
+            storage: 1Ti
+    volumeName: plex-cartoons
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+    name: plex-config
+spec:
+    accessModes:
+        - ReadWriteOnce
+    resources:
+        requests:
+            storage: 1Ti
+    volumeName: plex-config
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+    name: plex-movies
+spec:
+    accessModes:
+        - ReadWriteOnce
+    resources:
+        requests:
+            storage: 1Ti
+    volumeName: plex-movies
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+    name: plex-music
+spec:
+    accessModes:
+        - ReadWriteOnce
+    resources:
+        requests:
+            storage: 1Ti
+    volumeName: plex-music
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+    name: plex-tv-shows
+spec:
+    accessModes:
+        - ReadWriteOnce
+    resources:
+        requests:
+            storage: 1Ti
+    volumeName: plex-tv-shows
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+    name: plex-unsorted
+spec:
+    accessModes:
+        - ReadWriteOnce
+    resources:
+        requests:
+            storage: 1Ti
+    volumeName: plex-unsorted

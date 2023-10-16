@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+    name: rutorrent-data
+spec:
+    capacity:
+        storage: 1Ti
+    accessModes:
+        - ReadWriteOnce
+    nfs:
+        path: /mnt/DataPool/Kubernetes/ruTorrent
+        server: earth.sol.milkyway
+    storageClassName: nfs-client
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+    name: rutorrent-fileserver
+spec:
+    capacity:
+        storage: 1Ti
+    accessModes:
+        - ReadWriteOnce
+    nfs:
+        path: /mnt/DataPool/
+        server: earth.sol.milkyway
+    storageClassName: nfs-client

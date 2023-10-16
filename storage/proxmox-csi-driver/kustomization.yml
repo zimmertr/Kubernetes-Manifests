@@ -1,0 +1,26 @@
+# https://github.com/kubernetes-sigs/kustomize/issues/4381
+resources:
+  - https://raw.githubusercontent.com/sergelogvinov/proxmox-csi-plugin/main/docs/deploy/proxmox-csi-plugin.yml
+  - resources/storageclass.yml
+
+secretGenerator:
+  - name: proxmox-csi-plugin
+    namespace: csi-proxmox
+    files:
+      - secrets/config.yaml
+    options:
+      disableNameSuffixhash: true
+
+patches:
+  - patch: |
+      $patch: delete
+      apiVersion: storage.k8s.io/v1
+      kind: StorageClass
+      metadata:
+        name: proxmox-data
+  - patch: |
+      $patch: delete
+      apiVersion: storage.k8s.io/v1
+      kind: StorageClass
+      metadata:
+        name: proxmox-data-xfs

@@ -1,0 +1,30 @@
+namespace: rutorrent-system
+
+resources:
+  - resources/namespace.yml
+  - resources/persistentVolume.yml
+  - resources/persistentVolumeClaim.yml
+  - resources/service.yml
+  - resources/statefulset.yml
+
+images:
+  - name: crazymax/rtorrent-rutorrent
+    newTag: 4.2.6-0.9.8-0.13.8 # https://hub.docker.com/r/crazymax/rtorrent-rutorrent/tags
+
+configMapGenerator:
+  - name: rutorrent-rtlocal
+    files:
+      - configs/.rtlocal.rc
+  - name: rutorrent-env-vars
+    literals:
+      - TZ="America/Los_Angeles"
+      - PUID="65534"
+      - PGID="65534"
+      - RT_LOG_LEVEL="debug"
+      - MEMORY_LIMIT="1024M"
+      - OPCACHE_MEM_SIZE="512"
+      - MAX_FILE_UPLOADS="100"
+      - RT_INC_PORT="57832"
+      - RU_HTTP_TIME_OUT=120
+      - RU_RPC_TIME_OUT=10
+      - RT_SESSION_SAVE_SECONDS="10800"

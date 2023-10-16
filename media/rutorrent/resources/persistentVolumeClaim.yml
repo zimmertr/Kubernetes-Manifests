@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: rutorrent-data
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Ti
+  volumeName: rutorrent-data
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: rutorrent-fileserver
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Ti
+  volumeName: rutorrent-fileserver
