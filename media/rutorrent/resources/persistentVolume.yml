@@ -4,13 +4,13 @@ metadata:
     name: rutorrent-data
 spec:
     capacity:
-        storage: 1Gi
+        storage: 1Ti
     accessModes:
-        - ReadWriteMany
+        - ReadWriteOnce
     nfs:
         path: /mnt/DataPool/Kubernetes/ruTorrent
         server: earth.sol.milkyway
-    storageClassName: nfs-datapool
+    storageClassName: nfs-client
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -18,10 +18,10 @@ metadata:
     name: rutorrent-fileserver
 spec:
     capacity:
-        storage: 15Ti
+        storage: 1Ti
     accessModes:
-        - ReadWriteMany
+        - ReadWriteOnce
     nfs:
         path: /mnt/DataPool/
         server: earth.sol.milkyway
-    storageClassName: nfs-datapool
+    storageClassName: nfs-client

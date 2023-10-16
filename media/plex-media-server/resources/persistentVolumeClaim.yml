@@ -4,10 +4,10 @@ metadata:
     name: plex-anime
 spec:
     accessModes:
-        - ReadWriteMany
+        - ReadWriteOnce
     resources:
         requests:
-            storage: 15Ti
+            storage: 1Ti
     volumeName: plex-anime
 ---
 apiVersion: v1
@@ -16,10 +16,10 @@ metadata:
     name: plex-audiobooks
 spec:
     accessModes:
-        - ReadWriteMany
+        - ReadWriteOnce
     resources:
         requests:
-            storage: 15Ti
+            storage: 1Ti
     volumeName: plex-audiobooks
 ---
 apiVersion: v1
@@ -28,10 +28,10 @@ metadata:
     name: plex-cartoons
 spec:
     accessModes:
-        - ReadWriteMany
+        - ReadWriteOnce
     resources:
         requests:
-            storage: 2Gi
+            storage: 1Ti
     volumeName: plex-cartoons
 ---
 apiVersion: v1
@@ -40,10 +40,10 @@ metadata:
     name: plex-config
 spec:
     accessModes:
-        - ReadWriteMany
+        - ReadWriteOnce
     resources:
         requests:
-            storage: 2Gi
+            storage: 1Ti
     volumeName: plex-config
 ---
 apiVersion: v1
@@ -52,10 +52,10 @@ metadata:
     name: plex-movies
 spec:
     accessModes:
-        - ReadWriteMany
+        - ReadWriteOnce
     resources:
         requests:
-            storage: 15Ti
+            storage: 1Ti
     volumeName: plex-movies
 ---
 apiVersion: v1
@@ -64,10 +64,10 @@ metadata:
     name: plex-music
 spec:
     accessModes:
-        - ReadWriteMany
+        - ReadWriteOnce
     resources:
         requests:
-            storage: 15Ti
+            storage: 1Ti
     volumeName: plex-music
 ---
 apiVersion: v1
@@ -76,10 +76,10 @@ metadata:
     name: plex-tv-shows
 spec:
     accessModes:
-        - ReadWriteMany
+        - ReadWriteOnce
     resources:
         requests:
-            storage: 15Ti
+            storage: 1Ti
     volumeName: plex-tv-shows
 ---
 apiVersion: v1
@@ -88,8 +88,8 @@ metadata:
     name: plex-unsorted
 spec:
     accessModes:
-        - ReadWriteMany
+        - ReadWriteOnce
     resources:
         requests:
-            storage: 15Ti
+            storage: 1Ti
     volumeName: plex-unsorted

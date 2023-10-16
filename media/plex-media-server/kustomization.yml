@@ -1,0 +1,36 @@
+resources:
+  - resources/namespace.yml
+  - resources/persistentVolume.yml
+  - resources/persistentVolumeClaim.yml
+
+namespace: plex-media-server-system
+
+helmCharts:
+  - includeCRDs: true
+    name: plex-media-server
+    namespace: plex-system
+    releaseName: plex-media-server
+    repo: https://raw.githubusercontent.com/plexinc/pms-docker/gh-pages
+    valuesFile: values.yml
+    version: 0.1.6
+
+# The Helm Chart doesn't support disabling the dynamic config PersistentVolume.
+# I do want one, but I want to statically reference a NFS Mountpoint instead.
+patches:
+  - patch: |-
+      apiVersion: apps/v1
+      kind: StatefulSet
+      metadata:
+        name: plex-media-server
+      spec:
+        template:
+          spec:
+            containers:
+            - name: plex-media-server-pms
+              volumeMounts:
+              - name: pms-config
+                mountPath: /config
+        volumeClaimTemplates:
+    target:
+      kind: StatefulSet
+      name: plex-media-server

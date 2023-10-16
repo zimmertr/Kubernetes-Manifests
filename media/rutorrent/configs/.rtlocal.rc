@@ -11,33 +11,32 @@ method.insert = d.rundir, private|const|string, (cat,"/var/run/rtorrent/")
 
 
 # Traffic
-throttle.global_down.max_rate.set_kb = 0
-throttle.global_up.max_rate.set_kb = 0
-
-throttle.max_downloads.global.set = 300
-throttle.max_uploads.global.set   = 300
-
-throttle.max_uploads.set = 15
-
-throttle.min_peers.normal.set = 1
-throttle.max_peers.normal.set = 100
-
-throttle.min_peers.seed.set = 1
-throttle.max_peers.seed.set = 50
-
-trackers.numwant.set = 100
-network.max_open_sockets.set = 999
-network.max_open_files.set = 600
-network.http.max_open.set = 99
+throttle.global_down.max_rate.set_kb  = 0
+throttle.global_up.max_rate.set_kb    = 0
+throttle.max_downloads.global.set     = 300
+throttle.max_uploads.global.set       = 250
+throttle.max_uploads.set              = 100
+throttle.min_peers.normal.set         = 1
+throttle.max_peers.normal.set         = 100
+throttle.min_peers.seed.set           = 1
+throttle.max_peers.seed.set           = 50
 
 
 # Ports
-network.port_range.set = 57832-57832
+network.port_range.set  = 57832-57832
 network.port_random.set = no
 
 
+# Limits
+network.http.max_open.set     = 50
+network.max_open_files.set    = 600
+network.max_open_sockets.set  = 300
+# trackers.numwant.set          = 100
+
+
 # Memory
-pieces.memory.max.set = 2048M
+pieces.memory.max.set         = 10240M
+network.xmlrpc.size_limit.set = 4M
 
 
 # Encryption
@@ -48,12 +47,7 @@ protocol.encryption.set = require
 schedule2 = monitor_diskspace, 15, 60, ((close_low_diskspace,1000M))
 
 
-# Checking
-pieces.hash.on_completion.set = yes
-
-
 # Miscellaneous
-dht.mode.set = auto
-system.umask.set = 0022
-encoding.add = UTF-8
-protocol.pex.set = yes
+dht.mode.set          = disable
+protocol.pex.set      = no
+trackers.use_udp.set  = no

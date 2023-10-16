@@ -1,0 +1,53 @@
+extraEnv:
+  ALLOWED_NETWORKS: "192.168.0.0/16"
+  PLEX_CLAIM: "claim-1V7JsisSg7P_QDK8ABPL"
+  TZ: "America/Los_Angeles"
+
+extraVolumes:
+  - name: plex-audiobooks
+    persistentVolumeClaim:
+      claimName: plex-audiobooks
+  - name: plex-cartoons
+    persistentVolumeClaim:
+      claimName: plex-cartoons
+  - name: plex-config
+    persistentVolumeClaim:
+      claimName: plex-config
+  - name: plex-tv-shows
+    persistentVolumeClaim:
+      claimName: plex-tv-shows
+  - name: plex-movies
+    persistentVolumeClaim:
+      claimName: plex-movies
+  - name: plex-music
+    persistentVolumeClaim:
+      claimName: plex-music
+  - name: plex-anime
+    persistentVolumeClaim:
+      claimName: plex-anime
+  - name: plex-unsorted
+    persistentVolumeClaim:
+      claimName: plex-unsorted
+
+extraVolumeMounts:
+  - name: plex-config
+    mountPath: /config
+  - name: plex-audiobooks
+    mountPath: /media/audiobooks
+  - name: plex-cartoons
+    mountPath: /media/cartoons
+  - name: plex-tv-shows
+    mountPath: /media/tv
+  - name: plex-movies
+    mountPath: /media/movies
+  - name: plex-music
+    mountPath: /media/music
+  - name: plex-anime
+    mountPath: /media/anime
+  - name: plex-unsorted
+    mountPath: /media/unsorted
+
+service:
+  annotations:
+    io.cilium/lb-ipam-ips: 192.168.40.160
+  type: LoadBalancer

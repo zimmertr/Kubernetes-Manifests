@@ -1,19 +1,35 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: rutorrent
 spec:
-  replicas: 1
-  strategy:
-    type: Recreate
+  persistentVolumeClaimRetentionPolicy:
+    whenDeleted: Retain
+    whenScaled: Retain
   selector:
     matchLabels:
       app: rutorrent
+  serviceName: rutorrent
   template:
     metadata:
       labels:
         app: rutorrent
     spec:
+      # Container attempts to set permission on start and fails for ReadOnly files (CM, Sec)
+      # So use an initContainer to stage them on /data volume before start
+      initContainers:
+        - name: stage-files
+          image: busybox
+          command: ["sh", "-c"]
+          args:
+            - mkdir -p /tmp/data/rtorrent;
+              cp /tmp/rtlocal/.rtlocal.rc /tmp/data/rtorrent/.rtlocal.rc;
+              cp /tmp/rtlocal/.rtlocal.rc /tmp/data/rtorrent/.rtorrent.rc;
+          volumeMounts:
+            - name: rutorrent-data
+              mountPath: /tmp/data
+            - name: rutorrent-rtlocal
+              mountPath: /tmp/rtlocal
       containers:
         - name: rutorrent
           image: crazymax/rtorrent-rutorrent
@@ -43,8 +59,8 @@ spec:
               containerPort: 8081
               protocol: TCP
             - name: "rutor-wd-hc"
-              containerPort: 9001    
-              protocol: TCP      
+              containerPort: 9001
+              protocol: TCP
           volumeMounts:
             - name: rutorrent-data
               mountPath: /data
@@ -57,3 +73,6 @@ spec:
         - name: rutorrent-fileserver
           persistentVolumeClaim:
             claimName: rutorrent-fileserver
+        - name: rutorrent-rtlocal
+          configMap:
+            name: rutorrent-rtlocal

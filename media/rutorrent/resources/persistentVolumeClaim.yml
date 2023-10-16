@@ -4,10 +4,10 @@ metadata:
   name: rutorrent-data
 spec:
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   resources:
     requests:
-      storage: 1Gi
+      storage: 1Ti
   volumeName: rutorrent-data
 ---
 apiVersion: v1
@@ -16,8 +16,8 @@ metadata:
   name: rutorrent-fileserver
 spec:
   accessModes:
-    - ReadWriteMany
+    - ReadWriteOnce
   resources:
     requests:
-      storage: 15Ti
+      storage: 1Ti
   volumeName: rutorrent-fileserver
