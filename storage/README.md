@@ -40,16 +40,24 @@ Website: https://github.com/sergelogvinov/proxmox-csi-plugin/tree/main
 
 3. Create a Kubernetes secret that contains your cluster & API token information using [config.yaml.example](https://github.com/zimmertr/Kubernetes-Manifests/blob/main/storage/proxmox-csi-driver/configs/config.yaml.example) as an example.
    ```bash
+   kubectl create ns csi-proxmox
+   
    kubectl create secret generic -n csi-proxmox proxmox-csi-plugin --from-file=proxmox-csi-driver/configs/config.yaml
    ```
 
 4. Label all of your nodes according to your configuration.
    ```bash
    NODES=$(kubectl get nodes --no-headers=true | awk '{print $1}' | tr '\n' ',')
-   ./proxmox-csi-driver/bin/label_nodes $NODES earth sol-milkyway
+   ZONE="earth"
+   REGION="sol-milkyway"
+   
+   ./proxmox-csi-driver/bin/label_nodes $NODES $ZONE $REGION
    ```
 
-5. Deploy the CSI driver
+5. Modify [storageclass.yml](https://github.com/zimmertr/Kubernetes-Manifests/blob/main/storage/proxmox-csi-driver/resources/storageclass.yml) according to your Proxmox Storage IDs and the documentation [here](https://github.com/sergelogvinov/proxmox-csi-plugin/blob/main/docs/options.md). 
+
+6. Deploy the CSI driver
+
    ```bash
    kubectl kustomize --enable-helm proxmox-csi-driver | kubectl apply -f-
    ```

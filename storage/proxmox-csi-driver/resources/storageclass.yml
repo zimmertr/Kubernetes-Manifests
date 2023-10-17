@@ -28,11 +28,11 @@ metadata:
 parameters:
   blockSize: "128000"
   cache: "writethrough"
-  ssd: true
+  ssd: "true"
   storage: "FlashPool"
-  mountOptions:
-    - noatime
 allowVolumeExpansion: true
+mountOptions:
+  - noatime
 provisioner: csi.proxmox.sinextra.dev
 reclaimPolicy: Retain
 volumeBindingMode: WaitForFirstConsumer
