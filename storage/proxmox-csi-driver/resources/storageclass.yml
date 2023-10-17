@@ -1,10 +1,38 @@
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
-  name: local
+  name: proxmox-local
 parameters:
-  storage: local
+  storage: "local"
 allowVolumeExpansion: true
 provisioner: csi.proxmox.sinextra.dev
-reclaimPolicy: Delete
-volumeBindingMode: Immediate
+reclaimPolicy: Retain
+volumeBindingMode: WaitForFirstConsumer
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: proxmox-datapool
+parameters:
+  blockSize: "128000"
+  storage: "DataPool"
+allowVolumeExpansion: true
+provisioner: csi.proxmox.sinextra.dev
+reclaimPolicy: Retain
+volumeBindingMode: WaitForFirstConsumer
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: proxmox-flashpool
+parameters:
+  blockSize: "128000"
+  cache: "writethrough"
+  ssd: true
+  storage: "FlashPool"
+  mountOptions:
+    - noatime
+allowVolumeExpansion: true
+provisioner: csi.proxmox.sinextra.dev
+reclaimPolicy: Retain
+volumeBindingMode: WaitForFirstConsumer
