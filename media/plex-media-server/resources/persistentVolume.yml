@@ -1,111 +1,131 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-    name: plex-anime
+  name: plex-data
 spec:
-    capacity:
-        storage: 1Ti
-    accessModes:
-        - ReadWriteOnce
-    nfs:
-        path: /mnt/DataPool/Anime
-        server: earth.sol.milkyway
-    storageClassName: nfs-client
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 100Gi
+  csi:
+    driver: csi.proxmox.sinextra.dev
+    fsType: xfs
+    volumeAttributes:
+      cache: writethrough
+      ssd: "true"
+      storage: FlashPool
+      storage.kubernetes.io/csiProvisionerIdentity: 1697594800660-2288-csi.proxmox.sinextra.dev
+    volumeHandle: sol-milkyway/earth/FlashPool/vm-9999-Plex-Data
+  mountOptions:
+    - noatime
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: topology.kubernetes.io/region
+          operator: In
+          values:
+            - sol-milkyway
+        - key: topology.kubernetes.io/zone
+          operator: In
+          values:
+            - earth
+  storageClassName: proxmox-flashpool
 ---
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-    name: plex-audiobooks
+  name: plex-anime
 spec:
-    capacity:
-        storage: 1Ti
-    accessModes:
-        - ReadWriteOnce
-    nfs:
-        path: /mnt/DataPool/Audiobooks
-        server: earth.sol.milkyway
-    storageClassName: nfs-client
+  capacity:
+    storage: 1Ti
+  accessModes:
+    - ReadWriteOnce
+  nfs:
+    path: /mnt/DataPool/Anime
+    server: earth.sol.milkyway
+  storageClassName: nfs-client
 ---
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-    name: plex-cartoons
+  name: plex-audiobooks
 spec:
-    capacity:
-        storage: 1Ti
-    accessModes:
-        - ReadWriteOnce
-    nfs:
-        path: /mnt/DataPool/Cartoons
-        server: earth.sol.milkyway
-    storageClassName: nfs-client
+  capacity:
+    storage: 1Ti
+  accessModes:
+    - ReadWriteOnce
+  nfs:
+    path: /mnt/DataPool/Audiobooks
+    server: earth.sol.milkyway
+  storageClassName: nfs-client
 ---
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-    name: plex-config
+  name: plex-cartoons
 spec:
-    capacity:
-        storage: 1Ti
-    accessModes:
-        - ReadWriteOnce
-    nfs:
-        path: /mnt/DataPool/Kubernetes/Plex/config
-        server: earth.sol.milkyway
-    storageClassName: nfs-client
+  capacity:
+    storage: 1Ti
+  accessModes:
+    - ReadWriteOnce
+  nfs:
+    path: /mnt/DataPool/Cartoons
+    server: earth.sol.milkyway
+  storageClassName: nfs-client
 ---
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-    name: plex-movies
+  name: plex-movies
 spec:
-    capacity:
-        storage: 1Ti
-    accessModes:
-        - ReadWriteOnce
-    nfs:
-        path: /mnt/DataPool/Movies
-        server: earth.sol.milkyway
-    storageClassName: nfs-client
+  capacity:
+    storage: 1Ti
+  accessModes:
+    - ReadWriteOnce
+  nfs:
+    path: /mnt/DataPool/Movies
+    server: earth.sol.milkyway
+  storageClassName: nfs-client
 ---
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-    name: plex-music
+  name: plex-music
 spec:
-    capacity:
-        storage: 1Ti
-    accessModes:
-        - ReadWriteOnce
-    nfs:
-        path: /mnt/DataPool/Music
-        server: earth.sol.milkyway
-    storageClassName: nfs-client
+  capacity:
+    storage: 1Ti
+  accessModes:
+    - ReadWriteOnce
+  nfs:
+    path: /mnt/DataPool/Music
+    server: earth.sol.milkyway
+  storageClassName: nfs-client
 ---
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-    name: plex-tv-shows
+  name: plex-tv-shows
 spec:
-    capacity:
-        storage: 1Ti
-    accessModes:
-        - ReadWriteOnce
-    nfs:
-        path: /mnt/DataPool/TV_Shows
-        server: earth.sol.milkyway
-    storageClassName: nfs-client
+  capacity:
+    storage: 1Ti
+  accessModes:
+    - ReadWriteOnce
+  nfs:
+    path: /mnt/DataPool/TV_Shows
+    server: earth.sol.milkyway
+  storageClassName: nfs-client
 ---
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-    name: plex-unsorted
+  name: plex-unsorted
 spec:
-    capacity:
-        storage: 1Ti
-    accessModes:
-        - ReadWriteOnce
-    nfs:
-        path: /mnt/DataPool/Downloads/Unsorted
-        server: earth.sol.milkyway
-    storageClassName: nfs-client
+  capacity:
+    storage: 1Ti
+  accessModes:
+    - ReadWriteOnce
+  nfs:
+    path: /mnt/DataPool/Downloads/Unsorted
+    server: earth.sol.milkyway
+  storageClassName: nfs-client

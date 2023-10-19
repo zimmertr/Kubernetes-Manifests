@@ -1,20 +1,6 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-    name: rutorrent-data
-spec:
-    capacity:
-        storage: 1Ti
-    accessModes:
-        - ReadWriteOnce
-    nfs:
-        path: /mnt/DataPool/Kubernetes/ruTorrent
-        server: earth.sol.milkyway
-    storageClassName: nfs-client
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
     name: rutorrent-fileserver
 spec:
     capacity:
@@ -25,3 +11,37 @@ spec:
         path: /mnt/DataPool/
         server: earth.sol.milkyway
     storageClassName: nfs-client
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: rutorrent-data
+spec:
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 10Gi
+  csi:
+    driver: csi.proxmox.sinextra.dev
+    fsType: xfs
+    volumeAttributes:
+      cache: writethrough
+      ssd: "true"
+      storage: FlashPool
+      storage.kubernetes.io/csiProvisionerIdentity: 1697594800660-2288-csi.proxmox.sinextra.dev
+    volumeHandle: sol-milkyway/earth/FlashPool/vm-9999-ruTorrent-Data
+  mountOptions:
+    - noatime
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: topology.kubernetes.io/region
+          operator: In
+          values:
+            - sol-milkyway
+        - key: topology.kubernetes.io/zone
+          operator: In
+          values:
+            - earth
+  storageClassName: proxmox-flashpool
