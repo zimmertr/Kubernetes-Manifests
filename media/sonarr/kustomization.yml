@@ -1,0 +1,19 @@
+namespace: sonarr-system
+
+resources:
+  - resources/namespace.yml
+  - resources/persistentVolume.yml
+  - resources/persistentVolumeClaim.yml
+  - resources/service.yml
+  - resources/statefulset.yml
+
+images:
+  - name: linuxserver/sonarr
+    newTag: latest # https://hub.docker.com/r/linuxserver/sonarr/tags
+
+configMapGenerator:
+  - name: sonarr-env-vars
+    literals:
+      - TZ="America/Los_Angeles"
+      - PUID="65534"
+      - PGID="65534"

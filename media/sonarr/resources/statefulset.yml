@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: sonarr
+spec:
+  selector:
+    matchLabels:
+      app: sonarr
+  template:
+    metadata:
+      labels:
+        app: sonarr
+    spec:
+      containers:
+        - name: sonarr
+          image: linuxserver/sonarr
+          envFrom:
+            - configMapRef:
+                name: sonarr-env-vars
+          ports:
+            - name: "http"
+              containerPort: 8989
+              protocol: TCP
+          volumeMounts:
+            - name: sonarr-data
+              mountPath: /config
+            - name: sonarr-downloads
+              mountPath: /data/downloads
+            - name: sonarr-tv
+              mountPath: /data/tv
+      volumes:
+        - name: sonarr-data
+          persistentVolumeClaim:
+            claimName: sonarr-data
+        - name: sonarr-downloads
+          persistentVolumeClaim:
+            claimName: sonarr-downloads
+        - name: sonarr-tv
+          persistentVolumeClaim:
+            claimName: sonarr-tv
