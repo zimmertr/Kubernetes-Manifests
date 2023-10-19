@@ -45,5 +45,5 @@ server:
     enabled: true
   service:
     annotations:
-      io.cilium/lb-ipam-ips: 192.168.40.110
+      io.cilium/lb-ipam-ips: 192.168.40.120
     type: LoadBalancer
