@@ -15,7 +15,7 @@ helmCharts:
     version: 0.1.6
 
 # The Helm Chart doesn't support disabling the dynamic config PersistentVolume.
-# I do want one, but I want to statically reference a NFS Mountpoint instead.
+# I do want one, but I want to statically reference a Mountpoint instead.
 patches:
   - patch: |-
       apiVersion: apps/v1

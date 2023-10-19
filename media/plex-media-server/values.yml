@@ -1,3 +1,15 @@
+affinity:
+  podAntiAffinity:
+    preferredDuringSchedulingIgnoredDuringExecution:
+    - weight: 100
+      podAffinityTerm:
+        labelSelector:
+          matchLabels:
+            app: rutorrent
+        topologyKey: "kubernetes.io/hostname"
+        namespaces:
+          - rutorrent-system
+
 extraEnv:
   ALLOWED_NETWORKS: "192.168.0.0/16"
   PLEX_CLAIM: "claim-1V7JsisSg7P_QDK8ABPL"
