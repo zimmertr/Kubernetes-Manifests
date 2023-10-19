@@ -25,7 +25,7 @@ spec:
             - name: sonarr-data
               mountPath: /config
             - name: sonarr-downloads
-              mountPath: /downloading
+              mountPath: /downloads
       volumes:
         - name: sonarr-data
           persistentVolumeClaim:
