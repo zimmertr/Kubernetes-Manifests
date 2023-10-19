@@ -21,4 +21,5 @@ spec:
   resources:
     requests:
       storage: 1Ti
+  storageClassName: nfs-client
   volumeName: rutorrent-fileserver

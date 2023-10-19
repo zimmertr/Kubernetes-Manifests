@@ -8,6 +8,7 @@ spec:
   resources:
     requests:
       storage: 100Gi
+  storageClassName: proxmox-flashpool
   volumeName: plex-data
 ---
 apiVersion: v1
@@ -20,6 +21,7 @@ spec:
   resources:
     requests:
       storage: 1Ti
+  storageClassName: nfs-client
   volumeName: plex-anime
 ---
 apiVersion: v1
@@ -32,6 +34,7 @@ spec:
   resources:
     requests:
       storage: 1Ti
+  storageClassName: nfs-client
   volumeName: plex-audiobooks
 ---
 apiVersion: v1
@@ -44,6 +47,7 @@ spec:
   resources:
     requests:
       storage: 1Ti
+  storageClassName: nfs-client
   volumeName: plex-cartoons
 ---
 apiVersion: v1
@@ -56,6 +60,7 @@ spec:
   resources:
     requests:
       storage: 1Ti
+  storageClassName: nfs-client
   volumeName: plex-movies
 ---
 apiVersion: v1
@@ -68,6 +73,7 @@ spec:
   resources:
     requests:
       storage: 1Ti
+  storageClassName: nfs-client
   volumeName: plex-music
 ---
 apiVersion: v1
@@ -80,6 +86,7 @@ spec:
   resources:
     requests:
       storage: 1Ti
+  storageClassName: nfs-client
   volumeName: plex-tv-shows
 ---
 apiVersion: v1
@@ -92,4 +99,5 @@ spec:
   resources:
     requests:
       storage: 1Ti
+  storageClassName: nfs-client
   volumeName: plex-unsorted
