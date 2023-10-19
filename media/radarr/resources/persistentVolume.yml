@@ -42,20 +42,6 @@ spec:
   accessModes:
     - ReadWriteOnce
   nfs:
-    path: /mnt/DataPool/Downloads
-    server: earth.sol.milkyway
-  storageClassName: nfs-client
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: radarr-movies
-spec:
-  capacity:
-    storage: 1Ti
-  accessModes:
-    - ReadWriteOnce
-  nfs:
-    path: /mnt/DataPool/Movies
+    path: /mnt/DataPool/Downloads/Downloading
     server: earth.sol.milkyway
   storageClassName: nfs-client

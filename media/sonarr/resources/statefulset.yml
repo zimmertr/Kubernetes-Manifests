@@ -25,7 +25,7 @@ spec:
             - name: sonarr-data
               mountPath: /config
             - name: sonarr-downloads
-              mountPath: /data/downloads
+              mountPath: /downloading
             - name: sonarr-tv
               mountPath: /data/tv
       volumes:
@@ -35,6 +35,3 @@ spec:
         - name: sonarr-downloads
           persistentVolumeClaim:
             claimName: sonarr-downloads
-        - name: sonarr-tv
-          persistentVolumeClaim:
-            claimName: sonarr-tv
