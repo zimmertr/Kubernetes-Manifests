@@ -1,6 +1,18 @@
+affinity:
+  podAntiAffinity:
+    preferredDuringSchedulingIgnoredDuringExecution:
+    - weight: 100
+      podAffinityTerm:
+        labelSelector:
+          matchLabels:
+            app: rutorrent
+        topologyKey: "kubernetes.io/hostname"
+        namespaces:
+          - rutorrent-system
+
 extraEnv:
   ALLOWED_NETWORKS: "192.168.0.0/16"
-  PLEX_CLAIM: "claim-1V7JsisSg7P_QDK8ABPL"
+  PLEX_CLAIM: "claim-PE8x-tt5XWpM8xUwEuox"
   TZ: "America/Los_Angeles"
 
 extraVolumes:
@@ -10,9 +22,9 @@ extraVolumes:
   - name: plex-cartoons
     persistentVolumeClaim:
       claimName: plex-cartoons
-  - name: plex-config
+  - name: plex-data
     persistentVolumeClaim:
-      claimName: plex-config
+      claimName: plex-data
   - name: plex-tv-shows
     persistentVolumeClaim:
       claimName: plex-tv-shows
@@ -30,7 +42,7 @@ extraVolumes:
       claimName: plex-unsorted
 
 extraVolumeMounts:
-  - name: plex-config
+  - name: plex-data
     mountPath: /config
   - name: plex-audiobooks
     mountPath: /media/audiobooks

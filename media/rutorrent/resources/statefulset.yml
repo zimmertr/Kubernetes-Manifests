@@ -15,6 +15,17 @@ spec:
       labels:
         app: rutorrent
     spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchLabels:
+                  app: plex-media-server
+              topologyKey: "kubernetes.io/hostname"
+              namespaces:
+                - plex-media-server-system
       # Container attempts to set permission on start and fails for ReadOnly files (CM, Sec)
       # So use an initContainer to stage them on /data volume before start
       initContainers:
