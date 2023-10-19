@@ -42,6 +42,6 @@ spec:
   accessModes:
     - ReadWriteOnce
   nfs:
-    path: /mnt/DataPool/Downloads/Downloading
+    path: /mnt/DataPool/Downloads/Unsorted
     server: earth.sol.milkyway
   storageClassName: nfs-client
