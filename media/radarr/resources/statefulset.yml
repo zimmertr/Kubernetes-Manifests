@@ -25,9 +25,7 @@ spec:
             - name: radarr-data
               mountPath: /config
             - name: radarr-downloads
-              mountPath: /data/downloads
-            - name: radarr-movies
-              mountPath: /data/movies
+              mountPath: /downloading
       volumes:
         - name: radarr-data
           persistentVolumeClaim:
@@ -35,6 +33,3 @@ spec:
         - name: radarr-downloads
           persistentVolumeClaim:
             claimName: radarr-downloads
-        - name: radarr-movies
-          persistentVolumeClaim:
-            claimName: radarr-movies
