@@ -1,0 +1,43 @@
+alertmanager:
+  alertmanagerSpec:
+    storage:
+      volumeClaimTemplate:
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 10Gi
+          storageClassName: proxmox-flashpool
+          volumeName: alertmanager-data
+  service:
+    annotations:
+      io.cilium/lb-ipam-ips: 192.168.40.112
+    type: LoadBalancer
+
+grafana:
+  adminPassword: prom-operator
+  service:
+    annotations:
+      io.cilium/lb-ipam-ips: 192.168.40.110
+    type: LoadBalancer
+
+kubeProxy:
+  enabled: false
+
+prometheus:
+  prometheusSpec:
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 100Gi
+          storageClassName: proxmox-flashpool
+          volumeName: prometheus-data
+  service:
+    annotations:
+      io.cilium/lb-ipam-ips: 192.168.40.111
+    type: LoadBalancer
