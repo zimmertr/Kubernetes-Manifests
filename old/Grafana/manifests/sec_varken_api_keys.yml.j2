@@ -1,9 +1,0 @@
-apiVersion: v1
-kind: Secret
-metadata:
-    name: grafana-varken-api-keys
-    namespace: "{{ namespace }}"
-data:
-    sonarr_api_key: "{{ varken_sonarr_api_key | b64encode }}"
-    radarr_api_key: "{{ varken_radarr_api_key | b64encode }}"
-    tautulli_api_key: "{{ varken_tautulli_api_key | b64encode }}"
