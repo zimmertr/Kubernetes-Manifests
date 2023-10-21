@@ -3,6 +3,8 @@ resources:
   - resources/persistentVolume.yml
   - resources/persistentVolumeClaim.yml
 
+namespace: prometheus-system
+
 helmCharts:
   - includeCRDs: true
     name: kube-prometheus-stack
