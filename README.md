@@ -9,7 +9,7 @@
 
 ## Summary
 
-A collection of applications meant to be deployed to Kubernetes.
+This repository contains a collection of Kustomize projects and Argo CD resources used to deploy applications to Kubernetes. 
 
 Using Proxmox? Consider using [TKS](https://github.com/zimmertr/TJs-Kubernetes-Service) to deploy your cluster!
 

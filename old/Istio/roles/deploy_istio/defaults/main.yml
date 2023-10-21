@@ -1,4 +1,0 @@
----
-# defaults file for deploy_istio
-
-istio_version: '1.6.5'

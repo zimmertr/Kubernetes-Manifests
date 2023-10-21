@@ -1,5 +1,0 @@
-address-pools:
-- name: default
-  protocol: layer2
-  addresses:
-  - 192.168.50.150-192.168.50.250
