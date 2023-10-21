@@ -56,6 +56,6 @@ spec:
   accessModes:
     - ReadWriteOnce
   nfs:
-    path: /mnt/DataPool/TV_Shows/
+    path: /mnt/DataPool/TV_Shows
     server: earth.sol.milkyway
   storageClassName: nfs-client
