@@ -1,6 +1,7 @@
 resources:
   - resources/namespace.yml
   - resources/persistentVolume.yml
+  - resources/persistentVolumeClaim.yml
 
 helmCharts:
   - includeCRDs: true
