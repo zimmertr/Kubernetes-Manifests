@@ -45,3 +45,17 @@ spec:
     path: /mnt/DataPool/Downloads/Unsorted
     server: earth.sol.milkyway
   storageClassName: nfs-client
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: sonarr-tv
+spec:
+  capacity:
+    storage: 1Ti
+  accessModes:
+    - ReadWriteOnce
+  nfs:
+    path: /mnt/DataPool/TV_Shows/
+    server: earth.sol.milkyway
+  storageClassName: nfs-client
