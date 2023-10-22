@@ -14,3 +14,4 @@ spec:
             parentRefs:
               - kind: Gateway
                 name: personal-website
+                namespace: personal-website-system
