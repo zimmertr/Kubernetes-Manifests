@@ -15,7 +15,7 @@ spec:
     - type: Hostname
       value: nix.sol.milkyway
   listeners:
-    - name: http
+    - name: http-internal
       hostname: nix.sol.milkyway
       protocol: HTTP
       port: 80
