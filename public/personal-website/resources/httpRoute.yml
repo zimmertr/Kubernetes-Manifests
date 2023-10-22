@@ -22,9 +22,15 @@ spec:
   parentRefs:
     - name: personal-website
   rules:
-    - backendRefs:
+    - matches:
+      - path:
+          value: "/"
+      backendRefs:
         - name: personal-website
           port: 80
-    - backendRefs:
+    - matches:
+      - path:
+          value: "/stub_status"
+      backendRefs:
         - name: personal-website
           port: 8080
