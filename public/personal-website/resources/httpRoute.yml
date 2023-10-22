@@ -15,7 +15,7 @@ spec:
 apiVersion: gateway.networking.k8s.io/v1beta1
 kind: HTTPRoute
 metadata:
-  name: personal-website
+  name: personal-website-metrics
 spec:
   hostnames:
     - nix.sol.milkyway
