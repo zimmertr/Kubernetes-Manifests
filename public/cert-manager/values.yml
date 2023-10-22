@@ -2,3 +2,7 @@ installCRDs: true
 
 featureGates:
   ExperimentalGatewayAPISupport=true
+
+global:
+  leaderElection:
+    namespace: cert-manager
