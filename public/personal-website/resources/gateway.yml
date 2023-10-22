@@ -51,8 +51,6 @@ spec:
   ports:
     - name: port-80
       port: 80
-    - name: port-8080
-      port: 8080
     - name: port-443
       port: 443
   type: LoadBalancer
