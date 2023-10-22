@@ -11,3 +11,6 @@ spec:
           requestRedirect:
             scheme: https
             statusCode: 301
+      backendRefs:
+        - name: personal-website
+          port: 80
