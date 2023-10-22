@@ -13,5 +13,5 @@ spec:
           gatewayHTTPRoute:
             parentRefs:
               - kind: Gateway
-                name: personal-website
-                namespace: personal-website-system
+                name: vlan40
+                namespace: gateway-system

@@ -2,7 +2,3 @@ installCRDs: true
 
 featureGates:
   ExperimentalGatewayAPISupport=true
-
-global:
-  leaderElection:
-    namespace: personal-website-system
