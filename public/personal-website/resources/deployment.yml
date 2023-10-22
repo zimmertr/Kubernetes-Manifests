@@ -20,6 +20,7 @@ spec:
           volumeMounts:
             - name: personal-website-conf
               mountPath: /etc/nginx
+              subPath: nginx.conf
             - name: personal-website-files
               mountPath: /usr/share/nginx/html
       volumes:
