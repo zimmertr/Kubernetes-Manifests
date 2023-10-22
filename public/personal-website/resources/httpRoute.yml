@@ -8,13 +8,10 @@ spec:
   rules:
     - matches:
       - path:
-          value: "/"
-      backendRefs:
-        - name: personal-website
-          port: 80
-    - matches:
-      - path:
           value: "/stub_status"
       backendRefs:
         - name: personal-website
           port: 8080
+    - backendRefs:
+        - name: personal-website
+          port: 80
