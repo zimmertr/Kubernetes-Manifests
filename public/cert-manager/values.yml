@@ -1,22 +1,8 @@
 installCRDs: true
 
-extraArgs:
-  - --dns01-recursive-nameservers-only
-  - --dns01-recursive-nameservers=9.9.9.9
-
 featureGates:
   ExperimentalGatewayAPISupport=true
 
 global:
   leaderElection:
     namespace: personal-website-system
-
-ingressShim:
-  defaultIssuerName: letsencrypt
-  defaultIssuerKind: ClusterIssuer
-  defaultIssuerGroup: cert-manager.io
-
-podDnsPolicy: None
-podDnsConfig:
-  nameservers:
-    - 9.9.9.9
