@@ -2,6 +2,7 @@ resources:
   - resources/namespace.yml
   - resources/deployment.yml
   - resources/service.yml
+  - resources/gateway.yml
 
 namespace: personal-website-system
 
