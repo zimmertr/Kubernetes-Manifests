@@ -6,11 +6,6 @@ spec:
   hostnames:
     - tjzimmerman.com
   rules:
-    - filters:
-        - type: RequestRedirect
-          requestRedirect:
-            scheme: https
-            statusCode: 301
-      backendRefs:
+    - backendRefs:
         - name: personal-website
           port: 80
