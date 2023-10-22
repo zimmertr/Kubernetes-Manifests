@@ -11,3 +11,9 @@ ingressShim:
   defaultIssuerName: letsencrypt
   defaultIssuerKind: ClusterIssuer
   defaultIssuerGroup: cert-manager.io
+
+podDnsPolicy: none
+podDnsConfig:
+  nameservers:
+    - 8.8.8.8
+    - 8.8.4.4
