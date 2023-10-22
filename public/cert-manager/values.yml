@@ -12,7 +12,7 @@ ingressShim:
   defaultIssuerKind: ClusterIssuer
   defaultIssuerGroup: cert-manager.io
 
-podDnsPolicy: none
+podDnsPolicy: None
 podDnsConfig:
   nameservers:
     - 8.8.8.8
