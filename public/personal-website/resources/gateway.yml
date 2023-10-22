@@ -12,6 +12,8 @@ spec:
   addresses:
     - type: Hostname
       value: tjzimmerman.com
+    - type: Hostname
+      value: nix.sol.milkyway
   listeners:
     - name: http
       hostname: tjzimmerman.com
