@@ -20,13 +20,13 @@ spec:
       allowedRoutes:
         namespaces:
           from: All
-    - name: metrics
-      hostname: nix.sol.milkyway
-      protocol: HTTP
-      port: 8080
-      allowedRoutes:
-        namespaces:
-          from: All
+    # - name: metrics
+    #   hostname: nix.sol.milkyway
+    #   protocol: HTTP
+    #   port: 8080
+    #   allowedRoutes:
+    #     namespaces:
+    #       from: All
     - name: http
       hostname: tjzimmerman.com
       protocol: HTTP
