@@ -22,6 +22,7 @@ Using Proxmox? Consider using [TKS](https://github.com/zimmertr/TJs-Kubernetes-S
 Assuming you're using TKS and have disabled Flannel, Core is necessary to install a CNI and enable Metrics Server:
 
 ```bash
+kubectl kustomize --enable-helm core/gateway-api | kubectl apply -f-
 kubectl kustomize --enable-helm core/cilium | kubectl apply -f-
 kubectl kustomize --enable-helm core/kubelet-csr-approver | kubectl apply -f-
 kubectl kustomize --enable-helm core/metrics-server | kubectl apply -f-
