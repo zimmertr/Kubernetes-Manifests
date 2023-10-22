@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  name: personal
+  name: public
   namespace: argo-system
   finalizers:
     - resources-finalizer.argocd.argoproj.io
@@ -20,27 +20,27 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: personal
+  name: public
   namespace: argo-system
 spec:
   generators:
     - git:
         repoURL: https://github.com/zimmertr/Kubernetes-Manifests
-        revision: main
+        revision: develop
         directories:
-          - path: "personal/*"
+          - path: "public/*"
   syncPolicy:
     preserveResourcesOnDeletion: false
   template:
     metadata:
       name: "{{ path.basenameNormalized }}"
       labels:
-        app-group: personal
+        app-group: public
     spec:
-      project: personal
+      project: public
       source:
         repoURL: https://github.com/zimmertr/Kubernetes-Manifests
-        targetRevision: main
+        targetRevision: develop
         path: "{{ path }}"
       destination:
         server: https://kubernetes.default.svc

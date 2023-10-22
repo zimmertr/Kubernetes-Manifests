@@ -1,5 +1,6 @@
 resources:
   - resources/namespace.yml
+  - resources/clusterIssuer.yml
 
 namespace: cert-manager-system
 
