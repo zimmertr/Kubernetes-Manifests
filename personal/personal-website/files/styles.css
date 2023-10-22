@@ -1,4 +1,3 @@
-/* styles.css */
 body {
   margin: 0;
   padding: 0;
@@ -24,6 +23,19 @@ body {
   font-size: 40px;
   color: #333;
   margin: 10px 0;
+}
+
+.colored-name {
+  display: flex;
+  align-items: center;
+}
+
+.colored-name span {
+  transition: color 0.2s;
+}
+
+.colored-name:hover span {
+  color: var(--color);
 }
 
 .separator-line {
@@ -85,18 +97,4 @@ body {
   .copyright {
     font-size: 10px;
   }
-}
-
-/* Add this CSS to your existing styles.css file */
-.colored-name {
-  display: flex;
-  align-items: center;
-}
-
-.colored-name span {
-  transition: color 0.2s;
-}
-
-.colored-name:hover span {
-  color: var(--color);
 }
