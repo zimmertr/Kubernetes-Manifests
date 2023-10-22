@@ -27,7 +27,9 @@ spec:
       tls:
         mode: Terminate
         certificateRefs:
-          - name: tjzimmerman-com
+          - kind: Secret
+            group: ""
+            name: tjzimmerman-com
             namespace: personal-website-system
 ---
 apiVersion: v1
