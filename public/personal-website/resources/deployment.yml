@@ -19,9 +19,6 @@ spec:
             - name: http
               containerPort: 80
               protocol: TCP
-            - name: metrics
-              containerPort: 8080
-              protocol: TCP
           volumeMounts:
             - name: personal-website-conf
               mountPath: /etc/nginx/nginx.conf
