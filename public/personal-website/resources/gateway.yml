@@ -12,13 +12,6 @@ spec:
     - type: Hostname
       value: tjzimmerman.com
   listeners:
-  - name: http
-    hostname: "tjzimmerman.com"
-    port: 80
-    protocol: HTTP
-    allowedRoutes:
-      namespaces:
-         from: All
   - hostname: "tjzimmerman.com"
     name: https
     protocol: HTTPS
