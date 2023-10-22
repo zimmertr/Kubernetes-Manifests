@@ -7,7 +7,7 @@ metadata:
     cert-manager.io/cluster-issuer: letsencrypt
     kubernetes.io/tls-acme: "true"
     acme.cert-manager.io/http01-edit-in-place: "true"
-    acme.cert-manager.io/http01-ingress-class: personal-website
+    acme.cert-manager.io/http01-ingress-class: cilium
 spec:
   gatewayClassName: cilium
   addresses:
