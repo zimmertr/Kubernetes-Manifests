@@ -28,6 +28,7 @@ spec:
         mode: Terminate
         certificateRefs:
           - name: tjzimmerman-com
+            namespace: personal-website-system
 ---
 apiVersion: v1
 kind: Service
