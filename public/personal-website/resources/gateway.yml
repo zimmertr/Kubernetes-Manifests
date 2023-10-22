@@ -1,0 +1,38 @@
+# spec.addresses seems to be ignored for me. So instead I manually associate a LoadBalancer service
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: Gateway
+metadata:
+  name: nix
+  annotations:
+    cert-manager.io/issuer: letsencrypt
+    kubernetes.io/tls-acme: "true"
+spec:
+  gatewayClassName: cilium
+  addresses:
+    - type: Hostname
+      value: tjzimmerman.com
+  listeners:
+    - name: https
+      protocol: HTTPS
+      port: 443
+      allowedRoutes:
+        namespaces:
+          from: All
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: tjzimmerman-com
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cilium-gateway-nix
+  annotations:
+    io.cilium/lb-ipam-ips: 192.168.40.150
+spec:
+  ports:
+    - name: port-80
+      port: 80
+    - name: port-443
+      port: 443
+  type: LoadBalancer

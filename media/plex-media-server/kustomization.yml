@@ -8,7 +8,7 @@ namespace: plex-media-server-system
 helmCharts:
   - includeCRDs: true
     name: plex-media-server
-    namespace: plex-system
+    namespace: plex-media-server-system
     releaseName: plex-media-server
     repo: https://raw.githubusercontent.com/plexinc/pms-docker/gh-pages
     valuesFile: values.yml

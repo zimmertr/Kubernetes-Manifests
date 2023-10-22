@@ -1,4 +1,4 @@
-# Personal
+# Public
 
 * [Summary](#summary)
 * [Instructions](#instructions)
@@ -8,11 +8,22 @@
 
 ## Summary
 
-Personal is a collection of my personal applications.
+Public is a collection of my public-facing applications.
 
 <hr>
 
 ## Instructions
+
+### CertManager
+
+[Cert Manager](https://cert-manager.io/) is a tool used to request and manage X509 certificates.
+
+1. Modify the Kustomize project as per your needs.
+
+3. Deploy to Kubernetes:
+   ```bash
+   kubectl kustomize --enable-helm certificate-manager | kubectl apply -f-
+   ```
 
 ### Personal Website
 
