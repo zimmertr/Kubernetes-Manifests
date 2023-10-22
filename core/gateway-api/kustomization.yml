@@ -1,0 +1,5 @@
+resources:
+  # https://docs.cilium.io/en/latest/network/servicemesh/gateway-api/gateway-api/#prerequisites
+  - https://github.com/kubernetes-sigs/gateway-api/releases/download/v0.8.1/experimental-install.yaml
+  - resources/gatewayClass.yml # https://github.com/cilium/cilium/issues/27398
+  - resources/gateway.yml
