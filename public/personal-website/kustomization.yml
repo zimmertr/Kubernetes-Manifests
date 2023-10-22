@@ -8,7 +8,7 @@ resources:
 namespace: personal-website
 
 configMapGenerator:
-  - name: personal-website-config
+  - name: personal-website-conf
     files:
       - files/nginx.conf
   - name: personal-website-files
