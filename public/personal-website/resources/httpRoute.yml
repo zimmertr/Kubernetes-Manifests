@@ -3,8 +3,10 @@ kind: HTTPRoute
 metadata:
   name: nix
 spec:
+  parentRefs:
+    - name: personal-website
   hostnames:
-    - tjzimmerman.com
+    - '*'
   rules:
     - backendRefs:
         - name: personal-website
