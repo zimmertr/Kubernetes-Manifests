@@ -26,9 +26,9 @@ spec:
       tls:
         mode: Terminate
         certificateRefs:
-          - kind: Secret
-            group: ""
-            name: tjzimmerman-com
+        - kind: Secret
+          group: ""
+          name: tjzimmerman-com
       allowedRoutes:
         namespaces:
           from: All
