@@ -3,5 +3,6 @@ installCRDs: true
 featureGates:
   ExperimentalGatewayAPISupport=true
 
-rbac:
-  create: true
+global:
+  rbac:
+    create: true
