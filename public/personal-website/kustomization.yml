@@ -2,8 +2,10 @@ resources:
   - resources/namespace.yml
   - resources/deployment.yml
   - resources/service.yml
+  - resources/gateway.yml
+  - resources/httpRoute.yml
 
-namespace: personal-website-system
+namespace: personal-website
 
 configMapGenerator:
   - name: personal-website-files

@@ -1,0 +1,31 @@
+cainjector:
+  podDisruptionBudget:
+    enabled: true
+    minAvailable: 1
+  replicaCount: 2
+
+featureGates:
+  ExperimentalGatewayAPISupport=true
+
+global:
+  leaderElection:
+    namespace: cert-manager
+
+installCRDs: true
+
+podDisruptionBudget:
+  enabled: true
+  minAvailable: 1
+
+prometheus:
+  enabled: true
+  servicemonitor:
+    enabled: true
+
+replicaCount: 2
+
+webhook:
+  podDisruptionBudget:
+    enabled: true
+    minAvailable: 1
+  replicaCount: 3
