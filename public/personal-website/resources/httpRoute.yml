@@ -3,9 +3,28 @@ kind: HTTPRoute
 metadata:
   name: personal-website
 spec:
+  hostnames:
+    - tjzimmerman.com
   parentRefs:
     - name: personal-website
   rules:
     - backendRefs:
         - name: personal-website
           port: 80
+---
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: HTTPRoute
+metadata:
+  name: personal-website
+spec:
+  hostnames:
+    - nix.sol.milkyway
+  parentRefs:
+    - name: personal-website
+  rules:
+    - backendRefs:
+        - name: personal-website
+          port: 80
+    - backendRefs:
+        - name: personal-website
+          port: 8080
