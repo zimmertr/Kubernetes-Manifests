@@ -6,6 +6,12 @@ spec:
   parentRefs:
     - name: personal-website
   rules:
+    - matches:
+      - path:
+          value: "/stub_status"
+      - backendRefs:
+          - name: personal-website
+            port: 8080
     - backendRefs:
         - name: personal-website
           port: 80
