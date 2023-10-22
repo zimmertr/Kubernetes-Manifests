@@ -16,22 +16,13 @@ spec:
     - type: Hostname
       value: nix.sol.milkyway
   listeners:
-    - name: http-internal
-      hostname: nix.sol.milkyway
-      protocol: HTTP
-      port: 80
-      allowedRoutes:
-        namespaces:
-          from: All
     - name: http
-      hostname: tjzimmerman.com
       protocol: HTTP
       port: 80
       allowedRoutes:
         namespaces:
           from: All
     - name: https
-      hostname: tjzimmerman.com
       protocol: HTTPS
       port: 443
       tls:
