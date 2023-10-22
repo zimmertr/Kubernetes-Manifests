@@ -1,0 +1,100 @@
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #f0f0f0;
+  overflow: hidden;
+  font-family: serif;
+}
+
+.centered-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+  padding: 20px;
+  box-sizing: border-box;
+  position: relative;
+  top: 20%;
+}
+
+.centered-content p {
+  text-align: center;
+  font-size: 40px;
+  color: #333;
+  margin: 10px 0;
+}
+
+.colored-name {
+  display: flex;
+  align-items: center;
+}
+
+.colored-name span {
+  transition: color 0.2s;
+}
+
+.colored-name:hover span {
+  color: var(--color);
+}
+
+.separator-line {
+  height: 2px;
+  width: 220px;
+  background-color: #000;
+  margin-bottom: 10px;
+}
+
+.social-links {
+  text-align: center;
+  font-size: 20px;
+  padding: 0px;
+  word-spacing: 2px;
+}
+
+.social-links a i {
+  color: #777;
+  transition: color 0.2s;
+}
+.social-links a i:hover {
+  color: #1DA1F2;
+}
+.social-links a:hover i.fa-linkedin {
+  color: #2867B2;
+}
+.social-links a:hover i.fa-github {
+  color: #333;
+}
+.social-links a:hover i.fa-stack-exchange {
+  color: #1E5397;
+}
+.social-links a:hover i.fa-strava {
+  color: #FC4C02;
+}
+.social-links a:hover i.fa-flickr {
+  color: #0063DC;
+}
+
+.copyright {
+  font-size: 14px;
+  color: #999;
+  text-align: center;
+  position: absolute;
+  bottom: 5px;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .centered-content p {
+    font-size: 24px;
+  }
+  .separator-line {
+    width: 140px;
+  }
+  .social-links {
+    font-size: 18px;
+  }
+  .copyright {
+    font-size: 10px;
+  }
+}

@@ -1,0 +1,12 @@
+resources:
+  - resources/namespace.yml
+  - resources/deployment.yml
+  - resources/service.yml
+
+namespace: personal-website-system
+
+configMapGenerator:
+  - name: personal-website-files
+    files:
+      - files/index.html
+      - files/styles.css
