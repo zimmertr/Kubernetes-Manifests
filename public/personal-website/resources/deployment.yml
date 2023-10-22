@@ -19,7 +19,7 @@ spec:
             - containerPort: 80
           volumeMounts:
             - name: personal-website-conf
-              mountPath: /etc/nginx
+              mountPath: /etc/nginx/nginx.conf
               subPath: nginx.conf
             - name: personal-website-files
               mountPath: /usr/share/nginx/html
