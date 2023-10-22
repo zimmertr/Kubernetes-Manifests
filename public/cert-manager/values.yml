@@ -2,7 +2,7 @@ installCRDs: true
 
 extraArgs:
   - --dns01-recursive-nameservers-only
-  - --dns01-recursive-nameservers=9.9.9.9:443
+  - --dns01-recursive-nameservers=9.9.9.9
 
 featureGates:
   ExperimentalGatewayAPISupport=true
