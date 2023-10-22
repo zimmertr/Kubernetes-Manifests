@@ -5,7 +5,24 @@ metadata:
 spec:
   parentRefs:
     - name: personal-website
+      port: 80
   rules:
     - backendRefs:
         - name: personal-website
           port: 80
+---
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: HTTPRoute
+metadata:
+  name: personal-website-metrics
+spec:
+  parentRefs:
+    - name: personal-website
+      port: 8080
+  rules:
+    - matches:
+      - path:
+          value: "/stub_status"
+      backendRefs:
+        - name: personal-website
+          port: 8080
