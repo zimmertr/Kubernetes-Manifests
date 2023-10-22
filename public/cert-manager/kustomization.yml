@@ -1,13 +1,13 @@
 resources:
-  - resources/namespace.yml
+  # - resources/namespace.yml
   - resources/clusterIssuer.yml
 
-namespace: cert-manager-system
+namespace: personal-website-system
 
 helmCharts:
   - includeCRDs: true
     name: cert-manager
-    namespace: cert-manager-system
+    namespace: personal-website-system
     releaseName: cert-manager
     repo: https://charts.jetstack.io
     valuesFile: values.yml
