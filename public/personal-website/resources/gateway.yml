@@ -22,6 +22,19 @@ spec:
       allowedRoutes:
         namespaces:
           from: All
+    - name: https-internal
+      hostname: nix.sol.milkyway
+      protocol: HTTPS
+      port: 443
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            group: ""
+            name: tjzimmerman-com
+      allowedRoutes:
+        namespaces:
+          from: All
     - name: http
       hostname: tjzimmerman.com
       protocol: HTTP
