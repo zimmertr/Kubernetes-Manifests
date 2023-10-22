@@ -12,6 +12,6 @@ spec:
       - http01:
           gatewayHTTPRoute:
             parentRefs:
-            - kind: Gateway
-              name: personal-website
-              namespace: gateway-system
+              - kind: Gateway
+                name: personal-website
+                namespace: personal-website-system
