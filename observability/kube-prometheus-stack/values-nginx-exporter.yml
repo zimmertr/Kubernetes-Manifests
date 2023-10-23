@@ -3,9 +3,9 @@ grafana:
     dashboardproviders.yaml:
       apiVersion: 1
       providers:
-        - name: 'default'
+        - name: 'NGINX'
           orgId: 1
-          folder: 'default'
+          folder: 'NGINX'
           type: file
           disableDeletion: true
           editable: true
@@ -16,7 +16,6 @@ grafana:
       NGINX:
         gnetId: 11199
         datasource: Prometheus
-
 
 prometheus:
   prometheusSpec:
