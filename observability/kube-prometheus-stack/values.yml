@@ -34,6 +34,11 @@ kubeProxy:
   enabled: false
 
 prometheus:
+  additionalScrapeConfigs:
+    - job_name: nginx-exporter
+      # scrape_interval: 1s
+      scrape_timeout: 5s
+      metrics_path: http://styx.sol.milkyway:9113/metrics
   prometheusSpec:
     storageSpec:
       volumeClaimTemplate:

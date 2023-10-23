@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-exporter
+  annotations:
+    io.cilium/lb-ipam-ips: 192.168.40.113
+spec:
+  selector:
+    app: nginx-exporter
+  ports:
+    - name: http
+      protocol: TCP
+      port: 9113
+      targetPort: 9113
+  type: LoadBalancer
