@@ -27,3 +27,17 @@ Observability is a collection of monitoring applications.
    kubectl kustomize --enable-helm kube-prometheus-stack | kubectl apply -f-
    ```
 
+<hr>
+
+### NGINX Prometheus Exporter
+
+[NGINX Prometheus Exporter](https://github.com/nginxinc/nginx-prometheus-exporter) is a Prometheus exporter used to collect metrics from a NGINX webserver.
+
+1. Configure NGINX to enable the `stub_status` endpoint.
+
+2. Modify the Kustomize project as per your needs.
+
+3. Deploy to Kubernetes:
+   ```bash
+   kubectl kustomize --enable-helm kube-prometheus-stack | kubectl apply -f-
+   ```
