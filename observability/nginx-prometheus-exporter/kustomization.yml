@@ -1,0 +1,15 @@
+resources:
+  - resources/namespace.yml
+  - resources/deployment.yml
+  - resources/service.yml
+
+namespace: nginx-exporter
+
+images:
+  - name: nginx/nginx-prometheus-exporter
+    newTag: 0.10.0 # https://github.com/nginxinc/nginx-prometheus-exporter/releases
+
+configMapGenerator:
+  - name: nginx-exporter-env-vars
+    literals:
+      - NGINX_ENDPOINT="http://nix.sol.milkyway:8080/stub_status"

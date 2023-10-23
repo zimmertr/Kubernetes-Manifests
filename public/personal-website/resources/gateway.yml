@@ -1,4 +1,3 @@
-# spec.addresses seems to be ignored for me. So instead I manually associate a LoadBalancer service
 apiVersion: gateway.networking.k8s.io/v1beta1
 kind: Gateway
 metadata:
@@ -17,6 +16,13 @@ spec:
       hostname: nix.sol.milkyway
       protocol: HTTP
       port: 80
+      allowedRoutes:
+        namespaces:
+          from: All
+    - name: metrics
+      hostname: nix.sol.milkyway
+      protocol: HTTP
+      port: 8080
       allowedRoutes:
         namespaces:
           from: All
@@ -50,6 +56,8 @@ metadata:
 spec:
   ports:
     - name: port-80
+      port: 80
+    - name: port-8080
       port: 80
     - name: port-443
       port: 443

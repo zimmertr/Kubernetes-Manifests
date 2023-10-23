@@ -1,14 +1,16 @@
 apiVersion: v1
 kind: Service
 metadata:
-  annotations:
-    # io.cilium/lb-ipam-ips: 192.168.40.150
   name: personal-website
 spec:
   selector:
     app: personal-website
   ports:
-    - protocol: TCP
+    - name: http
+      protocol: TCP
       port: 80
       targetPort: 80
-  # type: LoadBalancer
+    - name: metrics
+      protocol: TCP
+      port: 8080
+      targetPort: 8080

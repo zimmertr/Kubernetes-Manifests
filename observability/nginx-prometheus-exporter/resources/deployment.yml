@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-exporter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx-exporter
+  template:
+    metadata:
+      labels:
+        app: nginx-exporter
+    spec:
+      containers:
+        - name: nginx-exporter
+          image: nginx/nginx-prometheus-exporter
+          command: ["nginx-prometheus-exporter"]
+          args: ["-nginx.scrape-uri=$(NGINX_ENDPOINT)"]
+          envFrom:
+            - configMapRef:
+                name: nginx-exporter-env-vars
+          ports:
+            - name: http
+              containerPort: 9443
+              protocol: TCP
