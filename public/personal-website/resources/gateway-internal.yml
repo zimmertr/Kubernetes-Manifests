@@ -1,0 +1,29 @@
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: Gateway
+metadata:
+  name: personal-website-internal
+spec:
+  gatewayClassName: cilium
+  addresses:
+    - type: Hostname
+      value: nix.sol.milkyway
+  listeners:
+    - name: metrics
+      hostname: nix.sol.milkyway
+      protocol: HTTP
+      port: 8080
+      allowedRoutes:
+        namespaces:
+          from: All
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: cilium-gateway-personal-website-internal
+  annotations:
+    io.cilium/lb-ipam-ips: 192.168.40.150
+spec:
+  ports:
+    - name: port-8080
+      port: 80
+  type: LoadBalancer

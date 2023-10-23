@@ -1,10 +1,8 @@
-# spec.addresses seems to be ignored for me. So instead I manually associate a LoadBalancer service
 apiVersion: gateway.networking.k8s.io/v1beta1
 kind: Gateway
 metadata:
   name: personal-website
   annotations:
-    io.cilium/lb-ipam-ips: 192.168.40.150
     cert-manager.io/cluster-issuer: letsencrypt
 spec:
   gatewayClassName: cilium
@@ -18,13 +16,6 @@ spec:
       hostname: nix.sol.milkyway
       protocol: HTTP
       port: 80
-      allowedRoutes:
-        namespaces:
-          from: All
-    - name: metrics
-      hostname: nix.sol.milkyway
-      protocol: HTTP
-      port: 8080
       allowedRoutes:
         namespaces:
           from: All
@@ -49,18 +40,16 @@ spec:
         namespaces:
           from: All
 ---
-# apiVersion: v1
-# kind: Service
-# metadata:
-#   name: cilium-gateway-personal-website
-#   annotations:
-#     io.cilium/lb-ipam-ips: 192.168.40.150
-# spec:
-#   ports:
-#     - name: port-80
-#       port: 80
-#     - name: port-8080
-#       port: 80
-#     - name: port-443
-#       port: 443
-#   type: LoadBalancer
+apiVersion: v1
+kind: Service
+metadata:
+  name: cilium-gateway-personal-website
+  annotations:
+    io.cilium/lb-ipam-ips: 192.168.40.150
+spec:
+  ports:
+    - name: port-80
+      port: 80
+    - name: port-443
+      port: 443
+  type: LoadBalancer
