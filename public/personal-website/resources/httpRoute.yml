@@ -31,6 +31,7 @@ spec:
     - matches:
       - path:
           value: "/stub_status"
+        port: 8080
       backendRefs:
         - name: personal-website
           port: 8080
