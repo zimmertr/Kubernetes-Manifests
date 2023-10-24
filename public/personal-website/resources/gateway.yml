@@ -10,6 +10,8 @@ spec:
     - type: Hostname
       value: tjzimmerman.com
     - type: Hostname
+      value: www.tjzimmerman.com
+    - type: Hostname
       value: nix.sol.milkyway
   listeners:
     - name: http-internal
@@ -18,21 +20,21 @@ spec:
       port: 80
       allowedRoutes:
         namespaces:
-          from: All
+          from: Same
     - name: metrics
       hostname: nix.sol.milkyway
       protocol: HTTP
       port: 8080
       allowedRoutes:
         namespaces:
-          from: All
+          from: Same
     - name: http
       hostname: tjzimmerman.com
       protocol: HTTP
       port: 80
       allowedRoutes:
         namespaces:
-          from: All
+          from: Same
     - name: https
       hostname: tjzimmerman.com
       protocol: HTTPS
@@ -45,7 +47,27 @@ spec:
             name: tjzimmerman-com
       allowedRoutes:
         namespaces:
-          from: All
+          from: Same
+    - name: http-web
+      hostname: www.tjzimmerman.com
+      protocol: HTTP
+      port: 80
+      allowedRoutes:
+        namespaces:
+          from: Same
+    - name: https-web
+      hostname: www.tjzimmerman.com
+      protocol: HTTPS
+      port: 443
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            group: ""
+            name: tjzimmerman-com
+      allowedRoutes:
+        namespaces:
+          from: Same
 ---
 apiVersion: v1
 kind: Service
