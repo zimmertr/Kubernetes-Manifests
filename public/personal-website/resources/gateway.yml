@@ -48,14 +48,14 @@ spec:
       allowedRoutes:
         namespaces:
           from: Same
-    - name: http
+    - name: http-web
       hostname: www.tjzimmerman.com
       protocol: HTTP
       port: 80
       allowedRoutes:
         namespaces:
           from: Same
-    - name: https
+    - name: https-web
       hostname: www.tjzimmerman.com
       protocol: HTTPS
       port: 443
