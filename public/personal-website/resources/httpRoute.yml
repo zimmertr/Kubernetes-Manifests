@@ -5,6 +5,7 @@ metadata:
 spec:
   hostnames:
     - tjzimmerman.com
+    - www.tjzimmerman.com
     - nix.sol.milkyway
   parentRefs:
     - name: personal-website
