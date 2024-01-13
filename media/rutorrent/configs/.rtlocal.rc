@@ -1,12 +1,12 @@
 # Directories
 directory.default.set = /datapool/Downloads/Downloading
 method.insert = d.basedir, private|const|string, (cat,"/data/rtorrent/")
-method.insert = d.download, private|const|string, (cat,"/datapool/Downloads/Downloading")
-method.insert = d.download_complete, private|const|string, (cat,"/datapool/Downloads/Unsorted")
+method.insert = d.download, private|const|string, (cat,"/datapool/Downloads/Downloading/")
+method.insert = d.download_complete, private|const|string, (cat,"/datapool/Downloads/Unsorted/")
 method.insert = d.download_temp, private|const|string, (cat,(cfg.download))
 method.insert = d.logs, private|const|string, (cat,(cfg.basedir),"log/")
 method.insert = d.session, private|const|string, (cat,(cfg.basedir),".session/")
-method.insert = d.watch, private|const|string, (cat,"/datapool/Downloads/Pickup")
+method.insert = d.watch, private|const|string, (cat,"/datapool/Downloads/Pickup/")
 method.insert = d.rundir, private|const|string, (cat,"/var/run/rtorrent/")
 
 
