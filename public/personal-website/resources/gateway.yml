@@ -69,18 +69,18 @@ spec:
         namespaces:
           from: Same
 ---
-# apiVersion: v1
-# kind: Service
-# metadata:
-#   name: cilium-gateway-personal-website
-#   annotations:
-#     io.cilium/lb-ipam-ips: 192.168.40.150
-# spec:
-#   ports:
-#     - name: port-80
-#       port: 80
-#     - name: port-8080
-#       port: 80
-#     - name: port-443
-#       port: 443
-#   type: LoadBalancer
+apiVersion: v1
+kind: Service
+metadata:
+  name: cilium-gateway-personal-website
+  annotations:
+    io.cilium/lb-ipam-ips: 192.168.40.150
+spec:
+  ports:
+    - name: port-80
+      port: 80
+    - name: port-8080
+      port: 80
+    - name: port-443
+      port: 443
+  type: LoadBalancer
