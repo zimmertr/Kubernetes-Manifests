@@ -3,8 +3,10 @@ resources:
   - resources/analysisTemplate.yml
   - resources/rollout.yml
   - resources/service.yml
-  - resources/gateway.yml
-  - resources/httpRoute.yml
+  - resources/istio/gateway.yml
+  - resources/istio/virtualService.yml
+  # - resources/cilium/gateway.yml
+  # - resources/cilium/httpRoute.yml
 
 namespace: personal-website
 

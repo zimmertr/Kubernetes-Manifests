@@ -26,7 +26,7 @@ spec:
   generators:
     - git:
         repoURL: https://github.com/zimmertr/Kubernetes-Manifests
-        revision: main
+        revision: develop
         directories:
           - path: "istio/*"
   syncPolicy:
@@ -40,7 +40,7 @@ spec:
       project: istio
       source:
         repoURL: https://github.com/zimmertr/Kubernetes-Manifests
-        targetRevision: main
+        targetRevision: develop
         path: "{{ path }}"
       destination:
         server: https://kubernetes.default.svc
@@ -50,3 +50,10 @@ spec:
           selfHeal: true
         syncOptions:
           - CreateNamespace=true
+      ignoreDifferences:
+        # https://github.com/argoproj/argo-cd/issues/9323
+        - group: admissionregistration.k8s.io
+          kind: ValidatingWebhookConfiguration
+          name: istiod-default-validator
+          jsonPointers:
+            - /webhooks/0/failurePolicy
