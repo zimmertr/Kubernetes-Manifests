@@ -3,6 +3,8 @@ kind: AppProject
 metadata:
   name: public
   namespace: argo-system
+  annotations:
+    notifications.argoproj.io/subscribe.on-sync-succeeded.slack: service.email.gmail
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
