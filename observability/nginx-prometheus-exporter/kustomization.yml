@@ -7,7 +7,7 @@ namespace: nginx-exporter
 
 images:
   - name: nginx/nginx-prometheus-exporter
-    newTag: 0.11.0 # https://github.com/nginxinc/nginx-prometheus-exporter/releases
+    newTag: 1.1.0 # https://github.com/nginxinc/nginx-prometheus-exporter/releases
 
 configMapGenerator:
   - name: nginx-exporter-env-vars
