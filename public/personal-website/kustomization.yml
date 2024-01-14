@@ -1,6 +1,6 @@
 resources:
   - resources/namespace.yml
-  - resources/deployment.yml
+  - resources/rollout.yml
   - resources/service.yml
   - resources/gateway.yml
   - resources/httpRoute.yml
@@ -15,3 +15,6 @@ configMapGenerator:
     files:
       - files/index.html
       - files/styles.css
+
+generatorOptions:
+ disableNameSuffixHash: true
