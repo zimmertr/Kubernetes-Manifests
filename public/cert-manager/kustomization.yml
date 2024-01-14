@@ -11,5 +11,5 @@ helmCharts:
     releaseName: cert-manager
     repo: https://charts.jetstack.io
     valuesFile: values.yml
-    version: v1.13.1 # https://artifacthub.io/packages/helm/cert-manager/cert-manager
+    version: v1.13.3 # https://artifacthub.io/packages/helm/cert-manager/cert-manager
 
