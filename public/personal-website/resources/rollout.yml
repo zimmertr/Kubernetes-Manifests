@@ -19,6 +19,7 @@ spec:
             analyses:
               - name: test-connection
                 templateName: test-connection
+                requiredForCompletion: true
                 args:
                   - name: endpoint
                     value: "http://nix.sol.milkyway/"
