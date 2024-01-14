@@ -9,6 +9,7 @@ spec:
       app: personal-website
   strategy:
     canary:
+      maxUnavailable: 1
   template:
     metadata:
       labels:
