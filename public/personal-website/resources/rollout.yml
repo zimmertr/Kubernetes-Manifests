@@ -10,6 +10,18 @@ spec:
   strategy:
     canary:
       maxUnavailable: 1
+      steps:
+        - experiment:
+            templates:
+              - name: canary
+                specRef: canary
+                weight: 100
+            analysis:
+              - name: test-connection
+                templateName: test-connection
+                args:
+                  - name: endpoint
+                    value: "http://nix.sol.milkyway/"
   template:
     metadata:
       labels:
