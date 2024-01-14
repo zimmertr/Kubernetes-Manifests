@@ -33,6 +33,9 @@ kubeProxyReplacement: true
 # https://docs.cilium.io/en/latest/network/l2-announcements/
 l2announcements:
   enabled: true
+  leaseDuration: 300s
+  leaseRenewDeadline: 60s
+  leaseRetryPeriod: 10s
 
 securityContext:
   capabilities:
