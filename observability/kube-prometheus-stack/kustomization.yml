@@ -12,6 +12,6 @@ helmCharts:
     releaseName: prometheus
     repo: https://prometheus-community.github.io/helm-charts
     valuesFile: values.yml
-    version: 51.9.4 # https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
+    version: 51.10.0 # https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
     additionalValuesFiles:
       - values-nginx-exporter.yml
