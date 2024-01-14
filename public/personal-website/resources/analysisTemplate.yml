@@ -1,0 +1,13 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AnalysisTemplate
+metadata:
+  name: test-connection
+spec:
+  args:
+    - name: endpoint
+  metrics:
+    - name: test-connection
+      successCondition: result == 'true'
+      provider:
+        web:
+          url: "{{ args.endpoint }}"
