@@ -16,7 +16,7 @@ spec:
             templates:
               - name: canary
                 specRef: canary
-            analysis:
+            analyses:
               - name: test-connection
                 templateName: test-connection
                 args:
