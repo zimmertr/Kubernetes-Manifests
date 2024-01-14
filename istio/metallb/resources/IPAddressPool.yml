@@ -5,8 +5,7 @@ metadata:
   namespace: metallb-system
 spec:
   addresses:
-    - 192.168.40.2-192.168.40.99
-    - 192.168.40.200-192.168.40.250
+    - 192.168.40.2-192.168.40.250
 ---
 apiVersion: metallb.io/v1beta1
 kind: IPAddressPool
@@ -15,7 +14,7 @@ metadata:
   namespace: metallb-system
 spec:
   addresses:
-    - 192.168.50.2-192.168.50.199
+    - 192.168.50.2-192.168.50.250
 ---
 apiVersion: metallb.io/v1beta1
 kind: IPAddressPool
@@ -24,5 +23,5 @@ metadata:
   namespace: metallb-system
 spec:
   addresses:
-    - 192.168.60.2-192.168.60.199
+    - 192.168.60.2-192.168.60.250
   autoAssign: false

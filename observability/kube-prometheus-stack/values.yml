@@ -48,4 +48,5 @@ prometheus:
   service:
     annotations:
       io.cilium/lb-ipam-ips: 192.168.40.111
+      metallb.universe.tf/loadBalancerIPs: 192.168.40.111
     type: LoadBalancer

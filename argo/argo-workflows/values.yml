@@ -9,3 +9,4 @@ server:
   serviceType: LoadBalancer
   serviceAnnotations:
     io.cilium/lb-ipam-ips: 192.168.40.122
+    metallb.universe.tf/loadBalancerIPs: 192.168.40.122

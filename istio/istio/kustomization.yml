@@ -5,19 +5,19 @@ resources:
 helmCharts:
   - name: base
     repo: https://istio-release.storage.googleapis.com/charts
-    version: 1.19.0 # https://artifacthub.io/packages/helm/istio-official/base
+    version: 1.20.2 # https://artifacthub.io/packages/helm/istio-official/base
     releaseName: istio-base
     namespace: istio-system
     includeCRDs: true
   - name: cni
     repo: https://istio-release.storage.googleapis.com/charts
-    version: 1.19.0 # https://artifacthub.io/packages/helm/istio-official/cni
+    version: 1.20.2 # https://artifacthub.io/packages/helm/istio-official/cni
     releaseName: istio-cni
     namespace: istio-system
     includeCRDs: true
   - name: istiod
     repo: https://istio-release.storage.googleapis.com/charts
-    version: 1.19.0 # https://artifacthub.io/packages/helm/istio-official/istiod
+    version: 1.20.2 # https://artifacthub.io/packages/helm/istio-official/istiod
     releaseName: istiod
     namespace: istio-system
     valuesFile: values-discovery.yml

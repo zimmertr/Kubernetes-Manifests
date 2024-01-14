@@ -4,6 +4,7 @@ metadata:
   name: radarr
   annotations:
     io.cilium/lb-ipam-ips: 192.168.40.133
+    metallb.universe.tf/loadBalancerIPs: 192.168.40.133
   labels:
     app: radarr
 spec:

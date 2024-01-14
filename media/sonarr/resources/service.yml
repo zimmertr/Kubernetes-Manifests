@@ -4,6 +4,7 @@ metadata:
   name: sonarr
   annotations:
     io.cilium/lb-ipam-ips: 192.168.40.134
+    metallb.universe.tf/loadBalancerIPs: 192.168.40.134
   labels:
     app: sonarr
 spec:

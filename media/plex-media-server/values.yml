@@ -62,4 +62,5 @@ extraVolumeMounts:
 service:
   annotations:
     io.cilium/lb-ipam-ips: 192.168.40.130
+    metallb.universe.tf/loadBalancerIPs: 192.168.40.130
   type: LoadBalancer

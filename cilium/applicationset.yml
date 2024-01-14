@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  name: core
+  name: cilium
   namespace: argo-system
   finalizers:
     - resources-finalizer.argocd.argoproj.io
@@ -20,7 +20,7 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: core
+  name: cilium
   namespace: argo-system
 spec:
   generators:
@@ -28,16 +28,16 @@ spec:
         repoURL: https://github.com/zimmertr/Kubernetes-Manifests
         revision: main
         directories:
-          - path: "core/*"
+          - path: "cilium/*"
   syncPolicy:
     preserveResourcesOnDeletion: false
   template:
     metadata:
       name: "{{ path.basenameNormalized }}"
       labels:
-        app-group: core
+        app-group: cilium
     spec:
-      project: core
+      project: cilium
       source:
         repoURL: https://github.com/zimmertr/Kubernetes-Manifests
         targetRevision: main

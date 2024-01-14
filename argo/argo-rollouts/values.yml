@@ -10,5 +10,6 @@ dashboard:
   service:
     annotations:
       io.cilium/lb-ipam-ips: 192.168.40.121
+      metallb.universe.tf/loadBalancerIPs: 192.168.40.121
     port: 80
     type: LoadBalancer
