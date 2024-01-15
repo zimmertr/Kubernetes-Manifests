@@ -4,8 +4,9 @@ metadata:
   name: personal-website
 spec:
   replicas: 2
-  successfulRunHistoryLimit: 0
-  unsuccessfulRunHistoryLimit: 0
+  analysis:
+    successfulRunHistoryLimit: 0
+    unsuccessfulRunHistoryLimit: 0
   selector:
     matchLabels:
       app: personal-website
