@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: tautulli
+  annotations:
+    metallb.universe.tf/loadBalancerIPs: 192.168.40.131
+  labels:
+    app: tautulli
+spec:
+  type: LoadBalancer
+  selector:
+    app: tautulli
+  ports:
+    - name: "http"
+      protocol: TCP
+      targetPort: 8080
+      port: 80

@@ -1,0 +1,15 @@
+namespace: tautulli-system
+
+resources:
+  - resources/namespace.yml
+  - resources/service.yml
+  - resources/statefulset.yml
+
+images:
+  - name: linuxserver/tautulli
+    newTag: 2.13.4 # https://hub.docker.com/r/linuxserver/tautulli/tags
+
+configMapGenerator:
+  - name: tautulli-env-vars
+    literals:
+      - TZ="America/Los_Angeles"

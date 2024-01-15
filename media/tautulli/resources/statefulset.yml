@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: tautulli
+spec:
+  selector:
+    matchLabels:
+      app: tautulli
+  template:
+    metadata:
+      labels:
+        app: tautulli
+    spec:
+      containers:
+        - name: tautulli
+          image: linuxserver/tautulli
+          envFrom:
+            - configMapRef:
+                name: tautulli-env-vars
+          ports:
+            - name: "http"
+              containerPort: 8080
+              protocol: TCP
