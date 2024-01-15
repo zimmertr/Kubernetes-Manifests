@@ -12,14 +12,13 @@ notifications:
 
   subscriptions:
     - recipients:
-        - email:thomaszimmerman93@gmail.com
         - email:gmail
+        - email:thomaszimmerman93@gmail.com
       triggers:
         - on-deleted
         - on-health-degraded
         - on-sync-failed
         - on-sync-status-unknown
-      selector: test=true
 
   templates:
     template.app-created: |
