@@ -25,7 +25,7 @@ Using Proxmox? Consider using [TKS](https://github.com/zimmertr/TJs-Kubernetes-S
 
 #### Istio
 
-Assuming you're using TKS with Flannel, [Istio](https://github.com/zimmertr/Kubernetes-Manifests/tree/main/istio) can be used to set up Metal LB & Istio:
+Assuming you're using TKS with Flannel, [Istio](istio/README.md) can be used to set up Metal LB & Istio:
 
 ```bash
 # You may have to run this multiple times
