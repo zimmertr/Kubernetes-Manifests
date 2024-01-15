@@ -11,6 +11,12 @@ spec:
     canary:
       stableService: personal-website-stable
       canaryService: personal-website-canary
+      stableMetadata:
+        labels:
+          role: stable
+      canaryMetadata:
+        labels:
+          role: canary
       dynamicStableScale: true
       steps:
         # - setCanaryScale:
