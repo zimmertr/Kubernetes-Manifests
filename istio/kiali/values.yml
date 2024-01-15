@@ -5,6 +5,8 @@ cr:
   create: true
   namespace: istio-system
   spec:
+    auth:
+      strategy: anonymous
     deployment:
       service_annotations:
         metallb.universe.tf/loadBalancerIPs: 192.168.40.100
