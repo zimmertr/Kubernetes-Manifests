@@ -11,9 +11,11 @@ resources:
 
 configMapGenerator:
   - name: personal-website-conf
+    namespace: personal-website
     files:
       - files/nginx.conf
   - name: personal-website-files
+    namespace: personal-website
     files:
       - files/index.html
       - files/styles.css
