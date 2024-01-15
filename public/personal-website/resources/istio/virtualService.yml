@@ -25,6 +25,12 @@ spec:
             port:
               number: 80
     - name: personal-website-stable
+      match:
+        - uri:
+            prefix: /
+          requestHeaders:
+            canary:
+              regex: "^(?!true$).*$"
       route:
         - destination:
             host: personal-website-stable
