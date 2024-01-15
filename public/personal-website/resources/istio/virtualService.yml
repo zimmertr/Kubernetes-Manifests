@@ -12,14 +12,14 @@ spec:
   gateways:
     - 'personal-website'
   http:
-    - name: personal-website-canary
+    - name: personal-website-experiment
       match:
         - headers:
             canary:
               exact: "true"
       route:
         - destination:
-            host: personal-website-canary
+            host: personal-website-experiment
             port:
               number: 80
     - name: personal-website-stable
