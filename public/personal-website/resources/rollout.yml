@@ -29,7 +29,7 @@ spec:
       trafficRouting:
         istio:
           virtualService:
-            name: example-service
+            name: personal-website
   template:
     metadata:
       labels:
