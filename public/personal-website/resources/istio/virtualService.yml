@@ -23,10 +23,6 @@ spec:
             port:
               number: 80
     - name: personal-website-stable
-      match:
-        - withoutHeaders:
-            canary:
-              exact: "true"
       route:
         - destination:
             host: personal-website-stable
