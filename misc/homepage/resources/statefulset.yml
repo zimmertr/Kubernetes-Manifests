@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
         - name: homepage
-          image: linuxserver/homepage
+          image: ghcr.io/gethomepage/homepage
           envFrom:
             - configMapRef:
                 name: homepage-env-vars
