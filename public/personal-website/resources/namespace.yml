@@ -4,3 +4,6 @@ metadata:
   name: personal-website
   labels:
     istio-injection: enabled
+    pod-security.kubernetes.io/audit: baseline
+    pod-security.kubernetes.io/enforce: privileged
+    pod-security.kubernetes.io/warn: baseline
