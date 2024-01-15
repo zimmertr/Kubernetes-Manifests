@@ -3,7 +3,7 @@
 
 cr:
   create: true
-  namespace: kiali-operator
+  namespace: istio-system
   spec:
     deployment:
       service_annotations:
