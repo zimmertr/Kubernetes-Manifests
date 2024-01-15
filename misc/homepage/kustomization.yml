@@ -9,7 +9,7 @@ resources:
 
 images:
   - name: linuxserver/homepage
-    newTag: v0.8.4 # https://github.com/gethomepage/homepage/pkgs/container/homepage
+    newTag: 0.8.4 # https://github.com/gethomepage/homepage/pkgs/container/homepage
 
 configMapGenerator:
   - name: homepage-env-vars
