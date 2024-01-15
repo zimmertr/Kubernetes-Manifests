@@ -2,7 +2,7 @@ apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
 metadata:
   name: personal-website
-  namespace: istio-system
+  namespace: istio-gateway
 spec:
   selector:
     istio: gateway

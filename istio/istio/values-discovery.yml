@@ -1,2 +1,7 @@
 istio_cni:
   enabled: true
+
+# Required to use cert-manager with http01 solvers.
+meshConfig:
+  ingressService: istio-ingress
+  ingressSelector: ingress
