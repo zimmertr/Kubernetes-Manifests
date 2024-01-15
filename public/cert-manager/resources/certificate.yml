@@ -4,7 +4,7 @@ metadata:
   name: public-certificate
   namespace: istio-system
 spec:
-  secretName: personal-website
+  secretName: public-certificate
   commonName: tjzimmerman.com
   dnsNames:
     - tjzimmerman.com
