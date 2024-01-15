@@ -53,7 +53,7 @@ spec:
     spec:
       containers:
         - name: nginx
-          image: linuxserver/radarr
+          image: nginx:1.25
           ports:
             - name: http
               containerPort: 80
