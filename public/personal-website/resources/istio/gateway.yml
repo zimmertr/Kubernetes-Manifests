@@ -2,8 +2,7 @@ apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
 metadata:
   name: personal-website
-  annotations:
-    cert-manager.io/cluster-issuer: letsencrypt
+  namespace: istio-system
 spec:
   selector:
     istio: gateway
@@ -11,6 +10,6 @@ spec:
     - hosts:
         - '*'
       port:
-        name: '80-internal'
+        name: 'http'
         number: 80
         protocol: HTTP

@@ -12,8 +12,3 @@ spec:
       - http01:
           ingress:
             class: istio
-          # gatewayHTTPRoute:
-          #   parentRefs:
-          #     - kind: Gateway
-          #       name: personal-website
-          #       namespace: personal-website

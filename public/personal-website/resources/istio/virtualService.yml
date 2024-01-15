@@ -1,19 +1,21 @@
-apiVersion: networking.istio.io/v1alpha3
-kind: VirtualService
-metadata:
-  name: personal-website
-spec:
-  hosts:
-    - '*'
-  gateways:
-    - 'personal-website'
-  http:
-    - match:
-        - uri:
-            prefix: /
-      route:
-        - destination:
-            host: personal-website
-            port:
-              number: 80
-      timeout: 90s
+# apiVersion: networking.istio.io/v1alpha3
+# kind: VirtualService
+# metadata:
+#   name: personal-website
+#   namespace: personal-website
+# spec:
+#   hosts:
+#     - 'nix.sol.milkyway'
+#     - 'tjzimmerman.com'
+#     - 'www.tjzimmerman.com'
+#   gateways:
+#     - 'istio-system/personal-website'
+#   http:
+#     - match:
+#         - uri:
+#             prefix: /
+#       route:
+#         - destination:
+#             host: personal-website
+#             port:
+#               number: 80

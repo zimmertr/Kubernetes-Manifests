@@ -2,8 +2,6 @@ resources:
   - resources/namespace.yml
   - resources/clusterIssuer.yml
 
-namespace: cert-manager
-
 helmCharts:
   - includeCRDs: true
     name: cert-manager
