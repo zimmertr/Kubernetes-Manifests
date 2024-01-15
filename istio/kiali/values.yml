@@ -9,5 +9,3 @@ cr:
       service_annotations:
         metallb.universe.tf/loadBalancerIPs: 192.168.40.100
       service_type: LoadBalancer
-    server:
-      port: 80
