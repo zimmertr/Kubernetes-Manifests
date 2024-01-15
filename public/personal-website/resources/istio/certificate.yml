@@ -1,10 +1,10 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: public-certificate
+  name: personal-website
   namespace: istio-system
 spec:
-  secretName: public-certificate
+  secretName: personal-website
   commonName: tjzimmerman.com
   dnsNames:
     - tjzimmerman.com

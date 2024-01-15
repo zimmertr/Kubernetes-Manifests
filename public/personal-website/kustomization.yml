@@ -4,6 +4,7 @@ resources:
   - resources/rollout.yml
   - resources/service.yml
   - resources/istio/virtualService.yml
+  - resources/istio/certificate.yml
   # - resources/cilium/gateway.yml
   # - resources/cilium/httpRoute.yml
 
