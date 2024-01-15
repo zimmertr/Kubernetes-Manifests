@@ -4,4 +4,4 @@ istio_cni:
 # Required to use cert-manager with http01 solvers.
 meshConfig:
   ingressService: istio-ingress
-  ingressSelector: ingress
+  ingressSelector: ingressgateway
