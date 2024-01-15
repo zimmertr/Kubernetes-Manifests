@@ -4,7 +4,6 @@ kind: Service
 metadata:
   name: rutorrent
   annotations:
-    io.cilium/lb-ipam-ips: 192.168.40.132
     metallb.universe.tf/loadBalancerIPs: 192.168.40.132
   labels:
     app: rutorrent

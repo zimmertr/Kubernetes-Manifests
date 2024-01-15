@@ -12,7 +12,7 @@ alertmanager:
           volumeName: alertmanager-data
   service:
     annotations:
-      io.cilium/lb-ipam-ips: 192.168.40.112
+      metallb.universe.tf/loadBalancerIPs: 192.168.40.112
     type: LoadBalancer
 
 grafana:
@@ -27,7 +27,7 @@ grafana:
     existingClaim: grafana-data
   service:
     annotations:
-      io.cilium/lb-ipam-ips: 192.168.40.110
+      metallb.universe.tf/loadBalancerIPs: 192.168.40.110
     type: LoadBalancer
 
 kubeProxy:
@@ -47,6 +47,5 @@ prometheus:
           volumeName: prometheus-data
   service:
     annotations:
-      io.cilium/lb-ipam-ips: 192.168.40.111
       metallb.universe.tf/loadBalancerIPs: 192.168.40.111
     type: LoadBalancer
