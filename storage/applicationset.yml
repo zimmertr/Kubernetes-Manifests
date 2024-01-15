@@ -9,6 +9,11 @@ kind: AppProject
 metadata:
   name: storage
   namespace: argo-system
+  annotations:
+    notifications.argoproj.io/subscribe.on-app-deleted.gmail: thomaszimmerman93@gmail.com
+    notifications.argoproj.io/subscribe.on-health-degraded.gmail: thomaszimmerman93@gmail.com
+    notifications.argoproj.io/subscribe.on-sync-failed.gmail: thomaszimmerman93@gmail.com
+    notifications.argoproj.io/subscribe.on-sync-status-unknown.gmail: thomaszimmerman93@gmail.com
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
@@ -32,7 +37,7 @@ spec:
   generators:
     - git:
         repoURL: https://github.com/zimmertr/Kubernetes-Manifests
-        revision: develop
+        revision: main
         directories:
           - path: "storage/*"
   syncPolicy:
@@ -46,7 +51,7 @@ spec:
       project: storage
       source:
         repoURL: https://github.com/zimmertr/Kubernetes-Manifests
-        targetRevision: develop
+        targetRevision: main
         path: "{{ path }}"
       destination:
         server: https://kubernetes.default.svc

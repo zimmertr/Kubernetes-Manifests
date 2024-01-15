@@ -23,17 +23,6 @@ dex:
   metrics:
     enabled: true
 
-notifications:
-  metrics:
-    enabled: true
-  notifiers:
-    service.email.gmail: |
-      username: thomaszimmerman93@gmail.com
-      password: $smtp-password
-      host: smtp.gmail.com
-      port: 465
-      from: europa@tjzimmerman.com
-
 redis-ha:
   enabled: true
   # https://github.com/argoproj/argo-cd/issues/11388
