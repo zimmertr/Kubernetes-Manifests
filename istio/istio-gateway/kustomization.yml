@@ -1,6 +1,5 @@
 resources:
   - resources/namespace.yml
-  - resources/gateway.yml
 
 namespace: istio-gateway
 

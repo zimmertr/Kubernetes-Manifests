@@ -3,6 +3,7 @@ resources:
   - resources/analysisTemplate.yml
   - resources/rollout.yml
   - resources/service.yml
+  - resources/istio/gateway.yml
   - resources/istio/virtualService.yml
   - resources/istio/certificate.yml
   # - resources/cilium/gateway.yml
