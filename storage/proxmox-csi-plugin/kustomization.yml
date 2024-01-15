@@ -1,27 +1,8 @@
-# # https://github.com/kubernetes-sigs/kustomize/pull/5167#issuecomment-1891297222
-# helmCharts:
-#   - name: csi-proxmox
-#     repo: oci://ghcr.io/sergelogvinov/charts/proxmox-csi-plugin
-#     version: 0.1.15 # https://ghcr.io/sergelogvinov/charts/proxmox-csi-plugin
-#     releaseName: csi-proxmox
-#     namespace: csi-proxmox
-#     valuesFile: configs/config.yaml
-#     includeCRDs: true
-
-resources:
-  - https://raw.githubusercontent.com/sergelogvinov/proxmox-csi-plugin/main/docs/deploy/proxmox-csi-plugin.yml
-  - resources/storageclass.yml
-
-patches:
-  - patch: |
-      $patch: delete
-      apiVersion: storage.k8s.io/v1
-      kind: StorageClass
-      metadata:
-        name: proxmox-data
-  - patch: |
-      $patch: delete
-      apiVersion: storage.k8s.io/v1
-      kind: StorageClass
-      metadata:
-        name: proxmox-data-xfs
+helmCharts:
+  - name: proxmox-csi-plugin
+    repo: oci://ghcr.io/sergelogvinov/charts
+    version: 0.1.15 # https://ghcr.io/sergelogvinov/charts/proxmox-csi-plugin
+    releaseName: proxmox-csi-plugin
+    namespace: csi-proxmox
+    valuesFile: values.yml
+    includeCRDs: true
