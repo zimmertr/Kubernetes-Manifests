@@ -8,8 +8,8 @@ resources:
   - resources/statefulset.yml
 
 images:
-  - name: linuxserver/homepage
-    newTag: 0.8.4 # https://github.com/gethomepage/homepage/pkgs/container/homepage
+  - name: ghcr.io/gethomepage/homepage
+    newTag: v0.8.4 # https://github.com/gethomepage/homepage/pkgs/container/homepage
 
 configMapGenerator:
   - name: homepage-env-vars
