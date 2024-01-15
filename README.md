@@ -2,9 +2,8 @@
 
 * [Summary](#summary)
 * [Instructions](#instructions)
-  * [Core](#core)
-    * [Istio](#istio)
-    * [Cilium](#cilium)
+  * [Istio](#istio)
+  * [Cilium](#cilium)
   * [Argo CD](#argo-cd)
 
 <hr>
