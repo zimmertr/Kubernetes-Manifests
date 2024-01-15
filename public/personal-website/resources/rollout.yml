@@ -5,8 +5,8 @@ metadata:
 spec:
   replicas: 3
   analysis:
-    successfulRunHistoryLimit: 0
-    unsuccessfulRunHistoryLimit: 0
+    successfulRunHistoryLimit: 1
+    unsuccessfulRunHistoryLimit: 1
   selector:
     matchLabels:
       app: personal-website
@@ -53,7 +53,7 @@ spec:
     spec:
       containers:
         - name: nginx
-          image: nginx:1.25
+          image: linuxserver/radarr
           ports:
             - name: http
               containerPort: 80
