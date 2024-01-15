@@ -19,7 +19,7 @@ notifications:
         - on-health-degraded
         - on-sync-failed
         - on-sync-status-unknown
-      # selector: test=true
+      selector: test=true
 
   templates:
     template.app-created: |
