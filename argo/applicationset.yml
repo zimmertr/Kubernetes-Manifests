@@ -34,6 +34,8 @@ spec:
         revision: main
         directories:
           - path: "argo/*"
+          - exclude: true
+            path: "argo/*.disabled"
   syncPolicy:
     preserveResourcesOnDeletion: false
   template:

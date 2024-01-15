@@ -34,6 +34,8 @@ spec:
         revision: main
         directories:
           - path: "cilium/*"
+          - exclude: true
+            path: "cilium/*.disabled"
   syncPolicy:
     preserveResourcesOnDeletion: false
   template:
