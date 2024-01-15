@@ -31,6 +31,8 @@ spec:
         istio:
           virtualService:
             name: personal-website
+            routes:
+              - personal-website-stable
   template:
     metadata:
       labels:
