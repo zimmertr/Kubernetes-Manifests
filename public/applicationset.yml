@@ -55,6 +55,9 @@ spec:
           selfHeal: true
         syncOptions:
           - CreateNamespace=true
+        managedNamespaceMetadata:
+          labels:
+            istio-injection: "enabled"
       ignoreDifferences:
         - group: networking.istio.io
           kind: VirtualService
