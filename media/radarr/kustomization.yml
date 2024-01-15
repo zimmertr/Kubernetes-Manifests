@@ -9,7 +9,7 @@ resources:
 
 images:
   - name: linuxserver/radarr
-    newTag: 5.2.5 # https://hub.docker.com/r/linuxserver/radarr/tags
+    newTag: 5.2.6 # https://hub.docker.com/r/linuxserver/radarr/tags
 
 configMapGenerator:
   - name: radarr-env-vars
