@@ -8,6 +8,9 @@ spec:
   commonName: tjzimmerman.com
   dnsNames:
     - tjzimmerman.com
+    - tjzimmerman.dev
+    - www.tjzimmerman.com
+    - www.tjzimmerman.dev
   issuerRef:
     name: letsencrypt
     kind: ClusterIssuer
