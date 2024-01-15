@@ -25,9 +25,6 @@ spec:
             port:
               number: 80
     - name: personal-website-stable
-      match:
-        - uri:
-            prefix: /
       route:
         - destination:
             host: personal-website-stable
