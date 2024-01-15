@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: heimdall
+spec:
+  selector:
+    matchLabels:
+      app: heimdall
+  template:
+    metadata:
+      labels:
+        app: heimdall
+    spec:
+      containers:
+        - name: heimdall
+          image: linuxserver/heimdall
+          envFrom:
+            - configMapRef:
+                name: heimdall-env-vars
+          ports:
+            - name: "http"
+              containerPort: 80
+              protocol: TCP
+            - name: "https"
+              containerPort: 443
+              protocol: TCP
+          volumeMounts:
+            - name: heimdall-data
+              mountPath: /config
+      volumes:
+        - name: heimdall-data
+          persistentVolumeClaim:
+            claimName: heimdall-data
+        - name: heimdall-downloads
