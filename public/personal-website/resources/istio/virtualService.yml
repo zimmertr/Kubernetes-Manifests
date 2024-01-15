@@ -28,8 +28,8 @@ spec:
       match:
         - uri:
             prefix: /
-          withoutHeaders:
-            canary:
+          headers:
+            stable:
               exact: "true"
       route:
         - destination:
