@@ -10,4 +10,7 @@ spec:
       successCondition: result == 'true'
       provider:
         web:
+          headers:
+            - key: "canary"
+              value: "true"
           url: "{{ args.endpoint }}"
