@@ -21,7 +21,7 @@ spec:
                     image: curlimages/curl:latest
                     volumeMounts:
                       - name: test-connection-sh
-                        mountPath: /
+                        mountPath: /tmp/
                     env:
                     - name: HEADER
                       value: "{{ args.header }}"
@@ -29,7 +29,7 @@ spec:
                       value: "{{ args.endpoint }}"
                     command:
                       - "/bin/sh"
-                      - "/test-connection.sh"
+                      - "/tmp/test-connection.sh"
                 volumes:
                   - name: test-connection-sh
                     configMap:
