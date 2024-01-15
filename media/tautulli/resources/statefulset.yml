@@ -22,9 +22,9 @@ spec:
               containerPort: 8181
               protocol: TCP
           volumeMounts:
-            - name: sonarr-data
+            - name: tautulli-data
               mountPath: /config
       volumes:
-        - name: sonarr-data
+        - name: tautulli-data
           persistentVolumeClaim:
-            claimName: sonarr-data
+            claimName: tautulli-data
