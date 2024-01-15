@@ -3,7 +3,7 @@ kind: Rollout
 metadata:
   name: personal-website
 spec:
-  replicas: 10
+  replicas: 3
   analysis:
     successfulRunHistoryLimit: 0
     unsuccessfulRunHistoryLimit: 0
@@ -37,9 +37,8 @@ spec:
                     value: "http://tjzimmerman.com/"
                   - name: header
                     value: "experiment: true"
-        - setWeight: 25
-        - setWeight: 50
-        - setWeight: 75
+        - setWeight: 33
+        - setWeight: 66
         - setWeight: 100
       trafficRouting:
         istio:
