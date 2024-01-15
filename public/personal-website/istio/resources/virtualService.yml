@@ -11,7 +11,7 @@ spec:
     - 'www.tjzimmerman.com'
     - 'www.tjzimmerman.dev'
   gateways:
-    - 'istio-gateway/personal-website'
+    - 'personal-website'
   http:
     - match:
         - uri:
