@@ -30,7 +30,7 @@ spec:
             prefix: /
           withoutHeaders:
             canary:
-              regex: "*"
+              regex: '*'
       route:
         - destination:
             host: personal-website-stable
