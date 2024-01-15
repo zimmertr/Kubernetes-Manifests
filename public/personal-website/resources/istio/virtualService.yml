@@ -16,7 +16,7 @@ spec:
       match:
         - uri:
             prefix: /
-          headers:
+          withoutHeaders:
             canary:
               exact: "true"
       route:
@@ -28,7 +28,7 @@ spec:
       match:
         - uri:
             prefix: /
-          withoutHeaders:
+          headers:
             canary:
               exact: "true"
       route:
