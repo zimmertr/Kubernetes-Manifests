@@ -21,3 +21,10 @@ spec:
             - name: "http"
               containerPort: 8181
               protocol: TCP
+          volumeMounts:
+            - name: sonarr-data
+              mountPath: /config
+      volumes:
+        - name: sonarr-data
+          persistentVolumeClaim:
+            claimName: sonarr-data

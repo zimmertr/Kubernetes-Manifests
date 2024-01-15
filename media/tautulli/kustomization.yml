@@ -2,6 +2,8 @@ namespace: tautulli-system
 
 resources:
   - resources/namespace.yml
+  - resources/persistentVolume.yml
+  - resources/persistentVolumeClaim.yml
   - resources/service.yml
   - resources/statefulset.yml
 

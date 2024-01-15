@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: tautulli-data
+spec:
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 1Gi
+  csi:
+    driver: csi.proxmox.sinextra.dev
+    fsType: xfs
+    volumeAttributes:
+      cache: writethrough
+      ssd: "true"
+      storage: FlashPool
+      storage.kubernetes.io/csiProvisionerIdentity: 1697594800660-2288-csi.proxmox.sinextra.dev
+    volumeHandle: sol-milkyway/earth/FlashPool/vm-9999-Tautulli-Data
+  mountOptions:
+    - noatime
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: topology.kubernetes.io/region
+          operator: In
+          values:
+            - sol-milkyway
+        - key: topology.kubernetes.io/zone
+          operator: In
+          values:
+            - earth
+  storageClassName: proxmox-flashpool
