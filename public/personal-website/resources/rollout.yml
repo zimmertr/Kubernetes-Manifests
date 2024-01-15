@@ -38,7 +38,7 @@ spec:
                   - name: endpoint
                     value: "http://tjzimmerman.com/"
                   - name: header
-                    value: "canary: true"
+                    value: "experiment: true"
         - pause: {}
         # - setWeight: 50
         # - pause: {}

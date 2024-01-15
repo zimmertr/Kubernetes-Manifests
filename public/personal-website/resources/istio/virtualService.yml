@@ -16,7 +16,7 @@ spec:
       match:
         - headers:
             canary:
-              exact: "true"
+              experiment: "true"
       route:
         - destination:
             host: personal-website-experiment
