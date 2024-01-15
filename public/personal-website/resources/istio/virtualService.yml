@@ -28,9 +28,6 @@ spec:
       match:
         - uri:
             prefix: /
-          headers:
-            canary:
-              regex: "^(?!true$).*$"
       route:
         - destination:
             host: personal-website-stable
