@@ -8,4 +8,6 @@ helmCharts:
     releaseName: argocd
     namespace: argo-system
     valuesFile: values.yml
+    # additionalValuesFiles:
+    #   - values-notifications.yml
     includeCRDs: true
