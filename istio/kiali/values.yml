@@ -12,3 +12,6 @@ cr:
         metallb.universe.tf/loadBalancerIPs: 192.168.40.100
       service_type: LoadBalancer
       view_only_mode: true
+    external_services:
+      prometheus:
+        url: "http://prometheus-kube-prometheus-prometheus.prometheus-system.svc.cluster.local:9090/"
