@@ -11,4 +11,4 @@ spec:
     solvers:
       - http01:
           ingress:
-            ingressClassName: istio
+            class: istio

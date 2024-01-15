@@ -2,7 +2,7 @@ apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
 metadata:
   name: personal-website
-  namespace: istio-gateway
+  namespace: istio-system
 spec:
   selector:
     istio: gateway
@@ -10,6 +10,6 @@ spec:
     - hosts:
         - '*'
       port:
-        name: 'http'
+        name: http
         number: 80
         protocol: HTTP
