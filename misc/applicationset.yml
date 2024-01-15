@@ -4,6 +4,7 @@ metadata:
   name: misc
   namespace: argo-system
   annotations:
+    notifications.argoproj.io/subscribe.on-app-deleted.gmail: thomaszimmerman93@gmail.com
     notifications.argoproj.io/subscribe.on-health-degraded.gmail: thomaszimmerman93@gmail.com
     notifications.argoproj.io/subscribe.on-sync-failed.gmail: thomaszimmerman93@gmail.com
     notifications.argoproj.io/subscribe.on-sync-status-unknown.gmail: thomaszimmerman93@gmail.com
