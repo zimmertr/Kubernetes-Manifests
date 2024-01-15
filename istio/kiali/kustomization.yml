@@ -1,5 +1,5 @@
 resources:
-  - namespace.yml
+  - resources/namespace.yml
 
 # https://artifacthub.io/packages/helm/istio-official/istiod
 helmCharts:
