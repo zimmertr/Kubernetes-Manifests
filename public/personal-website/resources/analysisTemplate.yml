@@ -15,6 +15,7 @@ spec:
             backoffLimit: 1
             template:
               spec:
+                restartPolicy: Never
                 containers:
                   - name: curl-container
                     image: curlimages/curl:latest
