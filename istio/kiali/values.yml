@@ -3,7 +3,7 @@
 
 cr:
   create: true
-  namespace: kiali-system
+  namespace: kiali-operator
   spec:
     deployment:
       service_annotations:
