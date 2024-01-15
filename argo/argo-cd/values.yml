@@ -36,6 +36,7 @@ notifications:
 
 redis-ha:
   enabled: true
+  # https://github.com/argoproj/argo-cd/issues/11388
   haproxy:
     IPv6:
       enabled: false
