@@ -12,11 +12,25 @@ spec:
   gateways:
     - 'personal-website'
   http:
-    - match:
-        - uri:
-            prefix: /
+    - name: personal-website-experiment
+      match:
+        - headers:
+            experiment:
+              exact: "true"
       route:
         - destination:
-            host: personal-website
+            host: personal-website-experiment
             port:
               number: 80
+    - name: personal-website-stable
+      route:
+        - destination:
+            host: personal-website-stable
+            port:
+              number: 80
+          weight: 100
+        - destination:
+            host: personal-website-canary
+            port:
+              number: 80
+          weight: 0

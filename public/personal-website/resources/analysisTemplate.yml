@@ -5,9 +5,32 @@ metadata:
 spec:
   args:
     - name: endpoint
+    - name: header
   metrics:
     - name: test-connection
       successCondition: result == 'true'
       provider:
-        web:
-          url: "{{ args.endpoint }}"
+        job:
+          spec:
+            backoffLimit: 1
+            template:
+              spec:
+                restartPolicy: Never
+                containers:
+                  - name: curl-container
+                    image: curlimages/curl:latest
+                    volumeMounts:
+                      - name: test-connection-sh
+                        mountPath: /tmp/
+                    env:
+                    - name: HEADER
+                      value: "{{ args.header }}"
+                    - name: ENDPOINT
+                      value: "{{ args.endpoint }}"
+                    command:
+                      - "/bin/sh"
+                      - "/tmp/test-connection.sh"
+                volumes:
+                  - name: test-connection-sh
+                    configMap:
+                      name: test-connection-sh

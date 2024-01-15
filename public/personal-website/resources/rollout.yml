@@ -3,26 +3,49 @@ kind: Rollout
 metadata:
   name: personal-website
 spec:
-  replicas: 2
+  replicas: 3
+  analysis:
+    successfulRunHistoryLimit: 1
+    unsuccessfulRunHistoryLimit: 1
   selector:
     matchLabels:
       app: personal-website
   strategy:
     canary:
-      maxUnavailable: 1
+      stableService: personal-website-stable
+      canaryService: personal-website-canary
+      stableMetadata:
+        labels:
+          role: stable
+      canaryMetadata:
+        labels:
+          role: canary
+      dynamicStableScale: true
       steps:
-        - setWeight: 100
         - experiment:
             templates:
               - name: canary
                 specRef: canary
+                service:
+                  name: personal-website-experiment
             analyses:
               - name: test-connection
                 templateName: test-connection
                 requiredForCompletion: true
                 args:
                   - name: endpoint
-                    value: "http://nix.sol.milkyway/"
+                    value: "http://tjzimmerman.com/"
+                  - name: header
+                    value: "experiment: true"
+        - setWeight: 33
+        - setWeight: 66
+        - setWeight: 100
+      trafficRouting:
+        istio:
+          virtualService:
+            name: personal-website
+            routes:
+              - personal-website-stable
   template:
     metadata:
       labels:
