@@ -24,7 +24,7 @@ configMapGenerator:
   - name: test-connection-sh
     namespace: personal-website
     files:
-      - files/curl.sh
+      - files/test-connection.sh
 
 generatorOptions:
  disableNameSuffixHash: true
