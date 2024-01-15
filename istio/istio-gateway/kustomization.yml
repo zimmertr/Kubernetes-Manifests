@@ -2,7 +2,7 @@ resources:
   - resources/namespace.yml
   - resources/gateway.yml
 
-namespace: gateway.yml
+namespace: istio-gateway
 
 # https://artifacthub.io/packages/helm/istio-official/istiod
 helmCharts:
