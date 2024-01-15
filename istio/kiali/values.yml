@@ -3,7 +3,7 @@
 
 cr:
   create: true
-  # namespace: istio-system
+  namespace: kiali-system
   spec:
     deployment:
       service_annotations:
