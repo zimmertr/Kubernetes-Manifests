@@ -17,8 +17,6 @@ spec:
         - headers:
             canary:
               exact: "true"
-          uri:
-            prefix: /
       route:
         - destination:
             host: personal-website-canary
@@ -29,8 +27,6 @@ spec:
         - withoutHeaders:
             canary:
               exact: "true"
-          uri:
-            prefix: /
       route:
         - destination:
             host: personal-website-stable
