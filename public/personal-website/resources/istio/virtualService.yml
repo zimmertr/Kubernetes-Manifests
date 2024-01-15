@@ -30,7 +30,7 @@ spec:
             prefix: /
           headers:
             canary:
-              regex: "^((?!true).)*$"
+              regex: "^(?!true$).*$"
       route:
         - destination:
             host: personal-website-stable
