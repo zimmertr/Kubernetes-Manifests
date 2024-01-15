@@ -12,3 +12,9 @@ spec:
         name: http
         number: 80
         protocol: HTTP
+    - hosts:
+        - '*'
+      port:
+        name: https
+        number: 443
+        protocol: HTTPS
