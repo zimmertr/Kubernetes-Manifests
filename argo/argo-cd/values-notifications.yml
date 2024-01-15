@@ -14,10 +14,10 @@ notifications:
     - recipients:
         - email:thomaszimmerman93@gmail.com
       triggers:
-        - on-deleted.gmail
-        - on-health-degraded.gmail
-        - on-sync-failed.gmail
-        - on-sync-status-unknown.gmail
+        - on-deleted
+        - on-health-degraded
+        - on-sync-failed
+        - on-sync-status-unknown
 
   templates:
     template.app-created: |
