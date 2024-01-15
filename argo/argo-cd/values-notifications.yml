@@ -10,6 +10,15 @@ notifications:
       port: 465
       from: europa@tjzimmerman.com
 
+  subscriptions:
+    - recipients:
+        - email:thomaszimmerman93@gmail.com
+      triggers:
+        - on-deleted.gmail
+        - on-health-degraded.gmail
+        - on-sync-failed.gmail
+        - on-sync-status-unknown.gmail
+
   templates:
     template.app-created: |
       email:
