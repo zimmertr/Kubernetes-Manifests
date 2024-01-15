@@ -9,8 +9,6 @@ resources:
   # - resources/cilium/gateway.yml
   # - resources/cilium/httpRoute.yml
 
-namespace: personal-website
-
 configMapGenerator:
   - name: personal-website-conf
     files:

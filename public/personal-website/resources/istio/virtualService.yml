@@ -2,13 +2,14 @@ apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
 metadata:
   name: personal-website
+  namespace: personal-website
 spec:
   hosts:
     - 'nix.sol.milkyway'
     - 'tjzimmerman.com'
     - 'www.tjzimmerman.com'
   gateways:
-    - 'istio-gateway/public-gateway'
+    - 'istio-gateway/personal-website'
   http:
     - match:
         - uri:

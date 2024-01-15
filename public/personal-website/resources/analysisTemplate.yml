@@ -2,6 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: AnalysisTemplate
 metadata:
   name: test-connection
+  namespace: personal-website
 spec:
   args:
     - name: endpoint
