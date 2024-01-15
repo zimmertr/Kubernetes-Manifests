@@ -19,25 +19,25 @@ spec:
           role: canary
       dynamicStableScale: true
       steps:
-        - setCanaryScale:
-            replicas: 1
-        - pause: {}
-        - setCanaryScale:
-            matchTrafficWeight: true
-        # - experiment:
-        #     templates:
-        #       - name: canary
-        #         specRef: canary
-        #     analyses:
-        #       - name: test-connection
-        #         templateName: test-connection
-        #         requiredForCompletion: true
-        #         args:
-        #           - name: endpoint
-        #             value: "http://nix.sol.milkyway/"
+        # - setCanaryScale:
+        #     replicas: 1
+        # - pause: {}
+        # - setCanaryScale:
+        #     matchTrafficWeight: true
+        - experiment:
+            templates:
+              - name: canary
+                specRef: canary
+            analyses:
+              - name: test-connection
+                templateName: test-connection
+                requiredForCompletion: true
+                args:
+                  - name: endpoint
+                    value: "http://nix.sol.milkyway/"
         # - setWeight: 50
         # - pause: {}
-        - setWeight: 100
+        # - setWeight: 100
       trafficRouting:
         istio:
           virtualService:
