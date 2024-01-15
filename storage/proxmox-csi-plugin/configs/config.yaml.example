@@ -1,25 +1,6 @@
-config:
-  clusters:
-    - url: "https://earth.sol.milkyway:8006/api2/json"
-      insecure: true
-      token_id: "kubernetes_csi@pve!kubernetes_csi"
-      token_secret: "REPLACEME"
-      region: "sol-milkyway"
-
-storageClass:
-  - name: proxmox-flashpool
-    storage: FlashPool
-    fstype: xfs
-    reclaimPolicy: Retain
-    cache: "writethrough"
-    ssd: true
-    mountOptions:
-      - noatime
-  - name: proxmox-datapool
-    storage: DataPool
-    fstype: xfs
-    reclaimPolicy: Retain
-  - name: proxmox-local
-    storage: local
-    fstype: xfs
-    reclaimPolicy: Retain
+clusters:
+  - url: "https://earth.sol.milkyway:8006/api2/json"
+    insecure: true
+    token_id: "kubernetes_csi@pve!kubernetes_csi"
+    token_secret: "REPLACEME"
+    region: "sol-milkyway"

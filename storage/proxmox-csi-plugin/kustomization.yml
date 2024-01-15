@@ -4,5 +4,5 @@ helmCharts:
     version: 0.1.15 # https://ghcr.io/sergelogvinov/charts/proxmox-csi-plugin
     releaseName: csi-proxmox
     namespace: csi-proxmox
-    valuesFile: configs/config.yaml
+    valuesFile: values.yml
     includeCRDs: true

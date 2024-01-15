@@ -1,0 +1,17 @@
+storageClass:
+  - name: proxmox-flashpool
+    storage: FlashPool
+    fstype: xfs
+    reclaimPolicy: Retain
+    cache: "writethrough"
+    ssd: true
+    mountOptions:
+      - noatime
+  - name: proxmox-datapool
+    storage: DataPool
+    fstype: xfs
+    reclaimPolicy: Retain
+  - name: proxmox-local
+    storage: local
+    fstype: xfs
+    reclaimPolicy: Retain
