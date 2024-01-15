@@ -33,6 +33,26 @@ notifications:
       host: smtp.gmail.com
       port: 465
       from: europa@tjzimmerman.com
+  templates:
+    template.app-created: |
+      email:
+        subject: Application {{.app.metadata.name}} has been created.
+      message: Application {{.app.metadata.name}} has been created.
+    template.app-deleted: |
+      email:
+        subject: Application {{.app.metadata.name}} has been deleted.
+      message: Application {{.app.metadata.name}} has been deleted.
+  triggers:
+    trigger.on-created: |
+      - description: Application Created
+        send:
+          - app-created
+        when: "true"
+    trigger.on-deleted: |
+      - description: Application Deleted
+        send:
+          - app-deleted
+        when: "true"
 
 redis-ha:
   enabled: true

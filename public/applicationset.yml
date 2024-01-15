@@ -3,8 +3,6 @@ kind: AppProject
 metadata:
   name: public
   namespace: argo-system
-  annotations:
-    notifications.argoproj.io/subscribe.on-sync-succeeded.gmail: thomaszimmerman93@gmail.com
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
@@ -36,8 +34,6 @@ spec:
   template:
     metadata:
       name: "{{ path.basenameNormalized }}"
-      annotations:
-        notifications.argoproj.io/subscribe.on-sync-succeeded.gmail: thomaszimmerman93@gmail.com
       labels:
         app-group: public
     spec:
