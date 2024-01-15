@@ -19,7 +19,18 @@ spec:
                 containers:
                   - name: curl-container
                     image: curlimages/curl:latest
+                    volumeMounts:
+                      - name: test-connection-sh
+                        mountPath: /
+                    env:
+                    - name: HEADER
+                      value: "{{ args.header }}"
+                    - name: ENDPOINT
+                      value: "{{ args.endpoint }}"
                     command:
                       - "/bin/sh"
-                      - "-c"
-                      - 'result=$(curl -s -o /dev/null -w "%{http_code}" -H "{{ args.header }}" "{{ args.endpoint }}"); echo "Curl result: $result"; [ "$result" -eq 200 ]'
+                      - "/test-connection.sh"
+                volumes:
+                  - name: test-connection-sh
+                    configMap:
+                      name: test-connection-sh
