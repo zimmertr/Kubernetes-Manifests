@@ -36,6 +36,9 @@ notifications:
 
 redis-ha:
   enabled: true
+  haproxy:
+    IPv6:
+      enabled: false
 
 repoServer:
   autoscaling:
