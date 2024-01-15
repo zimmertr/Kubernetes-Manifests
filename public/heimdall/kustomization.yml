@@ -1,0 +1,19 @@
+namespace: heimdall-system
+
+resources:
+  - resources/namespace.yml
+  - resources/persistentVolume.yml
+  - resources/persistentVolumeClaim.yml
+  - resources/service.yml
+  - resources/statefulset.yml
+
+images:
+  - name: linuxserver/heimdall
+    newTag: 2.5.8 # https://hub.docker.com/r/linuxserver/heimdall/tags
+
+configMapGenerator:
+  - name: heimdall-env-vars
+    literals:
+      - TZ="America/Los_Angeles"
+      - PUID="65534"
+      - PGID="65534"
