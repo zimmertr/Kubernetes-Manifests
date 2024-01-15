@@ -36,7 +36,7 @@ kubectl kustomize --enable-helm istio-gateway | kubectl apply -f-
 
 #### Cilium
 
-Assuming you're using TKS and have disabled Flannel, [Cilium](https://github.com/zimmertr/Kubernetes-Manifests/tree/main/cilium) Can be used to install Cilium and Gateway API:
+Assuming you're using TKS and have disabled Flannel, [Cilium](cilium/README.md)) Can be used to install Cilium and Gateway API:
 
 ```bash
 kubectl kustomize --enable-helm cilium/gateway-api | kubectl apply -f-
@@ -49,7 +49,7 @@ kubectl kustomize --enable-helm cilium/metrics-server | kubectl apply -f-
 
 ### Argo CD
 
-[Argo CD](https://github.com/zimmertr/Kubernetes-Manifests/tree/main/argo) is deployed manually at first using the same Kustomize pattern:
+[Argo CD](argo/README.md) is deployed manually at first using the same Kustomize pattern:
 
 ```bash
 kubectl kustomize --enable-helm argo/argo-cd | kubectl apply -f-

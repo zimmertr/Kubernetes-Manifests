@@ -38,7 +38,7 @@ Website: https://github.com/sergelogvinov/proxmox-csi-plugin/tree/main
 
 2. Ensure that you have created an API token according to the driver's [requirements](https://github.com/sergelogvinov/proxmox-csi-plugin/tree/main#install-csi-driver). I use my [create_user](https://github.com/zimmertr/Bootstrap-Proxmox/tree/main/roles/create_user) Ansible role to create mine.
 
-3. Create a Kubernetes secret that contains your cluster & API token information using [config.yaml.example](https://github.com/zimmertr/Kubernetes-Manifests/blob/main/storage/proxmox-csi-driver/configs/config.yaml.example) as an example.
+3. Create a Kubernetes secret that contains your cluster & API token information using [config.yaml.example](proxmox-csi-driver/configs/config.yaml.example) as an example.
    ```bash
    kubectl create ns csi-proxmox
    
