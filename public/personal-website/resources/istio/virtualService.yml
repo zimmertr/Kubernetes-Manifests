@@ -14,7 +14,9 @@ spec:
   http:
     - name: personal-website-canary
       match:
-        - headers:
+        - uri:
+            prefix: /
+          headers:
             canary:
               exact: "true"
       route:
@@ -24,9 +26,8 @@ spec:
               number: 80
     - name: personal-website-stable
       match:
-        - withoutHeaders:
-            canary:
-              exact: "true"
+        - uri:
+            prefix: /
       route:
         - destination:
             host: personal-website-stable
