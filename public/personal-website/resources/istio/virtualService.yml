@@ -17,6 +17,12 @@ spec:
             prefix: /
       route:
         - destination:
-            host: personal-website
+            host: personal-website-stable
             port:
               number: 80
+          weight: 100
+        - destination:
+            host: personal-website-canary
+            port:
+              number: 80
+          weight: 0

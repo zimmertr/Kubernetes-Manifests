@@ -9,9 +9,10 @@ spec:
       app: personal-website
   strategy:
     canary:
-      maxUnavailable: 1
+      stableService: personal-website-stable
+      stableService: personal-website-canary
+      dynamicStableScale: true
       steps:
-        - setWeight: 100
         - experiment:
             templates:
               - name: canary
@@ -23,6 +24,12 @@ spec:
                 args:
                   - name: endpoint
                     value: "http://nix.sol.milkyway/"
+        - setWeight: 50
+        - setWeight: 100
+      trafficRouting:
+        istio:
+          virtualService:
+            name: example-service
   template:
     metadata:
       labels:
