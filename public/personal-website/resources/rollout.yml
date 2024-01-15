@@ -35,6 +35,8 @@ spec:
                 args:
                   - name: endpoint
                     value: "http://nix.sol.milkyway/"
+                  - name: header
+                    value: "canary: true"
         - pause: {}
         # - setWeight: 50
         # - pause: {}

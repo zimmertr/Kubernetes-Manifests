@@ -5,12 +5,21 @@ metadata:
 spec:
   args:
     - name: endpoint
+    - name: header
   metrics:
     - name: test-connection
       successCondition: result == 'true'
       provider:
-        web:
-          headers:
-            - key: "canary"
-              value: "true"
-          url: "{{ args.endpoint }}"
+        job:
+          spec:
+            backoffLimit: 1
+            template:
+              spec:
+                containers:
+                  - name: curl-container
+                    image: curlimages/curl:latest
+                    command:
+                      - "/bin/sh"
+                      - "-c"
+                      - 'curl -s -o /dev/null -w "%{http_code}" -H "{{ args.header }}" {{ args.endpoint }} | grep -q 200'
+                  restartPolicy: Never
