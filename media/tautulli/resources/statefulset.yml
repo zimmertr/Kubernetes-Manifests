@@ -19,5 +19,5 @@ spec:
                 name: tautulli-env-vars
           ports:
             - name: "http"
-              containerPort: 8080
+              containerPort: 8181
               protocol: TCP
