@@ -10,7 +10,7 @@ spec:
   strategy:
     canary:
       stableService: personal-website-stable
-      stableService: personal-website-canary
+      canaryService: personal-website-canary
       dynamicStableScale: true
       steps:
         - experiment:
