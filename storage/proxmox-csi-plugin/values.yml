@@ -1,3 +1,5 @@
+createNamespace: true
+
 storageClass:
   - name: proxmox-flashpool
     storage: FlashPool
