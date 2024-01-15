@@ -28,7 +28,8 @@ spec:
             templates:
               - name: canary
                 specRef: canary
-                service: personal-website-experiment
+                service:
+                  name: personal-website-experiment
             analyses:
               - name: test-connection
                 templateName: test-connection
