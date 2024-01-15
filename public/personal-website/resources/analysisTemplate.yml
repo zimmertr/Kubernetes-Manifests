@@ -22,4 +22,4 @@ spec:
                     command:
                       - "/bin/sh"
                       - "-c"
-                      - 'curl -s -o /dev/null -w "%{http_code}" -H "{{ args.header }}" {{ args.endpoint }} | grep -q 200'
+                      - 'result=$(curl -s -o /dev/null -w "%{http_code}" -H "{{ args.header }}" "{{ args.endpoint }}"); echo "Curl result: $result"; [ "$result" -eq 200 ]'
