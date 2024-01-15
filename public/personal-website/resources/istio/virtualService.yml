@@ -12,18 +12,6 @@ spec:
   gateways:
     - 'personal-website'
   http:
-    - name: personal-website-canary
-      match:
-        - uri:
-            prefix: /
-          headers:
-            canary:
-              exact: "true"
-      route:
-        - destination:
-            host: personal-website-canary
-            port:
-              number: 80
     - name: personal-website-stable
       match:
         - uri:
@@ -39,3 +27,15 @@ spec:
             port:
               number: 80
           weight: 0
+    - name: personal-website-canary
+      match:
+        - uri:
+            prefix: /
+          headers:
+            canary:
+              exact: "true"
+      route:
+        - destination:
+            host: personal-website-canary
+            port:
+              number: 80
