@@ -25,6 +25,7 @@ spec:
                   - name: endpoint
                     value: "http://nix.sol.milkyway/"
         - setWeight: 50
+        - pause: {}
         - setWeight: 100
       trafficRouting:
         istio:
