@@ -28,9 +28,9 @@ spec:
       match:
         - uri:
             prefix: /
-          requestHeaders:
+          headers:
             canary:
-              regex: "^(?!true$).*$"
+              regex: "^((?!true).)*$"
       route:
         - destination:
             host: personal-website-stable
