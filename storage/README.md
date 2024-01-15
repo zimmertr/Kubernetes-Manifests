@@ -54,10 +54,8 @@ The [Proxmox CSI Plugin](https://github.com/sergelogvinov/proxmox-csi-plugin/tre
    ./proxmox-csi-plugin/bin/label_nodes $NODES $ZONE $REGION
    ```
 
-5. Modify [storageclass.yml](proxmox-csi-plugin/resources/storageclass.yml) according to your Proxmox Storage IDs and the documentation [here](https://github.com/sergelogvinov/proxmox-csi-plugin/blob/main/docs/options.md).
-
-6. Deploy the CSI plugin
+5. Deploy the CSI plugin
 
    ```bash
-   kubectl kustomize --enable-helm proxmox-csi-plugin | kubectl apply -f-
+   kustomize build --enable-helm proxmox-csi-plugin | kubectl apply -f-
    ```
