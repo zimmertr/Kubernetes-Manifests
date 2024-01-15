@@ -26,7 +26,10 @@ spec:
               number: 80
     - name: personal-website-stable
       match:
-        - uri:
+        - withoutHeaders:
+            canary:
+              exact: "true"
+          uri:
             prefix: /
       route:
         - destination:
