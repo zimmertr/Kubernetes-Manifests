@@ -10,5 +10,10 @@ spec:
       name: letsencrypt
     solvers:
       - http01:
+          # gatewayHTTPRoute:
+          #   parentRefs:
+          #     - kind: Gateway
+          #       name: personal-website
+          #       namespace: personal-website
           ingress:
             class: istio

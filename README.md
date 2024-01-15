@@ -5,7 +5,6 @@
   * [Networking](#networking)
     * [Istio](#istio)
     * [Cilium](#cilium)
-  
   * [Argo CD](#argo-cd)
   
 
