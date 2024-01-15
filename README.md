@@ -40,8 +40,7 @@ Assuming you're using TKS and have disabled Flannel, [Cilium](cilium/README.md))
 ```bash
 kubectl kustomize --enable-helm cilium/gateway-api | kubectl apply -f-
 kubectl kustomize --enable-helm cilium/cilium | kubectl apply -f-
-kubectl kustomize --enable-helm cilium/kubelet-csr-approver | kubectl apply -f-
-kubectl kustomize --enable-helm cilium/metrics-server | kubectl apply -f-
+kubectl kustomize --enable-helm misc/kubelet-csr-approver | kubectl apply -f-
 ```
 
 <hr>

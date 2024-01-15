@@ -44,5 +44,5 @@ kubectl kustomize --enable-helm cilium | kubectl apply -f-
 Cilium will not be completely ready until you approve the necessary Certificate Signing Requests. This can be done manually with `kubectl certificate approve`, or you can use [Kubelet CSR Approver](https://github.com/postfinance/kubelet-csr-approver). 
 
 ```bash
-kubectl kustomize --enable-helm kubelet-csr-approver | kubectl apply -f-
+kubectl kustomize --enable-helm ../misc/kubelet-csr-approver | kubectl apply -f-
 ```
