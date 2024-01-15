@@ -1,4 +1,0 @@
-resources:
-  - resources/gateway.yml
-  - resources/virtualService.yml
-  - resources/certificate.yml

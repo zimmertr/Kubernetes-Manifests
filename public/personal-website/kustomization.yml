@@ -1,3 +1,26 @@
 resources:
-  - personal-website/
-  - istio/
+  - resources/namespace.yml
+  - resources/analysisTemplate.yml
+  - resources/rollout.yml
+  - resources/service.yml
+  - resources/istio/certificate.yml
+  - resources/istio/gateway.yml
+  - resources/istio/virtualService.yml
+  # - resources/cilium/gateway.yml
+  # - resources/cilium/httpRoute.yml
+
+namespace: personal-website
+
+configMapGenerator:
+  - name: personal-website-conf
+    namespace: personal-website
+    files:
+      - files/nginx.conf
+  - name: personal-website-files
+    namespace: personal-website
+    files:
+      - files/index.html
+      - files/styles.css
+
+generatorOptions:
+ disableNameSuffixHash: true
