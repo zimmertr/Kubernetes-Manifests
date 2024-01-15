@@ -15,8 +15,8 @@ spec:
     - name: personal-website-experiment
       match:
         - headers:
-            canary:
-              experiment: "true"
+            experiment:
+              exact: "true"
       route:
         - destination:
             host: personal-website-experiment
