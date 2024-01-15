@@ -9,15 +9,3 @@ helmCharts:
     namespace: argo-system
     valuesFile: values.yml
     includeCRDs: true
-
-# https://github.com/argoproj/argo-cd/issues/8122
-patchesStrategicMerge:
-  - |-
-    apiVersion: apps/v1
-    kind: Deployment
-    metadata:
-      name: argocd-redis-ha-haproxy
-    spec:
-      strategy:
-        rollingUpdate:
-          maxUnavailable: 34%
