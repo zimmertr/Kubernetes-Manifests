@@ -1,7 +1,7 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: personal-website
+  name: public-certificate
   namespace: istio-system
 spec:
   secretName: personal-website

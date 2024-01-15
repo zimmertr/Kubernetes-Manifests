@@ -1,6 +1,8 @@
 resources:
   - resources/namespace.yml
   - resources/clusterIssuer.yml
+  - resources/gateway.yml
+  - resources/certificate.yml
 
 helmCharts:
   - includeCRDs: true
