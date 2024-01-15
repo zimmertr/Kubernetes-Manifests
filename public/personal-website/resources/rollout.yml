@@ -13,9 +13,11 @@ spec:
       canaryService: personal-website-canary
       dynamicStableScale: true
       steps:
-        - setCanaryScale:
-            replicas: 1
-        - pause: {}
+        # - setCanaryScale:
+        #     replicas: 1
+        # - pause: {}
+        # - setCanaryScale:
+        #     matchTrafficWeight: true
         - experiment:
             templates:
               - name: canary

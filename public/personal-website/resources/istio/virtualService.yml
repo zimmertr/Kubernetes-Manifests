@@ -28,6 +28,9 @@ spec:
       match:
         - uri:
             prefix: /
+          withoutHeaders:
+            canary:
+              exact: "true"
       route:
         - destination:
             host: personal-website-stable
