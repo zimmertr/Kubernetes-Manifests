@@ -1,8 +1,7 @@
 apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
 metadata:
-  name: cert-manager
-  namespace: istio-system
+  name: public-gateway
 spec:
   selector:
     istio: gateway

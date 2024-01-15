@@ -8,7 +8,7 @@ spec:
     - 'tjzimmerman.com'
     - 'www.tjzimmerman.com'
   gateways:
-    - 'istio-system/personal-website'
+    - 'istio-system/cert-manager'
   http:
     - match:
         - uri:
