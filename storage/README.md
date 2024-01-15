@@ -54,7 +54,7 @@ Website: https://github.com/sergelogvinov/proxmox-csi-plugin/tree/main
    ./proxmox-csi-driver/bin/label_nodes $NODES $ZONE $REGION
    ```
 
-5. Modify [storageclass.yml](https://github.com/zimmertr/Kubernetes-Manifests/blob/main/storage/proxmox-csi-driver/resources/storageclass.yml) according to your Proxmox Storage IDs and the documentation [here](https://github.com/sergelogvinov/proxmox-csi-plugin/blob/main/docs/options.md). 
+5. Modify [storageclass.yml](proxmox-csi-driver/resources/storageclass.yml) according to your Proxmox Storage IDs and the documentation [here](https://github.com/sergelogvinov/proxmox-csi-plugin/blob/main/docs/options.md). 
 
 6. Deploy the CSI driver
 
