@@ -28,7 +28,7 @@ spec:
   generators:
     - git:
         repoURL: https://github.com/zimmertr/Kubernetes-Manifests
-        revision: develop
+        revision: main
         directories:
           - path: "public/*"
   syncPolicy:
@@ -42,7 +42,7 @@ spec:
       project: public
       source:
         repoURL: https://github.com/zimmertr/Kubernetes-Manifests
-        targetRevision: develop
+        targetRevision: main
         path: "{{ path }}"
       destination:
         server: https://kubernetes.default.svc
