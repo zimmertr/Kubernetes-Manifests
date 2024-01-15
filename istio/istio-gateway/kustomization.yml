@@ -1,11 +1,13 @@
 resources:
   - resources/namespace.yml
 
+namespace: istio-gateway
+
 # https://artifacthub.io/packages/helm/istio-official/istiod
 helmCharts:
   - name: gateway
     repo: https://istio-release.storage.googleapis.com/charts
-    version: 1.19.0 # https://artifacthub.io/packages/helm/istio-official/gateway
+    version: 1.20.2 # https://artifacthub.io/packages/helm/istio-official/gateway
     releaseName: gateway
     namespace: istio-gateway
     valuesFile: values.yml

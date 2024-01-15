@@ -10,7 +10,7 @@
 
 ## Summary
 
-Istio is a collection of networking applications needed to stand up the Istio Service Mesh. This is unmaintained as I now use Cilium and Gateway API.
+Istio is a collection of networking applications needed to stand up the Istio Service Mesh.
 
 <hr>
 

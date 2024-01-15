@@ -4,8 +4,8 @@ cainjector:
     minAvailable: 1
   replicaCount: 2
 
-featureGates:
-  ExperimentalGatewayAPISupport=true
+# featureGates:
+#   ExperimentalGatewayAPISupport=true
 
 global:
   leaderElection:
@@ -19,8 +19,8 @@ podDisruptionBudget:
 
 prometheus:
   enabled: true
-  servicemonitor:
-    enabled: true
+  # servicemonitor:
+  #   enabled: true
 
 replicaCount: 2
 

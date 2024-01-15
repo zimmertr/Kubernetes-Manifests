@@ -1,4 +1,4 @@
-# Core
+# Cilium
 
 * [Summary](#summary)
 * [Instructions](#instructions)
@@ -11,7 +11,9 @@
 
 ## Summary
 
-Core is a collection of essential applications required to make TKS functional.
+Cilium is a collection of essential applications required to make TKS functional when using Cilium and Gateway API.
+
+:warning: **Warning** :warning: I no longer use Cilium due to [L2 Announcement issues](https://github.com/cilium/cilium/issues/26586#issuecomment-1891021144) so this is unmaintained.
 
 <hr>
 
@@ -24,6 +26,8 @@ Core is a collection of essential applications required to make TKS functional.
 ```bash
 kubectl kustomize --enable-helm gateway-api | kubectl apply -f-
 ```
+
+<hr>
 
 ### Cilium
 
@@ -41,14 +45,4 @@ Cilium will not be completely ready until you approve the necessary Certificate 
 
 ```bash
 kubectl kustomize --enable-helm kubelet-csr-approver | kubectl apply -f-
-```
-
-<hr>
-
-### Metrics Server
-
-[Metrics Server](https://github.com/kubernetes-sigs/metrics-server) is needed to enable the Metrics API in Kubernetes.
-
-```bash
-kubectl kustomize --enable-helm metrics-server | kubectl apply -f-
 ```

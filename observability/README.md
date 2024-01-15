@@ -3,6 +3,8 @@
 * [Summary](#summary)
 * [Instructions](#instructions)
   * [Kube Prometheus Stack](#kube-prometheus-stack)
+  * [Metrics Server](#metrics-server)
+  * [NGINX Prometheus Exporter](#nginx-prometheus-exporter)
 
 <hr>
 
@@ -26,6 +28,15 @@ Observability is a collection of monitoring applications.
    ```bash
    kubectl kustomize --enable-helm kube-prometheus-stack | kubectl apply -f-
    ```
+<hr>
+
+### Metrics Server
+
+[Metrics Server](https://github.com/kubernetes-sigs/metrics-server) is needed to enable the Metrics API in Kubernetes.
+
+```bash
+kubectl kustomize --enable-helm metrics-server | kubectl apply -f-
+```
 
 <hr>
 

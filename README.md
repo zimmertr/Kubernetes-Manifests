@@ -2,8 +2,11 @@
 
 * [Summary](#summary)
 * [Instructions](#instructions)
-  * [Core](#core)
+  * [Networking](#networking)
+    * [Istio](#istio)
+    * [Cilium](#cilium)
   * [Argo CD](#argo-cd)
+  
 
 <hr>
 
@@ -17,28 +20,42 @@ Using Proxmox? Consider using [TKS](https://github.com/zimmertr/TJs-Kubernetes-S
 
 ## Instructions
 
-### Core
+### Networking
 
-Assuming you're using TKS and have disabled Flannel, Core is necessary to install a CNI and enable Metrics Server:
+#### Istio
+
+Assuming you're using TKS with Flannel, [Istio](istio/README.md) can be used to set up Metal LB & Istio:
 
 ```bash
-kubectl kustomize --enable-helm core/gateway-api | kubectl apply -f-
-kubectl kustomize --enable-helm core/cilium | kubectl apply -f-
-kubectl kustomize --enable-helm core/kubelet-csr-approver | kubectl apply -f-
-kubectl kustomize --enable-helm core/metrics-server | kubectl apply -f-
+# You may have to run this multiple times
+kubectl kustomize istio/metallb | kubectl apply -f-
+kubectl kustomize --enable-helm istio | kubectl apply -f-
+kubectl kustomize --enable-helm istio-gateway | kubectl apply -f-
 ```
+
+#### Cilium
+
+Assuming you're using TKS and have disabled Flannel, [Cilium](cilium/README.md)) Can be used to install Cilium and Gateway API:
+
+```bash
+kubectl kustomize --enable-helm cilium/gateway-api | kubectl apply -f-
+kubectl kustomize --enable-helm cilium/cilium | kubectl apply -f-
+kubectl kustomize --enable-helm cilium/kubelet-csr-approver | kubectl apply -f-
+kubectl kustomize --enable-helm cilium/metrics-server | kubectl apply -f-
+```
+
+<hr>
 
 ### Argo CD
 
-Argo CD is deployed manually at first using the same Kustomize pattern:
+[Argo CD](argo/README.md) is deployed manually at first using the same Kustomize pattern:
 
 ```bash
 kubectl kustomize --enable-helm argo/argo-cd | kubectl apply -f-
 ```
 
-Then you can apply ApplicationSets for a group of applications. For example, Core and Argo:
+Then you can apply ApplicationSets for a group of applications. For example:
 
 ```bash
-kubectl apply -f core/applicationset.yml
 kubectl apply -f argo/applicationset.yml
 ```

@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  name: core
+  name: istio
   namespace: argo-system
   finalizers:
     - resources-finalizer.argocd.argoproj.io
@@ -20,7 +20,7 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: core
+  name: istio
   namespace: argo-system
 spec:
   generators:
@@ -28,16 +28,16 @@ spec:
         repoURL: https://github.com/zimmertr/Kubernetes-Manifests
         revision: main
         directories:
-          - path: "core/*"
+          - path: "istio/*"
   syncPolicy:
     preserveResourcesOnDeletion: false
   template:
     metadata:
       name: "{{ path.basenameNormalized }}"
       labels:
-        app-group: core
+        app-group: istio
     spec:
-      project: core
+      project: istio
       source:
         repoURL: https://github.com/zimmertr/Kubernetes-Manifests
         targetRevision: main
@@ -50,3 +50,10 @@ spec:
           selfHeal: true
         syncOptions:
           - CreateNamespace=true
+      ignoreDifferences:
+        # https://github.com/argoproj/argo-cd/issues/9323
+        - group: admissionregistration.k8s.io
+          kind: ValidatingWebhookConfiguration
+          name: istiod-default-validator
+          jsonPointers:
+            - /webhooks/0/failurePolicy

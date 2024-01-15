@@ -1,0 +1,22 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: personal-website
+spec:
+  hosts:
+    - 'nix.sol.milkyway'
+    - 'tjzimmerman.com'
+    - 'tjzimmerman.dev'
+    - 'www.tjzimmerman.com'
+    - 'www.tjzimmerman.dev'
+  gateways:
+    - 'personal-website'
+  http:
+    - match:
+        - uri:
+            prefix: /
+      route:
+        - destination:
+            host: personal-website
+            port:
+              number: 80

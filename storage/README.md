@@ -38,7 +38,7 @@ Website: https://github.com/sergelogvinov/proxmox-csi-plugin/tree/main
 
 2. Ensure that you have created an API token according to the driver's [requirements](https://github.com/sergelogvinov/proxmox-csi-plugin/tree/main#install-csi-driver). I use my [create_user](https://github.com/zimmertr/Bootstrap-Proxmox/tree/main/roles/create_user) Ansible role to create mine.
 
-3. Create a Kubernetes secret that contains your cluster & API token information using [config.yaml.example](https://github.com/zimmertr/Kubernetes-Manifests/blob/main/storage/proxmox-csi-driver/configs/config.yaml.example) as an example.
+3. Create a Kubernetes secret that contains your cluster & API token information using [config.yaml.example](proxmox-csi-driver/configs/config.yaml.example) as an example.
    ```bash
    kubectl create ns csi-proxmox
    
@@ -54,7 +54,7 @@ Website: https://github.com/sergelogvinov/proxmox-csi-plugin/tree/main
    ./proxmox-csi-driver/bin/label_nodes $NODES $ZONE $REGION
    ```
 
-5. Modify [storageclass.yml](https://github.com/zimmertr/Kubernetes-Manifests/blob/main/storage/proxmox-csi-driver/resources/storageclass.yml) according to your Proxmox Storage IDs and the documentation [here](https://github.com/sergelogvinov/proxmox-csi-plugin/blob/main/docs/options.md). 
+5. Modify [storageclass.yml](proxmox-csi-driver/resources/storageclass.yml) according to your Proxmox Storage IDs and the documentation [here](https://github.com/sergelogvinov/proxmox-csi-plugin/blob/main/docs/options.md). 
 
 6. Deploy the CSI driver
 

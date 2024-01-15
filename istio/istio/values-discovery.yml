@@ -1,0 +1,7 @@
+istio_cni:
+  enabled: true
+
+# https://github.com/istio/istio/issues/37329#issuecomment-1042353593
+meshConfig:
+  ingressService: istio-gateway
+  ingressSelector: gateway

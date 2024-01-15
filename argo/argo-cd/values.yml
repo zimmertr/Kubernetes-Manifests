@@ -36,6 +36,10 @@ notifications:
 
 redis-ha:
   enabled: true
+  # https://github.com/argoproj/argo-cd/issues/11388
+  haproxy:
+    IPv6:
+      enabled: false
 
 repoServer:
   autoscaling:
@@ -52,5 +56,5 @@ server:
     enabled: true
   service:
     annotations:
-      io.cilium/lb-ipam-ips: 192.168.40.120
+      metallb.universe.tf/loadBalancerIPs: 192.168.40.120
     type: LoadBalancer
