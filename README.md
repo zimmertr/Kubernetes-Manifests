@@ -2,9 +2,12 @@
 
 * [Summary](#summary)
 * [Instructions](#instructions)
-  * [Istio](#istio)
-  * [Cilium](#cilium)
+  * [Networking](#networking)
+    * [Istio](#istio)
+    * [Cilium](#cilium)
+  
   * [Argo CD](#argo-cd)
+  
 
 <hr>
 
@@ -15,10 +18,11 @@ This repository contains a collection of Kustomize projects and Argo CD resource
 Using Proxmox? Consider using [TKS](https://github.com/zimmertr/TJs-Kubernetes-Service) to deploy your cluster!
 
 <hr>
-
 ## Instructions
 
-### Istio
+### Networking
+
+#### Istio
 
 Assuming you're using TKS with Flannel, `Istio` can be used to set up Metal LB & Istio:
 
@@ -29,7 +33,7 @@ kubectl kustomize --enable-helm istio | kubectl apply -f-
 kubectl kustomize --enable-helm istio-gateway | kubectl apply -f-
 ```
 
-### Cilium
+#### Cilium
 
 Assuming you're using TKS and have disabled Flannel, `Cilium` Can be used to install Cilium and Gateway API:
 
@@ -39,6 +43,8 @@ kubectl kustomize --enable-helm cilium/cilium | kubectl apply -f-
 kubectl kustomize --enable-helm cilium/kubelet-csr-approver | kubectl apply -f-
 kubectl kustomize --enable-helm cilium/metrics-server | kubectl apply -f-
 ```
+
+<hr>
 
 ### Argo CD
 

@@ -13,6 +13,8 @@
 
 Cilium is a collection of essential applications required to make TKS functional when using Cilium and Gateway API.
 
+:warning: **Warning** :warning: I no longer use Cilium due to [L2 Announcement issues](https://github.com/cilium/cilium/issues/26586#issuecomment-1891021144) so this is unmaintained.
+
 <hr>
 
 ## Instructions
@@ -24,6 +26,8 @@ Cilium is a collection of essential applications required to make TKS functional
 ```bash
 kubectl kustomize --enable-helm gateway-api | kubectl apply -f-
 ```
+
+<hr>
 
 ### Cilium
 
