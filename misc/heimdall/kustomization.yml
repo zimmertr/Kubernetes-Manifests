@@ -9,7 +9,7 @@ resources:
 
 images:
   - name: linuxserver/heimdall
-    newTag: 2.5.8 # https://hub.docker.com/r/linuxserver/heimdall/tags
+    newTag: 2021.11.28 # https://hub.docker.com/r/linuxserver/heimdall/tags
 
 configMapGenerator:
   - name: heimdall-env-vars
