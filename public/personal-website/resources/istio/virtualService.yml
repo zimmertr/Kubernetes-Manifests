@@ -12,7 +12,20 @@ spec:
   gateways:
     - 'personal-website'
   http:
-    - match:
+    - name: personal-website-canary
+      match:
+        - uri:
+            prefix: /
+          headers:
+            canary:
+              exact: "true"
+      route:
+        - destination:
+            host: personal-website-canary
+            port:
+              number: 80
+    - name: personal-website-stable
+      match:
         - uri:
             prefix: /
       route:
