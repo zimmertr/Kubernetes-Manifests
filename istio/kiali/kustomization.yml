@@ -1,9 +1,9 @@
 # https://artifacthub.io/packages/helm/istio-official/istiod
 helmCharts:
-  - name: kiali-server
+  - name: kiali-operator
     repo: https://kiali.org/helm-charts
     version: 1.30.0 # https://github.com/kiali/helm-charts/releases
-    releaseName: kiali-server
-    namespace: istio-system
+    releaseName: kiali-operator
+    namespace: kiali-operator
     valuesFile: values.yml
     includeCRDs: true

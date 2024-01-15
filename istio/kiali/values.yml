@@ -1,6 +1,10 @@
-# https://github.com/kiali/helm-charts/blob/master/kiali-server/values.yaml
+# https://github.com/kiali/helm-charts/blob/master/kiali-operator/values.yaml
+# https://kiali.io/docs/configuration/kialis.kiali.io/
 
-deployment:
-  service_annotations:
-    metallb.universe.tf/loadBalancerIPs: 192.168.40.100
-  service_type: LoadBalancer
+cr:
+  create: true
+  spec:
+    deployment:
+      service_annotations:
+        metallb.universe.tf/loadBalancerIPs: 192.168.40.100
+      service_type: LoadBalancer
