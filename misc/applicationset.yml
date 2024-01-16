@@ -31,7 +31,7 @@ spec:
   generators:
     - git:
         repoURL: https://github.com/zimmertr/Kubernetes-Manifests
-        revision: develop
+        revision: main
         directories:
           - path: "misc/*"
           - exclude: true
@@ -47,7 +47,7 @@ spec:
       project: misc
       source:
         repoURL: https://github.com/zimmertr/Kubernetes-Manifests
-        targetRevision: develop
+        targetRevision: main
         path: "{{ path }}"
       destination:
         server: https://kubernetes.default.svc
