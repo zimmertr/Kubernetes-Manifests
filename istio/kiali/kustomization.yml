@@ -5,7 +5,7 @@ resources:
 helmCharts:
   - name: kiali-operator
     repo: https://kiali.org/helm-charts
-    version: 1.78.0 # https://github.com/kiali/helm-charts/releases
+    version: 1.79.0 # https://github.com/kiali/helm-charts/releases
     releaseName: kiali-operator
     namespace: kiali-operator
     valuesFile: values.yml
