@@ -6,6 +6,8 @@ resources:
   - resources/persistentVolumeClaim.yml
   - resources/service.yml
   - resources/statefulset.yml
+  - resources/serviceAccount.yml
+  - resources/rbac.yml
 
 images:
   - name: ghcr.io/gethomepage/homepage
@@ -18,8 +20,11 @@ configMapGenerator:
       - PGID="65534"
   - name: homepage-settings
     files:
+      - files/configs/bookmarks.yaml
+      - files/configs/kubernetes.yaml
       - files/configs/services.yaml
       - files/configs/settings.yaml
+      - files/configs/widgets.yaml
   - name: homepage-seed-script
     files:
       - files/scripts/seed-volumes.sh

@@ -7,3 +7,11 @@ background: /images/background.jpg
 cardBlur: xl
 favicon: /images/favicon.png
 color: stone
+
+layout:
+  Media:
+    style: row
+    columns: 4
+
+headerStyle: boxed
+hideVersion: true
