@@ -7,6 +7,9 @@ resources:
   - resources/service.yml
   - resources/statefulset.yml
 
+commonLabels:
+  app.kubernetes.io/name: sonarr
+
 images:
   - name: linuxserver/sonarr
     newTag: 4.0.1 # https://hub.docker.com/r/linuxserver/sonarr/tags

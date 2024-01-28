@@ -1,9 +1,12 @@
+namespace: plex-media-server-system
+
 resources:
   - resources/namespace.yml
   - resources/persistentVolume.yml
   - resources/persistentVolumeClaim.yml
 
-namespace: plex-media-server-system
+commonLabels:
+  app.kubernetes.io/name: plex-media-server
 
 helmCharts:
   - includeCRDs: true

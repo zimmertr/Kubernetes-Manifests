@@ -7,6 +7,9 @@ resources:
   - resources/service.yml
   - resources/statefulset.yml
 
+commonLabels:
+  app.kubernetes.io/name: tautulli
+
 images:
   - name: tautulli/tautulli
     newTag: v2.13.4 # https://hub.docker.com/r/linuxserver/tautulli/tags
