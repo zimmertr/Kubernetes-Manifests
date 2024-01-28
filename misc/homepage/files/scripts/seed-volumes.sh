@@ -3,22 +3,32 @@
 REPO=zimmertr/Kubernetes-Manifests
 BRANCH=main
 
+timestmap(){
+  echo "**************************************"
+  echo $(date +"%m/%d/%Y-%H:%M:%S") " - Seeding $1"
+  echo "**************************************"
+  echo
+}
+
 seed_configs(){
-  echo "Seeding Configs..."
+  timestamp "Configs"
+
   mkdir -p /app/config/
   cp /config/services.yaml /app/config/services.yaml
   cp /config/settings.yaml /app/config/settings.yaml
 }
 
 seed_icons(){
-  echo "Seeding Icons..."
+  timestamp "Icons"
+
   mkdir -p /app/public/icons
   wget -O /app/public/icons/supermicro-ipmi.png https://raw.githubusercontent.com/$REPO/$BRANCH/misc/homepage/files/icons/supermicro-ipmi.png
   wget -O /app/public/icons/kiali.png https://raw.githubusercontent.com/$REPO/$BRANCH/misc/homepage/files/icons/kiali.png
 }
 
 seed_images(){
-  echo "Seeding Images..."
+  timestamp "Images"
+
   mkdir -p /app/public/images
   wget -O /app/public/images/background.jpg https://raw.githubusercontent.com/$REPO/$BRANCH/misc/homepage/files/images/background.jpg
   wget -O /app/public/images/favicon.png https://raw.githubusercontent.com/$REPO/$BRANCH/misc/homepage/files/images/favicon.png
