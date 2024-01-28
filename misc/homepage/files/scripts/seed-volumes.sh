@@ -41,6 +41,8 @@ main(){
   seed_configs
   seed_icons
   seed_images
+
+  timestamp "Completed"
 }
 
 main "$@"

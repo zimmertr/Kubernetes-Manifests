@@ -2,12 +2,13 @@ namespace: homepage-system
 
 resources:
   - resources/namespace.yml
+  - resources/serviceAccount.yml
+  - resources/clusterRole.yml
+  - resources/clusterRoleBinding.yml
   - resources/persistentVolume.yml
   - resources/persistentVolumeClaim.yml
   - resources/service.yml
   - resources/statefulset.yml
-  - resources/serviceAccount.yml
-  - resources/rbac.yml
 
 images:
   - name: ghcr.io/gethomepage/homepage
