@@ -15,7 +15,7 @@ spec:
         - name: seed-volumes
           image: busybox
           command:
-            - /tmp/seed-volumes.sh
+            - /seed-volumes.sh
           volumeMounts:
             - name: homepage-data
               mountPath: /app/config
@@ -26,7 +26,7 @@ spec:
             - name: homepage-settings
               mountPath: /config
             - name: homepage-seed-script
-              mountPath: /tmp
+              mountPath: /
               subPath: seed-volumes.sh
       containers:
         - name: homepage
