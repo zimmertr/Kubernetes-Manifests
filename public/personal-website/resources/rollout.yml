@@ -2,8 +2,6 @@ apiVersion: argoproj.io/v1alpha1
 kind: Rollout
 metadata:
   name: personal-website
-  labels:
-    app.kubernetes.io/name: personal-website
 spec:
   replicas: 3
   analysis:
