@@ -1,5 +1,7 @@
 #!/bin/sh
 
+curl -I -H "$HEADER" "$ENDPOINT"
+
 HTTP_STATUS_CODE=$(curl -s -o /dev/null -w "%{http_code}" -H "$HEADER" "$ENDPOINT")
 
 if [ "$HTTP_STATUS_CODE" -eq 200 ]; then
