@@ -17,7 +17,12 @@ spec:
           command:
             - sh
             - -c
+            - cp /config/services.yaml /app/config/services.yaml
             - cp /config/settings.yaml /app/config/settings.yaml
+            - curl https://raw.githubusercontent.com/zimmertr/Kubernetes-Manifests/main/misc/homepage/files/background.jpg -o /app/public/images/background.jpg
+            - curl https://raw.githubusercontent.com/zimmertr/Kubernetes-Manifests/main/misc/homepage/files/favicon.png -o /app/public/images/favicon.png
+            - curl https://raw.githubusercontent.com/zimmertr/Kubernetes-Manifests/main/misc/homepage/files/supermicro-ipmi.svg -o /app/public/icons/supermicro-ipmi.svg
+            - curl https://raw.githubusercontent.com/zimmertr/Kubernetes-Manifests/main/misc/homepage/files/kiali.svg -o /app/public/icons/kiali.svg
           volumeMounts:
             - name: homepage-data
               mountPath: /app/config
