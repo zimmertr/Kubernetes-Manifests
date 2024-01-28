@@ -9,7 +9,7 @@ resources:
 
 images:
   - name: tautulli/tautulli
-    newTag: 2.13.4 # https://hub.docker.com/r/linuxserver/tautulli/tags
+    newTag: v2.13.4 # https://hub.docker.com/r/linuxserver/tautulli/tags
 
 configMapGenerator:
   - name: tautulli-env-vars
