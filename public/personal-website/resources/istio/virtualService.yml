@@ -9,15 +9,21 @@ spec:
     - 'tjzimmerman.dev'
     - 'www.tjzimmerman.com'
     - 'www.tjzimmerman.dev'
-    - 'personal-website-stable'
-    - 'personal-website-stable.personal-website'
-    - 'personal-website-stable.personal-website.svc'
-    - 'personal-website-stable.personal-website.svc.cluster'
     - 'personal-website-stable.personal-website.svc.cluster.local'
   gateways:
     - 'mesh'
     - 'personal-website'
   http:
+    - name: personal-website-experiment
+      match:
+        - headers:
+            experiment:
+              exact: "true"
+      route:
+        - destination:
+            host: personal-website-experiment
+            port:
+              number: 80
     - name: personal-website-stable
       route:
         - destination:
