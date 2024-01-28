@@ -8,11 +8,11 @@ grafana:
           folder: 'NGINX'
           type: file
           disableDeletion: true
-          editable: true
+          editable: false
           options:
             path: /var/lib/grafana/dashboards/standard
   dashboards:
-    default:
+    NGINX:
       NGINX:
         gnetId: 11199
         datasource: Prometheus
