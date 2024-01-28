@@ -29,6 +29,10 @@ spec:
           volumeMounts:
             - name: homepage-data
               mountPath: /app/config
+            - name: homepage-icons
+              mountPath: /app/public/icons
+            - name: homepage-images
+              mountPath: /app/public/images
             - name: homepage-settings
               mountPath: /config
       containers:
@@ -44,10 +48,20 @@ spec:
           volumeMounts:
             - name: homepage-data
               mountPath: /app/config
+            - name: homepage-icons
+              mountPath: /app/public/icons
+            - name: homepage-images
+              mountPath: /app/public/images
       volumes:
         - name: homepage-data
           persistentVolumeClaim:
             claimName: homepage-data
+        - name: homepage-icons
+          persistentVolumeClaim:
+            claimName: homepage-icons
+        - name: homepage-images
+          persistentVolumeClaim:
+            claimName: homepage-images
         - name: homepage-settings
           configMap:
             name: homepage-settings

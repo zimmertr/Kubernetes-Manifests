@@ -10,3 +10,30 @@ spec:
       storage: 1Gi
   storageClassName: proxmox-flashpool
   volumeName: homepage-data
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: homepage-icons
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: proxmox-flashpool
+  volumeName: homepage-icons
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: homepage-images
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: proxmox-flashpool
+  volumeName: homepage-images
