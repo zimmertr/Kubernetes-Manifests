@@ -3,6 +3,7 @@ kind: Rollout
 metadata:
   name: personal-website
 spec:
+  replicas: 3
   analysis:
     successfulRunHistoryLimit: 1
     unsuccessfulRunHistoryLimit: 1
@@ -45,7 +46,6 @@ spec:
             name: personal-website
             routes:
               - personal-website-stable
-  replicas: 3
   template:
     metadata:
       labels:
