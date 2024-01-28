@@ -14,7 +14,11 @@ spec:
       initContainers:
         - name: bootstrap-volume
           image: busybox
-          command: ["sh", "-c", "cp /config/settings.yaml /app/config/settings.yaml"]
+          command:
+            - sh
+            - -c
+            - cp /config/settings.yaml /app/config/settings.yaml
+            - cp /config/background.jpg /app/config/background.jpg
           volumeMounts:
             - name: homepage-data
               mountPath: /app/config
