@@ -3,7 +3,7 @@
 REPO=zimmertr/Kubernetes-Manifests
 BRANCH=main
 
-timestmap(){
+timestamp(){
   echo "**************************************"
   echo $(date +"%m/%d/%Y-%H:%M:%S") " - Seeding $1"
   echo "**************************************"
