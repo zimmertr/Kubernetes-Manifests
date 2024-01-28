@@ -6,3 +6,4 @@ startUrl: http://hub.sol.milkyway/
 # Cannot be volume mounted in by ConfigMap as that resource cannot exceed 1Mb in size
 background: https://raw.githubusercontent.com/zimmertr/Kubernetes-Manifests/main/misc/homepage/files/background.jpg
 cardBlur: xl
+favicon: https://raw.githubusercontent.com/zimmertr/Kubernetes-Manifests/main/misc/homepage/files/favicon.jpg
