@@ -1,3 +1,5 @@
+namespace: personal-website
+
 resources:
   - resources/namespace.yml
   - resources/analysisTemplate.yml
@@ -9,7 +11,8 @@ resources:
   # - resources/cilium/gateway.yml
   # - resources/cilium/httpRoute.yml
 
-namespace: personal-website
+commonLabels:
+  app.kubernetes.io/name: personal-website
 
 configMapGenerator:
   - name: personal-website-conf

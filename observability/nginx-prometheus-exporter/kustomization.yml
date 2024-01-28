@@ -1,9 +1,12 @@
+namespace: nginx-exporter
+
 resources:
   - resources/namespace.yml
   - resources/deployment.yml
   - resources/service.yml
 
-namespace: nginx-exporter
+commonLabels:
+  app.kubernetes.io/name: nginx-exporter
 
 images:
   - name: nginx/nginx-prometheus-exporter
