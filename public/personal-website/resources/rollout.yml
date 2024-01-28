@@ -52,6 +52,7 @@ spec:
             name: personal-website
             routes:
               - personal-website-stable
+  replicas: 10
   template:
     metadata:
       labels:
