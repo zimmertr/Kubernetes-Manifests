@@ -29,8 +29,7 @@ spec:
                       value: "{{ args.endpoint }}"
                     command:
                       - "/bin/sh"
-                      - "-c"
-                      - "sleep 10000"
+                      - "/tmp/test-connection.sh"
                 volumes:
                   - name: test-connection-sh
                     configMap:
