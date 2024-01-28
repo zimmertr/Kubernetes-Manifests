@@ -36,15 +36,8 @@ spec:
                     value: "http://tjzimmerman.com/"
                   - name: header
                     value: "experiment: true"
-        - setWeight: 10
-        - setWeight: 20
-        - setWeight: 30
-        - setWeight: 40
-        - setWeight: 50
-        - setWeight: 60
-        - setWeight: 70
-        - setWeight: 80
-        - setWeight: 90
+        - setWeight: 33
+        - setWeight: 66
         - setWeight: 100
       trafficRouting:
         istio:
@@ -52,7 +45,7 @@ spec:
             name: personal-website
             routes:
               - personal-website-stable
-  replicas: 10
+  replicas: 3
   template:
     metadata:
       labels:
