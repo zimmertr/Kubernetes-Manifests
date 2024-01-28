@@ -14,5 +14,5 @@ helmCharts:
     valuesFile: values.yml
     version: 56.2.1 # https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
     additionalValuesFiles:
-      # - values-scrape-istio.yml
+      - values-scrape-istio.yml
       - values-scrape-nginx-exporter.yml
