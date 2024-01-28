@@ -11,6 +11,15 @@ spec:
       labels:
         app: homepage
     spec:
+      initContainers:
+        - name: bootstrap-volume
+          image: busybox
+          command: ["sh", "-c", "cp /config/settings.yaml /app/config/settings.yaml"]
+          volumeMounts:
+            - name: homepage-data
+              mountPath: /app/config
+            - name: homepage-settings
+              mountPath: /config
       containers:
         - name: homepage
           image: ghcr.io/gethomepage/homepage
@@ -28,4 +37,6 @@ spec:
         - name: homepage-data
           persistentVolumeClaim:
             claimName: homepage-data
-        - name: homepage-downloads
+        - name: homepage-settings
+          configMap:
+            name: homepage-settings
