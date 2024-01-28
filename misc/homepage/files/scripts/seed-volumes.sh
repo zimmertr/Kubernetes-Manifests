@@ -4,10 +4,10 @@ REPO=zimmertr/Kubernetes-Manifests
 BRANCH=main
 
 timestamp(){
+  echo
   echo "**************************************"
   echo $(date +"%m/%d/%Y-%H:%M:%S") " - Seeding $1"
   echo "**************************************"
-  echo
 }
 
 seed_configs(){
