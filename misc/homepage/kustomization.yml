@@ -18,6 +18,7 @@ configMapGenerator:
       - PGID="65534"
   - name: homepage-settings
     files:
+      - files/configs/bookmarks.yaml
       - files/configs/services.yaml
       - files/configs/settings.yaml
   - name: homepage-seed-script
