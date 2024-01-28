@@ -22,4 +22,4 @@ generatorOptions:
 
 images:
   - name: ghcr.io/zimmertr/personal-website
-    newTag: main-4b124e2
+    newTag: main-58f3cb3
