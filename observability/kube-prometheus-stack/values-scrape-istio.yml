@@ -12,7 +12,7 @@ grafana:
           options:
             path: /var/lib/grafana/dashboards/standard
   dashboards:
-    Istio:
+    default:
       Istio-Control-Plane:
         gnetId: 7645
         datasource: Prometheus

@@ -12,7 +12,7 @@ grafana:
           options:
             path: /var/lib/grafana/dashboards/standard
   dashboards:
-    NGINX:
+    default:
       NGINX:
         gnetId: 11199
         datasource: Prometheus
