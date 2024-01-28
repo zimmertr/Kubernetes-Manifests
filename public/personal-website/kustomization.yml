@@ -24,3 +24,5 @@ images:
   - name: ghcr.io/zimmertr/personal-website
     # newTag: main-61d7f34
     newTag: main-58f3cb3 # Canary Banner
+
+replicas: 10
