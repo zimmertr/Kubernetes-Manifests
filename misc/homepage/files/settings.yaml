@@ -1,0 +1,7 @@
+# https://gethomepage.dev/latest/configs/settings
+
+title: sol.milkyway
+startUrl: http://hub.sol.milkyway/
+
+# Cannot be volume mounted in by ConfigMap as that resource cannot exceed 1Mb in size
+background: https://github.com/zimmertr/Kubernetes-Manifests/tree/main/misc/homepage/files/background.jpg
