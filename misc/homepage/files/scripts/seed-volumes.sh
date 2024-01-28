@@ -1,6 +1,6 @@
 #!/bin/bash
 
-REPO=$REPO
+REPO=zimmertr/Kubernetes-Manifests
 BRANCH=main
 
 seed_configs(){
