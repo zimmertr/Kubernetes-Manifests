@@ -11,8 +11,20 @@ grafana:
           editable: false
           options:
             path: /var/lib/grafana/dashboards/standard
+      providers:
+        - name: 'NGINX'
+          orgId: 1
+          folder: 'NGINX'
+          type: file
+          disableDeletion: true
+          editable: true
+          options:
+            path: /var/lib/grafana/dashboards/standard
   dashboards:
     default:
+      NGINX:
+        gnetId: 11199
+        datasource: Prometheus
       Istio-Control-Plane:
         gnetId: 7645
         datasource: Prometheus
