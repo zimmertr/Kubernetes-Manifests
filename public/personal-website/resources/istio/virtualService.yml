@@ -18,16 +18,6 @@ spec:
     - 'mesh'
     - 'personal-website'
   http:
-    - name: personal-website-experiment
-      match:
-        - headers:
-            experiment:
-              exact: "true"
-      route:
-        - destination:
-            host: personal-website-experiment
-            port:
-              number: 80
     - name: personal-website-stable
       route:
         - destination:
