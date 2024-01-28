@@ -9,6 +9,10 @@ spec:
     - 'tjzimmerman.dev'
     - 'www.tjzimmerman.com'
     - 'www.tjzimmerman.dev'
+    - 'personal-website-stable'
+    - 'personal-website-stable.personal-website'
+    - 'personal-website-stable.personal-website.svc'
+    - 'personal-website-stable.personal-website.svc.cluster'
     - 'personal-website-stable.personal-website.svc.cluster.local'
   gateways:
     - 'mesh'
