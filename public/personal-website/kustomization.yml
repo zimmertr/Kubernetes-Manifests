@@ -11,9 +11,6 @@ resources:
   # - resources/cilium/gateway.yml
   # - resources/cilium/httpRoute.yml
 
-commonLabels:
-  app.kubernetes.io/name: personal-website
-
 configMapGenerator:
   - name: personal-website-conf
     namespace: personal-website
