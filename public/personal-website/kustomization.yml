@@ -12,15 +12,6 @@ resources:
   # - resources/cilium/httpRoute.yml
 
 configMapGenerator:
-  - name: personal-website-conf
-    namespace: personal-website
-    files:
-      - files/nginx.conf
-  - name: personal-website-files
-    namespace: personal-website
-    files:
-      - files/index.html
-      - files/styles.css
   - name: test-connection-sh
     namespace: personal-website
     files:
@@ -28,3 +19,7 @@ configMapGenerator:
 
 generatorOptions:
  disableNameSuffixHash: true
+
+images:
+  - name: ghcr.io/zimmertr/personal-website
+    newTag: main-4b124e2
