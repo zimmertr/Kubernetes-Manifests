@@ -1,89 +1,115 @@
+# https://gethomepage.dev/latest/configs/services/
+
 - Argo:
   - Argo CD:
       description: europa.sol.milkyway
       href: https://europa.sol.milkyway/
       icon: argocd.png
+      siteMonitor: https://europa.sol.milkyway/
   - Argo Rollouts:
       description: umbriel.sol.milkyway
       href: http://umbriel.sol.milkyway/rollouts/
       icon: argocd.png
+      siteMonitor: http://umbriel.sol.milkyway/rollouts/
   - Argo Workflows:
       description: miranda.sol.milkyway
       href: http://miranda.sol.milkyway/
       icon: argocd.png
+      siteMonitor: http://miranda.sol.milkyway/
 
 - Media:
   - Plex:
       description: janus.sol.milkyway
       href: http://janus.sol.milkyway:32400/web/index.html
       icon: plex.png
+      siteMonitor: http://janus.sol.milkyway:32400/web/index.html
   - Radarr:
       description: deimos.sol.milkyway
       href: http://deimos.sol.milkyway/
       icon: radarr.png
+      siteMonitor: http://deimos.sol.milkyway/
   - Sonarr:
       description: phobos.sol.milkyway
       href: http://phobos.sol.milkyway
       icon: sonarr.png
+      siteMonitor: http://phobos.sol.milkyway
+      widget:
+        type: sonarr
+        url: http://phobos.sol.milkyway
+        key: f8c7de74633d4cae9c819dc04b279af4
   - ruTorrent:
       description: io.sol.milkyway
       href: http://io.sol.milkyway
       icon: rutorrent.png
+      siteMonitor: http://io.sol.milkyway
 
 - Networking:
   - AdGuard Home:
       description: sol.sol.milkyway:3000
       href: http://sol.sol.milkyway:3000/
       icon: adguard-home.png
+      siteMonitor: http://sol.sol.milkyway:3000/
   - OPNsense:
       description: sol.sol.milkyway
       href: http://sol.sol.milkyway
       icon: opnsense.png
+      siteMonitor: http://sol.sol.milkyway
   - Proxmox:
       description: earth.sol.milkyway
       href: https://earth.sol.milkyway:8006/
       icon: proxmox.png
+      siteMonitor: https://earth.sol.milkyway:8006/
   - Supermicro IPMI:
       description: earth-ipmi.sol.milkyway
       href: https://earth-ipmi.sol.milkyway/
       icon: /icons/supermicro-ipmi.png
+      siteMonitor: https://earth-ipmi.sol.milkyway/
   - UniFi:
       description: sol.sol.milkyway:8443
       href: https://sol.sol.milkyway:8443/
       icon: unifi.png
+      siteMonitor: https://sol.sol.milkyway:8443/
 
 - Observability:
   - Alertmanager:
       description: triton.sol.milkyway
       href: http://triton.sol.milkyway:9093
       icon: alertmanager.png
+      siteMonitor: http://triton.sol.milkyway:9093
   - Grafana:
       description: mimas.sol.milkyway
       href: http://mimas.sol.milkyway/
       icon: grafana.png
+      siteMonitor: http://mimas.sol.milkyway/
   - Kiali:
       description: oberon.sol.milkyway
       href: http://oberon.sol.milkyway/
       icon: /icons/kiali.png
+      siteMonitor: http://oberon.sol.milkyway/
   - NGINX Exporter:
       description: styx.sol.milkyway
       href: http://styx.sol.milkyway:9113/
       icon: nginx.png
+      siteMonitor: http://styx.sol.milkyway:9113/
   - Netdata:
       description: sol.sol.milkyway
       href: http://sol.sol.milkyway:19999/v1/
       icon: netdata.png
+      siteMonitor: http://sol.sol.milkyway:19999/v1/
   - Prometheus:
       description: titan.sol.milkyway
       href: http://titan.sol.milkyway:9090
       icon: prometheus.png
+      siteMonitor: http://titan.sol.milkyway:9090
   - Tautulli:
       description: charon.sol.milkyway
       href: http://charon.sol.milkyway/
       icon: tautulli.png
+      siteMonitor: http://charon.sol.milkyway/
 
 - Public:
   - Personal Website:
       description: tjzimmerman.com
       href: https://tjzimmerman.com
       icon: nginx.png
+      siteMonitor: https://tjzimmerman.com
