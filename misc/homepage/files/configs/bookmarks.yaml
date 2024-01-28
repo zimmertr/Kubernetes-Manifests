@@ -1,1 +1,11 @@
 # https://gethomepage.dev/latest/configs/bookmarks/
+
+- '':
+    - Lab Configuration:
+        - icon: google-sheets.png
+          href: https://docs.google.com/spreadsheets/d/1eLcDyCJQVCIT3InPzmuBjl_3FxOmiC975Pl0gWBNWuE
+          description: Lab Configuration
+    - RennovateBot:
+        - icon: github-light.png
+          href: https://developer.mend.io/github/zimmertr
+          description: RennovateBot
