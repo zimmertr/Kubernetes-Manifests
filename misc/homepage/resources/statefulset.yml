@@ -15,7 +15,7 @@ spec:
         - name: seed-volumes
           image: busybox
           command:
-            - /tmp/seed-volumes.sh
+            - sleep infinity
           volumeMounts:
             - name: homepage-data
               mountPath: /app/config
