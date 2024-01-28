@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: homepage
+spec:
+  selector:
+    matchLabels:
+      app: homepage
+  template:
+    metadata:
+      labels:
+        app: homepage
+    spec:
+      containers:
+        - name: homepage
+          image: ghcr.io/gethomepage/homepage
+          envFrom:
+            - configMapRef:
+                name: homepage-env-vars
+          ports:
+            - name: "http"
+              containerPort: 3000
+              protocol: TCP
+          volumeMounts:
+            - name: homepage-data
+              mountPath: /app/config
+      volumes:
+        - name: homepage-data
+          persistentVolumeClaim:
+            claimName: homepage-data
+        - name: homepage-downloads

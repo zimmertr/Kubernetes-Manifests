@@ -1,0 +1,18 @@
+namespace: homepage-system
+
+resources:
+  - resources/namespace.yml
+  - resources/persistentVolume.yml
+  - resources/persistentVolumeClaim.yml
+  - resources/service.yml
+  - resources/statefulset.yml
+
+images:
+  - name: ghcr.io/gethomepage/homepage
+    newTag: v0.8.4 # https://github.com/gethomepage/homepage/pkgs/container/homepage
+
+configMapGenerator:
+  - name: homepage-env-vars
+    literals:
+      - PUID="65534"
+      - PGID="65534"

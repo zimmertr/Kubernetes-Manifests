@@ -34,6 +34,8 @@ spec:
         revision: main
         directories:
           - path: "public/*"
+          - exclude: true
+            path: "public/*.disabled"
   syncPolicy:
     preserveResourcesOnDeletion: false
   template:

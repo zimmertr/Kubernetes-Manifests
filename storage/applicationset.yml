@@ -34,6 +34,8 @@ spec:
         revision: main
         directories:
           - path: "storage/*"
+          - exclude: true
+            path: "storage/*.disabled"
   syncPolicy:
     preserveResourcesOnDeletion: false
   template:
