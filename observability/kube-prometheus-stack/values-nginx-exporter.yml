@@ -3,16 +3,16 @@ grafana:
     dashboardproviders.yaml:
       apiVersion: 1
       providers:
-        - name: 'NGINX'
+        - name: nginx
           orgId: 1
           folder: 'NGINX'
           type: file
           disableDeletion: true
           editable: true
           options:
-            path: /var/lib/grafana/dashboards/standard
+            path: /var/lib/grafana/dashboards/nginx
   dashboards:
-    default:
+    nginx:
       NGINX:
         gnetId: 11199
         datasource: Prometheus

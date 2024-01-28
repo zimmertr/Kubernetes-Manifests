@@ -3,16 +3,16 @@ grafana:
     dashboardproviders.yaml:
       apiVersion: 1
       providers:
-        - name: "Istio"
+        - name: istio
           orgId: 1
           folder: "Istio"
           type: file
           disableDeletion: true
           editable: false
           options:
-            path: /var/lib/grafana/dashboards/standard
+            path: /var/lib/grafana/dashboards/istio
   dashboards:
-    default:
+    istio:
       Istio-Control-Plane:
         gnetId: 7645
         datasource: Prometheus
