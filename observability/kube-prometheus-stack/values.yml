@@ -51,7 +51,7 @@ grafana:
       Istio-Workload:
         gnetId: 7630
         datasource: Prometheus
-    nginx
+    nginx:
       NGINX:
         gnetId: 11199
         datasource: Prometheus
