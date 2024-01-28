@@ -7,3 +7,4 @@ startUrl: http://hub.sol.milkyway/
 background: https://raw.githubusercontent.com/zimmertr/Kubernetes-Manifests/main/misc/homepage/files/background.jpg
 cardBlur: xl
 favicon: https://raw.githubusercontent.com/zimmertr/Kubernetes-Manifests/main/misc/homepage/files/favicon.png
+color: stone
