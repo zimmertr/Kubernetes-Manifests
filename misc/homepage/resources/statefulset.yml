@@ -43,6 +43,7 @@ spec:
               mountPath: /app/public/icons
             - name: homepage-images
               mountPath: /app/public/images
+      serviceAccountName: homepage
       volumes:
         - name: homepage-data
           persistentVolumeClaim:

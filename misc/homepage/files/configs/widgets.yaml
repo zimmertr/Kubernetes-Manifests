@@ -1,0 +1,16 @@
+# https://gethomepage.dev/latest/widgets/info/datetime/
+
+- datetime:
+    text_size: xl
+    format:
+      timeStyle: medium
+
+- greeting:
+    text_size: xl
+    text: Sol.Milkyway
+
+- openmeteo:
+    latitude: 47.5301
+    longitude: -122.0326
+    units: imperial
+    cache: 5

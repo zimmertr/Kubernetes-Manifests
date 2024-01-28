@@ -15,8 +15,10 @@ seed_configs(){
 
   mkdir -p /app/config/
   cp /config/bookmarks.yaml /app/config/bookmarks.yaml
+  cp /config/kubernetes.yaml /app/config/kubernetes.yaml
   cp /config/services.yaml /app/config/services.yaml
   cp /config/settings.yaml /app/config/settings.yaml
+  cp /config/widgets.yaml /app/config/widgets.yaml
 }
 
 seed_icons(){
