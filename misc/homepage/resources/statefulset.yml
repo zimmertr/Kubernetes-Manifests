@@ -12,20 +12,10 @@ spec:
         app: homepage
     spec:
       initContainers:
-        - name: bootstrap-volume
+        - name: seed-volumes
           image: busybox
           command:
-            - sh
-            - -c
-            - mkdir -p /app/config/
-            - cp /config/services.yaml /app/config/services.yaml
-            - cp /config/settings.yaml /app/config/settings.yaml
-            - mkdir -p /app/public/images
-            - wget -O /app/public/images/background.jpg https://raw.githubusercontent.com/zimmertr/Kubernetes-Manifests/main/misc/homepage/files/background.jpg
-            - wget -O /app/public/images/favicon.png https://raw.githubusercontent.com/zimmertr/Kubernetes-Manifests/main/misc/homepage/files/favicon.png
-            - mkdir -p /app/public/icons
-            - wget -O /app/public/icons/supermicro-ipmi.png https://raw.githubusercontent.com/zimmertr/Kubernetes-Manifests/main/misc/homepage/files/supermicro-ipmi.png
-            - wget -O /app/public/icons/kiali.png https://raw.githubusercontent.com/zimmertr/Kubernetes-Manifests/main/misc/homepage/files/kiali.png
+            - /tmp/seed-volumes.sh
           volumeMounts:
             - name: homepage-data
               mountPath: /app/config
@@ -35,6 +25,8 @@ spec:
               mountPath: /app/public/images
             - name: homepage-settings
               mountPath: /config
+            - name: homepage-seed-script
+              mountPath: /tmp
       containers:
         - name: homepage
           image: ghcr.io/gethomepage/homepage
@@ -65,3 +57,6 @@ spec:
         - name: homepage-settings
           configMap:
             name: homepage-settings
+        - name: homepage-seed-script
+          configMap:
+            name: homepage-seed-script
