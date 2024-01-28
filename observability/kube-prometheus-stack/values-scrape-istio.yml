@@ -1,49 +1,49 @@
-# grafana:
-#   dashboardProviders:
-#     dashboardproviders.yaml:
-#       apiVersion: 1
-#       providers:
-#         - name: "Istio"
-#           orgId: 1
-#           folder: "Istio"
-#           type: file
-#           disableDeletion: true
-#           editable: false
-#           options:
-#             path: /var/lib/grafana/dashboards/standard
-#   dashboards:
-#     default:
-#       Istio-Control-Plane:
-#         gnetId: 7645
-#         datasource: Prometheus
-#       Istio-Mesh:
-#         gnetId: 7639
-#         datasource: Prometheus
-#       Istio-Service:
-#         gnetId: 7636
-#         datasource: Prometheus
-#       Istio-Workload:
-#         gnetId: 7630
-#         datasource: Prometheus
+grafana:
+  dashboardProviders:
+    dashboardproviders.yaml:
+      apiVersion: 1
+      providers:
+        - name: "Istio"
+          orgId: 1
+          folder: "Istio"
+          type: file
+          disableDeletion: true
+          editable: false
+          options:
+            path: /var/lib/grafana/dashboards/Istio
+  dashboards:
+    default:
+      Istio-Control-Plane:
+        gnetId: 7645
+        datasource: Prometheus
+      Istio-Mesh:
+        gnetId: 7639
+        datasource: Prometheus
+      Istio-Service:
+        gnetId: 7636
+        datasource: Prometheus
+      Istio-Workload:
+        gnetId: 7630
+        datasource: Prometheus
 
-# prometheus:
-#   prometheusSpec:
-#     additionalScrapeConfigs:
-#       - job_name: 'istiod'
-#         kubernetes_sd_configs:
-#           - role: endpoints
-#             namespaces:
-#               names:
-#                 - istio-system
-#         relabel_configs:
-#           - source_labels: [__meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
-#             action: keep
-#             regex: istiod;http-monitoring
-#       - job_name: 'envoy-stats'
-#         metrics_path: /stats/prometheus
-#         kubernetes_sd_configs:
-#           - role: pod
-#         relabel_configs:
-#           - source_labels: [__meta_kubernetes_pod_container_port_name]
-#             action: keep
-#             regex: '.*-envoy-prom'
+prometheus:
+  prometheusSpec:
+    additionalScrapeConfigs:
+      - job_name: 'istiod'
+        kubernetes_sd_configs:
+          - role: endpoints
+            namespaces:
+              names:
+                - istio-system
+        relabel_configs:
+          - source_labels: [__meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
+            action: keep
+            regex: istiod;http-monitoring
+      - job_name: 'envoy-stats'
+        metrics_path: /stats/prometheus
+        kubernetes_sd_configs:
+          - role: pod
+        relabel_configs:
+          - source_labels: [__meta_kubernetes_pod_container_port_name]
+            action: keep
+            regex: '.*-envoy-prom'
