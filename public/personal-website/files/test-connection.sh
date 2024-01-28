@@ -1,5 +1,7 @@
 #!/bin/sh
 
+sleep 5
+
 curl -I -H "experiment: true" https://tjzimmerman.com
 
 HTTP_STATUS_CODE=$(curl -s -o /dev/null -w "%{http_code}" -H "$HEADER" "$ENDPOINT")
