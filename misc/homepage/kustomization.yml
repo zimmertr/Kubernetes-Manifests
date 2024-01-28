@@ -18,4 +18,5 @@ configMapGenerator:
       - PGID="65534"
   - name: homepage-settings
     files:
+      - files/services.yaml
       - files/settings.yaml
