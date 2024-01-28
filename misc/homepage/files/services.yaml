@@ -46,7 +46,7 @@
   - Supermicro IPMI:
       description: earth-ipmi.sol.milkyway
       href: https://earth-ipmi.sol.milkyway/
-      icon: /icons/supermicro-ipmi.svg
+      icon: /icons/supermicro-ipmi.png
   - UniFi:
       description: sol.sol.milkyway:8443
       href: https://sol.sol.milkyway:8443/
@@ -64,7 +64,7 @@
   - Kiali:
       description: oberon.sol.milkyway
       href: http://oberon.sol.milkyway/
-      icon: /icons/kiali.svg
+      icon: /icons/kiali.png
   - NGINX Exporter:
       description: styx.sol.milkyway
       href: http://styx.sol.milkyway:9113/

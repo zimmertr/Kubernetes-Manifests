@@ -17,15 +17,16 @@ spec:
           command:
             - sh
             - -c
-            - mkdir -p /app/config/
-            - cp /config/services.yaml /app/config/services.yaml
-            - cp /config/settings.yaml /app/config/settings.yaml
-            - mkdir -p /app/public/images
-            - wget -O /app/public/images/background.jpg https://raw.githubusercontent.com/zimmertr/Kubernetes-Manifests/main/misc/homepage/files/background.jpg
-            - wget -O /app/public/images/favicon.png https://raw.githubusercontent.com/zimmertr/Kubernetes-Manifests/main/misc/homepage/files/favicon.png
-            - mkdir -p /app/public/icons
-            - wget -O /app/public/icons/supermicro-ipmi.png https://raw.githubusercontent.com/zimmertr/Kubernetes-Manifests/main/misc/homepage/files/supermicro-ipmi.png
-            - wget -O /app/public/icons/kiali.png https://raw.githubusercontent.com/zimmertr/Kubernetes-Manifests/main/misc/homepage/files/kiali.png
+            - |
+              mkdir -p /app/config/
+              cp /config/services.yaml /app/config/services.yaml
+              cp /config/settings.yaml /app/config/settings.yaml
+              mkdir -p /app/public/images
+              wget -O /app/public/images/background.jpg https://raw.githubusercontent.com/zimmertr/Kubernetes-Manifests/main/misc/homepage/files/background.jpg
+              wget -O /app/public/images/favicon.png https://raw.githubusercontent.com/zimmertr/Kubernetes-Manifests/main/misc/homepage/files/favicon.png
+              mkdir -p /app/public/icons
+              wget -O /app/public/icons/supermicro-ipmi.png https://raw.githubusercontent.com/zimmertr/Kubernetes-Manifests/main/misc/homepage/files/supermicro-ipmi.png
+              wget -O /app/public/icons/kiali.png https://raw.githubusercontent.com/zimmertr/Kubernetes-Manifests/main/misc/homepage/files/kiali.png
           volumeMounts:
             - name: homepage-data
               mountPath: /app/config
