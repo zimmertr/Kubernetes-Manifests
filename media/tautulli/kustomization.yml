@@ -8,7 +8,7 @@ resources:
   - resources/statefulset.yml
 
 images:
-  - name: linuxserver/tautulli
+  - name: tautulli/tautulli
     newTag: 2.13.4 # https://hub.docker.com/r/linuxserver/tautulli/tags
 
 configMapGenerator:
