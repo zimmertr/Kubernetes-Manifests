@@ -14,6 +14,7 @@ seed_configs(){
   timestamp "Configs"
 
   mkdir -p /app/config/
+  cp /config/bookmarks.yaml /app/config/bookmarks.yaml
   cp /config/services.yaml /app/config/services.yaml
   cp /config/settings.yaml /app/config/settings.yaml
 }
