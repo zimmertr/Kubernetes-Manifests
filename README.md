@@ -58,3 +58,5 @@ Then you can apply ApplicationSets for a group of applications. For example:
 ```bash
 kubectl apply -f argo/applicationset.yml
 ```
+
+![Alt text](https://raw.githubusercontent.com/zimmertr/Kubernetes-Manifests/main/screenshot.png "Website Screenshot")
