@@ -16,7 +16,7 @@ alertmanager:
     type: LoadBalancer
 
 grafana:
-  adminPassword: prom-operator
+  adminPassword: CHANGEME
   persistence:
     type: pvc
     enabled: true
