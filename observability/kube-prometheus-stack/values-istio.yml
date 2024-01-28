@@ -47,3 +47,12 @@ prometheus:
           - source_labels: [__meta_kubernetes_pod_container_port_name]
             action: keep
             regex: '.*-envoy-prom'
+    volumes:
+      - name: config-volume
+          configMap:
+          name: prometheus
+      - name: istio-certs
+          secret:
+              defaultMode: 420
+              optional: true
+              secretName: istio.default
