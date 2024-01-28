@@ -18,7 +18,8 @@ spec:
             - sh
             - -c
             - |
-              sleep 10000
+              cp /app/seed-volumes.sh /tmp/seed-volumes.sh
+              /tmp/seed-volumes.sh
           volumeMounts:
             - name: homepage-data
               mountPath: /app/config
