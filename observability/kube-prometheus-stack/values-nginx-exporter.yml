@@ -1,21 +1,21 @@
-# grafana:
-#   dashboardProviders:
-#     dashboardproviders.yaml:
-#       apiVersion: 1
-#       providers:
-#         - name: 'NGINX'
-#           orgId: 1
-#           folder: 'NGINX'
-#           type: file
-#           disableDeletion: true
-#           editable: true
-#           options:
-#             path: /var/lib/grafana/dashboards/standard
-#   dashboards:
-#     default:
-#       NGINX:
-#         gnetId: 11199
-#         datasource: Prometheus
+grafana:
+  dashboardProviders:
+    dashboardproviders.yaml:
+      apiVersion: 1
+      providers:
+        - name: 'NGINX'
+          orgId: 1
+          folder: 'NGINX'
+          type: file
+          disableDeletion: true
+          editable: true
+          options:
+            path: /var/lib/grafana/dashboards/standard
+  dashboards:
+    default:
+      NGINX:
+        gnetId: 11199
+        datasource: Prometheus
 
 prometheus:
   prometheusSpec:
