@@ -1,3 +1,30 @@
+grafana:
+  dashboardProviders:
+    apiVersion: 1
+    providers:
+      - name: "Istio"
+        orgId: 1
+        folder: "Istio"
+        type: file
+        disableDeletion: true
+        editable: false
+        options:
+          path: /var/lib/grafana/dashboards/standard
+  dashboards:
+    default:
+      Istio-Control-Plane:
+        gnetId: 7645
+        datasource: Prometheus
+      Istio-Mesh:
+        gnetId: 7639
+        datasource: Prometheus
+      Istio-Service:
+        gnetId: 7636
+        datasource: Prometheus
+      Istio-Workload:
+        gnetId: 7630
+        datasource: Prometheus
+
 prometheus:
   prometheusSpec:
     additionalScrapeConfigs:
