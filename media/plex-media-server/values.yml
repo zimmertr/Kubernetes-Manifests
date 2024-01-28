@@ -12,7 +12,7 @@ affinity:
 
 extraEnv:
   ALLOWED_NETWORKS: "192.168.0.0/16"
-  PLEX_CLAIM: "claim-Sn1HXTT2AHd_VrUdsry2"
+  PLEX_CLAIM: "claim-92FEXLyKHn8exMvVZHy6"
   TZ: "America/Los_Angeles"
 
 extraVolumes:
