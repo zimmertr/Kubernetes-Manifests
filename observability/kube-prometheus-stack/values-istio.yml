@@ -49,10 +49,10 @@ prometheus:
             regex: '.*-envoy-prom'
     volumes:
       - name: config-volume
-          configMap:
+        configMap:
           name: prometheus
       - name: istio-certs
-          secret:
-              defaultMode: 420
-              optional: true
-              secretName: istio.default
+        secret:
+          defaultMode: 420
+          optional: true
+          secretName: istio.default
