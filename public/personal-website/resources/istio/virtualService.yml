@@ -9,7 +9,7 @@ spec:
     - 'tjzimmerman.dev'
     - 'www.tjzimmerman.com'
     - 'www.tjzimmerman.dev'
-    # - 'personal-website-stable.personal-website.svc.cluster.local'
+    - 'personal-website-stable.personal-website.svc.cluster.local'
   gateways:
     - 'personal-website'
   http:
