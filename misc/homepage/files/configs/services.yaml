@@ -59,6 +59,11 @@
       href: http://sol.sol.milkyway:3000/
       icon: adguard-home.png
       siteMonitor: http://sol.sol.milkyway:3000/
+  - Netgear Genie:
+      description: betelgeuse.sol.milkyway
+      href: http://betelgeuse.sol.milkyway/
+      icon: netgear.png
+      siteMonitor: http://betelgeuse.sol.milkyway/
   - OPNsense:
       description: sol.sol.milkyway
       href: http://sol.sol.milkyway
