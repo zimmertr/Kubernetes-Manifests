@@ -14,7 +14,7 @@ spec:
       initContainers:
         - name: seed-volumes
           image: busybox
-          command: /tmp/seed-volumes.sh
+          command: ["/tmp/seed-volumes.sh"]
           volumeMounts:
             - name: homepage-data
               mountPath: /app/config
