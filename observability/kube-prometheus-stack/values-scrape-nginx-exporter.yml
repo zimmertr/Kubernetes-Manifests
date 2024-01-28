@@ -8,7 +8,7 @@ grafana:
           folder: 'NGINX'
           type: file
           disableDeletion: true
-          editable: false
+          editable: true
           options:
             path: /var/lib/grafana/dashboards/standard
   dashboards:
