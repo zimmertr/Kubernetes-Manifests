@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 REPO=zimmertr/Kubernetes-Manifests
 BRANCH=main
