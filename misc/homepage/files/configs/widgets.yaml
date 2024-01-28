@@ -14,3 +14,12 @@
     longitude: -122.0326
     units: imperial
     cache: 5
+
+- kubernetes:
+    cluster:
+      show: false
+    nodes:
+      show: true
+      cpu: true
+      memory: true
+      showLabel: true

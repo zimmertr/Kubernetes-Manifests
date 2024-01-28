@@ -13,4 +13,5 @@ layout:
     style: row
     columns: 4
 
+headerStyle: boxed
 hideVersion: true

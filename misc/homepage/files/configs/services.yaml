@@ -6,16 +6,22 @@
       href: https://europa.sol.milkyway/
       icon: argocd.png
       siteMonitor: https://europa.sol.milkyway/
+      namespace: argo-system
+      app: argocd-server
   - Argo Rollouts:
       description: umbriel.sol.milkyway
       href: http://umbriel.sol.milkyway/rollouts/
       icon: argocd.png
       siteMonitor: http://umbriel.sol.milkyway/rollouts/
+      namespace: argo-system
+      app: argo-rollouts
   - Argo Workflows:
       description: miranda.sol.milkyway
       href: http://miranda.sol.milkyway/
       icon: argocd.png
       siteMonitor: http://miranda.sol.milkyway/
+      namespace: argo-system
+      app: argo-workflows-server
 
 - Media:
   - Plex:
@@ -23,21 +29,29 @@
       href: http://janus.sol.milkyway:32400/web/index.html
       icon: plex.png
       siteMonitor: http://janus.sol.milkyway:32400/web/index.html
+      namespace: plex-media-server-system
+      app: plex-media-server
   - Radarr:
       description: deimos.sol.milkyway
       href: http://deimos.sol.milkyway/
       icon: radarr.png
       siteMonitor: http://deimos.sol.milkyway/
+      namespace: radarr-system
+      app: radarr
   - Sonarr:
       description: phobos.sol.milkyway
       href: http://phobos.sol.milkyway
       icon: sonarr.png
       siteMonitor: http://phobos.sol.milkyway
+      namespace: sonarr-system
+      app: sonarr
   - ruTorrent:
       description: io.sol.milkyway
       href: http://io.sol.milkyway
       icon: rutorrent.png
       siteMonitor: http://io.sol.milkyway
+      namespace: rutorrent-system
+      app: rutorrent
 
 - Networking:
   - AdGuard Home:
@@ -49,7 +63,7 @@
       description: sol.sol.milkyway
       href: http://sol.sol.milkyway
       icon: opnsense.png
-      siteMonitor: http://sol.sol.milkyway
+      siteMonitor: https://sol.sol.milkyway
   - Proxmox:
       description: earth.sol.milkyway
       href: https://earth.sol.milkyway:8006/
@@ -72,21 +86,29 @@
       href: http://triton.sol.milkyway:9093
       icon: alertmanager.png
       siteMonitor: http://triton.sol.milkyway:9093
+      namespace: prometheus-system
+      app: alertmanager
   - Grafana:
       description: mimas.sol.milkyway
       href: http://mimas.sol.milkyway/
       icon: grafana.png
       siteMonitor: http://mimas.sol.milkyway/
+      namespace: prometheus-system
+      app: grafana
   - Kiali:
       description: oberon.sol.milkyway
-      href: http://oberon.sol.milkyway/
+      href: http://oberon.sol.milkyway:20001
       icon: /icons/kiali.png
-      siteMonitor: http://oberon.sol.milkyway/
+      siteMonitor: http://oberon.sol.milkyway:20001
+      namespace: istio-system
+      app: kiali
   - NGINX Exporter:
       description: styx.sol.milkyway
       href: http://styx.sol.milkyway:9113/
       icon: nginx.png
       siteMonitor: http://styx.sol.milkyway:9113/
+      namespace: nginx-exporter
+      app: nginx-exporter
   - Netdata:
       description: sol.sol.milkyway
       href: http://sol.sol.milkyway:19999/v1/
@@ -97,11 +119,15 @@
       href: http://titan.sol.milkyway:9090
       icon: prometheus.png
       siteMonitor: http://titan.sol.milkyway:9090
+      namespace: prometheus-system
+      app: prometheus
   - Tautulli:
       description: charon.sol.milkyway
       href: http://charon.sol.milkyway/
       icon: tautulli.png
       siteMonitor: http://charon.sol.milkyway/
+      namespace: tautulli-system
+      app: tautulli
 
 - Public:
   - Personal Website:
@@ -109,3 +135,5 @@
       href: https://tjzimmerman.com
       icon: nginx.png
       siteMonitor: https://tjzimmerman.com
+      namespace: personal-website
+      app: personal-website
