@@ -32,7 +32,7 @@
 
 - Networking:
   - AdGuard Home:
-      description: sol.sol.milkyway
+      description: sol.sol.milkyway:3000
       href: http://sol.sol.milkyway:3000/
       icon: adguard-home.png
   - OPNsense:
@@ -44,11 +44,11 @@
       href: https://earth.sol.milkyway:8006/
       icon: proxmox.png
   - Supermicro IPMI:
-      description: earth-ipmi.sol
+      description: earth-ipmi.sol.milkyway
       href: https://earth-ipmi.sol.milkyway/
       icon: /icons/supermicro-ipmi.svg
   - UniFi:
-      description: sol.sol.milkyway
+      description: sol.sol.milkyway:8443
       href: https://sol.sol.milkyway:8443/
       icon: unifi.png
 
