@@ -21,11 +21,11 @@ spec:
             - cp /config/services.yaml /app/config/services.yaml
             - cp /config/settings.yaml /app/config/settings.yaml
             - mkdir -p /app/public/images
-            - curl https://raw.githubusercontent.com/zimmertr/Kubernetes-Manifests/main/misc/homepage/files/background.jpg -o /app/public/images/background.jpg
-            - curl https://raw.githubusercontent.com/zimmertr/Kubernetes-Manifests/main/misc/homepage/files/favicon.png -o /app/public/images/favicon.png
+            - wget https://raw.githubusercontent.com/zimmertr/Kubernetes-Manifests/main/misc/homepage/files/background.jpg -o /app/public/images/background.jpg
+            - wget https://raw.githubusercontent.com/zimmertr/Kubernetes-Manifests/main/misc/homepage/files/favicon.png -o /app/public/images/favicon.png
             - mkdir -p /app/public/icons
-            - curl https://raw.githubusercontent.com/zimmertr/Kubernetes-Manifests/main/misc/homepage/files/supermicro-ipmi.svg -o /app/public/icons/supermicro-ipmi.svg
-            - curl https://raw.githubusercontent.com/zimmertr/Kubernetes-Manifests/main/misc/homepage/files/kiali.svg -o /app/public/icons/kiali.svg
+            - wget https://raw.githubusercontent.com/zimmertr/Kubernetes-Manifests/main/misc/homepage/files/supermicro-ipmi.svg -o /app/public/icons/supermicro-ipmi.svg
+            - wget https://raw.githubusercontent.com/zimmertr/Kubernetes-Manifests/main/misc/homepage/files/kiali.svg -o /app/public/icons/kiali.svg
           volumeMounts:
             - name: homepage-data
               mountPath: /app/config
