@@ -21,24 +21,24 @@ grafana:
     dashboardproviders.yaml:
       apiVersion: 1
       providers:
-        - name: "Istio"
+        - name: istio
           orgId: 1
           folder: "Istio"
           type: file
           disableDeletion: true
           editable: false
           options:
-            path: /var/lib/grafana/dashboards/standard
-        - name: 'NGINX'
+            path: /var/lib/grafana/dashboards/istio
+        - name: nginx
           orgId: 1
           folder: 'NGINX'
           type: file
           disableDeletion: true
           editable: true
           options:
-            path: /var/lib/grafana/dashboards/standard
+            path: /var/lib/grafana/dashboards/nginx
   dashboards:
-    default:
+    istio:
       Istio-Control-Plane:
         gnetId: 7645
         datasource: Prometheus
@@ -51,6 +51,7 @@ grafana:
       Istio-Workload:
         gnetId: 7630
         datasource: Prometheus
+    nginx
       NGINX:
         gnetId: 11199
         datasource: Prometheus
