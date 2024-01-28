@@ -4,6 +4,7 @@
     "config:recommended"
   ],
   "ignorePaths": [
+    "cilium/",
     "old/"
   ],
   "prConcurrentLimit": 0,

@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
         - name: tautulli
-          image: linuxserver/tautulli
+          image: tautulli/tautulli
           envFrom:
             - configMapRef:
                 name: tautulli-env-vars
