@@ -26,8 +26,7 @@ spec:
             - name: homepage-settings
               mountPath: /config
             - name: homepage-seed-script
-              mountPath: /
-              subPath: seed-volumes.sh
+              mountPath: /seed-volumes.sh
       containers:
         - name: homepage
           image: ghcr.io/gethomepage/homepage
