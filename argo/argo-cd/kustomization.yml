@@ -4,7 +4,7 @@ resources:
 helmCharts:
   - name: argo-cd
     repo: https://argoproj.github.io/argo-helm
-    version: 6.0.6 # https://artifacthub.io/packages/helm/argo/argo-cd?modal=changelog
+    version: 6.0.14 # https://artifacthub.io/packages/helm/argo/argo-cd?modal=changelog
     releaseName: argocd
     namespace: argo-system
     valuesFile: values.yml
