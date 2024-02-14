@@ -1,7 +1,7 @@
 helmCharts:
   - name: argo-rollouts
     repo: https://argoproj.github.io/argo-helm
-    version: 2.34.2 # https://artifacthub.io/packages/helm/argo/argo-rollouts?modal=changelog
+    version: 2.34.3 # https://artifacthub.io/packages/helm/argo/argo-rollouts?modal=changelog
     releaseName: argo-rollouts
     namespace: argo-system
     valuesFile: values.yml
