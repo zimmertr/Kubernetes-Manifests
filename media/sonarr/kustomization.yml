@@ -12,7 +12,7 @@ commonLabels:
 
 images:
   - name: linuxserver/sonarr
-    newTag: 4.0.1 # https://hub.docker.com/r/linuxserver/sonarr/tags
+    newTag: 4.0.2 # https://hub.docker.com/r/linuxserver/sonarr/tags
 
 configMapGenerator:
   - name: sonarr-env-vars
