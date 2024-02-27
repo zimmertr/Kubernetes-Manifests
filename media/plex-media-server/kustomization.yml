@@ -15,7 +15,7 @@ helmCharts:
     releaseName: plex-media-server
     repo: https://raw.githubusercontent.com/plexinc/pms-docker/gh-pages
     valuesFile: values.yml
-    version: 0.2.0
+    version: 0.2.1
 
 # The Helm Chart doesn't support disabling the dynamic config PersistentVolume.
 # I do want one, but I want to statically reference a Mountpoint instead.
