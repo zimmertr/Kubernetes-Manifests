@@ -11,7 +11,7 @@ helmCharts:
     includeCRDs: true
   - name: cni
     repo: https://istio-release.storage.googleapis.com/charts
-    version: 1.20.3 # https://artifacthub.io/packages/helm/istio-official/cni
+    version: 1.21.0 # https://artifacthub.io/packages/helm/istio-official/cni
     releaseName: istio-cni
     namespace: istio-system
     includeCRDs: true
