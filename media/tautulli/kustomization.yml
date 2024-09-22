@@ -12,7 +12,7 @@ commonLabels:
 
 images:
   - name: tautulli/tautulli
-    newTag: v2.13.4 # https://hub.docker.com/r/linuxserver/tautulli/tags
+    newTag: v2.14.5 # https://hub.docker.com/r/linuxserver/tautulli/tags
 
 configMapGenerator:
   - name: tautulli-env-vars
