@@ -5,7 +5,7 @@ resources:
 helmCharts:
   - name: metrics-server
     repo: https://kubernetes-sigs.github.io/metrics-server/
-    version: 3.12.0 # https://artifacthub.io/packages/helm/metrics-server/metrics-server?modal=changelog
+    version: 3.12.2 # https://artifacthub.io/packages/helm/metrics-server/metrics-server?modal=changelog
     releaseName: metrics-server
     namespace: metrics-server
     valuesFile: values.yml
