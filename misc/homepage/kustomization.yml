@@ -12,7 +12,7 @@ resources:
 
 images:
   - name: ghcr.io/gethomepage/homepage
-    newTag: v0.8.8 # https://github.com/gethomepage/homepage/pkgs/container/homepage
+    newTag: v0.10.9 # https://github.com/gethomepage/homepage/pkgs/container/homepage
 
 configMapGenerator:
   - name: homepage-env-vars
