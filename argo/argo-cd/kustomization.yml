@@ -8,6 +8,7 @@ helmCharts:
     # https://artifacthub.io/packages/helm/argo/argo-cd?modal=changelog
     version: 9.4.7 
     namespace: argo-system
+    releaseName: argocd
     valuesFile: values.yml
     additionalValuesFiles:
       - values-notifications.yml
