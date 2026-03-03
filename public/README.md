@@ -22,7 +22,7 @@ Public is a collection of my public-facing applications.
 
 3. Deploy to Kubernetes:
    ```bash
-   kubectl kustomize --enable-helm certificate-manager | kubectl apply -f-
+   kustomize build --enable-helm certificate-manager | kubectl apply -f-
    ```
 
 ### Personal Website
@@ -33,6 +33,6 @@ Public is a collection of my public-facing applications.
 
 3. Deploy to Kubernetes:
    ```bash
-   kubectl kustomize --enable-helm personal-website | kubectl apply -f-
+   kustomize build --enable-helm personal-website | kubectl apply -f-
    ```
 

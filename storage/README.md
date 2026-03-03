@@ -23,7 +23,7 @@ The [NFS Subdir Provisioner](https://github.com/kubernetes-sigs/nfs-subdir-exter
 2. Deploy the application:
 
    ```bash
-   kubectl kustomize --enable-helm nfs-subdir-provisioner | kubectl apply -f-
+   kustomize build --enable-helm nfs-subdir-provisioner | kubectl apply -f-
    ```
 
 <hr>
