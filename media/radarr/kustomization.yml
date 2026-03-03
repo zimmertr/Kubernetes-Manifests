@@ -12,7 +12,7 @@ commonLabels:
 
 images:
   - name: linuxserver/radarr
-    newTag: 5.28.0 # https://hub.docker.com/r/linuxserver/radarr/tags
+    newTag: 6.0.4 # https://hub.docker.com/r/linuxserver/radarr/tags
 
 configMapGenerator:
   - name: radarr-env-vars
