@@ -9,5 +9,4 @@ helmCharts:
     releaseName: cert-manager
     repo: https://charts.jetstack.io
     valuesFile: values.yml
-    version: v1.14.2 # https://cert-manager.io/docs/releases/
-
+    version: v1.19.4 # https://cert-manager.io/docs/releases/
