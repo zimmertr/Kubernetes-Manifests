@@ -28,9 +28,9 @@ Assuming you're using TKS with Flannel, [Istio](istio/README.md) can be used to 
 
 ```bash
 # You may have to run this multiple times
-kubectl kustomize istio/metallb | kubectl apply -f-
-kubectl kustomize --enable-helm istio | kubectl apply -f-
-kubectl kustomize --enable-helm istio-gateway | kubectl apply -f-
+kustomize build istio/metallb | kubectl apply -f-
+kustomize build --enable-helm istio/istio | kubectl apply -f-
+kustomize build --enable-helm istio/istio-gateway | kubectl apply -f-
 ```
 
 #### Cilium
@@ -38,9 +38,9 @@ kubectl kustomize --enable-helm istio-gateway | kubectl apply -f-
 Assuming you're using TKS and have disabled Flannel, [Cilium](cilium/README.md)) Can be used to install Cilium and Gateway API:
 
 ```bash
-kubectl kustomize --enable-helm cilium/gateway-api | kubectl apply -f-
-kubectl kustomize --enable-helm cilium/cilium | kubectl apply -f-
-kubectl kustomize --enable-helm misc/kubelet-csr-approver | kubectl apply -f-
+kustomize build --enable-helm cilium/gateway-api | kubectl apply -f-
+kustomize build --enable-helm cilium/cilium | kubectl apply -f-
+kustomize build --enable-helm misc/kubelet-csr-approver | kubectl apply -f-
 ```
 
 <hr>
@@ -50,7 +50,7 @@ kubectl kustomize --enable-helm misc/kubelet-csr-approver | kubectl apply -f-
 [Argo CD](argo/README.md) is deployed manually at first using the same Kustomize pattern:
 
 ```bash
-kubectl kustomize --enable-helm argo/argo-cd | kubectl apply -f-
+kustomize build --enable-helm argo/argo-cd | kubectl apply -f-
 ```
 
 Then you can apply ApplicationSets for a group of applications. For example:

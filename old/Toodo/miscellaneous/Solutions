@@ -8,7 +8,7 @@ Built Ansible project to deploy Harbor
 
 Built Kustomize project to deploy Toodo
     - Secret & configmap generators from file when appropriate
-        - Formatting requires kustomize binary, kubectl kustomize support too old
+        - Formatting requires kustomize binary, kustomize build support too old
     - Added postgres-wait init container so Toodo doesn't start up too early
     - Added job to set up database schema
         - Enabling it in Dockerfile is problematic since it will run every time app starts

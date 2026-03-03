@@ -24,7 +24,7 @@ Istio is a collection of networking applications needed to stand up the Istio Se
 
 3. Deploy to Kubernetes:
    ```bash
-   kubectl kustomize --enable-helm istio | kubectl apply -f-
+   kustomize build --enable-helm istio | kubectl apply -f-
    ```
 
 <hr>
@@ -37,7 +37,7 @@ Istio is a collection of networking applications needed to stand up the Istio Se
 
 3. Deploy to Kubernetes:
    ```bash
-   kubectl kustomize --enable-helm istio-gateway | kubectl apply -f-
+   kustomize build --enable-helm istio-gateway | kubectl apply -f-
    ```
 
 <hr>
@@ -50,5 +50,5 @@ Istio is a collection of networking applications needed to stand up the Istio Se
 
 3. Deploy to Kubernetes:
    ```bash
-   kubectl kustomize --enable-helm metallb | kubectl apply -f-
+   kustomize build --enable-helm metallb | kubectl apply -f-
    ```

@@ -1,7 +1,7 @@
 resources:
   - resources/namespace.yml
 
-# https://artifacthub.io/packages/helm/istio-official/istiod
+# https://istio.io/latest/news/releases/
 helmCharts:
   - name: base
     repo: https://istio-release.storage.googleapis.com/charts

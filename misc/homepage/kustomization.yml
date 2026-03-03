@@ -12,13 +12,14 @@ resources:
 
 images:
   - name: ghcr.io/gethomepage/homepage
-    newTag: v0.8.8 # https://github.com/gethomepage/homepage/pkgs/container/homepage
+    newTag: v0.8.8 # https://github.com/gethomepage/homepage/releases
 
 configMapGenerator:
   - name: homepage-env-vars
     literals:
       - PUID="65534"
       - PGID="65534"
+      - HOMEPAGE_ALLOWED_HOSTS="hub.sol.milkyway,192.168.40.101:80"
   - name: homepage-settings
     files:
       - files/configs/bookmarks.yaml

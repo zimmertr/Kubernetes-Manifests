@@ -27,7 +27,7 @@ Media is a collection of entertainment applications.
 
 3. Deploy to Kubernetes:
    ```bash
-   kubectl kustomize --enable-helm plex-media-server | kubectl apply -f-
+   kustomize build --enable-helm plex-media-server | kubectl apply -f-
    ```
 
 <hr>
@@ -40,7 +40,7 @@ Media is a collection of entertainment applications.
 
 2. Deploy to Kubernetes:
    ```bash
-   kubectl kustomize --enable-helm radarr | kubectl apply -f-
+   kustomize build --enable-helm radarr | kubectl apply -f-
    ```
 
 <hr>
@@ -53,7 +53,7 @@ Media is a collection of entertainment applications.
 
 2. Deploy to Kubernetes:
     ```bash
-    kubectl kustomize --enable-helm rutorrent | kubectl apply -f-
+    kustomize build --enable-helm rutorrent | kubectl apply -f-
     ```
 
 <hr>
@@ -66,5 +66,5 @@ Media is a collection of entertainment applications.
 
 2. Deploy to Kubernetes:
     ```bash
-    kubectl kustomize --enable-helm sonarr | kubectl apply -f-
+    kustomize build --enable-helm sonarr | kubectl apply -f-
     ```
