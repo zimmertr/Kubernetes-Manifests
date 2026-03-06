@@ -1,7 +1,6 @@
 resources:
   - resources/namespace.yml
 
-# https://github.com/kubernetes-sigs/nfs-subdir-external-provisioner/pull/306
 namespace: nfs-provisioner
 
 helmCharts:
@@ -10,5 +9,6 @@ helmCharts:
     version: 4.0.18 # https://github.com/kubernetes-sigs/nfs-subdir-external-provisioner/releases
     releaseName: nfs-subdir-external-provisioner
     namespace: nfs-provisioner
+    targetNamespace: nfs-provisioner
     valuesFile: values.yml
     includeCRDs: true

@@ -50,7 +50,7 @@ kustomize build --enable-helm misc/kubelet-csr-approver | kubectl apply -f-
 [Argo CD](argo/README.md) is deployed manually at first using the same Kustomize pattern:
 
 ```bash
-kustomize build --enable-helm argo/argo-cd | kubectl apply -f-
+kustomize build --enable-helm argo/argo-cd | kubectl apply -f- --server-side --force-conflicts
 ```
 
 Then you can apply ApplicationSets for a group of applications. For example:
