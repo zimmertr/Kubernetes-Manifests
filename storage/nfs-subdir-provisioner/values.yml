@@ -2,5 +2,9 @@ nfs:
   server: earth.sol.milkyway
   path: /mnt/DataPool/Kubernetes
 
+serviceAccount:
+  create: true
+  name: nfs-subdir-external-provisioner
+
 storageClass:
   defaultClass: true
