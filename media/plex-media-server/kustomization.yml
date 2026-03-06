@@ -12,7 +12,6 @@ helmCharts:
   - includeCRDs: true
     name: plex-media-server
     namespace: plex-media-server-system
-    targetNamespace: plex-media-server-system
     releaseName: plex-media-server
     repo: https://raw.githubusercontent.com/plexinc/pms-docker/gh-pages
     valuesFile: values.yml
