@@ -17,7 +17,7 @@ Argo is a collection of Argo Applications.
 To get started, deploy Argo CD
 
 ```bash
-kustomize build --enable-helm argo-cd | kubectl apply -f-
+kustomize build --enable-helm argo-cd | kubectl apply -f- --server-side --force-conflicts
 ```
 
 Once Argo CD is running, you can use ApplicationSets to manage Argo CD, Argo Rollouts, and Argo Workflows.

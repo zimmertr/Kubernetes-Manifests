@@ -58,3 +58,30 @@ spec:
         syncOptions:
           - CreateNamespace=true
           - ServerSideApply=true
+      ignoreDifferences:
+        # https://github.com/argoproj/argo-helm/issues/3301
+        - group: apiextensions.k8s.io
+          kind: CustomResourceDefinition
+          name: analysisruns.argoproj.io
+          jsonPointers:
+            - /spec/preserveUnknownFields
+        - group: apiextensions.k8s.io
+          kind: CustomResourceDefinition
+          name: analysistemplates.argoproj.io
+          jsonPointers:
+            - /spec/preserveUnknownFields
+        - group: apiextensions.k8s.io
+          kind: CustomResourceDefinition
+          name: clusteranalysistemplates.argoproj.io
+          jsonPointers:
+            - /spec/preserveUnknownFields
+        - group: apiextensions.k8s.io
+          kind: CustomResourceDefinition
+          name: experiments.argoproj.io
+          jsonPointers:
+            - /spec/preserveUnknownFields
+        - group: apiextensions.k8s.io
+          kind: CustomResourceDefinition
+          name: rollouts.argoproj.io
+          jsonPointers:
+            - /spec/preserveUnknownFields
