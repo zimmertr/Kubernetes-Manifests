@@ -8,9 +8,6 @@ resources:
 commonLabels:
   app.kubernetes.io/name: plex-media-server
 
-helmGlobals:
-  namespace: plex-media-server-system
-
 helmCharts:
   - includeCRDs: true
     name: plex-media-server

@@ -3,9 +3,6 @@ resources:
 
 namespace: nfs-provisioner
 
-helmGlobals:
-  namespace: nfs-provisioner
-
 helmCharts:
   - name: nfs-subdir-external-provisioner
     repo: https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner
