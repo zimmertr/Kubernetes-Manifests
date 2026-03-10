@@ -14,6 +14,19 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
+  name: plex-transcode
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 50Gi
+  storageClassName: proxmox-flashpool
+  volumeName: plex-transcode
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
   name: plex-anime
 spec:
   accessModes:
