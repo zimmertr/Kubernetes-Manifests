@@ -12,7 +12,6 @@ affinity:
 
 extraEnv:
   ALLOWED_NETWORKS: "192.168.0.0/16"
-  ADVERTISE_IP: "http://janus.sol.milkyway:32400/"
   PLEX_CLAIM: "claim-92FEXLyKHn8exMvVZHy6"
   TZ: "America/Los_Angeles"
 
@@ -27,8 +26,9 @@ extraVolumes:
     persistentVolumeClaim:
       claimName: plex-data
   - name: plex-transcode
-    persistentVolumeClaim:
-      claimName: plex-transcode
+    emptyDir:
+      medium: Memory
+      sizeLimit: 50Gi
   - name: plex-tv-shows
     persistentVolumeClaim:
       claimName: plex-tv-shows
@@ -68,4 +68,5 @@ extraVolumeMounts:
 service:
   annotations:
     metallb.universe.tf/loadBalancerIPs: 192.168.40.130
+  externalTrafficPolicy: Local # Prevent Kubernetes from NATing the source IP so Plex allows local streaming
   type: LoadBalancer

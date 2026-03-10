@@ -1,6 +1,13 @@
 nfs:
   server: earth.sol.milkyway
   path: /mnt/DataPool/Kubernetes
+  mountOptions:
+    - noatime       # No writes to filesystem for access times
+    - nfsvers=4.2   # Use latest NFS version
+    - rsize=1048576 # Read large files faster
+    - wsize=1048576 # Write large files faster
+    - hard          # Use Hard Mount for block device
+    - async         # Buffer before sending for faster writes
 
 serviceAccount:
   create: true
