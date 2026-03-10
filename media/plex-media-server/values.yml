@@ -15,11 +15,6 @@ extraEnv:
   PLEX_CLAIM: "claim-92FEXLyKHn8exMvVZHy6"
   TZ: "America/Los_Angeles"
 
-hostNetwork: true
-dnsPolicy: ClusterFirstWithHostNet
-nodeSelector:
-  kubernetes.io/hostname: k8s-node-1
-
 extraVolumes:
   - name: plex-audiobooks
     persistentVolumeClaim:
@@ -73,3 +68,4 @@ service:
   annotations:
     metallb.universe.tf/loadBalancerIPs: 192.168.40.130
   type: LoadBalancer
+  externalTrafficPolicy: Local
