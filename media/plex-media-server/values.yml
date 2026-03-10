@@ -26,6 +26,9 @@ extraVolumes:
   - name: plex-data
     persistentVolumeClaim:
       claimName: plex-data
+  - name: plex-transcode
+    persistentVolumeClaim:
+      claimName: plex-transcode
   - name: plex-tv-shows
     persistentVolumeClaim:
       claimName: plex-tv-shows
@@ -45,6 +48,8 @@ extraVolumes:
 extraVolumeMounts:
   - name: plex-data
     mountPath: /config
+  - name: plex-transcode
+    mountPath: /transcode
   - name: plex-audiobooks
     mountPath: /media/audiobooks
   - name: plex-cartoons
