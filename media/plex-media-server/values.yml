@@ -15,6 +15,11 @@ extraEnv:
   PLEX_CLAIM: "claim-92FEXLyKHn8exMvVZHy6"
   TZ: "America/Los_Angeles"
 
+hostNetwork: true
+dnsPolicy: ClusterFirstWithHostNet
+nodeSelector:
+  kubernetes.io/hostname: k8s-node-1
+
 extraVolumes:
   - name: plex-audiobooks
     persistentVolumeClaim:
@@ -26,9 +31,8 @@ extraVolumes:
     persistentVolumeClaim:
       claimName: plex-data
   - name: plex-transcode
-    emptyDir:
-      medium: Memory
-      sizeLimit: 50Gi
+    persistentVolumeClaim:
+      claimName: plex-transcode
   - name: plex-tv-shows
     persistentVolumeClaim:
       claimName: plex-tv-shows
@@ -68,5 +72,4 @@ extraVolumeMounts:
 service:
   annotations:
     metallb.universe.tf/loadBalancerIPs: 192.168.40.130
-  externalTrafficPolicy: Local # Prevent Kubernetes from NATing the source IP so Plex allows local streaming
   type: LoadBalancer
