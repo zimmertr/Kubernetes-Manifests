@@ -1,1 +1,4 @@
 * @zimmertr
+
+# Let Renovate Bot automatically merge patch/minor releases
+**/kustomization.yml @renovate[bot]
