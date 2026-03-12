@@ -8,5 +8,14 @@
     "old/"
   ],
   "prConcurrentLimit": 0,
-  "prHourlyLimit": 0
+  "prHourlyLimit": 0,
+  "packageRules": [
+    {
+      "description": "Automerge patch updates",
+      "matchUpdateTypes": ["minor","patch"],
+      "automerge": true,
+      "platformAutomerge": true,
+      "minimumReleaseAge": "7 days"
+    }
+  ]
 }
