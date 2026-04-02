@@ -12,4 +12,4 @@ helmCharts:
     releaseName: prometheus
     repo: https://prometheus-community.github.io/helm-charts
     valuesFile: values.yml
-    version: 82.10.3 # https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
+    version: 82.14.1 # https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
