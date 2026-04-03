@@ -6,7 +6,7 @@ helmCharts:
     repo: https://argoproj.github.io/argo-helm
     # https://argo-cd.readthedocs.io/en/stable/operator-manual/upgrading/overview/
     # https://artifacthub.io/packages/helm/argo/argo-cd?modal=changelog
-    version: 9.4.16 
+    version: 9.4.17 
     namespace: argo-system
     releaseName: argocd
     valuesFile: values.yml
