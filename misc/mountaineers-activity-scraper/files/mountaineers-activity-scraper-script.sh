@@ -1,11 +1,10 @@
 #!/bin/sh
 set -e
 
-FILTER_ACTIVITY="Climbing"
-FILTER_TYPE="Trip"
-FILTER_CLIMBING_CATEGORY="Basic Alpine,Rock Climb"
-SHEET_NAME="Mountaineers Trips"
-
+FILTER_ACTIVITY="${FILTER_ACTIVITY:-Climbing}"
+FILTER_TYPE="${FILTER_TYPE:-Trip}"
+FILTER_CLIMBING_CATEGORY="${FILTER_CLIMBING_CATEGORY:-Basic Alpine,Rock Climb}"
+SHEET_NAME="${SHEET_NAME:-Mountaineers Trips}"
 
 timestamp() {
   date '+%Y-%m-%d %H:%M:%S'

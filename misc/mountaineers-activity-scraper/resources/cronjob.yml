@@ -15,6 +15,15 @@ spec:
               image: zimmertr/mountaineers-activity-scraper:latest
               imagePullPolicy: Always
               command: ["/bin/sh", "/scripts/mountaineers-activity-scraper-script.sh"]
+              env:
+                - name: FILTER_ACTIVITY
+                  value: "Climbing"
+                - name: FILTER_TYPE
+                  value: "Trip"
+                - name: FILTER_CLIMBING_CATEGORY
+                  value: "Basic Alpine,Rock Climb"
+                - name: SHEET_NAME
+                  value: "Mountaineers Trips"
               volumeMounts:
                 - name: data
                   mountPath: /data
