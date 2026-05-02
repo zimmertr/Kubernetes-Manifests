@@ -1,0 +1,48 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: mountaineers-scraper
+  namespace: mountaineers-scraper
+spec:
+  schedule: "0 0 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+            - name: scraper
+              image: zimmertr/mountaineers-scraper:latest
+              imagePullPolicy: Always
+              command: ["/bin/sh", "-c"]
+              args:
+                - |
+                  set -e
+
+                  echo "$(date '+%Y-%m-%d %H:%M:%S') Collecting URLs"
+                  python3 -m mountaineers_activity_scraper.cli \
+                    --mode collect \
+                    --filter-activity Climbing \
+                    --filter-type Trip \
+                    --filter-climbing-category "Basic Alpine","Rock Climb" \
+                    --output-filename /data/urls_climbing.txt
+
+                  echo "$(date '+%Y-%m-%d %H:%M:%S') Parsing URLs"
+                  python3 -m mountaineers_activity_scraper.cli \
+                    --mode scrape \
+                    --input-urls-filename /data/urls_climbing.txt \
+                    --output-destination google-sheets \
+                    --sheet "Mountaineers Trips" \
+                    --creds /data/google_cloud_credentials.json
+              volumeMounts:
+                - name: data
+                  mountPath: /data
+                - name: creds
+                  mountPath: /data/google_cloud_credentials.json
+                  subPath: google_cloud_credentials.json
+          volumes:
+            - name: data
+              emptyDir: {}
+            - name: creds
+              secret:
+                secretName: mountaineers-creds

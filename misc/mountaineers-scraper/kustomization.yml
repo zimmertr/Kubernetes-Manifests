@@ -1,0 +1,3 @@
+resources:
+  - resources/namespace.yml
+  - resources/cronjob.yml

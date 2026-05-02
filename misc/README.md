@@ -35,3 +35,15 @@ Cilium and Metrics Server will not be completely ready until you approve the nec
 ```bash
 kustomize build --enable-helm kubelet-csr-approver | kubectl apply -f-
 ```
+
+### Mountaineers Scraper
+
+The tool will not run successfully until a Google Cloud Credentials secret has been created. This can be done manually with:
+
+```bash
+kubectl create ns mountaineers-scraper
+
+kubectl create secret generic mountaineers-creds \
+  --from-file=google_cloud_credentials.json \
+  -n mountaineers-scraper
+```
