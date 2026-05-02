@@ -47,5 +47,5 @@ kubectl create ns mountaineers-activity-scraper
 
 kubectl create secret generic mountaineers-creds \
   --from-file=mountaineers-activity-scraper/files/google_cloud_credentials.json \
-  -n mountaineers-scraper
+  -n mountaineers-activity-scraper
 ```
