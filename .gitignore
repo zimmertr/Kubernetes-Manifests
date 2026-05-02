@@ -7,3 +7,4 @@
 
 # Kustomize
 charts/
+google_cloud_credentials.json

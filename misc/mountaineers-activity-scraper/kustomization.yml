@@ -1,0 +1,11 @@
+resources:
+  - resources/namespace.yml
+  - resources/cronjob.yml
+
+configMapGenerator:
+  - name: mountaineers-activity-scraper-script
+    files:
+      - files/mountaineers-activity-scraper-script.sh
+
+generatorOptions:
+  disableNameSuffixHash: true

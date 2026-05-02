@@ -35,3 +35,17 @@ Cilium and Metrics Server will not be completely ready until you approve the nec
 ```bash
 kustomize build --enable-helm kubelet-csr-approver | kubectl apply -f-
 ```
+
+### Mountaineers Activity Scraper
+
+A CronJob to run this project once a day: https://github.com/zimmertr/Mountaineers-Activity-Scraper
+
+The tool will not run successfully until a Google Cloud Credentials secret has been created. This can be done manually with:
+
+```bash
+kubectl create ns mountaineers-activity-scraper
+
+kubectl create secret generic mountaineers-creds \
+  --from-file=mountaineers-activity-scraper/files/google_cloud_credentials.json \
+  -n mountaineers-activity-scraper
+```
