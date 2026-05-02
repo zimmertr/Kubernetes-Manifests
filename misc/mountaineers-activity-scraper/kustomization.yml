@@ -1,3 +1,5 @@
+namespace: mountaineers-activity-scraper
+
 resources:
   - resources/namespace.yml
   - resources/cronjob.yml
