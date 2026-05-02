@@ -14,22 +14,22 @@ spec:
             - name: scraper
               image: zimmertr/mountaineers-activity-scraper:latest
               imagePullPolicy: Always
-              command: ["/bin/sh", "/scripts/script.sh"]
+              command: ["/bin/sh", "/scripts/mountaineers-activity-scraper-script.sh"]
               volumeMounts:
                 - name: data
                   mountPath: /data
-                - name: creds
+                - name: mountaineers-activity-scraper-creds
                   mountPath: /data/google_cloud_credentials.json
                   subPath: google_cloud_credentials.json
-                - name: script
+                - name: mountaineers-activity-scraper-script
                   mountPath: /scripts
           volumes:
             - name: data
               emptyDir: {}
-            - name: creds
+            - name: mountaineers-activity-scraper-creds
               secret:
-                secretName: mountaineers-creds
-            - name: script
+                secretName: mountaineers-activity-scraper-creds
+            - name: mountaineers-activity-scraper-script
               configMap:
-                name: mountaineers-script
+                name: mountaineers-activity-scraper-script
                 defaultMode: 0755

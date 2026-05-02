@@ -3,9 +3,9 @@ resources:
   - resources/cronjob.yml
 
 configMapGenerator:
-  - name: mountaineers-script
+  - name: mountaineers-activity-scraper-script
     files:
-      - files/script.sh
+      - files/mountaineers-activity-scraper-script.sh
 
 generatorOptions:
   disableNameSuffixHash: true
