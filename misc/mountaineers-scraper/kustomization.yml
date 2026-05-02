@@ -1,3 +1,11 @@
 resources:
   - resources/namespace.yml
   - resources/cronjob.yml
+
+configMapGenerator:
+  - name: mountaineers-script
+    files:
+      - files/script.sh
+
+generatorOptions:
+  disableNameSuffixHash: true
