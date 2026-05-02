@@ -2,7 +2,6 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: mountaineers-activity-scraper
-  namespace: mountaineers-activity-scraper
 spec:
   schedule: "0 0 * * *"
   jobTemplate:
