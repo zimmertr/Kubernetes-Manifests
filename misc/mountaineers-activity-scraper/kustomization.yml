@@ -11,3 +11,7 @@ configMapGenerator:
 
 generatorOptions:
   disableNameSuffixHash: true
+
+images:
+  - name: zimmertr/mountaineers-activity-scraper
+    newTag: 451050915885218e0392765eefcd8a970d7a4f45
