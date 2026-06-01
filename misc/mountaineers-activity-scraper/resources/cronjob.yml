@@ -11,7 +11,7 @@ spec:
           restartPolicy: Never
           containers:
             - name: scraper
-              image: zimmertr/mountaineers-activity-scraper:latest
+              image: zimmertr/mountaineers-activity-scraper
               imagePullPolicy: Always
               command: ["/bin/sh", "/scripts/mountaineers-activity-scraper-script.sh"]
               env:
