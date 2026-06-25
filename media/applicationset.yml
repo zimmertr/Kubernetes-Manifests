@@ -35,7 +35,7 @@ spec:
         directories:
           - path: "media/*"
           - exclude: true
-            path: "media/*.disable*
+            path: "media/*.disable*"
   syncPolicy:
     preserveResourcesOnDeletion: false
   template:

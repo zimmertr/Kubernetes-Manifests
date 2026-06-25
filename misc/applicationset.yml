@@ -35,7 +35,7 @@ spec:
         directories:
           - path: "misc/*"
           - exclude: true
-            path: "misc/*.disable*
+            path: "misc/*.disable*"
   syncPolicy:
     preserveResourcesOnDeletion: false
   template:
