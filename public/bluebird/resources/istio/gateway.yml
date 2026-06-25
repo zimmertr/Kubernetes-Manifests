@@ -1,0 +1,25 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: bluebird
+spec:
+  selector:
+    istio: gateway
+  servers:
+    - hosts:
+        - 'bluebirdforecast.com'
+        - 'www.bluebirdforecast.com'
+      port:
+        name: http
+        number: 80
+        protocol: HTTP
+    - hosts:
+        - 'bluebirdforecast.com'
+        - 'www.bluebirdforecast.com'
+      port:
+        name: https
+        number: 443
+        protocol: HTTPS
+      tls:
+        mode: SIMPLE
+        credentialName: bluebird

@@ -1,0 +1,23 @@
+namespace: bluebird
+
+resources:
+  - resources/namespace.yml
+  - resources/analysisTemplate.yml
+  - resources/rollout.yml
+  - resources/service.yml
+  - resources/istio/certificate.yml
+  - resources/istio/gateway.yml
+  - resources/istio/virtualService.yml
+
+configMapGenerator:
+  - name: test-connection-sh
+    namespace: bluebird
+    files:
+      - files/test-connection.sh
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+images:
+  - name: zimmertr/bluebird
+    newTag: latest

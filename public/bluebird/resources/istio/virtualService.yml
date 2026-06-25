@@ -1,0 +1,35 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: bluebird
+spec:
+  hosts:
+    - 'bluebirdforecast.com'
+    - 'www.bluebirdforecast.com'
+    - 'bluebird-stable.bluebird.svc.cluster.local'
+  gateways:
+    - 'mesh'
+    - 'bluebird'
+  http:
+    - name: bluebird-experiment
+      match:
+        - headers:
+            experiment:
+              exact: "true"
+      route:
+        - destination:
+            host: bluebird-experiment
+            port:
+              number: 8000
+    - name: bluebird-stable
+      route:
+        - destination:
+            host: bluebird-stable
+            port:
+              number: 8000
+          weight: 100
+        - destination:
+            host: bluebird-canary
+            port:
+              number: 8000
+          weight: 0
