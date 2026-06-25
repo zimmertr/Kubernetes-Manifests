@@ -35,7 +35,7 @@ spec:
         directories:
           - path: "storage/*"
           - exclude: true
-            path: "storage/*.disabled"
+            path: "storage/*.disable*
   syncPolicy:
     preserveResourcesOnDeletion: false
   template:

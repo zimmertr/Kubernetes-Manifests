@@ -35,7 +35,7 @@ spec:
         directories:
           - path: "cilium/*"
           - exclude: true
-            path: "cilium/*.disabled"
+            path: "cilium/*.disable*
   syncPolicy:
     preserveResourcesOnDeletion: false
   template:
