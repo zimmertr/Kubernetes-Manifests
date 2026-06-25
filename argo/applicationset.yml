@@ -35,7 +35,7 @@ spec:
         directories:
           - path: "argo/*"
           - exclude: true
-            path: "argo/*.disable*
+            path: "argo/*.disable*"
   syncPolicy:
     preserveResourcesOnDeletion: false
   template:

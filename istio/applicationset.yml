@@ -35,7 +35,7 @@ spec:
         directories:
           - path: "istio/*"
           - exclude: true
-            path: "istio/*.disable*
+            path: "istio/*.disable*"
   syncPolicy:
     preserveResourcesOnDeletion: false
   template:
