@@ -35,7 +35,7 @@ spec:
         directories:
           - path: "observability/*"
           - exclude: true
-            path: "observability/*.disabled"
+            path: "observability/*.disable*
   syncPolicy:
     preserveResourcesOnDeletion: false
   template:

@@ -35,7 +35,7 @@ spec:
         directories:
           - path: "public/*"
           - exclude: true
-            path: "public/*.disabled"
+            path: "public/*.disable*
   syncPolicy:
     preserveResourcesOnDeletion: false
   template:
