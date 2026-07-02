@@ -20,8 +20,9 @@ To get started, deploy Argo CD
 kustomize build --enable-helm argo-cd | kubectl apply -f- --server-side --force-conflicts
 ```
 
-Once Argo CD is running, you can use ApplicationSets to manage Argo CD, Argo Rollouts, and Argo Workflows.
+Once Argo CD is running, bootstrap the rest of the cluster with the [app-of-apps](https://argo-cd.readthedocs.io/en/stable/operator-manual/cluster-bootstrapping/) pattern. The two root Applications at the repo root recursively discover and manage every `AppProject` and `ApplicationSet` in the repository — including this group's, which manage Argo CD, Argo Rollouts, and Argo Workflows. Apply the projects first:
 
 ```bash
-kubectl apply -f applicationset.yml
+kubectl apply -f ../root-appproject.yml
+kubectl apply -f ../root-applicationset.yml
 ```
