@@ -1,23 +1,26 @@
 namespace: bluebird
 
 resources:
-  - resources/namespace.yml
-  - resources/analysisTemplate.yml
-  - resources/rollout.yml
-  - resources/service.yml
-  - resources/istio/certificate.yml
-  - resources/istio/gateway.yml
-  - resources/istio/virtualService.yml
+- resources/namespace.yml
+- resources/analysisTemplate.yml
+- resources/rollout.yml
+- resources/service.yml
+- resources/istio/certificate.yml
+- resources/istio/gateway.yml
+- resources/istio/virtualService.yml
 
 configMapGenerator:
-  - name: test-connection-sh
-    namespace: bluebird
-    files:
-      - files/test-connection.sh
+- files:
+  - files/test-connection.sh
+  name: test-connection-sh
+  namespace: bluebird
 
 generatorOptions:
   disableNameSuffixHash: true
 
 images:
-  - name: zimmertr/bluebird
-    newTag: latest
+- name: zimmertr/bluebird
+  newName: zimmertr/bluebird
+  newTag: 0.3.2
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
