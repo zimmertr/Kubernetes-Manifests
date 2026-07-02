@@ -53,11 +53,13 @@ kustomize build --enable-helm misc/kubelet-csr-approver | kubectl apply -f-
 kustomize build --enable-helm argo/argo-cd | kubectl apply -f- --server-side --force-conflicts
 ```
 
-Then bootstrap the rest of the cluster with the [app-of-apps](bootstrap/README.md) pattern. These two root Applications recursively discover and manage every `AppProject` and `ApplicationSet` in the repository. Apply the projects first:
+Then bootstrap the rest of the cluster with the [app-of-apps](https://argo-cd.readthedocs.io/en/stable/operator-manual/cluster-bootstrapping/) pattern. The two root Applications at the repo root recursively discover and manage every `AppProject` and `ApplicationSet` in the repository (excluding `deprecated/` and any `*.disabled` files). Apply the projects first so they exist before the generated Applications reference them:
 
 ```bash
-kubectl apply -f bootstrap/appprojects.yml
-kubectl apply -f bootstrap/applicationsets.yml
+kubectl apply -f appprojects.yml
+kubectl apply -f applicationsets.yml
 ```
+
+To disable an individual resource, rename its file so it no longer matches the include glob, e.g. `mv media/applicationset.yml media/applicationset.yml.disabled`. It drops out of the root app's manifest set and is pruned.
 
 ![Alt text](https://raw.githubusercontent.com/zimmertr/Kubernetes-Manifests/main/screenshot.png "Website Screenshot")

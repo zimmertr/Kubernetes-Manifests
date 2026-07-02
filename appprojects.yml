@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: applicationsets
+  name: appprojects
   namespace: argo-system
   finalizers:
     - resources-finalizer.argocd.argoproj.io
@@ -13,8 +13,8 @@ spec:
     path: .
     directory:
       recurse: true
-      include: '**/applicationset.yml'
-      exclude: '{old/**,**/*.disabled}'
+      include: '**/appproject.yml'
+      exclude: '{deprecated/**,**/*.disabled}'
   destination:
     server: https://kubernetes.default.svc
     namespace: argo-system

@@ -12,10 +12,10 @@ metadata:
     - resources-finalizer.argocd.argoproj.io
 spec:
   sourceRepos:
-  - '*'
+  - https://github.com/zimmertr/Kubernetes-Manifests
   destinations:
   - namespace: '*'
-    server: '*'
+    server: https://kubernetes.default.svc
   clusterResourceWhitelist:
   - group: '*'
     kind: '*'
