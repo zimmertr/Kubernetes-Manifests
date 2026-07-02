@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: misc
+  namespace: argo-system
+  annotations:
+    notifications.argoproj.io/subscribe.on-app-deleted.gmail: thomaszimmerman93@gmail.com
+    notifications.argoproj.io/subscribe.on-health-degraded.gmail: thomaszimmerman93@gmail.com
+    notifications.argoproj.io/subscribe.on-sync-failed.gmail: thomaszimmerman93@gmail.com
+    notifications.argoproj.io/subscribe.on-sync-status-unknown.gmail: thomaszimmerman93@gmail.com
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  sourceRepos:
+  - '*'
+  destinations:
+  - namespace: '*'
+    server: '*'
+  clusterResourceWhitelist:
+  - group: '*'
+    kind: '*'
+  orphanedResources:
+    warn: true

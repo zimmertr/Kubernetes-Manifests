@@ -53,10 +53,11 @@ kustomize build --enable-helm misc/kubelet-csr-approver | kubectl apply -f-
 kustomize build --enable-helm argo/argo-cd | kubectl apply -f- --server-side --force-conflicts
 ```
 
-Then you can apply ApplicationSets for a group of applications. For example:
+Then bootstrap the rest of the cluster with the [app-of-apps](bootstrap/README.md) pattern. These two root Applications recursively discover and manage every `AppProject` and `ApplicationSet` in the repository. Apply the projects first:
 
 ```bash
-kubectl apply -f argo/applicationset.yml
+kubectl apply -f bootstrap/appprojects.yml
+kubectl apply -f bootstrap/applicationsets.yml
 ```
 
 ![Alt text](https://raw.githubusercontent.com/zimmertr/Kubernetes-Manifests/main/screenshot.png "Website Screenshot")
