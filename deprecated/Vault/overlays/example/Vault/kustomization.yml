@@ -14,7 +14,7 @@ patchesStrategicMerge:
 
 images:
   - name: vault
-    newTag: 1.8.4
+    newTag: 1.13.3
 
 commonLabels:
     app: vault
