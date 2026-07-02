@@ -17,7 +17,7 @@ namespace: confluence
 
 images:
   - name: atlassian/confluence-server
-    newTag: 7.13.0
+    newTag: 7.20.3
   - name: postgres
     newTag: "10"
 
