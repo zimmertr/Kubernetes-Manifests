@@ -1,3 +1,6 @@
+# Lives in the istio-gateway namespace so the shared Istio ingress gateway
+# can load it via `credentialName: bluebird`. Istio resolves gateway TLS
+# secrets only from the gateway workload's own namespace.
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:

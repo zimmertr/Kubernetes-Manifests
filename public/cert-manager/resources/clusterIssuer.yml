@@ -9,11 +9,11 @@ spec:
     privateKeySecretRef:
       name: letsencrypt
     solvers:
-      - http01:
-          # gatewayHTTPRoute:
-          #   parentRefs:
-          #     - kind: Gateway
-          #       name: personal-website
-          #       namespace: personal-website
-          ingress:
-            class: istio
+      # DNS-01 via Cloudflare. The origin sits behind the Cloudflare proxy,
+      # so HTTP-01 is unreliable; DNS-01 also supports wildcards.
+      # Token secret is created out-of-band (see public/cert-manager/configs/).
+      - dns01:
+          cloudflare:
+            apiTokenSecretRef:
+              name: cloudflare-api-token
+              key: api-token
