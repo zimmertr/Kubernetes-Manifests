@@ -6,7 +6,7 @@ bases:
 
 images:
   - name: ekofr/pihole-exporter
-    newTag: v0.0.11
+    newTag: v0.4.0
 
 patchesStrategicMerge:
     - dep.yml
