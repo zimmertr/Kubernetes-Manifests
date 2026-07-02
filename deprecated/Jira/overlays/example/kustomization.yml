@@ -19,7 +19,7 @@ images:
   - name: atlassian/jira-software
     newTag: 8.19.0
   - name: postgres
-    newTag: "11"
+    newTag: "18"
 
 configMapGenerator:
   - name: jira-env-vars

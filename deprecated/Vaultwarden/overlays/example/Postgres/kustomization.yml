@@ -10,7 +10,7 @@ resources:
 
 images:
   - name: postgres
-    newTag: "11"
+    newTag: "18"
 
 configMapGenerator:
   - name: vaultwarden-postgres-env-vars

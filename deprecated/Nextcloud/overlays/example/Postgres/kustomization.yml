@@ -4,7 +4,7 @@ namespace: nextcloud
 
 images:
   - name: postgres
-    newTag: "11"
+    newTag: "18"
 
 resources:
   - dep.yml
