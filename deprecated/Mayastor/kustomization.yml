@@ -5,7 +5,7 @@ resources:
 helmCharts:
   - name: mayastor
     repo: https://openebs.github.io/mayastor-extensions/ 
-    version: 2.0.1
+    version: 2.11.1
     releaseName: mayastor
     namespace: mayastor-system
     valuesFile: values.yml
