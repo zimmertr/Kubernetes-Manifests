@@ -4,6 +4,7 @@ metadata:
   name: bluebird
 spec:
   hosts:
+    - 'ganymede.sol.milkyway'
     - 'bluebirdforecast.com'
     - 'www.bluebirdforecast.com'
     - 'bluebird-stable.bluebird.svc.cluster.local'

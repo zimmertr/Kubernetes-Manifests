@@ -7,13 +7,19 @@ spec:
     istio: gateway
   servers:
     - hosts:
-        - '*'
+        - 'tjzimmerman.com'
+        - 'tjzimmerman.dev'
+        - 'www.tjzimmerman.com'
+        - 'www.tjzimmerman.dev'
       port:
         name: http
         number: 80
         protocol: HTTP
     - hosts:
-        - '*'
+        - 'tjzimmerman.com'
+        - 'tjzimmerman.dev'
+        - 'www.tjzimmerman.com'
+        - 'www.tjzimmerman.dev'
       port:
         name: https
         number: 443

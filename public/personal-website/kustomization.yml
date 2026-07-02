@@ -8,8 +8,6 @@ resources:
   - resources/istio/certificate.yml
   - resources/istio/gateway.yml
   - resources/istio/virtualService.yml
-  # - resources/cilium/gateway.yml
-  # - resources/cilium/httpRoute.yml
 
 configMapGenerator:
   - name: test-connection-sh
@@ -23,4 +21,3 @@ generatorOptions:
 images:
   - name: ghcr.io/zimmertr/personal-website
     newTag: main-61d7f34
-    # newTag: main-58f3cb3 # Canary Banner

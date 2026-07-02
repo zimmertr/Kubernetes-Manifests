@@ -4,9 +4,6 @@ metadata:
   name: personal-website
 spec:
   replicas: 3
-  analysis:
-    successfulRunHistoryLimit: 1
-    unsuccessfulRunHistoryLimit: 1
   selector:
     matchLabels:
       app: personal-website
@@ -34,7 +31,7 @@ spec:
                 requiredForCompletion: true
                 args:
                   - name: endpoint
-                    value: "http://tjzimmerman.com/"
+                    value: "https://tjzimmerman.com/"
                   - name: header
                     value: "experiment: true"
         - setWeight: 33

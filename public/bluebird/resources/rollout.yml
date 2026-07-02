@@ -4,9 +4,6 @@ metadata:
   name: bluebird
 spec:
   replicas: 3
-  # analysis:
-  #   successfulRunHistoryLimit: 1
-  #   unsuccessfulRunHistoryLimit: 1
   selector:
     matchLabels:
       app: bluebird
@@ -34,7 +31,7 @@ spec:
         #         requiredForCompletion: true
         #         args:
         #           - name: endpoint
-        #             value: "http://bluebirdforecast.com/"
+        #             value: "https://bluebirdforecast.com/"
         #           - name: header
         #             value: "experiment: true"
         - setWeight: 33
