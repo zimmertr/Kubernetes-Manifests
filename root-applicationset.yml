@@ -1,12 +1,12 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: applicationsets
+  name: root-applicationsets
   namespace: argo-system
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
-  project: default
+  project: root-applications
   source:
     repoURL: https://github.com/zimmertr/Kubernetes-Manifests
     targetRevision: main
