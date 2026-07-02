@@ -6,7 +6,7 @@ bases:
 
 images:
   - name: golift/unifi-poller
-    newTag: "2"
+    newTag: "v3"
 
 patchesStrategicMerge:
     - dep.yml
