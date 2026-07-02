@@ -5,7 +5,7 @@
   ],
   "ignorePaths": [
     "*/*.disabled/*",
-    "old/"
+    "deprecated/"
   ],
   "prConcurrentLimit": 0,
   "prHourlyLimit": 0,
