@@ -17,7 +17,7 @@ namespace: jira
 
 images:
   - name: atlassian/jira-software
-    newTag: 8.19.0
+    newTag: 11.3.7
   - name: postgres
     newTag: "11"
 
