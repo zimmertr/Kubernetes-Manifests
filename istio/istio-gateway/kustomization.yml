@@ -1,5 +1,7 @@
 resources:
   - resources/namespace.yml
+  - resources/certificate-bluebird.yml
+  - resources/certificate-personal-website.yml
 
 namespace: istio-gateway
 
