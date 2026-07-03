@@ -9,6 +9,13 @@
 #       - "ALL"
 #   privileged: false
 
+persistence:
+  config:
+    enabled: false
+  media:
+    enabled: false
+
+
 # volumes:
 #   - name: jellyfin-audiobooks
 #     persistentVolumeClaim:
