@@ -1,6 +1,5 @@
 namespace: bluebird-system
 
-# Requires Argo CD's kustomize to run with `--enable-helm`.
 helmCharts:
 - name: bluebird-helm
   repo: oci://registry-1.docker.io/zimmertr
