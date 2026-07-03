@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: bluebird-pr
+  namespace: argo-system
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  description: Ephemeral per-PR Bluebird preview environments.
+  # Only the published Helm chart (OCI). Must match the ApplicationSet source
+  # repoURL string exactly. No git repo — previews render entirely from the
+  # chart via helm.valuesObject.
+  sourceRepos:
+    - oci://registry-1.docker.io/zimmertr/bluebird-helm
+  # Previews deploy alongside stable in bluebird-system.
+  destinations:
+    - namespace: bluebird-system
+      server: https://kubernetes.default.svc
+  # Previews create only namespaced resources (Deployment, Service, Istio
+  # Gateway/VirtualService) — no cluster-scoped whitelist needed.
+  orphanedResources:
+    warn: true

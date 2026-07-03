@@ -12,6 +12,11 @@ spec:
           - path: "public/*"
           - exclude: true
             path: "public/*.disable*"
+          # bluebird-pr ships its own ApplicationSet + AppProject (applied by the
+          # root generators). Exclude it so this fan-out doesn't also wrap it as a
+          # plain Application under the `public` project.
+          - exclude: true
+            path: "public/bluebird-pr"
   syncPolicy:
     preserveResourcesOnDeletion: false
   template:
