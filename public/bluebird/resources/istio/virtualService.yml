@@ -7,7 +7,7 @@ spec:
     - 'ganymede.sol.milkyway'
     - 'bluebirdforecast.com'
     - 'www.bluebirdforecast.com'
-    - 'bluebird-stable.bluebird.svc.cluster.local'
+    - 'bluebird-stable.bluebird-system.svc.cluster.local'
   gateways:
     - 'mesh'
     - 'bluebird'

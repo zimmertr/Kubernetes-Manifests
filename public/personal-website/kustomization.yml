@@ -1,4 +1,4 @@
-namespace: personal-website
+namespace: personal-website-system
 
 resources:
   - resources/namespace.yml
@@ -10,7 +10,7 @@ resources:
 
 configMapGenerator:
   - name: test-connection-sh
-    namespace: personal-website
+    namespace: personal-website-system
     files:
       - files/test-connection.sh
 
