@@ -7,7 +7,7 @@ spec:
   generators:
     - git:
         repoURL: https://github.com/zimmertr/Kubernetes-Manifests
-        revision: main
+        revision: test_jellyfin
         directories:
           - path: "media/*"
           - exclude: true
@@ -23,7 +23,7 @@ spec:
       project: media
       source:
         repoURL: https://github.com/zimmertr/Kubernetes-Manifests
-        targetRevision: main
+        targetRevision: test_jellyfin
         path: "{{ path }}"
       destination:
         server: https://kubernetes.default.svc
