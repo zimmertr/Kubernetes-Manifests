@@ -35,6 +35,48 @@ spec:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
+  name: jellyfin-anime
+spec:
+  capacity:
+    storage: 1Ti
+  accessModes:
+    - ReadWriteOnce
+  nfs:
+    path: /mnt/DataPool/Anime
+    server: earth.sol.milkyway
+  storageClassName: nfs-client
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: jellyfin-audiobooks
+spec:
+  capacity:
+    storage: 1Ti
+  accessModes:
+    - ReadWriteOnce
+  nfs:
+    path: /mnt/DataPool/Audiobooks
+    server: earth.sol.milkyway
+  storageClassName: nfs-client
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: jellyfin-cartoons
+spec:
+  capacity:
+    storage: 1Ti
+  accessModes:
+    - ReadWriteOnce
+  nfs:
+    path: /mnt/DataPool/Cartoons
+    server: earth.sol.milkyway
+  storageClassName: nfs-client
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
   name: jellyfin-movies
 spec:
   capacity:
@@ -43,6 +85,48 @@ spec:
     - ReadWriteOnce
   nfs:
     path: /mnt/DataPool/Movies
+    server: earth.sol.milkyway
+  storageClassName: nfs-client
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: jellyfin-music
+spec:
+  capacity:
+    storage: 1Ti
+  accessModes:
+    - ReadWriteOnce
+  nfs:
+    path: /mnt/DataPool/Music
+    server: earth.sol.milkyway
+  storageClassName: nfs-client
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: jellyfin-tv-shows
+spec:
+  capacity:
+    storage: 1Ti
+  accessModes:
+    - ReadWriteOnce
+  nfs:
+    path: /mnt/DataPool/TV_Shows
+    server: earth.sol.milkyway
+  storageClassName: nfs-client
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: jellyfin-unsorted
+spec:
+  capacity:
+    storage: 1Ti
+  accessModes:
+    - ReadWriteOnce
+  nfs:
+    path: /mnt/DataPool/Downloads/Unsorted
     server: earth.sol.milkyway
   storageClassName: nfs-client
 # ---
@@ -79,87 +163,3 @@ spec:
 #           values:
 #             - earth
 #   storageClassName: proxmox-flashpool
-# ---
-# apiVersion: v1
-# kind: PersistentVolume
-# metadata:
-#   name: jellyfin-anime
-# spec:
-#   capacity:
-#     storage: 1Ti
-#   accessModes:
-#     - ReadWriteOnce
-#   nfs:
-#     path: /mnt/DataPool/Anime
-#     server: earth.sol.milkyway
-#   storageClassName: nfs-client
-# ---
-# apiVersion: v1
-# kind: PersistentVolume
-# metadata:
-#   name: jellyfin-audiobooks
-# spec:
-#   capacity:
-#     storage: 1Ti
-#   accessModes:
-#     - ReadWriteOnce
-#   nfs:
-#     path: /mnt/DataPool/Audiobooks
-#     server: earth.sol.milkyway
-#   storageClassName: nfs-client
-# ---
-# apiVersion: v1
-# kind: PersistentVolume
-# metadata:
-#   name: jellyfin-cartoons
-# spec:
-#   capacity:
-#     storage: 1Ti
-#   accessModes:
-#     - ReadWriteOnce
-#   nfs:
-#     path: /mnt/DataPool/Cartoons
-#     server: earth.sol.milkyway
-#   storageClassName: nfs-client
-# ---
-# apiVersion: v1
-# kind: PersistentVolume
-# metadata:
-#   name: jellyfin-music
-# spec:
-#   capacity:
-#     storage: 1Ti
-#   accessModes:
-#     - ReadWriteOnce
-#   nfs:
-#     path: /mnt/DataPool/Music
-#     server: earth.sol.milkyway
-#   storageClassName: nfs-client
-# ---
-# apiVersion: v1
-# kind: PersistentVolume
-# metadata:
-#   name: jellyfin-tv-shows
-# spec:
-#   capacity:
-#     storage: 1Ti
-#   accessModes:
-#     - ReadWriteOnce
-#   nfs:
-#     path: /mnt/DataPool/TV_Shows
-#     server: earth.sol.milkyway
-#   storageClassName: nfs-client
-# ---
-# apiVersion: v1
-# kind: PersistentVolume
-# metadata:
-#   name: jellyfin-unsorted
-# spec:
-#   capacity:
-#     storage: 1Ti
-#   accessModes:
-#     - ReadWriteOnce
-#   nfs:
-#     path: /mnt/DataPool/Downloads/Unsorted
-#     server: earth.sol.milkyway
-#   storageClassName: nfs-client

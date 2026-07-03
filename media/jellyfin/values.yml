@@ -11,18 +11,48 @@ service:
   type: LoadBalancer
 
 volumes:  
+  - name: jellyfin-anime
+    persistentVolumeClaim:
+      claimName: jellyfin-anime
+  - name: jellyfin-audiobooks
+    persistentVolumeClaim:
+      claimName: jellyfin-audiobooks
+  - name: jellyfin-cartoons
+    persistentVolumeClaim:
+      claimName: jellyfin-cartoons
   - name: jellyfin-config
     persistentVolumeClaim:
       claimName: jellyfin-config
   - name: jellyfin-movies
     persistentVolumeClaim:
       claimName: jellyfin-movies
+  - name: jellyfin-music
+    persistentVolumeClaim:
+      claimName: jellyfin-music
+  - name: jellyfin-tv-shows
+    persistentVolumeClaim:
+      claimName: jellyfin-tv-shows
+  - name: jellyfin-unsorted
+    persistentVolumeClaim:
+      claimName: jellyfin-unsorted
 
 volumeMounts:
+  - name: jellyfin-anime
+    mountPath: /anime
+  - name: jellyfin-audiobooks
+    mountPath: /audiobooks
+  - name: jellyfin-cartoons
+    mountPath: /cartoons
   - name: jellyfin-config
     mountPath: /config
   - name: jellyfin-movies
     mountPath: /movies
+  - name: jellyfin-music
+    mountPath: /music
+  - name: jellyfin-tv-shows
+    mountPath: /tv_shows
+  - name: jellyfin-unsorted
+    mountPath: /unsorted
 
 # jellyfin:
 #   env:
@@ -36,53 +66,15 @@ volumeMounts:
 #   privileged: false
 
 # volumes:
-#   - name: jellyfin-audiobooks
-#     persistentVolumeClaim:
-#       claimName: jellyfin-audiobooks
-#   - name: jellyfin-cartoons
-#     persistentVolumeClaim:
-#       claimName: jellyfin-cartoons
-#   - name: jellyfin-data
-#     persistentVolumeClaim:
-#       claimName: jellyfin-data
-#   # - name: jellyfin-hardware-acceleration
-#   #   persistentVolumeClaim:
-#   #     claimName: jellyfin-hardware-acceleration
+  # - name: jellyfin-hardware-acceleration
+  #   persistentVolumeClaim:
+  #     claimName: jellyfin-hardware-acceleration
 #   - name: jellyfin-transcode
 #     persistentVolumeClaim:
 #       claimName: jellyfin-transcode
-#   - name: jellyfin-tv-shows
-#     persistentVolumeClaim:
-#       claimName: jellyfin-tv-shows
-#   - name: jellyfin-movies
-#     persistentVolumeClaim:
-#       claimName: jellyfin-movies
-#   - name: jellyfin-music
-#     persistentVolumeClaim:
-#       claimName: jellyfin-music
-#   - name: jellyfin-anime
-#     persistentVolumeClaim:
-#       claimName: jellyfin-anime
-#   - name: jellyfin-unsorted
-#     persistentVolumeClaim:
-#       claimName: jellyfin-unsorted
 
 # volumeMounts:
 #   # - name: jellyfin-data
 #   #   mountPath: /config
 #   # - name: jellyfin-hardware-acceleration
 #   #   mountPath: /hardware-acceleration
-#   - name: jellyfin-audiobooks
-#     mountPath: /media/audiobooks
-#   - name: jellyfin-cartoons
-#     mountPath: /media/cartoons
-#   - name: jellyfin-tv-shows
-#     mountPath: /media/tv
-#   - name: jellyfin-movies
-#     mountPath: /media/movies
-#   - name: jellyfin-music
-#     mountPath: /media/music
-#   - name: jellyfin-anime
-#     mountPath: /media/anime
-#   - name: jellyfin-unsorted
-#     mountPath: /media/unsorted
