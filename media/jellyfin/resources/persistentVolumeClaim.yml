@@ -7,9 +7,22 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 5Gi
+      storage: 10Gi
   storageClassName: proxmox-flashpool
   volumeName: jellyfin-config
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: jellyfin-movies
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Ti
+  storageClassName: nfs-client
+  volumeName: jellyfin-movies
 # ---
 # apiVersion: v1
 # kind: PersistentVolumeClaim
@@ -62,19 +75,6 @@ spec:
 #       storage: 1Ti
 #   storageClassName: nfs-client
 #   volumeName: jellyfin-cartoons
-# ---
-# apiVersion: v1
-# kind: PersistentVolumeClaim
-# metadata:
-#   name: jellyfin-movies
-# spec:
-#   accessModes:
-#     - ReadWriteOnce
-#   resources:
-#     requests:
-#       storage: 1Ti
-#   storageClassName: nfs-client
-#   volumeName: jellyfin-movies
 # ---
 # apiVersion: v1
 # kind: PersistentVolumeClaim

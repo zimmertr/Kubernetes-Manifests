@@ -6,7 +6,7 @@ spec:
   accessModes:
     - ReadWriteOnce
   capacity:
-    storage: 5Gi
+    storage: 10Gi
   csi:
     driver: csi.proxmox.sinextra.dev
     fsType: xfs
@@ -31,6 +31,20 @@ spec:
           values:
             - earth
   storageClassName: proxmox-flashpool
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: jellyfin-movies
+spec:
+  capacity:
+    storage: 1Ti
+  accessModes:
+    - ReadWriteOnce
+  nfs:
+    path: /mnt/DataPool/Movies
+    server: earth.sol.milkyway
+  storageClassName: nfs-client
 # ---
 # apiVersion: v1
 # kind: PersistentVolume
@@ -105,20 +119,6 @@ spec:
 #     - ReadWriteOnce
 #   nfs:
 #     path: /mnt/DataPool/Cartoons
-#     server: earth.sol.milkyway
-#   storageClassName: nfs-client
-# ---
-# apiVersion: v1
-# kind: PersistentVolume
-# metadata:
-#   name: jellyfin-movies
-# spec:
-#   capacity:
-#     storage: 1Ti
-#   accessModes:
-#     - ReadWriteOnce
-#   nfs:
-#     path: /mnt/DataPool/Movies
 #     server: earth.sol.milkyway
 #   storageClassName: nfs-client
 # ---

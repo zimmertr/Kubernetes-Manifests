@@ -14,10 +14,15 @@ volumes:
   - name: jellyfin-config
     persistentVolumeClaim:
       claimName: jellyfin-config
+  - name: jellyfin-movies
+    persistentVolumeClaim:
+      claimName: jellyfin-movies
 
 volumeMounts:
   - name: jellyfin-config
     mountPath: /config
+  - name: jellyfin-movies
+    mountPath: /movies
 
 # jellyfin:
 #   env:
