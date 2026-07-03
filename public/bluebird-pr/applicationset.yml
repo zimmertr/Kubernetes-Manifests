@@ -7,25 +7,18 @@ spec:
   goTemplate: true
   goTemplateOptions: ["missingkey=error"]
   generators:
-    # One Application per OPEN, `preview`-labelled PR on the public app repo.
-    # The label is applied by the app repo's pr-preview.yml on same-repo PRs and
-    # requires repo write access, so fork PRs can't self-provision. Public repo,
-    # so no token is needed (anonymous GitHub API; 300s poll stays well under
-    # the 60/hr/IP limit).
     - pullRequest:
         github:
           owner: zimmertr
           repo: bluebird
           labels:
-            - preview
-        requeueAfterSeconds: 300
+            - create pr container
+        requeueAfterSeconds: 60
   template:
     metadata:
       name: "bluebird-pr-{{ .number }}"
       labels:
         app-group: public
-      # Cascade-delete the preview's resources when the PR closes and the
-      # generator drops the Application.
       finalizers:
         - resources-finalizer.argocd.argoproj.io
     spec:
@@ -33,9 +26,6 @@ spec:
       destination:
         server: https://kubernetes.default.svc
         namespace: bluebird-system
-      # Single source: the OCI chart, fully configured inline. Preview topology
-      # is a plain Deployment (no Rollout/Canary) with a SINGLE ingress host, so
-      # no production hostname can leak onto the shared Istio ingress gateway.
       source:
         repoURL: oci://registry-1.docker.io/zimmertr/bluebird-helm
         chart: bluebird-helm
@@ -43,23 +33,19 @@ spec:
         helm:
           releaseName: "bluebird-pr-{{ .number }}"
           valuesObject:
-            replicas: 1
-            strategy: RollingUpdate
             image:
               name: zimmertr/bluebird-pr
-              # Matches the app repo's pr-preview.yml tag: pr-<number>-<head_sha>.
               tag: "pr-{{ .number }}-{{ .head_sha }}"
-            experiment:
-              enabled: false
             ingress:
               enabled: true
               hosts:
                 - "pr-{{ .number }}.ganymede.sol.milkyway"
-              port: 80
-              httpsRedirect: false
-              tls:
-                enabled: false
       syncPolicy:
         automated:
           prune: true
           selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+        managedNamespaceMetadata:
+          labels:
+            istio-injection: enabled
