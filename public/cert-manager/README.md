@@ -29,5 +29,5 @@ The DNS-01 solver needs a Cloudflare API token, provided as a Kubernetes secret.
    ```bash
    kubectl create secret generic cloudflare-api-token \
      -n cert-manager \
-     --from-file=api-token=configs/cloudflare-api-token
+     --from-file=configs/cloudflare-api-token
    ```
