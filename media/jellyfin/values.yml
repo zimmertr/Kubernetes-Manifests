@@ -1,3 +1,18 @@
+service:
+  annotations:
+    metallb.universe.tf/loadBalancerIPs: 192.168.40.130
+  externalTrafficPolicy: Local
+  type: LoadBalancer
+
+volumes:  
+  - name: jellyfin-config
+    persistentVolumeClaim:
+      claimName: jellyfin-config
+
+volumeMounts:
+  - name: jellyfin-config
+    mountPath: /config
+
 # jellyfin:
 #   env:
 
@@ -8,13 +23,6 @@
 #     drop:
 #       - "ALL"
 #   privileged: false
-
-persistence:
-  config:
-    enabled: false
-  media:
-    enabled: false
-
 
 # volumes:
 #   - name: jellyfin-audiobooks
@@ -67,9 +75,3 @@ persistence:
 #     mountPath: /media/anime
 #   - name: jellyfin-unsorted
 #     mountPath: /media/unsorted
-
-service:
-  annotations:
-    metallb.universe.tf/loadBalancerIPs: 192.168.40.130
-  type: LoadBalancer
-  externalTrafficPolicy: Local
