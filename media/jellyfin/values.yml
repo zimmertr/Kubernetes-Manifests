@@ -42,8 +42,8 @@ volumes:
       claimName: jellyfin-unsorted
 
 volumeMounts:
-  - name: jellyfin-data
-    mountPath: /config
+  # - name: jellyfin-data
+  #   mountPath: /config
   # - name: jellyfin-hardware-acceleration
   #   mountPath: /hardware-acceleration
   - name: jellyfin-audiobooks
