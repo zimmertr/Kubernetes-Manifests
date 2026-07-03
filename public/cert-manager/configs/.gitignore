@@ -1,1 +1,4 @@
-cloudflare-api-token
+# Never commit real secret files in this directory — only the example and this file.
+*
+!.gitignore
+!*.example
