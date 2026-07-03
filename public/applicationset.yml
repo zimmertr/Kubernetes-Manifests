@@ -12,6 +12,9 @@ spec:
           - path: "public/*"
           - exclude: true
             path: "public/*.disable*"
+          # Owns its own ApplicationSet + AppProject (applied by the root generators).
+          - exclude: true
+            path: "public/bluebird-pr"
   syncPolicy:
     preserveResourcesOnDeletion: false
   template:

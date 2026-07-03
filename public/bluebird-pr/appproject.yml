@@ -1,0 +1,16 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: bluebird-pr
+  namespace: argo-system
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  description: Ephemeral per-PR Bluebird preview environments.
+  sourceRepos:
+    - oci://registry-1.docker.io/zimmertr/bluebird-helm
+  destinations:
+    - namespace: bluebird-system
+      server: https://kubernetes.default.svc
+  orphanedResources:
+    warn: true

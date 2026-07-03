@@ -1,0 +1,51 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: bluebird-pr
+  namespace: argo-system
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+    - pullRequest:
+        github:
+          owner: zimmertr
+          repo: bluebird
+          labels:
+            - create pr container
+        requeueAfterSeconds: 300
+  template:
+    metadata:
+      name: "bluebird-pr-{{ .number }}"
+      labels:
+        app-group: public
+      finalizers:
+        - resources-finalizer.argocd.argoproj.io
+    spec:
+      project: bluebird-pr
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: bluebird-system
+      source:
+        repoURL: oci://registry-1.docker.io/zimmertr/bluebird-helm
+        chart: bluebird-helm
+        targetRevision: 0.1.1
+        helm:
+          releaseName: "bluebird-pr-{{ .number }}"
+          valuesObject:
+            image:
+              name: zimmertr/bluebird-pr
+              tag: "pr-{{ .number }}-{{ .head_sha }}"
+            ingress:
+              enabled: true
+              hosts:
+                - "pr-{{ .number }}.ganymede.sol.milkyway"
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+        managedNamespaceMetadata:
+          labels:
+            istio-injection: enabled
