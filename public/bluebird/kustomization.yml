@@ -23,4 +23,4 @@ generatorOptions:
 
 images:
 - name: zimmertr/bluebird
-  newTag: 0.3.3
+  newTag: 0.3.4
