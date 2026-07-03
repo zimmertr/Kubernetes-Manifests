@@ -14,8 +14,6 @@ helmCharts:
     valuesFile: values.yml
     version: 3.2.0
 
-# Helm Chart is poorly designed and forces you to create a PV and PVC for config, media, and cache. 
-# Disable this so I can bring my own.
 patches:
   - target:
       kind: Deployment
@@ -28,18 +26,11 @@ patches:
       spec:
         template:
           spec:
+            containers:
+              - name: jellyfin
+                volumeMounts:
+                  - mountPath: /media
+                    $patch: delete
             volumes:
-              - name: config
-                $patch: delete
               - name: media
                 $patch: delete
-              - name: cache
-                $patch: delete
-
-# Kustomize sucks so you have to play with random integers in the patch to get the right volumes
-  - target:
-      kind: Deployment
-      name: jellyfin
-    patch: |-
-      - op: remove
-        path: /spec/template/spec/containers/0/volumeMounts/1 # Remove the media volume mount 

@@ -23,19 +23,6 @@ spec:
       storage: 15Gi
   storageClassName: proxmox-flashpool
   volumeName: jellyfin-config
-# ---
-# apiVersion: v1
-# kind: PersistentVolumeClaim
-# metadata:
-#   name: jellyfin-transcode
-# spec:
-#   accessModes:
-#     - ReadWriteOnce
-#   resources:
-#     requests:
-#       storage: 50Gi
-#   storageClassName: proxmox-flashpool
-#   volumeName: jellyfin-transcode
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -43,7 +30,7 @@ metadata:
   name: jellyfin-anime
 spec:
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
       storage: 1Ti
@@ -56,7 +43,7 @@ metadata:
   name: jellyfin-audiobooks
 spec:
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
       storage: 1Ti
@@ -69,7 +56,7 @@ metadata:
   name: jellyfin-cartoons
 spec:
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
       storage: 1Ti
@@ -82,7 +69,7 @@ metadata:
   name: jellyfin-music
 spec:
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
       storage: 1Ti
@@ -95,7 +82,7 @@ metadata:
   name: jellyfin-movies
 spec:
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
       storage: 1Ti
@@ -108,7 +95,7 @@ metadata:
   name: jellyfin-tv-shows
 spec:
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
       storage: 1Ti
@@ -121,7 +108,7 @@ metadata:
   name: jellyfin-unsorted
 spec:
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
       storage: 1Ti

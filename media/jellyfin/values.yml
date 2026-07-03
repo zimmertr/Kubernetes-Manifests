@@ -1,8 +1,13 @@
-deploymentStrategy: {"type":"Recreate"}
+deploymentStrategy:
+  type: Recreate
 
 persistence:
   config:
-    enabled: false
+    enabled: true
+    existingClaim: jellyfin-config
+  cache:
+    enabled: true
+    existingClaim: jellyfin-cache
   media:
     enabled: false
 
@@ -23,12 +28,6 @@ volumes:
   - name: jellyfin-cartoons
     persistentVolumeClaim:
       claimName: jellyfin-cartoons
-  - name: jellyfin-cache
-    persistentVolumeClaim:
-      claimName: jellyfin-cache
-  - name: jellyfin-config
-    persistentVolumeClaim:
-      claimName: jellyfin-config
   - name: jellyfin-movies
     persistentVolumeClaim:
       claimName: jellyfin-movies
@@ -47,12 +46,8 @@ volumeMounts:
     mountPath: /anime
   - name: jellyfin-audiobooks
     mountPath: /audiobooks
-  - name: jellyfin-cache
-    mountPath: /cache
   - name: jellyfin-cartoons
     mountPath: /cartoons
-  - name: jellyfin-config
-    mountPath: /config
   - name: jellyfin-movies
     mountPath: /movies
   - name: jellyfin-music
@@ -61,28 +56,3 @@ volumeMounts:
     mountPath: /tv_shows
   - name: jellyfin-unsorted
     mountPath: /unsorted
-
-# jellyfin:
-#   env:
-
-# securityContext:
-#   capabilities:
-#     add:
-#       - "SYS_ADMIN"
-#     drop:
-#       - "ALL"
-#   privileged: false
-
-# volumes:
-  # - name: jellyfin-hardware-acceleration
-  #   persistentVolumeClaim:
-  #     claimName: jellyfin-hardware-acceleration
-#   - name: jellyfin-transcode
-#     persistentVolumeClaim:
-#       claimName: jellyfin-transcode
-
-# volumeMounts:
-#   # - name: jellyfin-data
-#   #   mountPath: /config
-#   # - name: jellyfin-hardware-acceleration
-#   #   mountPath: /hardware-acceleration
