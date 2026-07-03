@@ -40,12 +40,16 @@ spec:
               enabled: true
               hosts:
                 - "pr-{{ .number }}.ganymede.sol.milkyway"
+            extraEnv:
+              - name: PREVIEW_BANNER
+                value: "true"
+              - name: PREVIEW_PR
+                value: "{{ .number }}"
+              - name: PREVIEW_COMMIT
+                value: "{{ .head_sha }}"
       syncPolicy:
         automated:
           prune: true
           selfHeal: true
         syncOptions:
           - CreateNamespace=true
-        managedNamespaceMetadata:
-          labels:
-            istio-injection: enabled
