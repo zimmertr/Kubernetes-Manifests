@@ -9,57 +9,57 @@
 #       - "ALL"
 #   privileged: false
 
-volumes:
-  - name: jellyfin-audiobooks
-    persistentVolumeClaim:
-      claimName: jellyfin-audiobooks
-  - name: jellyfin-cartoons
-    persistentVolumeClaim:
-      claimName: jellyfin-cartoons
-  - name: jellyfin-data
-    persistentVolumeClaim:
-      claimName: jellyfin-data
-  # - name: jellyfin-hardware-acceleration
-  #   persistentVolumeClaim:
-  #     claimName: jellyfin-hardware-acceleration
-  - name: jellyfin-transcode
-    persistentVolumeClaim:
-      claimName: jellyfin-transcode
-  - name: jellyfin-tv-shows
-    persistentVolumeClaim:
-      claimName: jellyfin-tv-shows
-  - name: jellyfin-movies
-    persistentVolumeClaim:
-      claimName: jellyfin-movies
-  - name: jellyfin-music
-    persistentVolumeClaim:
-      claimName: jellyfin-music
-  - name: jellyfin-anime
-    persistentVolumeClaim:
-      claimName: jellyfin-anime
-  - name: jellyfin-unsorted
-    persistentVolumeClaim:
-      claimName: jellyfin-unsorted
+# volumes:
+#   - name: jellyfin-audiobooks
+#     persistentVolumeClaim:
+#       claimName: jellyfin-audiobooks
+#   - name: jellyfin-cartoons
+#     persistentVolumeClaim:
+#       claimName: jellyfin-cartoons
+#   - name: jellyfin-data
+#     persistentVolumeClaim:
+#       claimName: jellyfin-data
+#   # - name: jellyfin-hardware-acceleration
+#   #   persistentVolumeClaim:
+#   #     claimName: jellyfin-hardware-acceleration
+#   - name: jellyfin-transcode
+#     persistentVolumeClaim:
+#       claimName: jellyfin-transcode
+#   - name: jellyfin-tv-shows
+#     persistentVolumeClaim:
+#       claimName: jellyfin-tv-shows
+#   - name: jellyfin-movies
+#     persistentVolumeClaim:
+#       claimName: jellyfin-movies
+#   - name: jellyfin-music
+#     persistentVolumeClaim:
+#       claimName: jellyfin-music
+#   - name: jellyfin-anime
+#     persistentVolumeClaim:
+#       claimName: jellyfin-anime
+#   - name: jellyfin-unsorted
+#     persistentVolumeClaim:
+#       claimName: jellyfin-unsorted
 
-volumeMounts:
-  # - name: jellyfin-data
-  #   mountPath: /config
-  # - name: jellyfin-hardware-acceleration
-  #   mountPath: /hardware-acceleration
-  - name: jellyfin-audiobooks
-    mountPath: /media/audiobooks
-  - name: jellyfin-cartoons
-    mountPath: /media/cartoons
-  - name: jellyfin-tv-shows
-    mountPath: /media/tv
-  - name: jellyfin-movies
-    mountPath: /media/movies
-  - name: jellyfin-music
-    mountPath: /media/music
-  - name: jellyfin-anime
-    mountPath: /media/anime
-  - name: jellyfin-unsorted
-    mountPath: /media/unsorted
+# volumeMounts:
+#   # - name: jellyfin-data
+#   #   mountPath: /config
+#   # - name: jellyfin-hardware-acceleration
+#   #   mountPath: /hardware-acceleration
+#   - name: jellyfin-audiobooks
+#     mountPath: /media/audiobooks
+#   - name: jellyfin-cartoons
+#     mountPath: /media/cartoons
+#   - name: jellyfin-tv-shows
+#     mountPath: /media/tv
+#   - name: jellyfin-movies
+#     mountPath: /media/movies
+#   - name: jellyfin-music
+#     mountPath: /media/music
+#   - name: jellyfin-anime
+#     mountPath: /media/anime
+#   - name: jellyfin-unsorted
+#     mountPath: /media/unsorted
 
 service:
   annotations:

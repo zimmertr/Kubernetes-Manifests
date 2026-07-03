@@ -1,116 +1,116 @@
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: jellyfin-data
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 100Gi
-  storageClassName: proxmox-flashpool
-  volumeName: jellyfin-data
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: jellyfin-transcode
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 50Gi
-  storageClassName: proxmox-flashpool
-  volumeName: jellyfin-transcode
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: jellyfin-anime
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 1Ti
-  storageClassName: nfs-client
-  volumeName: jellyfin-anime
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: jellyfin-audiobooks
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 1Ti
-  storageClassName: nfs-client
-  volumeName: jellyfin-audiobooks
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: jellyfin-cartoons
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 1Ti
-  storageClassName: nfs-client
-  volumeName: jellyfin-cartoons
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: jellyfin-movies
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 1Ti
-  storageClassName: nfs-client
-  volumeName: jellyfin-movies
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: jellyfin-music
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 1Ti
-  storageClassName: nfs-client
-  volumeName: jellyfin-music
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: jellyfin-tv-shows
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 1Ti
-  storageClassName: nfs-client
-  volumeName: jellyfin-tv-shows
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: jellyfin-unsorted
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 1Ti
-  storageClassName: nfs-client
-  volumeName: jellyfin-unsorted
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: jellyfin-data
+# spec:
+#   accessModes:
+#     - ReadWriteOnce
+#   resources:
+#     requests:
+#       storage: 100Gi
+#   storageClassName: proxmox-flashpool
+#   volumeName: jellyfin-data
+# ---
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: jellyfin-transcode
+# spec:
+#   accessModes:
+#     - ReadWriteOnce
+#   resources:
+#     requests:
+#       storage: 50Gi
+#   storageClassName: proxmox-flashpool
+#   volumeName: jellyfin-transcode
+# ---
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: jellyfin-anime
+# spec:
+#   accessModes:
+#     - ReadWriteOnce
+#   resources:
+#     requests:
+#       storage: 1Ti
+#   storageClassName: nfs-client
+#   volumeName: jellyfin-anime
+# ---
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: jellyfin-audiobooks
+# spec:
+#   accessModes:
+#     - ReadWriteOnce
+#   resources:
+#     requests:
+#       storage: 1Ti
+#   storageClassName: nfs-client
+#   volumeName: jellyfin-audiobooks
+# ---
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: jellyfin-cartoons
+# spec:
+#   accessModes:
+#     - ReadWriteOnce
+#   resources:
+#     requests:
+#       storage: 1Ti
+#   storageClassName: nfs-client
+#   volumeName: jellyfin-cartoons
+# ---
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: jellyfin-movies
+# spec:
+#   accessModes:
+#     - ReadWriteOnce
+#   resources:
+#     requests:
+#       storage: 1Ti
+#   storageClassName: nfs-client
+#   volumeName: jellyfin-movies
+# ---
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: jellyfin-music
+# spec:
+#   accessModes:
+#     - ReadWriteOnce
+#   resources:
+#     requests:
+#       storage: 1Ti
+#   storageClassName: nfs-client
+#   volumeName: jellyfin-music
+# ---
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: jellyfin-tv-shows
+# spec:
+#   accessModes:
+#     - ReadWriteOnce
+#   resources:
+#     requests:
+#       storage: 1Ti
+#   storageClassName: nfs-client
+#   volumeName: jellyfin-tv-shows
+# ---
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: jellyfin-unsorted
+# spec:
+#   accessModes:
+#     - ReadWriteOnce
+#   resources:
+#     requests:
+#       storage: 1Ti
+#   storageClassName: nfs-client
+#   volumeName: jellyfin-unsorted
