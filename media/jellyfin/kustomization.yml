@@ -13,3 +13,24 @@ helmCharts:
     repo: https://jellyfin.github.io/jellyfin-helm
     valuesFile: values.yml
     version: 3.2.0
+
+patches:
+  - target:
+      kind: Deployment
+      name: jellyfin
+    patch: |-
+      apiVersion: apps/v1
+      kind: Deployment
+      metadata:
+        name: jellyfin
+      spec:
+        template:
+          spec:
+            containers:
+              - name: jellyfin
+                volumeMounts:
+                  - mountPath: /media
+                    $patch: delete
+            volumes:
+              - name: media
+                $patch: delete

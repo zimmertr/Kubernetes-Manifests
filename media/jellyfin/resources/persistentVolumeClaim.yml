@@ -1,28 +1,28 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: jellyfin-data
+  name: jellyfin-cache
 spec:
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 100Gi
+      storage: 15Gi
   storageClassName: proxmox-flashpool
-  volumeName: jellyfin-data
+  volumeName: jellyfin-cache
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: jellyfin-transcode
+  name: jellyfin-config
 spec:
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 50Gi
+      storage: 15Gi
   storageClassName: proxmox-flashpool
-  volumeName: jellyfin-transcode
+  volumeName: jellyfin-config
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -30,7 +30,7 @@ metadata:
   name: jellyfin-anime
 spec:
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
       storage: 1Ti
@@ -43,7 +43,7 @@ metadata:
   name: jellyfin-audiobooks
 spec:
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
       storage: 1Ti
@@ -56,7 +56,7 @@ metadata:
   name: jellyfin-cartoons
 spec:
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
       storage: 1Ti
@@ -66,23 +66,10 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: jellyfin-movies
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 1Ti
-  storageClassName: nfs-client
-  volumeName: jellyfin-movies
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
   name: jellyfin-music
 spec:
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
       storage: 1Ti
@@ -92,10 +79,23 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
+  name: jellyfin-movies
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 1Ti
+  storageClassName: nfs-client
+  volumeName: jellyfin-movies
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
   name: jellyfin-tv-shows
 spec:
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
       storage: 1Ti
@@ -108,7 +108,7 @@ metadata:
   name: jellyfin-unsorted
 spec:
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
       storage: 1Ti
