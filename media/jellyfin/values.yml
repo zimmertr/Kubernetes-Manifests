@@ -7,6 +7,7 @@ persistence:
     enabled: false
 
 service:
+  port: 80
   annotations:
     metallb.universe.tf/loadBalancerIPs: 192.168.40.130
   externalTrafficPolicy: Local
