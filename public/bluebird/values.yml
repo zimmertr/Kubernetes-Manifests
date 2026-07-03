@@ -1,0 +1,25 @@
+replicas: 3
+strategy: Canary
+canary:
+  dynamicStableScale: true
+  trafficRouting: true
+  steps:
+    - setWeight: 33
+    - setWeight: 66
+    - setWeight: 100
+
+ingress:
+  enabled: true
+  hosts:
+    - ganymede.sol.milkyway
+    - bluebirdforecast.com
+    - www.bluebirdforecast.com
+  httpsRedirect: true
+  tls:
+    enabled: true
+    credentialName: bluebird
+  mesh: true
+
+experiment:
+  enabled: true
+  host: bluebird-experiment
