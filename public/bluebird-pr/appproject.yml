@@ -12,5 +12,3 @@ spec:
   destinations:
     - namespace: bluebird-system
       server: https://kubernetes.default.svc
-  orphanedResources:
-    warn: true
