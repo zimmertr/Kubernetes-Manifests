@@ -20,6 +20,9 @@ volumes:
   - name: jellyfin-cartoons
     persistentVolumeClaim:
       claimName: jellyfin-cartoons
+  - name: jellyfin-cache
+    persistentVolumeClaim:
+      claimName: jellyfin-cache
   - name: jellyfin-config
     persistentVolumeClaim:
       claimName: jellyfin-config
@@ -41,6 +44,8 @@ volumeMounts:
     mountPath: /anime
   - name: jellyfin-audiobooks
     mountPath: /audiobooks
+  - name: jellyfin-cache
+    mountPath: /cache
   - name: jellyfin-cartoons
     mountPath: /cartoons
   - name: jellyfin-config

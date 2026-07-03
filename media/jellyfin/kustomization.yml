@@ -42,6 +42,4 @@ patches:
       name: jellyfin
     patch: |-
       - op: remove
-        path: /spec/template/spec/containers/0/volumeMounts/2 # Remove the cache volume mount
-      - op: remove
         path: /spec/template/spec/containers/0/volumeMounts/1 # Remove the media volume mount 
