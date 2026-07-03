@@ -16,6 +16,8 @@ spec:
         name: http
         number: 80
         protocol: HTTP
+      tls:
+        httpsRedirect: true
     - hosts:
         - 'nix.sol.milkyway'
         - 'tjzimmerman.com'
