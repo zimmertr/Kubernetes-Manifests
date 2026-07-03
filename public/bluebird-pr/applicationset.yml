@@ -13,7 +13,7 @@ spec:
           repo: bluebird
           labels:
             - create pr container
-        requeueAfterSeconds: 60
+        requeueAfterSeconds: 300
   template:
     metadata:
       name: "bluebird-pr-{{ .number }}"
