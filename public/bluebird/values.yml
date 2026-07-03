@@ -1,0 +1,37 @@
+# Stable (production) values for the bluebird-helm chart.
+#
+# The image tag is intentionally NOT set here — it is owned by the kustomize
+# `images:` transformer in kustomization.yml (bumped by the app repo's
+# release.yml via `kustomize edit set image`). The chart's default image.name
+# (zimmertr/bluebird) is what the transformer matches on.
+#
+# PR previews reuse this file via the ApplicationSet `$values` ref and override
+# the stable-specific keys (strategy, replicas, image.name, ingress hosts, TLS,
+# experiment) with per-PR helm.parameters.
+
+replicas: 3
+strategy: Canary
+canary:
+  dynamicStableScale: true
+  trafficRouting: true
+  steps:
+    - setWeight: 33
+    - setWeight: 66
+    - setWeight: 100
+
+ingress:
+  enabled: true
+  hosts:
+    - ganymede.sol.milkyway
+    - bluebirdforecast.com
+    - www.bluebirdforecast.com
+  port: 80
+  httpsRedirect: true
+  tls:
+    enabled: true
+    credentialName: bluebird
+  mesh: true
+
+experiment:
+  enabled: true
+  host: bluebird-experiment
