@@ -1,15 +1,15 @@
-# apiVersion: v1
-# kind: PersistentVolumeClaim
-# metadata:
-#   name: jellyfin-data
-# spec:
-#   accessModes:
-#     - ReadWriteOnce
-#   resources:
-#     requests:
-#       storage: 100Gi
-#   storageClassName: proxmox-flashpool
-#   volumeName: jellyfin-data
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: jellyfin-config
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+  storageClassName: proxmox-flashpool
+  volumeName: jellyfin-config
 # ---
 # apiVersion: v1
 # kind: PersistentVolumeClaim
