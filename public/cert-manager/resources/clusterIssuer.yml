@@ -11,7 +11,7 @@ spec:
     solvers:
       # DNS-01 via Cloudflare. The origin sits behind the Cloudflare proxy,
       # so HTTP-01 is unreliable; DNS-01 also supports wildcards.
-      # Token secret is created out-of-band (see public/cert-manager/configs/).
+      # Token secret is created out-of-band (see public/cert-manager/README.md).
       - dns01:
           cloudflare:
             apiTokenSecretRef:
