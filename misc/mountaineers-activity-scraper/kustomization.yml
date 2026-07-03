@@ -1,4 +1,4 @@
-namespace: mountaineers-activity-scraper
+namespace: mountaineers-activity-scraper-system
 
 resources:
   - resources/namespace.yml

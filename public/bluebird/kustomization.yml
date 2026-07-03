@@ -1,4 +1,4 @@
-namespace: bluebird
+namespace: bluebird-system
 
 resources:
 - resources/namespace.yml
@@ -12,7 +12,7 @@ configMapGenerator:
 - files:
   - files/test-connection.sh
   name: test-connection-sh
-  namespace: bluebird
+  namespace: bluebird-system
 
 generatorOptions:
   disableNameSuffixHash: true

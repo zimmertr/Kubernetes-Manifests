@@ -1,4 +1,4 @@
-namespace: jellyfin
+namespace: jellyfin-system
 
 resources:
   - resources/namespace.yml
@@ -8,7 +8,7 @@ resources:
 helmCharts:
   - includeCRDs: true
     name: jellyfin
-    namespace: jellyfin
+    namespace: jellyfin-system
     releaseName: jellyfin
     repo: https://jellyfin.github.io/jellyfin-helm
     valuesFile: values.yml
