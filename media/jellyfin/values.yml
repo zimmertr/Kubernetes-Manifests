@@ -19,9 +19,9 @@ volumes:
   - name: jellyfin-data
     persistentVolumeClaim:
       claimName: jellyfin-data
-  - name: jellyfin-hardware-acceleration
-    persistentVolumeClaim:
-      claimName: jellyfin-hardware-acceleration
+  # - name: jellyfin-hardware-acceleration
+  #   persistentVolumeClaim:
+  #     claimName: jellyfin-hardware-acceleration
   - name: jellyfin-transcode
     persistentVolumeClaim:
       claimName: jellyfin-transcode

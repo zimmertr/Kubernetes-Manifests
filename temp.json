@@ -1,0 +1,60 @@
+{
+  "apiVersion": "v1",
+  "kind": "Namespace",
+  "metadata": {
+    "annotations": {
+      "argocd.argoproj.io/tracking-id": "jellyfin:/Namespace:jellyfin-system/jellyfin-system"
+    },
+    "creationTimestamp": "2026-07-03T02:19:46Z",
+    "deletionTimestamp": "2026-07-03T02:31:41Z",
+    "labels": {
+      "kubernetes.io/metadata.name": "jellyfin-system"
+    },
+    "name": "jellyfin-system",
+    "resourceVersion": "43688131",
+    "uid": "f7ed66a6-57a8-4999-a127-18ddf4b172e1"
+  },
+  "spec": {
+    "finalizers": []
+  },
+  "status": {
+    "conditions": [
+      {
+        "lastTransitionTime": "2026-07-03T02:31:46Z",
+        "message": "Discovery failed for some groups, 1 failing: unable to retrieve the complete list of server APIs: metrics.k8s.io/v1beta1: stale GroupVersion discovery: metrics.k8s.io/v1beta1",
+        "reason": "DiscoveryFailed",
+        "status": "True",
+        "type": "NamespaceDeletionDiscoveryFailure"
+      },
+      {
+        "lastTransitionTime": "2026-07-03T02:31:47Z",
+        "message": "All legacy kube types successfully parsed",
+        "reason": "ParsedGroupVersions",
+        "status": "False",
+        "type": "NamespaceDeletionGroupVersionParsingFailure"
+      },
+      {
+        "lastTransitionTime": "2026-07-03T02:31:47Z",
+        "message": "All content successfully deleted, may be waiting on finalization",
+        "reason": "ContentDeleted",
+        "status": "False",
+        "type": "NamespaceDeletionContentFailure"
+      },
+      {
+        "lastTransitionTime": "2026-07-03T02:31:47Z",
+        "message": "All content successfully removed",
+        "reason": "ContentRemoved",
+        "status": "False",
+        "type": "NamespaceContentRemaining"
+      },
+      {
+        "lastTransitionTime": "2026-07-03T02:31:47Z",
+        "message": "All content-preserving finalizers finished",
+        "reason": "ContentHasNoFinalizers",
+        "status": "False",
+        "type": "NamespaceFinalizersRemaining"
+      }
+    ],
+    "phase": "Terminating"
+  }
+}
