@@ -45,7 +45,7 @@ The tool will not run successfully until a Google Cloud Credentials secret has b
 ```bash
 kubectl create ns mountaineers-activity-scraper
 
-kubectl create secret generic mountaineers-creds \
+kubectl create secret generic mountaineers-activity-scraper-creds \
   --from-file=mountaineers-activity-scraper/files/google_cloud_credentials.json \
-  -n mountaineers-activity-scraper
+  -n mountaineers-activity-scraper-system
 ```
