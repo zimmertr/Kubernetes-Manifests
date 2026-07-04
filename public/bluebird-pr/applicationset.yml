@@ -47,9 +47,6 @@ spec:
                 value: "{{ .number }}"
               - name: PREVIEW_COMMIT
                 value: "{{ .head_sha }}"
-              # Verbose logging for preview/test envs to aid debugging PRs.
-              # The app reads LOG_LEVEL at startup; TRACE is its most verbose
-              # level. Stable deliberately omits this (defaults to WARNING).
               - name: LOG_LEVEL
                 value: "TRACE"
       syncPolicy:
