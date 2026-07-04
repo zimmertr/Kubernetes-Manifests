@@ -47,6 +47,8 @@ spec:
                 value: "{{ .number }}"
               - name: PREVIEW_COMMIT
                 value: "{{ .head_sha }}"
+              - name: LOG_LEVEL
+                value: "TRACE"
       syncPolicy:
         automated:
           prune: true
