@@ -8,7 +8,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: AnalysisTemplate
 metadata:
-  name: bluebird-analyze-smoke
+  name: bluebird-api-test
 spec:
   args:
     - name: host
@@ -18,7 +18,7 @@ spec:
     - name: header
       value: "experiment: true"
   metrics:
-    - name: analyze-smoke
+    - name: api-test
       count: 3
       interval: 30s
       failureLimit: 1
@@ -37,9 +37,9 @@ spec:
               spec:
                 restartPolicy: Never
                 containers:
-                  - name: analyze-smoke
+                  - name: api-test
                     image: curlimages/curl:latest
-                    command: ["/bin/sh", "/scripts/analyze-smoke.sh"]
+                    command: ["/bin/sh", "/scripts/api-test.sh"]
                     env:
                       - name: HOST
                         value: "{{ args.host }}"
@@ -48,12 +48,12 @@ spec:
                       - name: HEADER
                         value: "{{ args.header }}"
                     volumeMounts:
-                      - name: analyze-smoke-sh
+                      - name: api-test-sh
                         mountPath: /scripts
                 volumes:
-                  - name: analyze-smoke-sh
+                  - name: api-test-sh
                     configMap:
-                      name: analyze-smoke-sh
+                      name: api-test-sh
 ---
 # The background tripwire: while the rollout shifts traffic, the Rollouts
 # controller itself polls the canary Service (web provider — no Job pods)

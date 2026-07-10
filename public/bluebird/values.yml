@@ -29,8 +29,8 @@ canary:
             service:
               name: bluebird-experiment
         analyses:
-          - name: analyze-smoke
-            templateName: bluebird-analyze-smoke
+          - name: api-test
+            templateName: bluebird-api-test
             requiredForCompletion: true
     - setWeight: 33
     - setWeight: 66

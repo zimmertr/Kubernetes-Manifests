@@ -14,8 +14,8 @@ resources:
 
 configMapGenerator:
 - files:
-  - files/analyze-smoke.sh
-  name: analyze-smoke-sh
+  - files/api-test.sh
+  name: api-test-sh
   namespace: bluebird-system
 
 generatorOptions:
