@@ -6,7 +6,7 @@ helmCharts:
   releaseName: bluebird
   repo: oci://registry-1.docker.io/zimmertr
   valuesFile: values.yml
-  version: 0.1.4
+  version: 0.2.0
 
 resources:
 - resources/namespace.yml
@@ -14,8 +14,8 @@ resources:
 
 configMapGenerator:
 - files:
-  - files/test-connection.sh
-  name: test-connection-sh
+  - files/api-test.sh
+  name: api-test-sh
   namespace: bluebird-system
 
 generatorOptions:
