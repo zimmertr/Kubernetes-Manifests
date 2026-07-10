@@ -24,6 +24,6 @@ generatorOptions:
 images:
 - name: zimmertr/bluebird
   newName: zimmertr/bluebird
-  newTag: 0.14.12
+  newTag: 0.14.13
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
