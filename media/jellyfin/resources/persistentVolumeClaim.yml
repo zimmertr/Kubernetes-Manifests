@@ -7,7 +7,7 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 15Gi
+      storage: 50Gi
   storageClassName: proxmox-flashpool
   volumeName: jellyfin-cache
 ---
