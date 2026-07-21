@@ -1,4 +1,7 @@
 replicas: 3
+extraEnv:
+  - name: LOG_LEVEL
+    value: INFO
 strategy: Canary
 canary:
   dynamicStableScale: true
