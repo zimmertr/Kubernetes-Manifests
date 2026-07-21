@@ -29,11 +29,6 @@ spec:
       source:
         repoURL: oci://registry-1.docker.io/zimmertr/bluebird-helm
         chart: bluebird-helm
-        # Track the same chart the stable app uses (kustomization.yml). 0.2.0
-        # defaults to a plain Deployment with Istio ingress (mesh on), which is
-        # all an ephemeral preview needs. Bumping off 0.1.4 also lets that old,
-        # immutable chart tag be removed from the registry so Artifact Hub stops
-        # failing its security scan on it.
         targetRevision: 0.2.0
         helm:
           releaseName: "bluebird-pr-{{ .number }}"
