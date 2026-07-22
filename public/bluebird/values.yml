@@ -2,6 +2,23 @@ replicas: 3
 extraEnv:
   - name: LOG_LEVEL
     value: INFO
+# Kubelet probes hit the dedicated /healthz target, which the app access-logs
+# at TRACE only — so probe heartbeats stay out of the INFO logs while real
+# user requests to / keep logging. Requires a bluebird image that serves
+# /healthz (added in bluebird#55); older images 404 it and would fail probes.
+probes:
+  liveness:
+    httpGet:
+      path: /healthz
+      port: 8000
+  readiness:
+    httpGet:
+      path: /healthz
+      port: 8000
+  startup:
+    httpGet:
+      path: /healthz
+      port: 8000
 strategy: Canary
 canary:
   dynamicStableScale: true
