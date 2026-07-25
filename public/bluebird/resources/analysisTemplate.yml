@@ -28,6 +28,9 @@ spec:
             # Retries are governed by count/failureLimit above; a pod-level
             # retry would just hide a failed measurement.
             backoffLimit: 0
+            # Completed measurement pods self-delete after 5 minutes; prevents
+            # accumulation of old Job pods in the Argo CD UI.
+            ttlSecondsAfterFinished: 300
             template:
               metadata:
                 annotations:
