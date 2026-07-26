@@ -1,4 +1,11 @@
 replicas: 3
+# Rollout artifact retention: keep only current + 1 previous ReplicaSet, and
+# completed AnalysisRuns/Experiments per outcome (successful/failed). Reduces
+# Argo CD UI clutter without affecting deployment stability or observability.
+revisionHistoryLimit: 1
+analysis:
+  successfulRunHistoryLimit: 1
+  unsuccessfulRunHistoryLimit: 2
 extraEnv:
   - name: LOG_LEVEL
     value: INFO
