@@ -18,6 +18,8 @@ jobs:
   # failed sync rather than a failed build. This job is what makes the
   # automated bump PRs (bluebird image tag, bluebird-helm chart versions) worth
   # routing through a PR at all: `gh pr merge --auto` has something to wait on.
+  # For the prod chart bump it is also the review gate — see the render-diff
+  # step at the end of this job.
   validate:
     name: Validate manifests
     runs-on: ubuntu-latest
@@ -129,3 +131,27 @@ jobs:
             fi
           done
           exit $rc
+
+      # The one bump PR that must not always self-merge: a chart change can
+      # render fine yet still change prod (helm silently ignores values the
+      # chart stopped reading). A render diff vs origin/main (what Argo runs)
+      # fails this required check and with it the armed auto-merge. The branch
+      # guard exists because every other PR is supposed to change the render.
+      # Labels are stripped by yq path, not grep, so a version label leaking
+      # into matchLabels still surfaces and holds.
+      - name: Gate stable chart bumps on an inert render
+        if: github.head_ref == 'chore/bluebird-stable-chart'
+        run: |
+          strip() { yq e 'del(.metadata.labels."helm.sh/chart", .metadata.labels."app.kubernetes.io/version")' -; }
+          kustomize build --enable-helm public/bluebird | strip > /tmp/head.yaml
+          git worktree add -q /tmp/deployed origin/main
+          kustomize build --enable-helm /tmp/deployed/public/bluebird | strip > /tmp/deployed.yaml
+          if diff -u /tmp/deployed.yaml /tmp/head.yaml > /tmp/render.diff; then
+            echo "Rendered prod manifests unchanged (version labels aside) — inert, safe to self-merge."
+            exit 0
+          fi
+          echo '::group::rendered prod diff (deployed -> this PR)'
+          cat /tmp/render.diff
+          echo '::endgroup::'
+          echo "::error::This chart bump changes prod's rendered manifests, so it is held: the failing check blocks any merge of this PR (required checks bind admins here too). Review the diff in the step log, then ship the same version bump in a normal PR together with whatever values.yml change it needs — human branches skip this gate — and close this one. Don't push fixes to this branch: releases force-push over it."
+          exit 1
