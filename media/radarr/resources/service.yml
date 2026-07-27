@@ -8,6 +8,7 @@ metadata:
     app: radarr
 spec:
   type: LoadBalancer
+  externalTrafficPolicy: Local
   selector:
     app: radarr
   ports:
