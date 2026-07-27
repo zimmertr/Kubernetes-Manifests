@@ -1,10 +1,82 @@
-# The experiment gate: full-path functional smoke test against the new
-# version before any user traffic shifts. The job curls through the real
-# ingress (gateway Service + public hostname + TLS) with the experiment
-# header, which the VirtualService routes to the experiment pods.
-# 3 measurements, one flake forgiven — two failures abort the release, so an
-# extended Overpass/Open-Meteo outage blocks deploys rather than skipping
-# validation.
+# The blocking release gate: does the new version answer for itself, through
+# the real ingress path, before any user traffic shifts? The job curls through
+# the gateway Service + public hostname + TLS with the experiment header, which
+# the VirtualService routes to the experiment pods.
+#
+# Deliberately touches no third-party API. The previous gate posted a live
+# /api/analyze through Overpass and Open-Meteo, so an upstream outage aborted a
+# release that was perfectly healthy. That test still runs below, informationally.
+# 2 measurements, no failures forgiven: with nothing external in the path there
+# is nothing legitimate to flake.
+apiVersion: argoproj.io/v1alpha1
+kind: AnalysisTemplate
+metadata:
+  name: bluebird-version-check
+spec:
+  args:
+    - name: host
+      value: bluebirdforecast.com
+    - name: gateway
+      value: gateway.istio-gateway.svc.cluster.local:443
+    - name: header
+      value: "experiment: true"
+    # Left empty for now, so the script asserts only that the reported version
+    # is semver-shaped (which already rejects an unreleased "dev" build).
+    # Setting this to the release being rolled out additionally proves the
+    # header route reached the NEW pods rather than the stable ones. Wiring it
+    # means having bluebird's release.yml write the semver here alongside the
+    # kustomization image tag it already updates.
+    - name: expected-version
+      value: ""
+  metrics:
+    - name: version-check
+      count: 2
+      interval: 15s
+      failureLimit: 0
+      provider:
+        job:
+          spec:
+            backoffLimit: 0
+            ttlSecondsAfterFinished: 300
+            template:
+              metadata:
+                annotations:
+                  # Sidecar'd Jobs never complete; the script reaches the
+                  # gateway Service directly instead of through the mesh.
+                  sidecar.istio.io/inject: "false"
+              spec:
+                restartPolicy: Never
+                containers:
+                  - name: version-check
+                    image: curlimages/curl:latest
+                    command: ["/bin/sh", "/scripts/version-check.sh"]
+                    env:
+                      - name: HOST
+                        value: "{{ args.host }}"
+                      - name: CONNECT_TO
+                        value: "{{ args.gateway }}"
+                      - name: HEADER
+                        value: "{{ args.header }}"
+                      - name: EXPECTED_VERSION
+                        value: "{{ args.expected-version }}"
+                    volumeMounts:
+                      - name: canary-scripts
+                        mountPath: /scripts
+                volumes:
+                  - name: canary-scripts
+                    configMap:
+                      name: canary-scripts
+---
+# The full-path functional test: a real /api/analyze over a known polygon,
+# exercising Overpass and Open-Meteo end to end.
+#
+# INFORMATIONAL ONLY. `failureLimit` equals `count`, so a failed measurement can
+# never exceed the limit and this analysis cannot abort a rollout. That is the
+# point: it depends on free third-party APIs that go down for reasons that have
+# nothing to do with the release, and coupling deploys to their uptime meant an
+# Overpass outage blocked shipping. Read the measurement in the Argo CD UI or
+# the Job logs to see whether the live path is healthy; the gate above decides
+# whether to promote.
 apiVersion: argoproj.io/v1alpha1
 kind: AnalysisTemplate
 metadata:
@@ -19,8 +91,7 @@ spec:
       value: "experiment: true"
   metrics:
     - name: api-test
-      count: 3
-      interval: 30s
+      count: 1
       failureLimit: 1
       provider:
         job:
@@ -34,8 +105,6 @@ spec:
             template:
               metadata:
                 annotations:
-                  # Sidecar'd Jobs never complete; the script reaches the
-                  # gateway Service directly instead of through the mesh.
                   sidecar.istio.io/inject: "false"
               spec:
                 restartPolicy: Never
@@ -51,20 +120,25 @@ spec:
                       - name: HEADER
                         value: "{{ args.header }}"
                     volumeMounts:
-                      - name: api-test-sh
+                      - name: canary-scripts
                         mountPath: /scripts
                 volumes:
-                  - name: api-test-sh
+                  - name: canary-scripts
                     configMap:
-                      name: api-test-sh
+                      name: canary-scripts
 ---
 # The background tripwire: while the rollout shifts traffic, the Rollouts
-# controller itself polls the canary Service (web provider — no Job pods)
-# and aborts the moment the new version stops responding. It deliberately
-# targets the Service, not the gateway path: the gate above already proved
-# the ingress path, and a probe with no other components in it can only
-# fail when the canary itself is bad — exactly when rollback is the right
-# response. /openapi.json is served by the app itself and is stable JSON.
+# controller itself polls the canary Service (web provider, no Job pods) and
+# aborts the moment the new version stops answering. It deliberately targets
+# the Service, not the gateway path: the gate above already proved the ingress
+# path, and a probe with no other components in it can only fail when the
+# canary itself is bad, which is exactly when rollback is the right response.
+#
+# Polls /api/version rather than /openapi.json. The old probe asserted
+# `$.info.title == 'Bluebird'`, which is true of every build ever shipped, so
+# it could only catch a total outage. Asserting the version is a real released
+# build also catches a canary serving something it should not be, and the
+# payload is a few dozen bytes instead of a 36 KB schema polled every 15s.
 apiVersion: argoproj.io/v1alpha1
 kind: AnalysisTemplate
 metadata:
@@ -78,9 +152,9 @@ spec:
       initialDelay: 30s
       failureLimit: 1
       consecutiveErrorLimit: 2
-      successCondition: result == 'Bluebird'
+      successCondition: result != '' && result != 'dev'
       provider:
         web:
-          url: http://bluebird-canary.bluebird-system.svc.cluster.local:8000/openapi.json
-          jsonPath: "{$.info.title}"
+          url: http://bluebird-canary.bluebird-system.svc.cluster.local:8000/api/version
+          jsonPath: "{$.version}"
           timeoutSeconds: 10

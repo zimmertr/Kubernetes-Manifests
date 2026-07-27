@@ -14,8 +14,9 @@ resources:
 
 configMapGenerator:
 - files:
+  - files/version-check.sh
   - files/api-test.sh
-  name: api-test-sh
+  name: canary-scripts
   namespace: bluebird-system
 
 generatorOptions:

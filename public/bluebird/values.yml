@@ -45,9 +45,15 @@ canary:
   steps:
     # Gate at 0% user traffic: one new-version pod behind the fixed-name
     # experiment Service (matching the VirtualService "experiment: true"
-    # header route), smoke-tested end-to-end through the real ingress with
-    # a live /api/analyze call. The experiment ends as soon as the analysis
-    # passes; a failure aborts before any user sees the canary.
+    # header route), probed through the real ingress. The experiment ends as
+    # soon as both analyses finish; a version-check failure aborts before any
+    # user sees the canary.
+    #
+    # Two analyses, deliberately different in weight. version-check is the gate
+    # and asks the new pods only about themselves, so promotion never hinges on
+    # a free third-party API being up. api-test exercises the live Overpass and
+    # Open-Meteo path but is informational (see analysisTemplate.yml): it
+    # reports, it cannot block.
     - experiment:
         templates:
           - name: canary
@@ -56,6 +62,9 @@ canary:
             service:
               name: bluebird-experiment
         analyses:
+          - name: version-check
+            templateName: bluebird-version-check
+            requiredForCompletion: true
           - name: api-test
             templateName: bluebird-api-test
             requiredForCompletion: true
