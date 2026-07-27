@@ -31,8 +31,15 @@ jobs:
           version: v3.21.3
 
       - name: Install kustomize
+        env:
+          # There's no setup-kustomize action pinned here, so the version lives in
+          # an env var with the annotation Renovate's customManager looks for.
+          # Without it a hand-rolled download URL is invisible to Renovate and the
+          # pin rots silently — this sat at 5.7.1 while upstream reached 5.8.1.
+          # renovate: datasource=github-releases depName=kubernetes-sigs/kustomize extractVersion=^kustomize/v(?<version>.+)$
+          KUSTOMIZE_VERSION: 5.8.1
         run: |
-          curl -sSL "https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv5.7.1/kustomize_v5.7.1_linux_amd64.tar.gz" \
+          curl -sSL "https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv${KUSTOMIZE_VERSION}/kustomize_v${KUSTOMIZE_VERSION}_linux_amd64.tar.gz" \
             | sudo tar xz -C /usr/local/bin
           kustomize version
 
@@ -92,6 +99,17 @@ jobs:
               dir="$(dirname "$dir")"
             done
           done < changed.txt
+
+          # This workflow is the only thing standing between a bad manifest and a
+          # failed Argo sync, and Renovate keeps bumping the tools it runs. A PR
+          # that only edits this file has no kustomization ancestor, so it would
+          # otherwise pass on an empty target list — green without rendering
+          # anything, which is exactly how a broken helm/kustomize bump would land.
+          # Render one real app so the check has to prove it still works.
+          if grep -q '^\.github/workflows/pr\.yml$' changed.txt; then
+            echo "Workflow changed — adding public/bluebird as a canary target."
+            targets="$(printf '%s\n%s' "$targets" "public/bluebird")"
+          fi
 
           targets="$(printf '%s' "$targets" | grep -v '^$' | sort -u || true)"
           if [ -z "$targets" ]; then

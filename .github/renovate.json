@@ -9,6 +9,16 @@
   ],
   "prConcurrentLimit": 0,
   "prHourlyLimit": 0,
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "Tool versions pinned in workflow env vars, tagged with a `# renovate:` annotation. Actions and setup-* inputs are found by the built-in manager; a hand-rolled download URL is not.",
+      "managerFilePatterns": ["/^\\.github/workflows/.+\\.ya?ml$/"],
+      "matchStrings": [
+        "# renovate: datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)(?: extractVersion=(?<extractVersion>\\S+))?\\s+\\w+: [\"']?(?<currentValue>[^\"'\\s]+)"
+      ]
+    }
+  ],
   "packageRules": [
     {
       "description": "Automerge patch updates",
