@@ -9,8 +9,11 @@
 # Asserting the version behind the header route is what makes the routing itself
 # part of the gate.
 #
-# 2 measurements, no failures forgiven: nothing external is in the path, so
-# there is nothing legitimate to flake.
+# One measurement, no failures forgiven. An Experiment does not start any
+# AnalysisRun until its templates report Available, so this is guaranteed to run
+# against a Ready pod: there is no startup race to sample around, and the check
+# itself is deterministic. A second measurement would only ask the same pod the
+# same question again.
 apiVersion: argoproj.io/v1alpha1
 kind: AnalysisTemplate
 metadata:
@@ -33,8 +36,7 @@ spec:
       value: ""
   metrics:
     - name: version-check
-      count: 2
-      interval: 15s
+      count: 1
       failureLimit: 0
       provider:
         job:
@@ -75,9 +77,18 @@ spec:
 #
 # A release that cannot serve a real analysis is not healthy, whatever the
 # reason, so an upstream failure aborts the deploy rather than promoting
-# something that answers nothing. 3 measurements 30s apart with one flake
-# forgiven: a single dropped connection should not fail a release, but a
-# sustained outage should and does.
+# something that answers nothing.
+#
+# One measurement, nothing forgiven. This used to run 3 times 30s apart with one
+# flake forgiven, which quietly contradicted that: forgiving a failure is the
+# opposite of aborting on one. It also meant every release fired three full
+# Overpass queries and three Open-Meteo fetches for the same polygon, against
+# free services we ask everyone else to be gentle with, and added a minute to
+# each deploy for a question already answered by the first attempt.
+#
+# Sampling over time to catch an unstable canary is bluebird-health's job below;
+# it polls every 15s across the whole traffic shift. This gate answers a
+# different question, once: can the new build serve an analysis at all.
 #
 # What changed here is the assertion, not the blocking. api-test.sh used to
 # check for the substring `"results":[{`, which silently depended on FastAPI
@@ -98,14 +109,13 @@ spec:
       value: "experiment: true"
   metrics:
     - name: api-test
-      count: 3
-      interval: 30s
-      failureLimit: 1
+      count: 1
+      failureLimit: 0
       provider:
         job:
           spec:
-            # Retries are governed by count/failureLimit above; a pod-level
-            # retry would just hide a failed measurement.
+            # No retries anywhere, by design: a pod-level retry would hide the
+            # very failure this gate exists to surface.
             backoffLimit: 0
             # Completed measurement pods self-delete after 5 minutes; prevents
             # accumulation of old Job pods in the Argo CD UI.
