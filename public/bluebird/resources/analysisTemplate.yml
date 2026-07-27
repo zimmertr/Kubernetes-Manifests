@@ -1,13 +1,16 @@
-# The blocking release gate: does the new version answer for itself, through
-# the real ingress path, before any user traffic shifts? The job curls through
-# the gateway Service + public hostname + TLS with the experiment header, which
-# the VirtualService routes to the experiment pods.
+# Identity gate: is the thing behind the experiment route actually the new
+# release, and did it finish wiring itself up? The job curls through the gateway
+# Service + public hostname + TLS with the experiment header, which the
+# VirtualService routes to the experiment pods.
 #
-# Deliberately touches no third-party API. The previous gate posted a live
-# /api/analyze through Overpass and Open-Meteo, so an upstream outage aborted a
-# release that was perfectly healthy. That test still runs below, informationally.
-# 2 measurements, no failures forgiven: with nothing external in the path there
-# is nothing legitimate to flake.
+# This closes a hole the functional gate below cannot: that test would pass just
+# as happily against the stable pods, so a VirtualService header-routing misfire
+# looked like a green release while validating a build nobody was about to ship.
+# Asserting the version behind the header route is what makes the routing itself
+# part of the gate.
+#
+# 2 measurements, no failures forgiven: nothing external is in the path, so
+# there is nothing legitimate to flake.
 apiVersion: argoproj.io/v1alpha1
 kind: AnalysisTemplate
 metadata:
@@ -67,16 +70,20 @@ spec:
                     configMap:
                       name: canary-scripts
 ---
-# The full-path functional test: a real /api/analyze over a known polygon,
-# exercising Overpass and Open-Meteo end to end.
+# The full-path functional gate: a real /api/analyze over a known polygon,
+# exercising Overpass and Open-Meteo end to end. Blocking, like the check above.
 #
-# INFORMATIONAL ONLY. `failureLimit` equals `count`, so a failed measurement can
-# never exceed the limit and this analysis cannot abort a rollout. That is the
-# point: it depends on free third-party APIs that go down for reasons that have
-# nothing to do with the release, and coupling deploys to their uptime meant an
-# Overpass outage blocked shipping. Read the measurement in the Argo CD UI or
-# the Job logs to see whether the live path is healthy; the gate above decides
-# whether to promote.
+# A release that cannot serve a real analysis is not healthy, whatever the
+# reason, so an upstream failure aborts the deploy rather than promoting
+# something that answers nothing. 3 measurements 30s apart with one flake
+# forgiven: a single dropped connection should not fail a release, but a
+# sustained outage should and does.
+#
+# What changed here is the assertion, not the blocking. api-test.sh used to
+# check for the substring `"results":[{`, which silently depended on FastAPI
+# emitting no space between the bracket and the brace, and told you nothing
+# about which of the three upstreams failed. It now asserts each stage
+# separately so a red gate names its own cause.
 apiVersion: argoproj.io/v1alpha1
 kind: AnalysisTemplate
 metadata:
@@ -91,7 +98,8 @@ spec:
       value: "experiment: true"
   metrics:
     - name: api-test
-      count: 1
+      count: 3
+      interval: 30s
       failureLimit: 1
       provider:
         job:

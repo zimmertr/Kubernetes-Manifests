@@ -46,14 +46,14 @@ canary:
     # Gate at 0% user traffic: one new-version pod behind the fixed-name
     # experiment Service (matching the VirtualService "experiment: true"
     # header route), probed through the real ingress. The experiment ends as
-    # soon as both analyses finish; a version-check failure aborts before any
-    # user sees the canary.
+    # soon as both analyses finish; either one failing aborts before any user
+    # sees the canary.
     #
-    # Two analyses, deliberately different in weight. version-check is the gate
-    # and asks the new pods only about themselves, so promotion never hinges on
-    # a free third-party API being up. api-test exercises the live Overpass and
-    # Open-Meteo path but is informational (see analysisTemplate.yml): it
-    # reports, it cannot block.
+    # Two analyses, both blocking, answering different questions. version-check
+    # asks "is this the new release, and is it wired up?", which also proves the
+    # header route reached the canary rather than the stable pods. api-test asks
+    # "can it actually serve an analysis?" end to end through Overpass and
+    # Open-Meteo. A release needs both to be true.
     - experiment:
         templates:
           - name: canary

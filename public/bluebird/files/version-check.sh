@@ -1,16 +1,16 @@
 #!/bin/sh
-# The blocking release gate. Deliberately deterministic: it asks the new pods
-# only about themselves, so the decision to promote or abort never depends on
-# whether a free third-party API happens to be up.
+# Identity gate for a bluebird release, run by Argo Rollouts alongside the
+# functional gate (api-test.sh). Both block: either one failing aborts the
+# deploy before any user traffic shifts.
 #
-# The old gate posted a real /api/analyze through Overpass and Open-Meteo, which
-# meant an upstream outage failed a release that was perfectly healthy. That
-# test still runs (api-test.sh) but is now informational. This is what blocks.
+# This one closes a hole api-test.sh cannot. That test would pass just as
+# happily against the stable pods, so a VirtualService header-routing misfire
+# looked like a green release while validating a build nobody was about to ship.
 #
 # What it proves:
 #   1. The experiment pods answer through the real ingress path (gateway, TLS,
 #      VirtualService header routing), because the request is made exactly the
-#      way api-test.sh made it.
+#      way api-test.sh makes it.
 #   2. They are a genuine released build. GET /api/version reports "dev" unless
 #      the release workflow baked build args in, so a semver-shaped answer means
 #      a real image, not a stray local build.
