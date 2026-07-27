@@ -7,7 +7,7 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 1Gi
+      storage: 10Gi
   storageClassName: proxmox-flashpool
   volumeName: sonarr-data
 ---
@@ -17,7 +17,7 @@ metadata:
   name: sonarr-downloads
 spec:
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
       storage: 1Ti
@@ -30,7 +30,7 @@ metadata:
   name: sonarr-tv
 spec:
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
   resources:
     requests:
       storage: 1Ti

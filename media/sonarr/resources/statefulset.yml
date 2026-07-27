@@ -3,9 +3,13 @@ kind: StatefulSet
 metadata:
   name: sonarr
 spec:
+  persistentVolumeClaimRetentionPolicy:
+    whenDeleted: Retain
+    whenScaled: Retain
   selector:
     matchLabels:
       app: sonarr
+  serviceName: sonarr
   template:
     metadata:
       labels:

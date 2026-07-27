@@ -6,7 +6,7 @@ spec:
   accessModes:
     - ReadWriteOnce
   capacity:
-    storage: 1Gi
+    storage: 10Gi
   csi:
     driver: csi.proxmox.sinextra.dev
     fsType: xfs
@@ -40,7 +40,11 @@ spec:
   capacity:
     storage: 1Ti
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
+  mountOptions:
+    - nfsvers=4.1
+    - hard
+    - noatime
   nfs:
     path: /mnt/DataPool/Downloads/Unsorted
     server: earth.sol.milkyway
@@ -54,7 +58,11 @@ spec:
   capacity:
     storage: 1Ti
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteMany
+  mountOptions:
+    - nfsvers=4.1
+    - hard
+    - noatime
   nfs:
     path: /mnt/DataPool/TV_Shows
     server: earth.sol.milkyway

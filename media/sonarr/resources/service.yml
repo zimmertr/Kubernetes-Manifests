@@ -8,6 +8,7 @@ metadata:
     app: sonarr
 spec:
   type: LoadBalancer
+  externalTrafficPolicy: Local
   selector:
     app: sonarr
   ports:
