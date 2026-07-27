@@ -1,0 +1,113 @@
+name: Manifest PR
+
+on:
+  pull_request:
+    branches:
+      - main
+
+concurrency:
+  group: manifest-pr-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  # Gate every change to main. Argo CD syncs this repo automatically, so an
+  # unrenderable kustomization or a malformed YAML reaches the cluster as a
+  # failed sync rather than a failed build. This job is what makes the
+  # automated bump PRs (bluebird image tag, bluebird-helm chart versions) worth
+  # routing through a PR at all: `gh pr merge --auto` has something to wait on.
+  validate:
+    name: Validate manifests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # need the merge base to diff against
+
+      - uses: azure/setup-helm@v4
+        with:
+          version: v3.19.0
+
+      - name: Install kustomize
+        run: |
+          curl -sSL "https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv5.7.1/kustomize_v5.7.1_linux_amd64.tar.gz" \
+            | sudo tar xz -C /usr/local/bin
+          kustomize version
+
+      - name: Collect changed files
+        id: changed
+        env:
+          BASE: ${{ github.event.pull_request.base.sha }}
+          HEAD: ${{ github.event.pull_request.head.sha }}
+        run: |
+          # --diff-filter=d drops deletions: a removed file has nothing to parse,
+          # and its directory is picked up anyway if a sibling still changed.
+          git diff --name-only --diff-filter=d "$BASE" "$HEAD" > changed.txt
+          echo "Changed files:"; sed 's/^/  /' changed.txt
+
+      - name: Parse changed YAML
+        run: |
+          pip install --quiet pyyaml
+          # Cheap first gate, and the one that catches the failure mode the bump
+          # bots can actually cause: they rewrite version lines with targeted
+          # `sed`, and a regex that matches more than intended corrupts the file.
+          python3 - <<'PY'
+          import sys, yaml, pathlib
+          bad = []
+          for line in pathlib.Path("changed.txt").read_text().splitlines():
+              if not line.endswith((".yml", ".yaml")):
+                  continue
+              try:
+                  list(yaml.safe_load_all(pathlib.Path(line).read_text()))
+                  print(f"  ok  {line}")
+              except yaml.YAMLError as e:
+                  bad.append(line)
+                  print(f"  FAIL {line}\n{e}", file=sys.stderr)
+          sys.exit(1 if bad else 0)
+          PY
+
+      - name: Render affected kustomizations
+        run: |
+          # Walk each changed file up to its nearest kustomization, so a PR that
+          # touches one app renders one app. Rendering the whole repo would pull
+          # every upstream chart on every PR — slow, and red for reasons that
+          # have nothing to do with the change under review.
+          #
+          # `.disable*` and deprecated/ are excluded for the same reason Argo's
+          # root Application excludes them: nothing there is deployed, and some
+          # of it no longer renders.
+          targets=""
+          while read -r file; do
+            case "$file" in
+              deprecated/*|*.disable*/*) continue ;;
+            esac
+            dir="$(dirname "$file")"
+            while [ "$dir" != "." ]; do
+              if [ -f "$dir/kustomization.yml" ] || [ -f "$dir/kustomization.yaml" ]; then
+                targets="$(printf '%s\n%s' "$targets" "$dir")"
+                break
+              fi
+              dir="$(dirname "$dir")"
+            done
+          done < changed.txt
+
+          targets="$(printf '%s' "$targets" | grep -v '^$' | sort -u || true)"
+          if [ -z "$targets" ]; then
+            echo "No kustomization affected by this PR."
+            exit 0
+          fi
+
+          rc=0
+          for t in $targets; do
+            echo "::group::kustomize build $t"
+            # --enable-helm inflates helmCharts blocks; the charts these pull are
+            # public, so no registry credentials are involved.
+            if kustomize build --enable-helm "$t" >/dev/null; then
+              echo "::endgroup::"; echo "  ok   $t"
+            else
+              echo "::endgroup::"; echo "  FAIL $t"; rc=1
+            fi
+          done
+          exit $rc
