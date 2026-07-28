@@ -11,18 +11,8 @@ extraEnv:
 
 useRollout: true
 strategy: Canary
+
 canary:
-  # Required by the setCanaryScale step below: without a traffic router Argo
-  # derives the canary's traffic share from its replica count, which is the
-  # dial setCanaryScale overrides, so the controller rejects the whole spec
-  # (InvalidSpec, Rollout never progresses). It is also the only thing that
-  # ever moves the weights on the chart's bluebird-stable route.
-  trafficRouting:
-    istio:
-      virtualService:
-        name: bluebird
-        routes:
-          - bluebird-stable
   steps:
     - setCanaryScale:
         replicas: 1
@@ -39,6 +29,12 @@ canary:
     - analysis:
         templates:
           - templateName: api-test
+  trafficRouting:
+    istio:
+      virtualService:
+        name: bluebird
+        routes:
+          - bluebird-stable
 
 ingress:
   enabled: true
