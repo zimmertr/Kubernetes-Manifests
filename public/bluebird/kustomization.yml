@@ -10,20 +10,8 @@ helmCharts:
 
 resources:
 - resources/namespace.yml
-- resources/analysisTemplate.yml
-
-# Without this, blowing the progress deadline marks the Rollout Degraded but
-# never rolls back, parking the service at the reduced capacity dynamicStableScale
-# left it at. Patched rather than set in values.yml because it is a Rollout spec
-# field and the chart only renders spec.strategy.canary verbatim.
-patches:
-- target:
-    kind: Rollout
-    name: bluebird
-  patch: |-
-    - op: add
-      path: /spec/progressDeadlineAbort
-      value: true
+- resources/analysisTemplate-apiTest.yml
+- resources/analysisTemplate-versionCheck.yml
 
 configMapGenerator:
 - files:

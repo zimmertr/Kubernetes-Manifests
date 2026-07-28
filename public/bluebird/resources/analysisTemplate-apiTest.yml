@@ -1,0 +1,53 @@
+# Functional gate: a real /api/analyze over a known polygon, exercising Overpass
+# and Open-Meteo end to end. Blocking, because a release that cannot serve an
+# analysis is not healthy whatever the reason.
+#
+# Asked once. Catching an unstable canary over time is bluebird-health's job
+# below; this answers a different question, and repeating it would only hammer
+# free upstreams for an answer the first attempt already gave.
+apiVersion: argoproj.io/v1alpha1
+kind: AnalysisTemplate
+metadata:
+  name: api-test
+spec:
+  args:
+    - name: host
+      value: bluebirdforecast.com
+    - name: gateway
+      value: gateway.istio-gateway.svc.cluster.local:443
+    - name: header
+      value: "experiment: true"
+  metrics:
+    - name: api-test
+      count: 1
+      failureLimit: 0
+      provider:
+        job:
+          spec:
+            # No retries: one would hide the failure this gate exists to catch.
+            backoffLimit: 0
+            # Do not add ttlSecondsAfterFinished; see the identity gate above.
+            template:
+              metadata:
+                annotations:
+                  sidecar.istio.io/inject: "false"
+              spec:
+                restartPolicy: Never
+                containers:
+                  - name: api-test
+                    image: curlimages/curl:latest
+                    command: ["/bin/sh", "/scripts/api-test.sh"]
+                    env:
+                      - name: HOST
+                        value: "{{ args.host }}"
+                      - name: CONNECT_TO
+                        value: "{{ args.gateway }}"
+                      - name: HEADER
+                        value: "{{ args.header }}"
+                    volumeMounts:
+                      - name: canary-scripts
+                        mountPath: /scripts
+                volumes:
+                  - name: canary-scripts
+                    configMap:
+                      name: canary-scripts

@@ -1,18 +1,14 @@
 replicas: 3
-# Rollout artifact retention: keep only current + 1 previous ReplicaSet, and
-# completed AnalysisRuns/Experiments per outcome (successful/failed). Reduces
-# Argo CD UI clutter without affecting deployment stability or observability.
+
 revisionHistoryLimit: 1
 analysis:
   successfulRunHistoryLimit: 1
   unsuccessfulRunHistoryLimit: 2
+
 extraEnv:
   - name: LOG_LEVEL
     value: INFO
-# Kubelet probes hit the dedicated /healthz target, which the app access-logs
-# at TRACE only — so probe heartbeats stay out of the INFO logs while real
-# user requests to / keep logging. Requires a bluebird image that serves
-# /healthz (added in bluebird#55); older images 404 it and would fail probes.
+
 probes:
   liveness:
     httpGet:
@@ -26,44 +22,18 @@ probes:
     httpGet:
       path: /healthz
       port: 8000
+
 strategy: Canary
 canary:
-  dynamicStableScale: true
-  # progressDeadlineAbort is deliberately absent: it is a Rollout spec field and
-  # this block renders verbatim into spec.strategy.canary, where the API server
-  # prunes it silently. Applied as a kustomize patch instead.
-  trafficRouting:
-    istio:
-      virtualService:
-        name: bluebird
-        routes:
-          - bluebird-stable
-  analysis:
-    templates:
-      - templateName: bluebird-health
-    # Positional index into steps below. Must point at the first setWeight;
-    # inserting a step above it moves the tripwire with no error.
-    startingStep: 4
   steps:
-    # The pauses are load-bearing. Argo completes a setWeight as soon as pods
-    # are Ready, so without them the tripwire above gets no window to measure in.
     - setCanaryScale:
         replicas: 1
     - analysis:
         templates:
-          - templateName: bluebird-version-check
+          - templateName: version-check
     - analysis:
         templates:
-          - templateName: bluebird-api-test
-    # Releases the explicit replica count above back to the traffic weight.
-    - setCanaryScale:
-        matchTrafficWeight: true
-    - setWeight: 33
-    - pause: { duration: 60s }
-    - setWeight: 66
-    - pause: { duration: 60s }
-    - setWeight: 100
-    - pause: { duration: 60s }
+          - templateName: api-test
 
 ingress:
   enabled: true
