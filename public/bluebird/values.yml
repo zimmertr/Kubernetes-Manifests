@@ -11,6 +11,7 @@ extraEnv:
 
 useRollout: true
 strategy: Canary
+
 canary:
   steps:
     - setCanaryScale:
@@ -28,6 +29,12 @@ canary:
     - analysis:
         templates:
           - templateName: api-test
+  trafficRouting:
+    istio:
+      virtualService:
+        name: bluebird
+        routes:
+          - bluebird-stable
 
 ingress:
   enabled: true
