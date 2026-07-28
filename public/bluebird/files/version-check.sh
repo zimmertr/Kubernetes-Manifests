@@ -8,7 +8,7 @@
 # looked like a green release while validating a build nobody was about to ship.
 #
 # What it proves:
-#   1. The experiment pods answer through the real ingress path (gateway, TLS,
+#   1. The canary pods answer through the real ingress path (gateway, TLS,
 #      VirtualService header routing), because the request is made exactly the
 #      way api-test.sh makes it.
 #   2. They are a genuine released build. GET /api/version reports "dev" unless
@@ -23,7 +23,8 @@
 #                     HOST, pointing in-cluster pods straight at the ingress
 #                     gateway Service. Empty = resolve HOST normally.
 #   HEADER            Extra request header. "experiment: true" steers the
-#                     request to the experiment pods via the VirtualService.
+#                     request to the canary Service via the VirtualService's
+#                     header-matched route, bypassing the weighted stable route.
 #   EXPECTED_VERSION  Optional. When set, the reported version must match it
 #                     exactly, which additionally proves the header route
 #                     reached the NEW pods rather than the stable ones. When

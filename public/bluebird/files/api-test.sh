@@ -1,6 +1,6 @@
 #!/bin/sh
 # Functional smoke test for a bluebird release, run by Argo Rollouts as a
-# blocking experiment gate before any user traffic shifts: POST a small,
+# blocking canary gate before any user traffic shifts: POST a small,
 # known-good polygon (Tiger Mountain, Issaquah WA, 8 named OSM peaks) to
 # /api/analyze and require a real ranking back. Exercises the full path: Istio
 # gateway, TLS, VirtualService header routing, FastAPI, Overpass, Open-Meteo.
@@ -14,8 +14,9 @@
 #               HOST, pointing in-cluster pods straight at the ingress gateway
 #               Service so external DNS/NAT reflection never matter.
 #               Empty = resolve HOST normally.
-#   HEADER      Extra request header. "experiment: true" steers the request
-#               to the experiment pods via the VirtualService header route.
+#   HEADER      Extra request header. "experiment: true" steers the request to
+#               the canary Service via the VirtualService's header-matched
+#               route, bypassing the weighted stable route.
 
 HOST="${HOST:-bluebirdforecast.com}"
 CONNECT_TO="${CONNECT_TO:-}"

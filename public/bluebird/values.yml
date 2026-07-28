@@ -29,48 +29,76 @@ probes:
 strategy: Canary
 canary:
   dynamicStableScale: true
+  # NOTE: progressDeadlineAbort is NOT set here. It is a Rollout spec-level
+  # field, not a canary field, and this block is rendered verbatim into
+  # spec.strategy.canary. Setting it here parses fine and is then pruned by the
+  # API server, silently doing nothing. It is applied as a kustomize patch in
+  # kustomization.yml instead, because the chart exposes no spec-level
+  # passthrough for it.
   trafficRouting:
     istio:
       virtualService:
         name: bluebird
         routes:
           - bluebird-stable
-  # Continuous tripwire: the controller polls the canary Service from the
-  # first traffic step until completion and aborts the rollout (auto
-  # rollback) if the new version stops responding.
+  # Continuous tripwire: the controller polls the canary Service from the first
+  # traffic-bearing step until completion and aborts the rollout (auto rollback)
+  # if the new version stops answering.
+  #
+  # startingStep is a POSITIONAL INDEX into steps below, and step 4 is
+  # `setWeight: 33`. Inserting a step above it silently moves the tripwire, and
+  # nothing will fail to tell you.
   analysis:
     templates:
       - templateName: bluebird-health
-    startingStep: 1
+    startingStep: 4
   steps:
-    # Gate at 0% user traffic: one new-version pod behind the fixed-name
-    # experiment Service (matching the VirtualService "experiment: true"
-    # header route), probed through the real ingress. The experiment ends as
-    # soon as both analyses finish; either one failing aborts before any user
-    # sees the canary.
+    # Gate at 0% user traffic, then shift in thirds with a soak at each weight.
     #
-    # Two analyses, both blocking, answering different questions. version-check
-    # asks "is this the new release, and is it wired up?", which also proves the
-    # header route reached the canary rather than the stable pods. api-test asks
-    # "can it actually serve an analysis?" end to end through Overpass and
-    # Open-Meteo. A release needs both to be true.
-    - experiment:
+    # Argo completes a setWeight step the moment replica counts are met and the
+    # weight is verified; only `pause` waits. Without these pauses the whole
+    # shift finished as fast as pods went Ready, which left the tripwire above
+    # with no window to take a measurement in before Argo terminated it. The
+    # soak is what makes "poll continuously and abort" true rather than
+    # decorative.
+
+    # 0. Bring the real canary ReplicaSet up while the stable route still sends
+    #    it 0% of user traffic. Deliberately not an `experiment`: that spun up a
+    #    throwaway ReplicaSet and Service, validated a pod, tore it down, and
+    #    then started the canary from scratch. Two pod startups, and the thing
+    #    validated was not the thing that went live. These pods are.
+    - setCanaryScale:
+        replicas: 1
+
+    # 1. Cheap and deterministic, so it fails fast. Asks "is this the release we
+    #    meant, and did it wire itself up?", through the real ingress with the
+    #    experiment header, which also proves that header route works.
+    - analysis:
         templates:
-          - name: canary
-            specRef: canary
-            replicas: 1
-            service:
-              name: bluebird-experiment
-        analyses:
-          - name: version-check
-            templateName: bluebird-version-check
-            requiredForCompletion: true
-          - name: api-test
-            templateName: bluebird-api-test
-            requiredForCompletion: true
+          - templateName: bluebird-version-check
+
+    # 2. Only reached if step 1 passed, so a wrong or broken build never costs
+    #    an Overpass query. Asks "can it actually serve an analysis?" end to end.
+    #    Kept a separate step rather than merged into step 1 so a red gate names
+    #    which question failed.
+    - analysis:
+        templates:
+          - templateName: bluebird-api-test
+
+    # 3. Hand scaling back to the traffic weight; step 0's explicit replica
+    #    count would otherwise pin the canary at 1 pod for the rest of the roll.
+    - setCanaryScale:
+        matchTrafficWeight: true
+
+    # 4. First real user traffic. The tripwire starts here.
     - setWeight: 33
+    - pause: { duration: 60s }
     - setWeight: 66
+    - pause: { duration: 60s }
     - setWeight: 100
+    # Soak at full traffic while abort is still possible. Once the rollout
+    # completes, rolling back means a new rollout.
+    - pause: { duration: 60s }
 
 ingress:
   enabled: true
@@ -84,6 +112,16 @@ ingress:
     credentialName: bluebird
   mesh: true
 
+# Renders the VirtualService route that sends `experiment: true` requests to the
+# canary instead of stable. Kept enabled even though the Experiment step is
+# gone: this key is what creates the header route at all.
+#
+# host is deliberately empty so the chart falls back to its default, the
+# bluebird-canary Service. That Service exists for the whole rollout, so the
+# header reaches the canary at any point during a release. It previously named
+# bluebird-experiment, a Service Argo created and destroyed alongside the
+# Experiment, which meant the header worked for about thirty seconds per release
+# and 503'd the rest of the time.
 experiment:
   enabled: true
-  host: bluebird-experiment
+  host: ""

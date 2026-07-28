@@ -1,7 +1,7 @@
-# Identity gate: is the thing behind the experiment route actually the new
-# release, and did it finish wiring itself up? The job curls through the gateway
-# Service + public hostname + TLS with the experiment header, which the
-# VirtualService routes to the experiment pods.
+# Identity gate: is the thing behind the canary route actually the new release,
+# and did it finish wiring itself up? The job curls through the gateway Service
+# + public hostname + TLS with the `experiment: true` header, which the
+# VirtualService routes to the canary Service.
 #
 # This closes a hole the functional gate below cannot: that test would pass just
 # as happily against the stable pods, so a VirtualService header-routing misfire
@@ -9,11 +9,11 @@
 # Asserting the version behind the header route is what makes the routing itself
 # part of the gate.
 #
-# One measurement, no failures forgiven. An Experiment does not start any
-# AnalysisRun until its templates report Available, so this is guaranteed to run
-# against a Ready pod: there is no startup race to sample around, and the check
-# itself is deterministic. A second measurement would only ask the same pod the
-# same question again.
+# One measurement, no failures forgiven. The preceding `setCanaryScale` step does
+# not complete until the canary ReplicaSet reports its desired count as
+# Available, so this is guaranteed to run against a Ready pod: there is no
+# startup race to sample around, and the check itself is deterministic. A second
+# measurement would only ask the same pod the same question again.
 apiVersion: argoproj.io/v1alpha1
 kind: AnalysisTemplate
 metadata:
@@ -42,7 +42,12 @@ spec:
         job:
           spec:
             backoffLimit: 0
-            ttlSecondsAfterFinished: 300
+            # No ttlSecondsAfterFinished on purpose. The AnalysisRun owns this
+            # Job, so retention is governed by the Rollout's
+            # successfulRunHistoryLimit / unsuccessfulRunHistoryLimit instead. A
+            # flat 5-minute TTL used to delete the Job, and with it the pod logs
+            # that hold the actual failure output, long before anyone could read
+            # them. Keeping the last two failures forever is the point.
             template:
               metadata:
                 annotations:
@@ -117,9 +122,9 @@ spec:
             # No retries anywhere, by design: a pod-level retry would hide the
             # very failure this gate exists to surface.
             backoffLimit: 0
-            # Completed measurement pods self-delete after 5 minutes; prevents
-            # accumulation of old Job pods in the Argo CD UI.
-            ttlSecondsAfterFinished: 300
+            # See the note on the identity gate above: retention is the
+            # AnalysisRun history limits' job, not a flat TTL that would delete
+            # a failed run's logs before anyone reads them.
             template:
               metadata:
                 annotations:
@@ -165,9 +170,12 @@ spec:
   metrics:
     - name: canary-responding
       interval: 15s
-      # Grace for canary pods still pulling/starting when the first
-      # setWeight step begins.
-      initialDelay: 30s
+      # Short, because by the time this starts the canary has been Ready and
+      # twice-validated for a while: the rollout only reaches setWeight after
+      # setCanaryScale reported Available and both gates passed. This used to be
+      # 30s as grace for pods still pulling, which is no longer a state this can
+      # observe, and which spent half of the first soak window not looking.
+      initialDelay: 10s
       failureLimit: 1
       consecutiveErrorLimit: 2
       successCondition: result != '' && result != 'dev'

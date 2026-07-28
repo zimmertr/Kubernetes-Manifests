@@ -12,6 +12,25 @@ resources:
 - resources/namespace.yml
 - resources/analysisTemplate.yml
 
+# Exceeding progressDeadlineSeconds marks a Rollout Degraded but does NOT roll
+# back unless this is set. With dynamicStableScale the stable ReplicaSet has
+# already scaled down by then, so the default would park the service at reduced
+# capacity waiting for a human to notice. Pause time is not counted toward the
+# deadline, so the chart's default 600s stays ample for the non-pause steps.
+#
+# Patched rather than set in values.yml because this is a Rollout spec-level
+# field and the chart only renders spec.strategy.canary verbatim. Setting it
+# under `canary:` parses cleanly and is then pruned by the API server, which
+# fails silently. Fold it into the chart if it ever grows a value for it.
+patches:
+- target:
+    kind: Rollout
+    name: bluebird
+  patch: |-
+    - op: add
+      path: /spec/progressDeadlineAbort
+      value: true
+
 configMapGenerator:
 - files:
   - files/version-check.sh
