@@ -9,6 +9,7 @@ extraEnv:
   - name: LOG_LEVEL
     value: INFO
 
+useRollout: true
 strategy: Canary
 canary:
   steps:
