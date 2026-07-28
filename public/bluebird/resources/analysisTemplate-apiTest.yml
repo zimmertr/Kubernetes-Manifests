@@ -1,53 +1,31 @@
-# Functional gate: a real /api/analyze over a known polygon, exercising Overpass
-# and Open-Meteo end to end. Blocking, because a release that cannot serve an
-# analysis is not healthy whatever the reason.
-#
-# Asked once. Catching an unstable canary over time is bluebird-health's job
-# below; this answers a different question, and repeating it would only hammer
-# free upstreams for an answer the first attempt already gave.
 apiVersion: argoproj.io/v1alpha1
 kind: AnalysisTemplate
 metadata:
   name: api-test
 spec:
-  args:
-    - name: host
-      value: bluebirdforecast.com
-    - name: gateway
-      value: gateway.istio-gateway.svc.cluster.local:443
-    - name: header
-      value: "experiment: true"
   metrics:
     - name: api-test
       count: 1
       failureLimit: 0
+      # results[0] existing proves Overpass found candidates and the ranking
+      # produced rows; a numeric precip proves Open-Meteo attached a forecast.
+      # >= 0 rather than > 0 because no rain is a valid answer.
+      successCondition: result >= 0
       provider:
-        job:
-          spec:
-            # No retries: one would hide the failure this gate exists to catch.
-            backoffLimit: 0
-            # Do not add ttlSecondsAfterFinished; see the identity gate above.
-            template:
-              metadata:
-                annotations:
-                  sidecar.istio.io/inject: "false"
-              spec:
-                restartPolicy: Never
-                containers:
-                  - name: api-test
-                    image: curlimages/curl:latest
-                    command: ["/bin/sh", "/scripts/api-test.sh"]
-                    env:
-                      - name: HOST
-                        value: "{{ args.host }}"
-                      - name: CONNECT_TO
-                        value: "{{ args.gateway }}"
-                      - name: HEADER
-                        value: "{{ args.header }}"
-                    volumeMounts:
-                      - name: canary-scripts
-                        mountPath: /scripts
-                volumes:
-                  - name: canary-scripts
-                    configMap:
-                      name: canary-scripts
+        web:
+          method: POST
+          url: http://bluebird-canary.bluebird-system.svc.cluster.local:8000/api/analyze
+          jsonBody:
+            polygon:
+              type: Polygon
+              coordinates:
+                - - [-122.03, 47.44]
+                  - [-121.91, 47.44]
+                  - [-121.91, 47.53]
+                  - [-122.03, 47.53]
+                  - [-122.03, 47.44]
+            destination_type: peak
+            forecast_mode: current
+            limit: 3
+          jsonPath: "{$.results[0].precip_total_in}"
+          timeoutSeconds: 60

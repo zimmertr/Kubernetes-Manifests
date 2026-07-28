@@ -13,16 +13,6 @@ resources:
 - resources/analysisTemplate-apiTest.yml
 - resources/analysisTemplate-versionCheck.yml
 
-configMapGenerator:
-- files:
-  - files/version-check.sh
-  - files/api-test.sh
-  name: canary-scripts
-  namespace: bluebird-system
-
-generatorOptions:
-  disableNameSuffixHash: true
-
 images:
 - name: zimmertr/bluebird
   newName: zimmertr/bluebird

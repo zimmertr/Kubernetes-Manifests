@@ -31,6 +31,11 @@ canary:
     - analysis:
         templates:
           - templateName: version-check
+        args:
+          - name: image
+            valueFrom:
+              fieldRef:
+                fieldPath: spec.template.spec.containers[0].image
     - analysis:
         templates:
           - templateName: api-test
