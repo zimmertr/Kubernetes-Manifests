@@ -9,6 +9,21 @@ extraEnv:
   - name: LOG_LEVEL
     value: INFO
 
+probes:
+  liveness:
+    httpGet:
+      path: /healthz
+      port: 8000
+  readiness:
+    httpGet:
+      path: /healthz
+      port: 8000
+  startup:
+    httpGet:
+      path: /healthz
+      port: 8000
+
+strategy: Canary
 canary:
   steps:
     - setCanaryScale:
@@ -38,3 +53,10 @@ ingress:
     enabled: true
     credentialName: bluebird
   mesh: true
+
+# Renders the VirtualService route sending `experiment: true` to the canary.
+# The chart defaults enabled to false, so dropping this block removes the route
+# entirely. Empty host = the chart default, bluebird-canary.
+experiment:
+  enabled: true
+  host: ""
