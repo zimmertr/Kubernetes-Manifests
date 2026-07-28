@@ -6,7 +6,7 @@ helmCharts:
   releaseName: bluebird
   repo: oci://registry-1.docker.io/zimmertr
   valuesFile: values.yml
-  version: 0.5.8
+  version: 0.6.0
 
 resources:
 - resources/namespace.yml
