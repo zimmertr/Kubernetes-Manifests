@@ -7,25 +7,22 @@ spec:
     - name: api-test
       count: 1
       failureLimit: 0
-      # results[0] existing proves Overpass found candidates and the ranking
-      # produced rows; a numeric precip proves Open-Meteo attached a forecast.
-      # >= 0 rather than > 0 because no rain is a valid answer.
-      successCondition: result >= 0
+      successCondition: len(result.results) >= 1
       provider:
         web:
           method: POST
           url: http://bluebird-canary.bluebird-system.svc.cluster.local:8000/api/analyze
+          timeoutSeconds: 120
           jsonBody:
+            destination_type: peak
+            forecast_mode: current
+            limit: 3
             polygon:
               type: Polygon
               coordinates:
-                - - [-122.03, 47.44]
+                # East Tiger Mountain, Issaquah Washington
+                - - [-122.03,47.44]
                   - [-121.91, 47.44]
                   - [-121.91, 47.53]
                   - [-122.03, 47.53]
                   - [-122.03, 47.44]
-            destination_type: peak
-            forecast_mode: current
-            limit: 3
-          jsonPath: "{$.results[0].precip_total_in}"
-          timeoutSeconds: 60

@@ -4,14 +4,12 @@ metadata:
   name: version-check
 spec:
   args:
-    # Supplied by the Rollout step via fieldRef, so the expected version comes
-    # from the image being rolled out rather than a value kept in sync by hand.
-    - name: image
+    - name: version
   metrics:
     - name: version-check
       count: 1
       failureLimit: 0
-      successCondition: hasSuffix("{{args.image}}", ":" + result)
+      successCondition: hasSuffix("{{args.version}}", ":" + result)
       provider:
         web:
           url: http://bluebird-canary.bluebird-system.svc.cluster.local:8000/api/version

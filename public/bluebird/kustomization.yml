@@ -17,5 +17,3 @@ images:
 - name: zimmertr/bluebird
   newName: zimmertr/bluebird
   newTag: 0.29.6
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization

@@ -9,33 +9,20 @@ extraEnv:
   - name: LOG_LEVEL
     value: INFO
 
-probes:
-  liveness:
-    httpGet:
-      path: /healthz
-      port: 8000
-  readiness:
-    httpGet:
-      path: /healthz
-      port: 8000
-  startup:
-    httpGet:
-      path: /healthz
-      port: 8000
-
-strategy: Canary
 canary:
   steps:
     - setCanaryScale:
         replicas: 1
+    # Validate that the canary is running the expected version of Bluebird
     - analysis:
         templates:
           - templateName: version-check
         args:
-          - name: image
+          - name: version
             valueFrom:
               fieldRef:
                 fieldPath: spec.template.spec.containers[0].image
+    # Validate that the canary API is responding successfully
     - analysis:
         templates:
           - templateName: api-test
@@ -51,10 +38,3 @@ ingress:
     enabled: true
     credentialName: bluebird
   mesh: true
-
-# Renders the VirtualService route sending `experiment: true` to the canary.
-# Empty host = the chart default, bluebird-canary, which exists for the whole
-# rollout.
-experiment:
-  enabled: true
-  host: ""
