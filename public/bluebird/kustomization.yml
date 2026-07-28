@@ -10,16 +10,8 @@ helmCharts:
 
 resources:
 - resources/namespace.yml
-- resources/analysisTemplate.yml
-
-configMapGenerator:
-- files:
-  - files/api-test.sh
-  name: api-test-sh
-  namespace: bluebird-system
-
-generatorOptions:
-  disableNameSuffixHash: true
+- resources/analysisTemplate-apiTest.yml
+- resources/analysisTemplate-versionCheck.yml
 
 images:
 - name: zimmertr/bluebird

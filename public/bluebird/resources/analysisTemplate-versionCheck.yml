@@ -1,0 +1,17 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AnalysisTemplate
+metadata:
+  name: version-check
+spec:
+  args:
+    - name: version
+  metrics:
+    - name: version-check
+      count: 1
+      failureLimit: 0
+      successCondition: hasSuffix("{{args.version}}", ":" + result)
+      provider:
+        web:
+          url: http://bluebird-canary.bluebird-system.svc.cluster.local:8000/api/version
+          jsonPath: "{$.version}"
+          timeoutSeconds: 10

@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AnalysisTemplate
+metadata:
+  name: api-test
+spec:
+  metrics:
+    - name: api-test
+      count: 1
+      failureLimit: 0
+      successCondition: len(result.results) >= 1
+      provider:
+        web:
+          method: POST
+          url: http://bluebird-canary.bluebird-system.svc.cluster.local:8000/api/analyze
+          timeoutSeconds: 120
+          jsonBody:
+            destination_type: peak
+            forecast_mode: current
+            limit: 3
+            polygon:
+              type: Polygon
+              coordinates:
+                # Tiger Mountain, Issaquah Washington
+                - - [-122.03, 47.44]
+                  - [-121.91, 47.44]
+                  - [-121.91, 47.53]
+                  - [-122.03, 47.53]
+                  - [-122.03, 47.44]

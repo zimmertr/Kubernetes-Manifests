@@ -1,67 +1,33 @@
 replicas: 3
-# Rollout artifact retention: keep only current + 1 previous ReplicaSet, and
-# completed AnalysisRuns/Experiments per outcome (successful/failed). Reduces
-# Argo CD UI clutter without affecting deployment stability or observability.
+
 revisionHistoryLimit: 1
 analysis:
   successfulRunHistoryLimit: 1
   unsuccessfulRunHistoryLimit: 2
+
 extraEnv:
   - name: LOG_LEVEL
     value: INFO
-# Kubelet probes hit the dedicated /healthz target, which the app access-logs
-# at TRACE only — so probe heartbeats stay out of the INFO logs while real
-# user requests to / keep logging. Requires a bluebird image that serves
-# /healthz (added in bluebird#55); older images 404 it and would fail probes.
-probes:
-  liveness:
-    httpGet:
-      path: /healthz
-      port: 8000
-  readiness:
-    httpGet:
-      path: /healthz
-      port: 8000
-  startup:
-    httpGet:
-      path: /healthz
-      port: 8000
+
+useRollout: true
 strategy: Canary
 canary:
-  dynamicStableScale: true
-  trafficRouting:
-    istio:
-      virtualService:
-        name: bluebird
-        routes:
-          - bluebird-stable
-  # Continuous tripwire: the controller polls the canary Service from the
-  # first traffic step until completion and aborts the rollout (auto
-  # rollback) if the new version stops responding.
-  analysis:
-    templates:
-      - templateName: bluebird-health
-    startingStep: 1
   steps:
-    # Gate at 0% user traffic: one new-version pod behind the fixed-name
-    # experiment Service (matching the VirtualService "experiment: true"
-    # header route), smoke-tested end-to-end through the real ingress with
-    # a live /api/analyze call. The experiment ends as soon as the analysis
-    # passes; a failure aborts before any user sees the canary.
-    - experiment:
+    - setCanaryScale:
+        replicas: 1
+    # Validate that the canary is running the expected version of Bluebird
+    - analysis:
         templates:
-          - name: canary
-            specRef: canary
-            replicas: 1
-            service:
-              name: bluebird-experiment
-        analyses:
-          - name: api-test
-            templateName: bluebird-api-test
-            requiredForCompletion: true
-    - setWeight: 33
-    - setWeight: 66
-    - setWeight: 100
+          - templateName: version-check
+        args:
+          - name: version
+            valueFrom:
+              fieldRef:
+                fieldPath: spec.template.spec.containers[0].image
+    # Validate that the canary API is responding successfully
+    - analysis:
+        templates:
+          - templateName: api-test
 
 ingress:
   enabled: true
@@ -74,7 +40,3 @@ ingress:
     enabled: true
     credentialName: bluebird
   mesh: true
-
-experiment:
-  enabled: true
-  host: bluebird-experiment
