@@ -1,19 +1,11 @@
-# Identity gate: is the thing behind the canary route actually the new release,
-# and did it finish wiring itself up? The job curls through the gateway Service
-# + public hostname + TLS with the `experiment: true` header, which the
-# VirtualService routes to the canary Service.
+# Identity gate: is the release behind the canary route the one we meant, and did
+# it wire itself up? Curls through the real ingress with the `experiment: true`
+# header, so a VirtualService header-routing misfire fails here rather than
+# silently validating the stable pods (which api-test below cannot detect).
 #
-# This closes a hole the functional gate below cannot: that test would pass just
-# as happily against the stable pods, so a VirtualService header-routing misfire
-# looked like a green release while validating a build nobody was about to ship.
-# Asserting the version behind the header route is what makes the routing itself
-# part of the gate.
-#
-# One measurement, no failures forgiven. The preceding `setCanaryScale` step does
-# not complete until the canary ReplicaSet reports its desired count as
-# Available, so this is guaranteed to run against a Ready pod: there is no
-# startup race to sample around, and the check itself is deterministic. A second
-# measurement would only ask the same pod the same question again.
+# count 1 / failureLimit 0 is safe because the preceding setCanaryScale step
+# does not complete until the canary reports Available, so there is no startup
+# race to sample around.
 apiVersion: argoproj.io/v1alpha1
 kind: AnalysisTemplate
 metadata:
@@ -26,12 +18,8 @@ spec:
       value: gateway.istio-gateway.svc.cluster.local:443
     - name: header
       value: "experiment: true"
-    # Left empty for now, so the script asserts only that the reported version
-    # is semver-shaped (which already rejects an unreleased "dev" build).
-    # Setting this to the release being rolled out additionally proves the
-    # header route reached the NEW pods rather than the stable ones. Wiring it
-    # means having bluebird's release.yml write the semver here alongside the
-    # kustomization image tag it already updates.
+    # Empty = assert only that the version is semver-shaped. Set it to the
+    # release being rolled out to also prove the header reached the new pods.
     - name: expected-version
       value: ""
   metrics:
@@ -42,12 +30,9 @@ spec:
         job:
           spec:
             backoffLimit: 0
-            # No ttlSecondsAfterFinished on purpose. The AnalysisRun owns this
-            # Job, so retention is governed by the Rollout's
-            # successfulRunHistoryLimit / unsuccessfulRunHistoryLimit instead. A
-            # flat 5-minute TTL used to delete the Job, and with it the pod logs
-            # that hold the actual failure output, long before anyone could read
-            # them. Keeping the last two failures forever is the point.
+            # Do not add ttlSecondsAfterFinished: it deletes the pod holding the
+            # failure output. The AnalysisRun owns this Job, so the Rollout's
+            # unsuccessfulRunHistoryLimit already governs retention.
             template:
               metadata:
                 annotations:
@@ -77,29 +62,13 @@ spec:
                     configMap:
                       name: canary-scripts
 ---
-# The full-path functional gate: a real /api/analyze over a known polygon,
-# exercising Overpass and Open-Meteo end to end. Blocking, like the check above.
+# Functional gate: a real /api/analyze over a known polygon, exercising Overpass
+# and Open-Meteo end to end. Blocking, because a release that cannot serve an
+# analysis is not healthy whatever the reason.
 #
-# A release that cannot serve a real analysis is not healthy, whatever the
-# reason, so an upstream failure aborts the deploy rather than promoting
-# something that answers nothing.
-#
-# One measurement, nothing forgiven. This used to run 3 times 30s apart with one
-# flake forgiven, which quietly contradicted that: forgiving a failure is the
-# opposite of aborting on one. It also meant every release fired three full
-# Overpass queries and three Open-Meteo fetches for the same polygon, against
-# free services we ask everyone else to be gentle with, and added a minute to
-# each deploy for a question already answered by the first attempt.
-#
-# Sampling over time to catch an unstable canary is bluebird-health's job below;
-# it polls every 15s across the whole traffic shift. This gate answers a
-# different question, once: can the new build serve an analysis at all.
-#
-# What changed here is the assertion, not the blocking. api-test.sh used to
-# check for the substring `"results":[{`, which silently depended on FastAPI
-# emitting no space between the bracket and the brace, and told you nothing
-# about which of the three upstreams failed. It now asserts each stage
-# separately so a red gate names its own cause.
+# Asked once. Catching an unstable canary over time is bluebird-health's job
+# below; this answers a different question, and repeating it would only hammer
+# free upstreams for an answer the first attempt already gave.
 apiVersion: argoproj.io/v1alpha1
 kind: AnalysisTemplate
 metadata:
@@ -119,12 +88,9 @@ spec:
       provider:
         job:
           spec:
-            # No retries anywhere, by design: a pod-level retry would hide the
-            # very failure this gate exists to surface.
+            # No retries: one would hide the failure this gate exists to catch.
             backoffLimit: 0
-            # See the note on the identity gate above: retention is the
-            # AnalysisRun history limits' job, not a flat TTL that would delete
-            # a failed run's logs before anyone reads them.
+            # Do not add ttlSecondsAfterFinished; see the identity gate above.
             template:
               metadata:
                 annotations:
@@ -150,18 +116,10 @@ spec:
                     configMap:
                       name: canary-scripts
 ---
-# The background tripwire: while the rollout shifts traffic, the Rollouts
-# controller itself polls the canary Service (web provider, no Job pods) and
-# aborts the moment the new version stops answering. It deliberately targets
-# the Service, not the gateway path: the gate above already proved the ingress
-# path, and a probe with no other components in it can only fail when the
-# canary itself is bad, which is exactly when rollback is the right response.
-#
-# Polls /api/version rather than /openapi.json. The old probe asserted
-# `$.info.title == 'Bluebird'`, which is true of every build ever shipped, so
-# it could only catch a total outage. Asserting the version is a real released
-# build also catches a canary serving something it should not be, and the
-# payload is a few dozen bytes instead of a 36 KB schema polled every 15s.
+# Background tripwire: the controller polls the canary across the whole traffic
+# shift and aborts the moment it stops answering. Targets the Service rather
+# than the gateway path deliberately, so nothing but the canary itself can fail
+# it, which is exactly when rollback is right.
 apiVersion: argoproj.io/v1alpha1
 kind: AnalysisTemplate
 metadata:
@@ -170,11 +128,8 @@ spec:
   metrics:
     - name: canary-responding
       interval: 15s
-      # Short, because by the time this starts the canary has been Ready and
-      # twice-validated for a while: the rollout only reaches setWeight after
-      # setCanaryScale reported Available and both gates passed. This used to be
-      # 30s as grace for pods still pulling, which is no longer a state this can
-      # observe, and which spent half of the first soak window not looking.
+      # Short: the canary is Ready and twice-validated before this starts, and
+      # a long delay just spends the first soak window not looking.
       initialDelay: 10s
       failureLimit: 1
       consecutiveErrorLimit: 2

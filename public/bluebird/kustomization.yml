@@ -12,16 +12,10 @@ resources:
 - resources/namespace.yml
 - resources/analysisTemplate.yml
 
-# Exceeding progressDeadlineSeconds marks a Rollout Degraded but does NOT roll
-# back unless this is set. With dynamicStableScale the stable ReplicaSet has
-# already scaled down by then, so the default would park the service at reduced
-# capacity waiting for a human to notice. Pause time is not counted toward the
-# deadline, so the chart's default 600s stays ample for the non-pause steps.
-#
-# Patched rather than set in values.yml because this is a Rollout spec-level
-# field and the chart only renders spec.strategy.canary verbatim. Setting it
-# under `canary:` parses cleanly and is then pruned by the API server, which
-# fails silently. Fold it into the chart if it ever grows a value for it.
+# Without this, blowing the progress deadline marks the Rollout Degraded but
+# never rolls back, parking the service at the reduced capacity dynamicStableScale
+# left it at. Patched rather than set in values.yml because it is a Rollout spec
+# field and the chart only renders spec.strategy.canary verbatim.
 patches:
 - target:
     kind: Rollout

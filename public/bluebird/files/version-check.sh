@@ -1,22 +1,14 @@
 #!/bin/sh
 # Identity gate for a bluebird release, run by Argo Rollouts alongside the
-# functional gate (api-test.sh). Both block: either one failing aborts the
-# deploy before any user traffic shifts.
+# functional gate (api-test.sh). Proves three things api-test.sh cannot, since
+# that test passes just as happily against the stable pods:
 #
-# This one closes a hole api-test.sh cannot. That test would pass just as
-# happily against the stable pods, so a VirtualService header-routing misfire
-# looked like a green release while validating a build nobody was about to ship.
-#
-# What it proves:
-#   1. The canary pods answer through the real ingress path (gateway, TLS,
-#      VirtualService header routing), because the request is made exactly the
-#      way api-test.sh makes it.
-#   2. They are a genuine released build. GET /api/version reports "dev" unless
-#      the release workflow baked build args in, so a semver-shaped answer means
-#      a real image, not a stray local build.
-#   3. The app finished wiring itself up. /api/capabilities is served from the
-#      same constants the request validators use, so a sane answer there means
-#      the models imported and the routes registered.
+#   1. The canary answers through the real ingress path, so a VirtualService
+#      header-routing misfire fails here.
+#   2. It is a genuine released build. /api/version reports "dev" unless the
+#      release workflow baked build args in.
+#   3. It finished wiring itself up. /api/capabilities is served from the same
+#      constants the request validators use.
 #
 #   HOST              Public hostname to request; TLS is validated against it.
 #   CONNECT_TO        host:port curl physically connects to instead of resolving
@@ -61,9 +53,8 @@ if [ -n "$EXPECTED_VERSION" ]; then
     || fail "expected version ${EXPECTED_VERSION}, got something else"
   echo "OK: /api/version reports ${EXPECTED_VERSION}"
 else
-  # No expected value wired in yet, so assert the shape instead. This still
-  # catches the case that matters most: an image built without release args
-  # reports "dev" for every field and fails here.
+  # Shape only, which still catches what matters most: an image built without
+  # release args reports "dev" and fails here.
   grep -qE '"version":"[0-9]+\.[0-9]+\.[0-9]+"' "$BODY" \
     || fail "/api/version did not report a semver (a \"dev\" build should never reach a release gate)"
   echo "OK: /api/version reports a released build"

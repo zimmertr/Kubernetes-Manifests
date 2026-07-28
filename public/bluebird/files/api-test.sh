@@ -5,10 +5,6 @@
 # /api/analyze and require a real ranking back. Exercises the full path: Istio
 # gateway, TLS, VirtualService header routing, FastAPI, Overpass, Open-Meteo.
 #
-# This gate blocks on purpose. A release that cannot serve a real analysis is
-# not healthy, whatever the reason, so an upstream failure aborts the deploy
-# rather than shipping something that answers nothing.
-#
 #   HOST        Public hostname to request; TLS is validated against it.
 #   CONNECT_TO  host:port curl physically connects to instead of resolving
 #               HOST, pointing in-cluster pods straight at the ingress gateway
@@ -59,22 +55,13 @@ if [ "$HTTP_STATUS" != "200" ]; then
   exit 1
 fi
 
-# An analysis passes through three upstreams in sequence, and a 200 alone says
-# nothing about which of them actually produced anything. Assert each stage
-# separately so a failed gate names its own cause instead of leaving someone to
-# diff the payload by hand.
+# A 200 says nothing about which upstream actually produced anything, so each
+# stage is asserted separately and a failure names its own cause.
 #
-# curlimages/curl ships no jq, so these are greps, which makes formatting a
-# trap. The previous assertion was `"results":\[{`: it silently required FastAPI
-# to emit no space between the bracket and the brace, so a serializer change
-# would have read as a real outage. Widening that to allow a space is not enough
-# either, because grep matches one line at a time and pretty-printed JSON puts a
-# newline there instead.
-#
-# So every pattern below matches a SINGLE token that formatting cannot split.
-# That is why "the ranking produced rows" is asserted as `"type":"peak"` rather
-# than by looking at the array punctuation: it survives any formatting, and it
-# proves the rows are the destination type we actually asked for.
+# curlimages/curl has no jq, so these are greps, and grep matches one line at a
+# time. Every pattern must therefore match a SINGLE token: anything spanning two
+# (like the old `"results":\[{`) breaks the moment the JSON is formatted
+# differently, and reads as a real outage when it does.
 assert() {
   if grep -qE "$2" "$BODY"; then
     echo "  ok: $1"
@@ -86,9 +73,8 @@ assert() {
   exit 1
 }
 
-# Deliberately not asserted: a peak count (OSM data changes under us, and a
-# renamed summit is not a release problem) or AQI (best-effort by design, and
-# legitimately null past its shorter horizon).
+# Not asserted on purpose: a peak count (OSM data shifts under us) or AQI
+# (best-effort, legitimately null past its shorter horizon).
 assert "Overpass discovered candidates"       '"total_queried": ?[1-9][0-9]*'
 assert "the ranking returned peak rows"       '"type": ?"peak"'
 assert "Open-Meteo attached a real forecast"  '"precip_total_in": ?-?[0-9]'
