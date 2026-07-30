@@ -14,10 +14,22 @@ podDisruptionBudget:
 
 # One pod per worker node while nodes last, collapsing gracefully when they do
 # not: 3 nodes gives [1,1,1], 2 gives [2,1] with nothing Pending, 1 gives [3].
+#
+# nodeTaintsPolicy is load-bearing, not decoration. It defaults to Ignore,
+# which makes EVERY node an eligible domain -- including the three
+# control-plane nodes this pod has no toleration for. Skew is measured against
+# the global minimum across eligible domains, so those permanently empty
+# domains pin that minimum at 0, and maxSkew 1 then allows at most one pod per
+# worker: a hard ceiling of 3 pods cluster-wide, below the 6 a canary needs at
+# its last step. Honor counts only nodes the pod could actually land on, so the
+# domain set is the 3 workers, the minimum is 1, and [2,2,2] schedules. It also
+# keeps `kubectl drain` working, since a cordoned node carries the
+# unschedulable taint and would otherwise become one more empty domain.
 topologySpreadConstraints:
   - maxSkew: 1
     topologyKey: kubernetes.io/hostname
     whenUnsatisfiable: DoNotSchedule
+    nodeTaintsPolicy: Honor
 
 revisionHistoryLimit: 1
 
