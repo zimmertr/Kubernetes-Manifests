@@ -1,4 +1,23 @@
-replicas: 3
+# No `replicas` here on purpose: the chart omits spec.replicas entirely while
+# autoscaling is enabled, so Argo CD cannot fight the HPA over it, and
+# autoscaling.minReplicas below is the floor instead.
+autoscaling:
+  enabled: true
+  minReplicas: 3
+  maxReplicas: 10
+
+# Keeps 2 pods through a node drain. PDB percentages round UP, so minAvailable
+# 50% requires 2 of 3 to survive where maxUnavailable 50% would permit 2
+# disruptions and leave 1.
+podDisruptionBudget:
+  enabled: true
+
+# One pod per worker node while nodes last, collapsing gracefully when they do
+# not: 3 nodes gives [1,1,1], 2 gives [2,1] with nothing Pending, 1 gives [3].
+topologySpreadConstraints:
+  - maxSkew: 1
+    topologyKey: kubernetes.io/hostname
+    whenUnsatisfiable: DoNotSchedule
 
 revisionHistoryLimit: 1
 
