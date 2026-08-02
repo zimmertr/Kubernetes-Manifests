@@ -14,7 +14,7 @@ spec:
           url: http://bluebird-canary.bluebird-system.svc.cluster.local:8000/api/analyze
           timeoutSeconds: 120
           jsonBody:
-            destination_type: peak
+            destination_types: [peak]
             forecast_mode: current
             limit: 3
             polygon:
