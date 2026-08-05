@@ -7,16 +7,31 @@ spec:
     - name: api-test
       count: 1
       failureLimit: 0
-      successCondition: len(result.results) >= 1
+      successCondition: len(result.destinations) >= 1
       provider:
         web:
           method: POST
-          url: http://bluebird-canary.bluebird-system.svc.cluster.local:8000/api/analyze
+          # Discovery, not analysis. This gate proves the new image serves a real
+          # request in this cluster: routing, Istio, the app, request validation,
+          # the Overpass integration and the JSON response path. It deliberately
+          # does NOT reach Open-Meteo.
+          #
+          # It used to POST /api/analyze, which does. Open-Meteo's free tier is
+          # metered per day and a single day of development against it exhausts
+          # it. On 2026-08-05 the endpoint answered `{"error":true,"reason":
+          # "Daily API request limit exceeded. Please try again tomorrow."}`,
+          # /api/analyze returned HTTP 429 with no `results` key, and this gate
+          # could not pass, so nothing could ship. A deploy gate that a donated
+          # third-party quota can jam is a gate that fails hardest at the moment
+          # an operator most needs to ship a fix.
+          #
+          # The forecast path is covered by the suites at PR time (466 pytest,
+          # 1302 Vitest). What only a canary can prove is that THIS image serves
+          # in THIS cluster, and discovery proves that.
+          url: http://bluebird-canary.bluebird-system.svc.cluster.local:8000/api/destinations
           timeoutSeconds: 120
           jsonBody:
             destination_types: [peak]
-            forecast_mode: current
-            limit: 3
             polygon:
               type: Polygon
               coordinates:
