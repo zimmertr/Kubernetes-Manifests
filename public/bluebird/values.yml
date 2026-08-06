@@ -63,6 +63,11 @@ canary:
         name: bluebird
         routes:
           - bluebird-stable
+          # The public-API allowlist route (bluebird#240). Named here so a
+          # canary weights API traffic too, not only the SPA. Requires the
+          # chart version that renders it: merge AFTER that chart release,
+          # or the next rollout fails to find the route.
+          - bluebird-api-public
 
 ingress:
   enabled: true
