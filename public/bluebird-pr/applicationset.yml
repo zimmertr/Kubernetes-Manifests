@@ -40,6 +40,11 @@ spec:
               enabled: true
               hosts:
                 - "pr-{{ .number }}.ganymede.sol.milkyway"
+              # Preview hosts resolve only on the LAN, and the PR containers
+              # are where the analyze API is exercised, so the public-API
+              # allowlist the chart ships by default (bluebird#240) is off
+              # here and the whole surface is published.
+              publishFullApi: true
             extraEnv:
               - name: PREVIEW_BANNER
                 value: "true"
