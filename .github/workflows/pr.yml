@@ -28,7 +28,7 @@ jobs:
 
       - uses: azure/setup-helm@v5
         with:
-          version: v4.2.3
+          version: v4.2.4
 
       - name: Install kustomize
         env:
