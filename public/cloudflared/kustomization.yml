@@ -1,0 +1,17 @@
+namespace: cloudflared-system
+
+resources:
+  - resources/namespace.yml
+  - resources/deployment.yml
+
+configMapGenerator:
+  - name: cloudflared-config
+    files:
+      - config.yaml=files/config.yaml
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+images:
+  - name: cloudflare/cloudflared
+    newTag: 2026.8.2 # https://github.com/cloudflare/cloudflared/releases
