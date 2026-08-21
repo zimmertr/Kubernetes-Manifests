@@ -1,0 +1,47 @@
+# Locally-managed cloudflared configuration.
+#
+# The tunnel is referenced by NAME, and the matching credentials.json is a
+# manually-created secret (see ../README.md), so nothing secret lives in git --
+# the same split the Proxmox CSI Plugin uses for its config secret.
+#
+# Every PUBLIC hostname routes to the shared Istio ingress gateway, which keeps
+# doing the host-based L7 routing it already does today. The internal
+# *.sol.milkyway names (ganymede, nix) are deliberately absent: they resolve
+# straight to the gateway on the LAN and must never traverse the tunnel.
+tunnel: tks-ingress
+credentials-file: /etc/cloudflared/creds/credentials.json
+metrics: 0.0.0.0:2000
+no-autoupdate: true
+
+# The gateway terminates public TLS with cert-manager (Let's Encrypt)
+# certificates. cloudflared validates against the real certificate by setting
+# the SNI (originServerName) to the public hostname, and forwards the original
+# Host header, so Istio serves the right certificate and route. No noTLSVerify
+# is needed because the certificate is publicly trusted.
+ingress:
+  - hostname: bluebirdforecast.com
+    service: https://gateway.istio-gateway.svc.cluster.local:443
+    originRequest:
+      originServerName: bluebirdforecast.com
+  - hostname: www.bluebirdforecast.com
+    service: https://gateway.istio-gateway.svc.cluster.local:443
+    originRequest:
+      originServerName: www.bluebirdforecast.com
+  - hostname: tjzimmerman.com
+    service: https://gateway.istio-gateway.svc.cluster.local:443
+    originRequest:
+      originServerName: tjzimmerman.com
+  - hostname: www.tjzimmerman.com
+    service: https://gateway.istio-gateway.svc.cluster.local:443
+    originRequest:
+      originServerName: www.tjzimmerman.com
+  - hostname: tjzimmerman.dev
+    service: https://gateway.istio-gateway.svc.cluster.local:443
+    originRequest:
+      originServerName: tjzimmerman.dev
+  - hostname: www.tjzimmerman.dev
+    service: https://gateway.istio-gateway.svc.cluster.local:443
+    originRequest:
+      originServerName: www.tjzimmerman.dev
+  # Anything else that reaches the tunnel is not a hostname we serve.
+  - service: http_status:404
