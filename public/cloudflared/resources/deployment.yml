@@ -20,6 +20,12 @@ spec:
     metadata:
       labels:
         app: cloudflared
+      annotations:
+        # The public/ ApplicationSet labels this namespace istio-injection=enabled.
+        # cloudflared must NOT be meshed: it originates its own TLS to the ingress
+        # gateway with the public hostname as SNI, and a sidecar would intercept
+        # that connection. Opt this pod out of injection.
+        sidecar.istio.io/inject: "false"
     spec:
       securityContext:
         runAsNonRoot: true
