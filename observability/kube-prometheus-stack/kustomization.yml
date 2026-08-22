@@ -11,5 +11,8 @@ helmCharts:
     namespace: prometheus-system
     releaseName: prometheus
     repo: https://prometheus-community.github.io/helm-charts
+    # Helm-test hook pods (Grafana ships one) are not applyable resources:
+    # under Argo they would be created once and then sit forever OutOfSync.
+    skipTests: true
     valuesFile: values.yml
-    version: 84.5.0 # https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
+    version: 88.5.2 # https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack

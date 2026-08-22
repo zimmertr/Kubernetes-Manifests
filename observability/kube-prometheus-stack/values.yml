@@ -16,19 +16,14 @@ alertmanager:
     type: LoadBalancer
 
 grafana:
-  adminPassword: CHANGEME
+  # This repo is public, so the admin credential lives in a Secret created
+  # out-of-band (see the README), never in this file.
+  admin:
+    existingSecret: grafana-admin
   dashboardProviders:
     dashboardproviders.yaml:
       apiVersion: 1
       providers:
-        - name: nginx
-          orgId: 1
-          folder: 'NGINX'
-          type: file
-          disableDeletion: true
-          editable: true
-          options:
-            path: /var/lib/grafana/dashboards/nginx
         - name: istio
           orgId: 1
           folder: "Istio"
@@ -38,10 +33,6 @@ grafana:
           options:
             path: /var/lib/grafana/dashboards/istio
   dashboards:
-    nginx:
-      NGINX:
-        gnetId: 11199
-        datasource: Prometheus
     istio:
       Istio-Control-Plane:
         gnetId: 7645
@@ -68,16 +59,32 @@ grafana:
       metallb.universe.tf/loadBalancerIPs: 192.168.40.110
     type: LoadBalancer
 
+# Talos binds etcd metrics (2381), kube-scheduler (10259), kube-controller-
+# manager (10257) and kube-proxy metrics (10249) to localhost, so these
+# targets can never answer from off the node: leaving them enabled ships
+# permanently-down targets and fires their *Down alerts forever. Exposing
+# them is a Talos machine-config change, not a values change; re-enable the
+# matching component here if that ever happens.
+kubeControllerManager:
+  enabled: false
+kubeEtcd:
+  enabled: false
 kubeProxy:
   enabled: false
+kubeScheduler:
+  enabled: false
+
+prometheusOperator:
+  admissionWebhooks:
+    # cert-manager issues the webhook certs. The default is a pair of helm
+    # hook Jobs, and Jobs are immutable: on the next chart bump Argo cannot
+    # re-apply them and the app wedges OutOfSync.
+    certManager:
+      enabled: true
 
 prometheus:
   prometheusSpec:
     additionalScrapeConfigs:
-      - job_name: nginx-exporter
-        metrics_path: /metrics
-        static_configs:
-          - targets: ['styx.sol.milkyway:9113']
       - job_name: 'istiod'
         kubernetes_sd_configs:
           - role: endpoints
@@ -96,6 +103,16 @@ prometheus:
           - source_labels: [__meta_kubernetes_pod_container_port_name]
             action: keep
             regex: '.*-envoy-prom'
+    # The default (true) only selects monitors carrying this release's label,
+    # which silently ignores monitors shipped by app charts — the bluebird
+    # PodMonitor arrives with the bluebird chart, not with this one.
+    podMonitorSelectorNilUsesHelmValues: false
+    serviceMonitorSelectorNilUsesHelmValues: false
+    # A month of history covers tuning the bluebird pacer/cache knobs across
+    # real traffic patterns; the size cap keeps TSDB growth from ever filling
+    # the 100Gi volume (90GB decimal ≈ 84Gi, comfortable headroom).
+    retention: 30d
+    retentionSize: 90GB
     storageSpec:
       volumeClaimTemplate:
         spec:
