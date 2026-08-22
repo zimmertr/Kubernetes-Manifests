@@ -5,6 +5,19 @@ resources:
 
 namespace: prometheus-system
 
+# Dashboards ride plain JSON files; Grafana's sidecar loads any ConfigMap
+# carrying the grafana_dashboard label, so adding one is adding a file here.
+configMapGenerator:
+  - name: bluebird-dashboard
+    files:
+      - bluebird.json=files/bluebird-dashboard.json
+    options:
+      labels:
+        grafana_dashboard: "1"
+
+generatorOptions:
+  disableNameSuffixHash: true
+
 helmCharts:
   - includeCRDs: true
     name: kube-prometheus-stack
