@@ -59,20 +59,11 @@ grafana:
       metallb.universe.tf/loadBalancerIPs: 192.168.40.110
     type: LoadBalancer
 
-# Talos binds etcd metrics (2381), kube-scheduler (10259), kube-controller-
-# manager (10257) and kube-proxy metrics (10249) to localhost, so these
-# targets can never answer from off the node: leaving them enabled ships
-# permanently-down targets and fires their *Down alerts forever. Exposing
-# them is a Talos machine-config change, not a values change; re-enable the
-# matching component here if that ever happens.
-kubeControllerManager:
-  enabled: false
-kubeEtcd:
-  enabled: false
-kubeProxy:
-  enabled: false
-kubeScheduler:
-  enabled: false
+# The etcd, kube-scheduler, kube-controller-manager, and kube-proxy scrapes
+# stay at their chart defaults (enabled). Talos binds all four to localhost
+# out of the box, so their exposure is machine configuration, not values:
+# TJs-Kubernetes-Service#58 sets the bind addresses. Until that is applied
+# to the nodes, these targets show down and their *Down alerts fire.
 
 prometheusOperator:
   admissionWebhooks:
@@ -108,10 +99,13 @@ prometheus:
     # PodMonitor arrives with the bluebird chart, not with this one.
     podMonitorSelectorNilUsesHelmValues: false
     serviceMonitorSelectorNilUsesHelmValues: false
-    # A month of history covers tuning the bluebird pacer/cache knobs across
-    # real traffic patterns; the size cap keeps TSDB growth from ever filling
-    # the 100Gi volume (90GB decimal ≈ 84Gi, comfortable headroom).
-    retention: 30d
+    # Size is the only retention bound: history grows until 90GB, then the
+    # oldest blocks go — months of data at this cluster's cardinality. The
+    # empty time retention is load-bearing, not decoration: it defeats the
+    # chart's 10d default, and the operator's own 24h fallback applies only
+    # when BOTH fields are empty. 90GB decimal ≈ 84Gi, comfortable headroom
+    # on the 100Gi volume.
+    retention: ""
     retentionSize: 90GB
     storageSpec:
       volumeClaimTemplate:
