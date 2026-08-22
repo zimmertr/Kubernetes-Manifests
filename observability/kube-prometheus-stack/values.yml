@@ -65,12 +65,18 @@ grafana:
 # TJs-Kubernetes-Service#58 sets the bind addresses. Until that is applied
 # to the nodes, these targets show down and their *Down alerts fire.
 
-# etcd alone also needs its endpoints NAMED. Talos runs etcd as a host
+# etcd alone also needs its endpoints listed. Talos runs etcd as a host
 # service rather than a kube-system pod, so the chart's selector-based
 # Service matches nothing and the etcd target silently does not exist —
-# absent, not red, which is worse. Naming the control-plane addresses makes
+# absent, not red, which is worse. Listing the control-plane addresses makes
 # the chart build a manual Endpoints object instead; 2381 is the chart's
 # default port and the listener TJs-Kubernetes-Service#58 exposes.
+#
+# Addresses, not the k8s-cp-N hostnames, for two reasons: the Endpoints API
+# only accepts IPs, and a name here would put Unbound inside the etcd
+# monitoring path. These are the DHCP-reserved control-plane addresses that
+# TJs-Kubernetes-Service pins as controlplane_ip_prefix in stable.tfvars —
+# change them there and this list follows.
 kubeEtcd:
   endpoints:
     - 192.168.40.11
