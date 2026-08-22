@@ -65,23 +65,14 @@ grafana:
 # TJs-Kubernetes-Service#58 sets the bind addresses. Until that is applied
 # to the nodes, these targets show down and their *Down alerts fire.
 
-# etcd alone also needs its endpoints listed. Talos runs etcd as a host
-# service rather than a kube-system pod, so the chart's selector-based
-# Service matches nothing and the etcd target silently does not exist —
-# absent, not red, which is worse. Listing the control-plane addresses makes
-# the chart build a manual Endpoints object instead; 2381 is the chart's
-# default port and the listener TJs-Kubernetes-Service#58 exposes.
-#
-# Addresses, not the k8s-cp-N hostnames, for two reasons: the Endpoints API
-# only accepts IPs, and a name here would put Unbound inside the etcd
-# monitoring path. These are the DHCP-reserved control-plane addresses that
-# TJs-Kubernetes-Service pins as controlplane_ip_prefix in stable.tfvars —
-# change them there and this list follows.
-kubeEtcd:
-  endpoints:
-    - 192.168.40.11
-    - 192.168.40.12
-    - 192.168.40.13
+# etcd is scraped by resources/scrapeConfig-etcd.yml, NOT by the chart's
+# kubeEtcd.endpoints mechanism. That mechanism renders a v1 Endpoints
+# object, and Argo CD's default resource.exclusions drop Endpoints and
+# EndpointSlice from management entirely — the rendered object is silently
+# never applied, which is how the first attempt shipped Synced-and-Healthy
+# while the etcd target did not exist. kubeEtcd itself stays enabled (the
+# default): the etcd alert rules are gated on it, and the price is a
+# dangling selector-less Service in kube-system that matches nothing.
 
 prometheusOperator:
   admissionWebhooks:
@@ -114,8 +105,12 @@ prometheus:
             regex: '.*-envoy-prom'
     # The default (true) only selects monitors carrying this release's label,
     # which silently ignores monitors shipped by app charts — the bluebird
-    # PodMonitor arrives with the bluebird chart, not with this one.
+    # PodMonitor arrives with the bluebird chart, not with this one. The
+    # scrapeConfig selector gets the same treatment for the etcd
+    # ScrapeConfig, which is a plain resource in this kustomization rather
+    # than a chart-rendered one.
     podMonitorSelectorNilUsesHelmValues: false
+    scrapeConfigSelectorNilUsesHelmValues: false
     serviceMonitorSelectorNilUsesHelmValues: false
     # Size is the only retention bound: history grows until 90GB, then the
     # oldest blocks go — months of data at this cluster's cardinality. The
