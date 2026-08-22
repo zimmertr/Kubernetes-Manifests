@@ -1,0 +1,29 @@
+# The etcd scrape, as an operator ScrapeConfig rather than the chart's
+# kubeEtcd.endpoints mechanism. Talos runs etcd as a host service, so there
+# are no pods for the chart's Service selector to find — and the chart's
+# manual-Endpoints fallback cannot be used here because Argo CD's default
+# resource.exclusions drop v1 Endpoints from management, so the rendered
+# object silently never reaches the cluster.
+#
+# Addresses, not the k8s-cp-N hostnames: a name here would put Unbound
+# inside the etcd monitoring path. These are the DHCP-reserved control-plane
+# addresses TJs-Kubernetes-Service pins as controlplane_ip_prefix in
+# stable.tfvars, and 2381 is the metrics listener TJs-Kubernetes-Service#58
+# exposes.
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: ScrapeConfig
+metadata:
+  name: kube-etcd
+spec:
+  metricsPath: /metrics
+  staticConfigs:
+    - targets:
+        - 192.168.40.11:2381
+        - 192.168.40.12:2381
+        - 192.168.40.13:2381
+  # The generated job label would be "scrapeConfig/prometheus-system/kube-etcd".
+  # Rewritten to the name the chart's own wiring uses, so the shipped etcd
+  # alert rules and Grafana dashboard read these series as chart-native.
+  relabelings:
+    - targetLabel: job
+      replacement: kube-etcd
