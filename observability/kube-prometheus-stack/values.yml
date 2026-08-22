@@ -16,19 +16,14 @@ alertmanager:
     type: LoadBalancer
 
 grafana:
-  adminPassword: CHANGEME
+  # This repo is public, so the admin credential lives in a Secret created
+  # out-of-band (see the README), never in this file.
+  admin:
+    existingSecret: grafana-admin
   dashboardProviders:
     dashboardproviders.yaml:
       apiVersion: 1
       providers:
-        - name: nginx
-          orgId: 1
-          folder: 'NGINX'
-          type: file
-          disableDeletion: true
-          editable: true
-          options:
-            path: /var/lib/grafana/dashboards/nginx
         - name: istio
           orgId: 1
           folder: "Istio"
@@ -38,10 +33,6 @@ grafana:
           options:
             path: /var/lib/grafana/dashboards/istio
   dashboards:
-    nginx:
-      NGINX:
-        gnetId: 11199
-        datasource: Prometheus
     istio:
       Istio-Control-Plane:
         gnetId: 7645
@@ -68,16 +59,23 @@ grafana:
       metallb.universe.tf/loadBalancerIPs: 192.168.40.110
     type: LoadBalancer
 
-kubeProxy:
-  enabled: false
+# The etcd, kube-scheduler, kube-controller-manager, and kube-proxy scrapes
+# stay at their chart defaults (enabled). Talos binds all four to localhost
+# out of the box, so their exposure is machine configuration, not values:
+# TJs-Kubernetes-Service#58 sets the bind addresses. Until that is applied
+# to the nodes, these targets show down and their *Down alerts fire.
+
+prometheusOperator:
+  admissionWebhooks:
+    # cert-manager issues the webhook certs. The default is a pair of helm
+    # hook Jobs, and Jobs are immutable: on the next chart bump Argo cannot
+    # re-apply them and the app wedges OutOfSync.
+    certManager:
+      enabled: true
 
 prometheus:
   prometheusSpec:
     additionalScrapeConfigs:
-      - job_name: nginx-exporter
-        metrics_path: /metrics
-        static_configs:
-          - targets: ['styx.sol.milkyway:9113']
       - job_name: 'istiod'
         kubernetes_sd_configs:
           - role: endpoints
@@ -96,6 +94,19 @@ prometheus:
           - source_labels: [__meta_kubernetes_pod_container_port_name]
             action: keep
             regex: '.*-envoy-prom'
+    # The default (true) only selects monitors carrying this release's label,
+    # which silently ignores monitors shipped by app charts — the bluebird
+    # PodMonitor arrives with the bluebird chart, not with this one.
+    podMonitorSelectorNilUsesHelmValues: false
+    serviceMonitorSelectorNilUsesHelmValues: false
+    # Size is the only retention bound: history grows until 90GB, then the
+    # oldest blocks go — months of data at this cluster's cardinality. The
+    # empty time retention is load-bearing, not decoration: it defeats the
+    # chart's 10d default, and the operator's own 24h fallback applies only
+    # when BOTH fields are empty. 90GB decimal ≈ 84Gi, comfortable headroom
+    # on the 100Gi volume.
+    retention: ""
+    retentionSize: 90GB
     storageSpec:
       volumeClaimTemplate:
         spec:
