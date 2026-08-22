@@ -1,0 +1,35 @@
+# The metric gate on a canary (bluebird#77, step 8; bluebird#236). The canary
+# serves no user traffic while the steps run — weight stays 0 by choice (TJ,
+# 2026-08-21) — so the 5xx ratio judged here is the canary's synthetic diet:
+# its kubelet probes, the version check, and api-test's full analyze. That is
+# enough to catch a build that crashes, 500s its probes, or fails a real
+# analysis end to end; it cannot see a regression only real traffic finds.
+#
+# Both sides of the ratio guard against empty vectors: `sum()` over no series
+# returns nothing, not zero, and an empty result errors the measurement where
+# a zero passes it. No canary series at all (PodMonitor missing) therefore
+# reads 0/1e-9 = 0 and passes; an UNREACHABLE Prometheus errors the analysis
+# and aborts the rollout — this template must not land before the monitoring
+# stack runs.
+apiVersion: argoproj.io/v1alpha1
+kind: AnalysisTemplate
+metadata:
+  name: error-rate
+spec:
+  metrics:
+    - name: error-rate
+      # Three checks a minute apart, one forgiven: a stray 500 does not roll
+      # back a release, a repeating one does.
+      interval: 60s
+      count: 3
+      failureLimit: 1
+      successCondition: result[0] < 0.05
+      provider:
+        prometheus:
+          # The operator's own headless service — stable regardless of how
+          # the kube-prometheus-stack release is named.
+          address: http://prometheus-operated.prometheus-system.svc.cluster.local:9090
+          query: |
+            (sum(rate(bluebird_http_requests_total{namespace="bluebird-system",role="canary",status=~"5.."}[2m])) or vector(0))
+            /
+            clamp_min(sum(rate(bluebird_http_requests_total{namespace="bluebird-system",role="canary"}[2m])) or vector(0), 1e-9)
