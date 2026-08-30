@@ -29,4 +29,4 @@ helmCharts:
     # under Argo they would be created once and then sit forever OutOfSync.
     skipTests: true
     valuesFile: values.yml
-    version: 88.5.3 # https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
+    version: 88.5.4 # https://artifacthub.io/packages/helm/prometheus-community/kube-prometheus-stack
