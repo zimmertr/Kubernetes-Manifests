@@ -14,4 +14,4 @@ generatorOptions:
 
 images:
   - name: cloudflare/cloudflared
-    newTag: 2026.8.2 # https://github.com/cloudflare/cloudflared/releases
+    newTag: 2026.8.3 # https://github.com/cloudflare/cloudflared/releases
