@@ -30,6 +30,6 @@ spec:
           # the kube-prometheus-stack release is named.
           address: http://prometheus-operated.prometheus-system.svc.cluster.local:9090
           query: |
-            (sum(rate(bluebird_http_requests_total{namespace="bluebird-system",role="canary",status=~"5.."}[2m])) or vector(0))
+            (sum(rate(bluebird_forecast_http_requests_total{namespace="bluebird-system",role="canary",status=~"5.."}[2m])) or vector(0))
             /
-            clamp_min(sum(rate(bluebird_http_requests_total{namespace="bluebird-system",role="canary"}[2m])) or vector(0), 1e-9)
+            clamp_min(sum(rate(bluebird_forecast_http_requests_total{namespace="bluebird-system",role="canary"}[2m])) or vector(0), 1e-9)

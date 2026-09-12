@@ -74,7 +74,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "sum by (route) (rate(bluebird_http_requests_total{route=~\"/api/.*\"}[$__rate_interval]))",
+          "expr": "sum by (route) (rate(bluebird_forecast_http_requests_total{route=~\"/api/.*\"}[$__rate_interval]))",
           "legendFormat": "{{route}}",
           "refId": "A"
         }
@@ -128,7 +128,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "sum by (route) (rate(bluebird_http_requests_total{route!~\"/api/.*\"}[$__rate_interval]))",
+          "expr": "sum by (route) (rate(bluebird_forecast_http_requests_total{route!~\"/api/.*\"}[$__rate_interval]))",
           "legendFormat": "{{route}}",
           "refId": "A"
         }
@@ -181,7 +181,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "sum by (status) (rate(bluebird_http_requests_total{status=~\"[45]..\"}[$__rate_interval]))",
+          "expr": "sum by (status) (rate(bluebird_forecast_http_requests_total{status=~\"[45]..\"}[$__rate_interval]))",
           "legendFormat": "{{status}}",
           "refId": "A"
         }
@@ -235,7 +235,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "histogram_quantile(0.5, sum by (le) (rate(bluebird_http_request_duration_seconds_bucket{route=~\"/api/.*\"}[$__rate_interval])))",
+          "expr": "histogram_quantile(0.5, sum by (le) (rate(bluebird_forecast_http_request_duration_seconds_bucket{route=~\"/api/.*\"}[$__rate_interval])))",
           "legendFormat": "p50",
           "refId": "A"
         },
@@ -244,7 +244,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "histogram_quantile(0.95, sum by (le) (rate(bluebird_http_request_duration_seconds_bucket{route=~\"/api/.*\"}[$__rate_interval])))",
+          "expr": "histogram_quantile(0.95, sum by (le) (rate(bluebird_forecast_http_request_duration_seconds_bucket{route=~\"/api/.*\"}[$__rate_interval])))",
           "legendFormat": "p95",
           "refId": "B"
         },
@@ -253,7 +253,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "histogram_quantile(0.99, sum by (le) (rate(bluebird_http_request_duration_seconds_bucket{route=~\"/api/.*\"}[$__rate_interval])))",
+          "expr": "histogram_quantile(0.99, sum by (le) (rate(bluebird_forecast_http_request_duration_seconds_bucket{route=~\"/api/.*\"}[$__rate_interval])))",
           "legendFormat": "p99",
           "refId": "C"
         }
@@ -319,7 +319,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "sum(increase(bluebird_analyze_destinations_count[1h]))",
+          "expr": "sum(increase(bluebird_forecast_analyze_destinations_count[1h]))",
           "legendFormat": "analyses (server path)",
           "refId": "A"
         },
@@ -328,7 +328,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "sum(increase(bluebird_destinations_returned_count[1h]))",
+          "expr": "sum(increase(bluebird_forecast_destinations_returned_count[1h]))",
           "legendFormat": "discoveries (browser path)",
           "refId": "B"
         }
@@ -382,7 +382,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "histogram_quantile(0.5, sum by (le) (rate(bluebird_analyze_destinations_bucket[1h])))",
+          "expr": "histogram_quantile(0.5, sum by (le) (rate(bluebird_forecast_analyze_destinations_bucket[1h])))",
           "legendFormat": "p50",
           "refId": "A"
         },
@@ -391,7 +391,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "histogram_quantile(0.95, sum by (le) (rate(bluebird_analyze_destinations_bucket[1h])))",
+          "expr": "histogram_quantile(0.95, sum by (le) (rate(bluebird_forecast_analyze_destinations_bucket[1h])))",
           "legendFormat": "p95",
           "refId": "B"
         }
@@ -444,7 +444,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "sum by (reason) (increase(bluebird_aqi_degraded_total[1h]))",
+          "expr": "sum by (reason) (increase(bluebird_forecast_aqi_degraded_total[1h]))",
           "legendFormat": "{{reason}}",
           "refId": "A"
         }
@@ -511,7 +511,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "sum by (mirror, outcome) (rate(bluebird_overpass_requests_total[$__rate_interval]))",
+          "expr": "sum by (mirror, outcome) (rate(bluebird_forecast_overpass_requests_total[$__rate_interval]))",
           "legendFormat": "{{mirror}} \u00b7 {{outcome}}",
           "refId": "A"
         }
@@ -564,7 +564,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "histogram_quantile(0.95, sum by (mirror, le) (rate(bluebird_overpass_request_duration_seconds_bucket[$__rate_interval])))",
+          "expr": "histogram_quantile(0.95, sum by (mirror, le) (rate(bluebird_forecast_overpass_request_duration_seconds_bucket[$__rate_interval])))",
           "legendFormat": "{{mirror}}",
           "refId": "A"
         }
@@ -618,7 +618,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "sum by (mirror) (increase(bluebird_overpass_fallback_total[1h]))",
+          "expr": "sum by (mirror) (increase(bluebird_forecast_overpass_fallback_total[1h]))",
           "legendFormat": "left {{mirror}}",
           "refId": "A"
         }
@@ -672,7 +672,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "histogram_quantile(0.95, sum by (service, le) (rate(bluebird_openmeteo_request_duration_seconds_bucket[$__rate_interval])))",
+          "expr": "histogram_quantile(0.95, sum by (service, le) (rate(bluebird_forecast_openmeteo_request_duration_seconds_bucket[$__rate_interval])))",
           "legendFormat": "{{service}}",
           "refId": "A"
         }
@@ -725,7 +725,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "sum by (service, outcome) (rate(bluebird_openmeteo_requests_total[$__rate_interval]))",
+          "expr": "sum by (service, outcome) (rate(bluebird_forecast_openmeteo_requests_total[$__rate_interval]))",
           "legendFormat": "{{service}} \u00b7 {{outcome}}",
           "refId": "A"
         }
@@ -778,7 +778,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "sum by (service, scope) (increase(bluebird_openmeteo_rate_limited_total[1h]))",
+          "expr": "sum by (service, scope) (increase(bluebird_forecast_openmeteo_rate_limited_total[1h]))",
           "legendFormat": "{{service}} \u00b7 {{scope}}",
           "refId": "A"
         }
@@ -848,7 +848,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "sum by (provider) (rate(bluebird_openmeteo_weight_spent_total[5m])) * 60",
+          "expr": "sum by (provider) (rate(bluebird_forecast_openmeteo_weight_spent_total[5m])) * 60",
           "legendFormat": "{{provider}}",
           "refId": "A"
         }
@@ -902,7 +902,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "sum by (provider) (rate(bluebird_upstream_pace_seconds_total[5m]))",
+          "expr": "sum by (provider) (rate(bluebird_forecast_upstream_pace_seconds_total[5m]))",
           "legendFormat": "pace \u00b7 {{provider}}",
           "refId": "A"
         },
@@ -911,7 +911,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "histogram_quantile(0.95, sum by (provider, le) (rate(bluebird_upstream_queue_seconds_bucket[$__rate_interval])))",
+          "expr": "histogram_quantile(0.95, sum by (provider, le) (rate(bluebird_forecast_upstream_queue_seconds_bucket[$__rate_interval])))",
           "legendFormat": "queue p95 \u00b7 {{provider}}",
           "refId": "B"
         }
@@ -978,7 +978,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "sum by (cache) (rate(bluebird_cache_hits_total[10m])) / (sum by (cache) (rate(bluebird_cache_hits_total[10m])) + sum by (cache) (rate(bluebird_cache_misses_total[10m])))",
+          "expr": "sum by (cache) (rate(bluebird_forecast_cache_hits_total[10m])) / (sum by (cache) (rate(bluebird_forecast_cache_hits_total[10m])) + sum by (cache) (rate(bluebird_forecast_cache_misses_total[10m])))",
           "legendFormat": "{{cache}}",
           "refId": "A"
         }
@@ -1032,7 +1032,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "sum by (cache) (rate(bluebird_cache_hits_total[10m]))",
+          "expr": "sum by (cache) (rate(bluebird_forecast_cache_hits_total[10m]))",
           "legendFormat": "hit \u00b7 {{cache}}",
           "refId": "A"
         },
@@ -1041,7 +1041,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "sum by (cache) (rate(bluebird_cache_misses_total[10m]))",
+          "expr": "sum by (cache) (rate(bluebird_forecast_cache_misses_total[10m]))",
           "legendFormat": "miss \u00b7 {{cache}}",
           "refId": "B"
         }
@@ -1107,7 +1107,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "sum by (bucket) (increase(bluebird_ratelimit_throttled_total[1h]))",
+          "expr": "sum by (bucket) (increase(bluebird_forecast_ratelimit_throttled_total[1h]))",
           "legendFormat": "{{bucket}}",
           "refId": "A"
         }
@@ -1161,7 +1161,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "sum by (provider, mechanism) (increase(bluebird_upstream_shed_total[1h]))",
+          "expr": "sum by (provider, mechanism) (increase(bluebird_forecast_upstream_shed_total[1h]))",
           "legendFormat": "{{provider}} \u00b7 {{mechanism}}",
           "refId": "A"
         }
@@ -1356,7 +1356,7 @@
             "type": "prometheus",
             "uid": "prometheus"
           },
-          "expr": "count by (version) (bluebird_build_info)",
+          "expr": "count by (version) (bluebird_forecast_build_info)",
           "legendFormat": "{{version}}",
           "refId": "A"
         }
