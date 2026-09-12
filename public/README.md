@@ -148,7 +148,7 @@ Two processes run in one pod because the upstream proxy takes a single target: o
    https://stravaproxy.tjzimmerman.com/global/winter/blue/{Z}/{X}/{Y}.png
    https://stravaproxy.tjzimmerman.com/global/all/hot/{Z}/{X}/{Y}.png
    https://stravaproxy.tjzimmerman.com/global/ride/purple/{Z}/{X}/{Y}.png
-   https://stravaproxy.tjzimmerman.com/personal/hot/{Z}/{X}/{Y}.png?missing=empty&filter_type=all&include_everyone=true&include_followers_only=true&include_only_me=true&respect_privacy_zones=false&include_commutes=false
+   https://stravaproxy.tjzimmerman.com/personal/purple/{Z}/{X}/{Y}.png?missing=empty&filter_type=all&include_everyone=true&include_followers_only=true&include_only_me=true&respect_privacy_zones=false&include_commutes=true
    ```
 
    Global activity groups: `all`, `run` (Run, TrailRun, Walk, Hike), `ride`, `winter`, `water`. Single sports use Strava's `sport_` names, e.g. `sport_Hike`, `sport_BackcountrySki`, `sport_MountainBikeRide`; groups cannot be combined in one URL. Colors: `hot`, `blue`, `purple`, `gray`, `orange`, `bluered`, `mobileblue`; anything else falls back to `hot`. There is also `grayscale`, but it is an opaque PNG with no transparency (it is what strava.com draws on its dark basemap), so it blacks out the map as an overlay. A 404 is an empty tile, a 400 is a bad name.
