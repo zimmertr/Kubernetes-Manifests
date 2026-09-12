@@ -141,11 +141,18 @@ Two processes run in one pod because the upstream proxy takes a single target: o
    kustomize build strava-heatmap-proxy | kubectl apply -f-
    ```
 
-4. Add the layers in CalTopo under Add, Custom Source, type Tile, overlay on, then Save to Account. Activity and color segments follow the [heatmap URL reference](https://tjasz.github.io/heatmap/).
+4. Add the layers in CalTopo under Add, Custom Source: type Tile, Max Zoom 15 (neither heatmap has tiles past 15), overlay Yes - Transparent Overlay, then Save To Account. Tiles are 512px with no query string; add `?px=256` to the global URLs for the old size.
 
    ```text
-   https://stravaproxy.tjzimmerman.com/global/all/hot/{Z}/{X}/{Y}.png?v=19
-   https://stravaproxy.tjzimmerman.com/personal/bluered/{Z}/{X}/{Y}.png?filter_type=all&include_everyone=true&include_followers_only=true&include_only_me=true&respect_privacy_zones=false&include_commutes=false
+   https://stravaproxy.tjzimmerman.com/global/run/hot/{Z}/{X}/{Y}.png
+   https://stravaproxy.tjzimmerman.com/global/winter/blue/{Z}/{X}/{Y}.png
+   https://stravaproxy.tjzimmerman.com/global/all/hot/{Z}/{X}/{Y}.png
+   https://stravaproxy.tjzimmerman.com/global/ride/purple/{Z}/{X}/{Y}.png
+   https://stravaproxy.tjzimmerman.com/personal/grayscale/{Z}/{X}/{Y}.png?missing=empty&filter_type=all&include_everyone=true&include_followers_only=true&include_only_me=true&respect_privacy_zones=false&include_commutes=false
    ```
+
+   Global activity groups: `all`, `run` (Run, TrailRun, Walk, Hike), `ride`, `winter`, `water`. Single sports use Strava's `sport_` names, e.g. `sport_Hike`, `sport_BackcountrySki`, `sport_MountainBikeRide`; groups cannot be combined in one URL. Colors: `hot`, `blue`, `purple`, `gray`, `orange`, `bluered`, `mobileblue`, `grayscale`; anything else falls back to `hot`. A 404 is an empty tile, a 400 is a bad name.
+
+   The personal URL is the request the Strava site itself makes; drop the query string and the tile comes back blank. `filter_type` takes a `sport_` name too, and `@2x.png` doubles the tile size. Cloudflare caches global tiles for 7 days and personal tiles for 4 hours, both set by Strava, so a new activity shows up within 4 hours.
 
 Never share a public CalTopo map with one of these layers enabled unless you are happy for viewers to pull tiles through your Strava account.
