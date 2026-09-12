@@ -21,7 +21,10 @@ generatorOptions:
 
 images:
   - name: patrickziegler/strava-heatmap-proxy
-    # Upstream publishes :latest plus one tag per commit on main. Pin the commit
-    # tag: Renovate cannot bump it, so bumps are a deliberate edit here.
-    # https://github.com/patrickziegler/strava-heatmap-proxy/commits/main
-    newTag: 3a716f4fa29015452859918df452862f81c50719
+    # Temporarily built from my fork: upstream drops the _strava4_session cookie
+    # after its first refresh, which breaks the personal heatmap (401). The tag
+    # is the fork commit. Switch back to the upstream image and commit tag once
+    # https://github.com/zimmertr/strava-heatmap-proxy-2/pull/1 lands upstream.
+    # Renovate cannot bump commit tags, so bumps are a deliberate edit here.
+    newName: zimmertr/strava-heatmap-proxy
+    newTag: 14dd67e7f0a7a2f8e5fd25bc66fe995b6c0db0c2
