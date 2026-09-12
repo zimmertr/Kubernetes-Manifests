@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: strava-heatmap-proxy
+spec:
+  selector:
+    app: strava-heatmap-proxy
+  ports:
+    - name: http-global
+      protocol: TCP
+      port: 8080
+      targetPort: global
+    - name: http-personal
+      protocol: TCP
+      port: 8081
+      targetPort: personal

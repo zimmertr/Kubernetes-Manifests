@@ -1,0 +1,36 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: strava-heatmap-proxy
+spec:
+  hosts:
+    - 'stravaproxy.tjzimmerman.com'
+  gateways:
+    - 'strava-heatmap-proxy'
+  http:
+    # Each prefix is stripped before the request reaches its proxy process, so
+    # the process sees the same path Strava expects after its --target.
+    # Anything outside these two prefixes gets Istio's default 404 and never
+    # reaches Strava.
+    - name: global
+      match:
+        - uri:
+            prefix: /global/
+      rewrite:
+        uri: /
+      route:
+        - destination:
+            host: strava-heatmap-proxy
+            port:
+              number: 8080
+    - name: personal
+      match:
+        - uri:
+            prefix: /personal/
+      rewrite:
+        uri: /
+      route:
+        - destination:
+            host: strava-heatmap-proxy
+            port:
+              number: 8081

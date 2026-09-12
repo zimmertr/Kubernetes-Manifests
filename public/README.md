@@ -7,6 +7,7 @@
   * [CertManager](#certmanager)
   * [Cloudflared](#cloudflared)
   * [Personal Website](#personal-website)
+  * [Strava Heatmap Proxy](#strava-heatmap-proxy)
 
 <hr>
 
@@ -113,3 +114,38 @@ The Deployment stays unhealthy until the credentials secret exists. Set it up as
    ```bash
    kustomize build --enable-helm personal-website | kubectl apply -f-
    ```
+
+### Strava Heatmap Proxy
+
+A reverse proxy in front of the [Strava global heatmap](https://www.strava.com/maps/global-heatmap) and my personal heatmap, so they can be added to CalTopo (or any app that takes an XYZ tile URL) as a custom layer. Strava serves the high-zoom tiles only with signed CloudFront cookies, which CalTopo cannot send. The proxy is [patrickziegler/strava-heatmap-proxy](https://github.com/patrickziegler/strava-heatmap-proxy): it holds one `_strava4_session` cookie from a logged-in browser, exchanges it for CloudFront cookies, refreshes them as they expire, and forwards tile requests with the cookies attached. The URL never expires. Only the session cookie does, after a month or a few, and then the pod crash loops until a fresh one is exported.
+
+Two processes run in one pod because the upstream proxy takes a single target: one for the global heatmap (`/global/`) and one for the personal heatmap (`/personal/`, athlete id baked into the Deployment). The VirtualService strips the prefix. The cookie file is a secret created by hand, the same split as [Cloudflared](#cloudflared).
+
+1. Export the cookies. Log in to [strava.com](https://www.strava.com) in a browser and either install the [Strava Cookie Exporter](https://github.com/patrickziegler/strava-heatmap-proxy/tree/main/strava-cookie-exporter) extension and click Export, or copy the `_strava4_session` value from the browser's cookie storage into the shape of [strava-heatmap-proxy/files/strava-cookies.json.example](strava-heatmap-proxy/files/strava-cookies.json.example). Save it as `strava-heatmap-proxy/files/strava-cookies.json` (gitignored).
+
+2. Create the secret. Repeat this step with a fresh export whenever the pod crash loops.
+
+   ```bash
+   kubectl create ns strava-heatmap-proxy-system
+
+   kubectl create secret generic strava-heatmap-proxy-cookies \
+     --from-file=strava-cookies.json=strava-heatmap-proxy/files/strava-cookies.json \
+     -n strava-heatmap-proxy-system --dry-run=client -o yaml | kubectl apply -f-
+
+   kubectl rollout restart deployment strava-heatmap-proxy -n strava-heatmap-proxy-system
+   ```
+
+3. Deploy (or let Argo CD sync it). The certificate lives with the other public ones in [istio/istio-gateway](../istio/istio-gateway), and the hostname is routed through the tunnel by [cloudflared/files/config.yaml](cloudflared/files/config.yaml).
+
+   ```bash
+   kustomize build strava-heatmap-proxy | kubectl apply -f-
+   ```
+
+4. Add the layers in CalTopo under Add, Custom Source, type Tile, overlay on, then Save to Account. Activity and color segments follow the [heatmap URL reference](https://tjasz.github.io/heatmap/).
+
+   ```text
+   https://stravaproxy.tjzimmerman.com/global/all/hot/{Z}/{X}/{Y}.png?v=19
+   https://stravaproxy.tjzimmerman.com/personal/bluered/{Z}/{X}/{Y}.png?filter_type=all&include_everyone=true&include_followers_only=true&include_only_me=true&respect_privacy_zones=false&include_commutes=false
+   ```
+
+Never share a public CalTopo map with one of these layers enabled unless you are happy for viewers to pull tiles through your Strava account.
