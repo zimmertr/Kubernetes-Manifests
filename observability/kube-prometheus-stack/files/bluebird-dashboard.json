@@ -260,6 +260,60 @@
       ]
     },
     {
+      "type": "timeseries",
+      "title": "API request rate by caller",
+      "id": 30,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 17
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "reqps",
+          "min": null,
+          "max": null,
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 2,
+            "fillOpacity": 8,
+            "showPoints": "never",
+            "pointSize": 5,
+            "spanNulls": false
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "sum by (client) (rate(bluebird_forecast_http_requests_total{route=~\"/api/.*\"}[$__rate_interval]))",
+          "legendFormat": "{{client}}",
+          "refId": "A"
+        }
+      ],
+      "description": "Who asked: web is the web app's own fetches, api is everything else. Read off the Sec-Fetch-Site request header, which a browser stamps on a same-origin fetch and page script cannot set. Limited to /api routes, because a page load carries no such header and would count as api. A picture, not a boundary: curl can send the header too."
+    },
+    {
       "type": "row",
       "title": "Analyses",
       "id": 6,
@@ -268,7 +322,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 17
+        "y": 25
       },
       "panels": []
     },
@@ -284,7 +338,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 18
+        "y": 26
       },
       "fieldConfig": {
         "defaults": {
@@ -347,7 +401,7 @@
         "h": 8,
         "w": 6,
         "x": 12,
-        "y": 18
+        "y": 26
       },
       "fieldConfig": {
         "defaults": {
@@ -409,7 +463,7 @@
         "h": 8,
         "w": 6,
         "x": 18,
-        "y": 18
+        "y": 26
       },
       "fieldConfig": {
         "defaults": {
@@ -460,7 +514,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 26
+        "y": 34
       },
       "panels": []
     },
@@ -476,7 +530,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 27
+        "y": 35
       },
       "fieldConfig": {
         "defaults": {
@@ -529,7 +583,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 27
+        "y": 35
       },
       "fieldConfig": {
         "defaults": {
@@ -583,7 +637,7 @@
         "h": 8,
         "w": 6,
         "x": 0,
-        "y": 35
+        "y": 43
       },
       "fieldConfig": {
         "defaults": {
@@ -637,7 +691,7 @@
         "h": 8,
         "w": 6,
         "x": 6,
-        "y": 35
+        "y": 43
       },
       "fieldConfig": {
         "defaults": {
@@ -690,7 +744,7 @@
         "h": 8,
         "w": 6,
         "x": 12,
-        "y": 35
+        "y": 43
       },
       "fieldConfig": {
         "defaults": {
@@ -743,7 +797,7 @@
         "h": 8,
         "w": 6,
         "x": 18,
-        "y": 35
+        "y": 43
       },
       "fieldConfig": {
         "defaults": {
@@ -797,7 +851,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 43
+        "y": 51
       },
       "fieldConfig": {
         "defaults": {
@@ -867,7 +921,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 43
+        "y": 51
       },
       "fieldConfig": {
         "defaults": {
@@ -919,6 +973,60 @@
       "description": "Pace is seconds slept per second to stay under the weighted budget (a saturation ratio); queue is the p95 wait for an in-flight slot."
     },
     {
+      "type": "timeseries",
+      "title": "Open-Meteo batches by quota",
+      "id": 31,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 59
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "reqps",
+          "min": null,
+          "max": null,
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 2,
+            "fillOpacity": 8,
+            "showPoints": "never",
+            "pointSize": 5,
+            "spanNulls": false
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "sum by (service, quota) (rate(bluebird_forecast_openmeteo_requests_total[$__rate_interval]))",
+          "legendFormat": "{{service}} \u00b7 {{quota}}",
+          "refId": "A"
+        }
+      ],
+      "description": "Whose Open-Meteo quota a batch spent. pod is this deployment's free tier, which the weighted pacers above meter. caller is an API request that brought its own key (bluebird#317), which no pacer here meters and no quota of ours pays for."
+    },
+    {
       "type": "row",
       "title": "Caches",
       "id": 19,
@@ -927,7 +1035,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 51
+        "y": 67
       },
       "panels": []
     },
@@ -943,7 +1051,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 52
+        "y": 68
       },
       "fieldConfig": {
         "defaults": {
@@ -997,7 +1105,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 52
+        "y": 68
       },
       "fieldConfig": {
         "defaults": {
@@ -1056,7 +1164,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 60
+        "y": 76
       },
       "panels": []
     },
@@ -1072,7 +1180,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 61
+        "y": 77
       },
       "fieldConfig": {
         "defaults": {
@@ -1126,7 +1234,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 61
+        "y": 77
       },
       "fieldConfig": {
         "defaults": {
@@ -1177,7 +1285,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 69
+        "y": 85
       },
       "panels": []
     },
@@ -1193,7 +1301,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 70
+        "y": 86
       },
       "fieldConfig": {
         "defaults": {
@@ -1267,7 +1375,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 70
+        "y": 86
       },
       "fieldConfig": {
         "defaults": {
@@ -1321,7 +1429,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 78
+        "y": 94
       },
       "fieldConfig": {
         "defaults": {
@@ -1375,7 +1483,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 78
+        "y": 94
       },
       "fieldConfig": {
         "defaults": {
