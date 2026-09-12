@@ -1,0 +1,119 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: strava-heatmap-proxy
+  labels:
+    app: strava-heatmap-proxy
+spec:
+  # One replica on purpose. Every replica would exchange the same Strava
+  # session for its own CloudFront cookies on its own schedule, and it is not
+  # known whether Strava keeps older signatures valid once a newer one is
+  # minted. A single process keeps exactly one set of cookies live.
+  replicas: 1
+  selector:
+    matchLabels:
+      app: strava-heatmap-proxy
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: strava-heatmap-proxy
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        # The distroless :nonroot image runs as this uid.
+        runAsUser: 65532
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        # The upstream proxy takes exactly one --target, and the global and
+        # personal heatmaps live on different Strava hosts, so the two heatmaps
+        # are two processes sharing one cookie file. The VirtualService maps
+        # /global/ and /personal/ onto their ports.
+        #
+        # Both processes exit (log.Fatalf) when Strava refuses to refresh the
+        # CloudFront cookies, which is what happens once the _strava4_session
+        # cookie dies. A CrashLoopBackOff on this pod therefore means "export a
+        # new cookie file and recreate the secret" (see ../../README.md).
+        - name: global
+          image: patrickziegler/strava-heatmap-proxy
+          args:
+            - --cookies=/etc/strava/strava-cookies.json
+            - --port=8080
+            # The proxy joins this path with the request path, so the public URL
+            # only carries the part after globalheat/.
+            - --target=https://content-a.strava.com/identified/globalheat/
+          ports:
+            - name: global
+              containerPort: 8080
+          # TCP only. Any HTTP request to the proxy is forwarded to Strava with
+          # the account cookies, so an HTTP probe would hit Strava every period.
+          livenessProbe:
+            tcpSocket:
+              port: global
+            initialDelaySeconds: 10
+            periodSeconds: 30
+          readinessProbe:
+            tcpSocket:
+              port: global
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 10m
+              memory: 32Mi
+            limits:
+              memory: 64Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+          volumeMounts:
+            - name: cookies
+              mountPath: /etc/strava
+              readOnly: true
+        - name: personal
+          image: patrickziegler/strava-heatmap-proxy
+          args:
+            - --cookies=/etc/strava/strava-cookies.json
+            - --port=8081
+            # The binary only takes flags, so the athlete id comes in from the
+            # ConfigMap through $(VAR) expansion, which the kubelet does on args.
+            - --target=https://personal-heatmaps-external.strava.com/tiles/$(STRAVA_ATHLETE_ID)/
+          envFrom:
+            - configMapRef:
+                name: strava-heatmap-proxy-config
+          ports:
+            - name: personal
+              containerPort: 8081
+          livenessProbe:
+            tcpSocket:
+              port: personal
+            initialDelaySeconds: 10
+            periodSeconds: 30
+          readinessProbe:
+            tcpSocket:
+              port: personal
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 10m
+              memory: 32Mi
+            limits:
+              memory: 64Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+          volumeMounts:
+            - name: cookies
+              mountPath: /etc/strava
+              readOnly: true
+      volumes:
+        - name: cookies
+          secret:
+            secretName: strava-heatmap-proxy-cookies

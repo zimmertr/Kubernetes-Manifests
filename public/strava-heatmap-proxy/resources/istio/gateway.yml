@@ -1,0 +1,26 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: strava-heatmap-proxy
+spec:
+  selector:
+    istio: gateway
+  servers:
+    - hosts:
+        - 'stravaproxy.tjzimmerman.com'
+      port:
+        name: http
+        number: 80
+        protocol: HTTP
+      tls:
+        httpsRedirect: true
+    - hosts:
+        - 'stravaproxy.tjzimmerman.com'
+      port:
+        name: https
+        number: 443
+        protocol: HTTPS
+      tls:
+        mode: SIMPLE
+        # Issued by istio/istio-gateway/resources/certificate-strava-heatmap-proxy.yml
+        credentialName: strava-heatmap-proxy

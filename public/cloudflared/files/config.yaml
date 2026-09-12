@@ -43,5 +43,9 @@ ingress:
     service: https://gateway.istio-gateway.svc.cluster.local:443
     originRequest:
       originServerName: www.tjzimmerman.dev
+  - hostname: stravaproxy.tjzimmerman.com
+    service: https://gateway.istio-gateway.svc.cluster.local:443
+    originRequest:
+      originServerName: stravaproxy.tjzimmerman.com
   # Anything else that reaches the tunnel is not a hostname we serve.
   - service: http_status:404

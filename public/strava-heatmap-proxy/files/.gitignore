@@ -1,0 +1,4 @@
+# The real cookie file is a full login to the Strava account. It becomes a
+# Kubernetes secret (see ../../README.md), never a file in git. Only the
+# .example shape is tracked.
+strava-cookies.json
