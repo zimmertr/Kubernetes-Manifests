@@ -79,10 +79,12 @@ spec:
           args:
             - --cookies=/etc/strava/strava-cookies.json
             - --port=8081
-            # 22080449 is the athlete id of the account the cookies belong to.
-            # Personal tiles are signed for that athlete only, so this serves
-            # one person's heatmap, never a caller-supplied id.
-            - --target=https://personal-heatmaps-external.strava.com/tiles/22080449/
+            # The binary only takes flags, so the athlete id comes in from the
+            # ConfigMap through $(VAR) expansion, which the kubelet does on args.
+            - --target=https://personal-heatmaps-external.strava.com/tiles/$(STRAVA_ATHLETE_ID)/
+          envFrom:
+            - configMapRef:
+                name: strava-heatmap-proxy-config
           ports:
             - name: personal
               containerPort: 8081

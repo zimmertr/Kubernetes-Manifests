@@ -7,6 +7,18 @@ resources:
   - resources/istio/gateway.yml
   - resources/istio/virtualService.yml
 
+configMapGenerator:
+  - name: strava-heatmap-proxy-config
+    literals:
+      # Athlete id of the account the cookie secret belongs to. It is the number
+      # in the profile URL (strava.com/athletes/<id>). Personal tiles are signed
+      # for that athlete only, so this is the one value to change when reusing
+      # this project with a different account.
+      - STRAVA_ATHLETE_ID=22080449
+
+generatorOptions:
+  disableNameSuffixHash: true
+
 images:
   - name: patrickziegler/strava-heatmap-proxy
     # Upstream publishes :latest plus one tag per commit on main. Pin the commit
