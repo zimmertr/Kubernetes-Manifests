@@ -151,7 +151,51 @@ Two processes run in one pod because the upstream proxy takes a single target: o
    https://stravaproxy.tjzimmerman.com/personal/purple/{Z}/{X}/{Y}.png?filter_type=all&include_everyone=true&include_followers_only=true&include_only_me=true&respect_privacy_zones=false&include_commutes=true
    ```
 
-   Global activity groups: `all`, `run` (Run, TrailRun, Walk, Hike), `ride`, `winter`, `water`. Single sports use Strava's `sport_` names, e.g. `sport_Hike`, `sport_BackcountrySki`, `sport_MountainBikeRide`; groups cannot be combined in one URL. Colors: `hot`, `blue`, `purple`, `gray`, `orange`, `bluered`, `mobileblue`; anything else falls back to `hot`. There is also `grayscale`, but it is an opaque PNG with no transparency (it is what strava.com draws on its dark basemap), so it blacks out the map as an overlay. A 404 is an empty tile, a 400 is a bad name.
+   The tables below list every activity and color name that was verified against the proxy.
+
+5. Tile reference. Every global URL follows this pattern:
+
+   ```text
+   https://stravaproxy.tjzimmerman.com/global/<activity>/<color>/{Z}/{X}/{Y}.png
+   ```
+
+   Validity was tested on two tiles, Seattle at zoom 10 and Rampart Lakes at zoom 12. A 404 means no data in that tile, a 400 means Strava rejects the name. Names cannot be combined; every separator tried returned 400.
+
+   | Group | Contains | Example |
+   |---|---|---|
+   | `all` | everything below | `/global/all/hot/{Z}/{X}/{Y}.png` |
+   | `run` | Run, TrailRun, Walk, Hike. Confirmed: 100 percent of each sport's pixels appear in this group | `/global/run/hot/{Z}/{X}/{Y}.png` |
+   | `ride` | Ride, MountainBikeRide, GravelRide, EBikeRide, EMountainBikeRide | `/global/ride/purple/{Z}/{X}/{Y}.png` |
+   | `winter` | Snowshoe, BackcountrySki, NordicSki confirmed at 100 percent. AlpineSki, Snowboard, IceSkate assumed | `/global/winter/blue/{Z}/{X}/{Y}.png` |
+   | `water` | paddling, rowing, sailing, swimming, surf sports | `/global/water/blue/{Z}/{X}/{Y}.png` |
+
+   | Single sport, valid with data seen | Example |
+   |---|---|
+   | `sport_Hike`, `sport_TrailRun`, `sport_Run`, `sport_Walk` | `/global/sport_Hike/hot/{Z}/{X}/{Y}.png` |
+   | `sport_Snowshoe`, `sport_BackcountrySki`, `sport_NordicSki`, `sport_IceSkate`, `sport_RollerSki` | `/global/sport_BackcountrySki/blue/{Z}/{X}/{Y}.png` |
+   | `sport_Ride`, `sport_MountainBikeRide`, `sport_GravelRide`, `sport_EBikeRide`, `sport_EMountainBikeRide` | `/global/sport_MountainBikeRide/purple/{Z}/{X}/{Y}.png` |
+   | `sport_Kayaking`, `sport_Canoeing`, `sport_StandUpPaddling`, `sport_Rowing`, `sport_Swim`, `sport_Sail`, `sport_Windsurf`, `sport_Kitesurf` | `/global/sport_Kayaking/blue/{Z}/{X}/{Y}.png` |
+   | `sport_RockClimbing`, `sport_InlineSkate`, `sport_Skateboard`, `sport_Golf`, `sport_Soccer`, `sport_Tennis`, `sport_Pickleball`, `sport_Badminton`, `sport_Wheelchair`, `sport_Workout`, `sport_VirtualRun`, `sport_VirtualRide` | `/global/sport_RockClimbing/orange/{Z}/{X}/{Y}.png` |
+
+   | Single sport, accepted but no data in either test tile | Example |
+   |---|---|
+   | `sport_AlpineSki`, `sport_Snowboard`, `sport_Surfing`, `sport_Velomobile`, `sport_Handcycle` | `/global/sport_AlpineSki/blue/{Z}/{X}/{Y}.png` |
+   | `sport_Elliptical`, `sport_Crossfit`, `sport_Yoga`, `sport_WeightTraining`, `sport_StairStepper`, `sport_Pilates`, `sport_TableTennis`, `sport_Squash`, `sport_Racquetball`, `sport_HighIntensityIntervalTraining` | indoor, expect nothing |
+
+   Rejected with 400: `foot`, `cycling`, `ski`, `hike`, `walk`, `other`, `sport_Ski`, `sport_Snowmobile`, `sport_Motorcycle`, `sport_Horseback`, `sport_Sailing`.
+
+   Colors. Eight distinct palettes; any other word silently gives `hot`. The first seven are palette PNGs with transparency. `grayscale` is an opaque PNG with no alpha (it is what strava.com draws on its dark basemap), so it blacks out the map as an overlay.
+
+   | Color | Example |
+   |---|---|
+   | `hot` | `/global/all/hot/{Z}/{X}/{Y}.png` |
+   | `blue` | `/global/all/blue/{Z}/{X}/{Y}.png` |
+   | `purple` | `/global/all/purple/{Z}/{X}/{Y}.png` |
+   | `gray` | `/global/all/gray/{Z}/{X}/{Y}.png` |
+   | `orange` | `/global/all/orange/{Z}/{X}/{Y}.png` |
+   | `bluered` | `/global/all/bluered/{Z}/{X}/{Y}.png` |
+   | `mobileblue` | `/global/all/mobileblue/{Z}/{X}/{Y}.png` |
+   | `grayscale` | `/global/all/grayscale/{Z}/{X}/{Y}.png` (opaque) |
 
    The personal URL is the request the Strava site itself makes. `filter_type` and at least one `include_*` visibility flag are required or the tile comes back blank; the three `include_*` flags select activities by their visibility setting, `respect_privacy_zones` hides track segments inside privacy zones, and `include_commutes` adds commutes. The Strava site also sends `missing=empty`, which turns empty tiles into an opaque black placeholder PNG instead of a 404; leave it out, CalTopo draws a 404 as transparent. `filter_type` takes a `sport_` name too, and `@2x.png` doubles the tile size. Cloudflare caches global tiles for 7 days and personal tiles for 4 hours, both set by Strava, so a new activity shows up within 4 hours.
 
