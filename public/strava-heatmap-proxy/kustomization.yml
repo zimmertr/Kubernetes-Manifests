@@ -24,7 +24,7 @@ images:
     # Temporarily built from my fork: upstream drops the _strava4_session cookie
     # after its first refresh, which breaks the personal heatmap (401). The tag
     # is the fork commit. Switch back to the upstream image and commit tag once
-    # https://github.com/zimmertr/strava-heatmap-proxy-2/pull/1 lands upstream.
+    # https://github.com/zimmertr/strava-heatmap-proxy-2/pull/2 lands upstream.
     # Renovate cannot bump commit tags, so bumps are a deliberate edit here.
     newName: zimmertr/strava-heatmap-proxy
-    newTag: ab43b54c6b3f177e1a6205abe861486a235b5a6b
+    newTag: 18e680c6574778644c7944bf79db4fb4e58eeb1f
