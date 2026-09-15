@@ -43,4 +43,7 @@ spec:
         - group: networking.istio.io
           kind: VirtualService
           jqPathExpressions:
-            - .spec.http[] | select(.name | endswith("-stable")) | .route[].weight
+            # Every route the Rollouts controller weights: the SPA, and the
+            # two API routes bluebird names in trafficRouting. A weighted
+            # route missing here is one selfHeal reverts mid-rollout.
+            - .spec.http[] | select(.name | test("-(stable|api-public|api-keyed)$")) | .route[].weight
