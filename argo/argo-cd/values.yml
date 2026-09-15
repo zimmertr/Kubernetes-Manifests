@@ -36,6 +36,14 @@ repoServer:
     minReplicas: 2
   metrics:
     enabled: true
+  # The autoscaling target above scales on CPU and memory utilization, which
+  # the HPA can only compute against per-container requests. The chart ships
+  # none, so the HPA reported FailedGetResourceMetric and Argo CD marked it
+  # Degraded. Requests sit above observed idle usage (~5m CPU, ~70Mi memory).
+  resources:
+    requests:
+      cpu: 100m
+      memory: 192Mi
 
 server:
   autoscaling:
@@ -43,6 +51,12 @@ server:
     minReplicas: 2
   metrics:
     enabled: true
+  # See repoServer.resources: required so the autoscaling HPA can compute
+  # utilization. Requests sit above observed idle usage (~3m CPU, ~33Mi memory).
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
   service:
     annotations:
       metallb.universe.tf/loadBalancerIPs: 192.168.40.120
