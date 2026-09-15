@@ -86,6 +86,10 @@ canary:
           # chart version that renders it: merge AFTER that chart release,
           # or the next rollout fails to find the route.
           - bluebird-api-public
+          # The keyed analyze route (bluebird#317), for the same reason: a
+          # route left off this list stays 100/0 stable through a rollout,
+          # so a weighted step would skip API callers with their own key.
+          - bluebird-api-keyed
 
 ingress:
   enabled: true
