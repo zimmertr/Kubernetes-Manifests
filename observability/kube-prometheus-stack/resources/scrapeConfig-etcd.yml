@@ -24,6 +24,11 @@ spec:
   # The generated job label would be "scrapeConfig/prometheus-system/kube-etcd".
   # Rewritten to the name the chart's own wiring uses, so the shipped etcd
   # alert rules and Grafana dashboard read these series as chart-native.
+  #
+  # action must be set explicitly: the ScrapeConfig CRD defaults it to
+  # "replace" server-side, so omitting it here leaves git perpetually OutOfSync
+  # against the defaulted live object.
   relabelings:
-    - targetLabel: job
+    - action: replace
+      targetLabel: job
       replacement: kube-etcd
