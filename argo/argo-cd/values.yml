@@ -2,6 +2,21 @@ configs:
   cm:
     kustomize.buildOptions: "--enable-helm"
     users.anonymous.enabled: "false"
+    # No webhook reaches this cluster: argocd-server is an internal
+    # LoadBalancer with no public ingress, so a push to a watched repo is found
+    # by polling. At the chart defaults (120s + 60s of jitter) a bluebird image
+    # bump merged in this repo waited 4-182s to be noticed, measured across nine
+    # releases on 2026-09-15 (bluebird#368). That was the second largest segment
+    # of the whole merge-to-live path, behind only the canary's error-rate gate.
+    # 30s + 15s bounds it at 45s. The cost is roughly four times the refresh
+    # rate across ~25 Applications; the repo-server is autoscaled with two
+    # replicas and each refresh is one git ls-remote.
+    #
+    # A webhook would make this a second instead, and would make this setting
+    # moot. It needs argocd-server's /api/webhook reachable from GitHub, which
+    # is a Cloudflare Tunnel change rather than a values change.
+    timeout.reconciliation: 30s
+    timeout.reconciliation.jitter: 15s
 
 crds:
   install: true
