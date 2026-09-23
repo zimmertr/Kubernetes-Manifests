@@ -7,6 +7,12 @@ spec:
     - name: version
   metrics:
     - name: version-check
+      # The canary Service keeps the stable pod hash for about a second after
+      # the controller creates the canary pod, so a probe fired at once reads
+      # the stable version and aborts the rollout on a race, not a defect.
+      # Measured on bluebird v0.79.12, v0.82.2 and v0.82.5. The delay gives the
+      # selector time to move before the one measurement is taken.
+      initialDelay: 15s
       count: 1
       failureLimit: 0
       successCondition: hasSuffix("{{args.version}}", ":" + result)
