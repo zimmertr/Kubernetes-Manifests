@@ -11,6 +11,12 @@
 # reads 0/1e-9 = 0 and passes; an UNREACHABLE Prometheus errors the analysis
 # and aborts the rollout — this template must not land before the monitoring
 # stack runs.
+#
+# One 5xx must not abort a release (bluebird#519). The canary's 2-minute
+# window holds about sixteen requests, so one 5xx is over the 0.05 threshold
+# on its own, and one api-test retry after an upstream 502 would fail two
+# readings in a row. The query below answers 0 until the window holds two or
+# more 5xx. A real outage gives many 5xx in two minutes and still fails.
 apiVersion: argoproj.io/v1alpha1
 kind: AnalysisTemplate
 metadata:
@@ -29,7 +35,23 @@ spec:
           # The operator's own headless service — stable regardless of how
           # the kube-prometheus-stack release is named.
           address: http://prometheus-operated.prometheus-system.svc.cluster.local:9090
+          # The ratio counts only when the window holds two or more 5xx
+          # (the `>= bool 2` factor), so one probe retry reads 0. Two is the
+          # smallest count that one retry cannot reach: increase() of a
+          # single 5xx reads at most 1.33 after extrapolation (measured on the
+          # 2026-09-23 canary). The window must also hold 10 or more
+          # requests. The kubelet probes alone send 16 per window (readiness
+          # every 10s, liveness every 30s; the measured median over 40 pods),
+          # and a window under 10 is one that a pod start or stop cuts short.
+          # Every term keeps `or vector(0)`, so an empty series answers 0 and
+          # never errors the measurement.
           query: |
-            (sum(rate(bluebird_forecast_http_requests_total{namespace="bluebird-system",role="canary",status=~"5.."}[2m])) or vector(0))
-            /
-            clamp_min(sum(rate(bluebird_forecast_http_requests_total{namespace="bluebird-system",role="canary"}[2m])) or vector(0), 1e-9)
+            (
+              (
+                (sum(rate(bluebird_forecast_http_requests_total{namespace="bluebird-system",role="canary",status=~"5.."}[2m])) or vector(0))
+                /
+                clamp_min(sum(rate(bluebird_forecast_http_requests_total{namespace="bluebird-system",role="canary"}[2m])) or vector(0), 1e-9)
+              )
+              * on() ((sum(increase(bluebird_forecast_http_requests_total{namespace="bluebird-system",role="canary",status=~"5.."}[2m])) or vector(0)) >= bool 2)
+              and on() (sum(increase(bluebird_forecast_http_requests_total{namespace="bluebird-system",role="canary"}[2m])) or vector(0)) >= 10
+            ) or vector(0)
