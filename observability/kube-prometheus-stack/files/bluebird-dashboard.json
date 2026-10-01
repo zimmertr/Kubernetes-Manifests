@@ -982,7 +982,7 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 24,
+        "w": 12,
         "x": 0,
         "y": 59
       },
@@ -1025,6 +1025,60 @@
         }
       ],
       "description": "Whose Open-Meteo quota a batch spent. pod is this deployment's free tier, which the weighted pacers above meter. caller is an API request that brought its own key (bluebird#317), which no pacer here meters and no quota of ours pays for."
+    },
+    {
+      "type": "timeseries",
+      "title": "Overlay snapshot refresh failures per hour",
+      "id": 32,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 59
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "min": null,
+          "max": null,
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 2,
+            "fillOpacity": 8,
+            "showPoints": "never",
+            "pointSize": 5,
+            "spanNulls": false
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "sum by (provider) (increase(bluebird_forecast_snapshot_refresh_failures_total[1h]))",
+          "legendFormat": "{{provider}}",
+          "refId": "A"
+        }
+      ],
+      "description": "Failed refreshes of the wildfire, smoke, closure and snow snapshots. A snapshot older than 24 hours is no longer served, so a provider that keeps failing here turns its overlay unavailable."
     },
     {
       "type": "row",
