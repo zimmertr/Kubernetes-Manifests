@@ -3,6 +3,7 @@ namespace: cloudflared-system
 resources:
   - resources/namespace.yml
   - resources/deployment.yml
+  - resources/poddisruptionbudget.yml
 
 configMapGenerator:
   - name: cloudflared-config

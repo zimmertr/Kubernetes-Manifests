@@ -1,0 +1,20 @@
+# Lets a node drain take one cloudflared pod at a time and never both, so the
+# tunnel always holds a registered edge connection. maxUnavailable rather than
+# minAvailable so the budget can never block a drain outright: with the
+# Deployment's two replicas the two are the same, but if replicas ever drops to
+# 1, minAvailable 1 would refuse every eviction and maxUnavailable 1 still
+# allows it. AlwaysAllow lets a drain evict a pod that is already unready; the
+# default refuses that whenever the budget is spent, and both pods sit unready
+# until the credentials secret exists (see ../../README.md).
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: cloudflared
+  labels:
+    app: cloudflared
+spec:
+  maxUnavailable: 1
+  unhealthyPodEvictionPolicy: AlwaysAllow
+  selector:
+    matchLabels:
+      app: cloudflared
