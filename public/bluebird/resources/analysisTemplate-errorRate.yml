@@ -39,7 +39,15 @@ spec:
           # (the `>= bool 2` factor), so one probe retry reads 0. Two is the
           # smallest count that one retry cannot reach: increase() of a
           # single 5xx reads at most 1.33 after extrapolation (measured on the
-          # 2026-09-23 canary). The window must also hold 10 or more
+          # 2026-09-23 canary). That holds only on a series that existed
+          # before its first 5xx: increase() needs an earlier sample, so a
+          # series created by its first 5xx reads 0 for it. The pod therefore
+          # creates every 5xx series the canary's own requests can produce at
+          # 0 when it starts (CANARY_ROUTES in bluebird backend/app/telemetry.py,
+          # bluebird#574): GET /healthz, GET /api/version and POST /api/analyze,
+          # at 500 and each 5xx the route declares, client="api". A 5xx on any
+          # other series is not counted until the second one there.
+          # The window must also hold 10 or more
           # requests. The kubelet probes alone send 16 per window (readiness
           # every 10s, liveness every 30s; the measured median over 40 pods),
           # and a window under 10 is one that a pod start or stop cuts short.
