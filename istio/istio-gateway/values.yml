@@ -1,3 +1,38 @@
 service:
   annotations:
     metallb.universe.tf/loadBalancerIPs: 192.168.40.150
+
+# Every public hostname reaches the cluster through this gateway (cloudflared
+# forwards all of them here), so one pod made a single node loss an outage of
+# every site for as long as the replacement took to schedule. The HPA is the
+# only thing that sets the replica count: the chart omits spec.replicas while
+# autoscaling is enabled, so this floor is what keeps two pods running.
+autoscaling:
+  minReplicas: 2
+
+# The chart renders the PodDisruptionBudget itself, and only while minReplicas
+# is above 1, so the budget and the floor above cannot drift apart into a
+# single-pod budget that blocks a drain. maxUnavailable rather than
+# minAvailable so a drain still evicts one pod at a time when the HPA has
+# scaled past two. AlwaysAllow lets a drain evict a pod that is already
+# unready; the default refuses that whenever the budget is spent, so two
+# unready pods would stall a drain that cannot make them any less available.
+podDisruptionBudget:
+  maxUnavailable: 1
+  unhealthyPodEvictionPolicy: AlwaysAllow
+
+# Two pods on one node survive nothing a node loss takes, so they must land
+# on different workers. nodeTaintsPolicy Honor is required on this cluster: the
+# default (Ignore) counts the three tainted control-plane nodes as empty
+# domains, which pins the skew minimum at 0 and caps the gateway at one pod per
+# worker, below the HPA's maximum of 5. Honor counts only the workers, and a
+# cordoned node drops out of the set, so a drain does not strand a pod.
+topologySpreadConstraints:
+  - maxSkew: 1
+    topologyKey: kubernetes.io/hostname
+    whenUnsatisfiable: DoNotSchedule
+    nodeTaintsPolicy: Honor
+    labelSelector:
+      matchLabels:
+        app: gateway
+        istio: gateway
