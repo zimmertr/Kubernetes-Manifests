@@ -2,3 +2,11 @@ apiVersion: v1
 kind: Namespace
 metadata:
   name: cloudflared
+  labels:
+    # The pod already meets the restricted level (non-root uid, RuntimeDefault
+    # seccomp, every capability dropped, no privilege escalation, configMap and
+    # secret volumes only), so enforcing it costs nothing today and refuses any
+    # later change that loosens it.
+    pod-security.kubernetes.io/audit: restricted
+    pod-security.kubernetes.io/enforce: restricted
+    pod-security.kubernetes.io/warn: restricted

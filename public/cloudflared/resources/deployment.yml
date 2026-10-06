@@ -21,12 +21,16 @@ spec:
       labels:
         app: cloudflared
       annotations:
-        # The public/ ApplicationSet labels this namespace istio-injection=enabled.
         # cloudflared must NOT be meshed: it originates its own TLS to the ingress
         # gateway with the public hostname as SNI, and a sidecar would intercept
-        # that connection. Opt this pod out of injection.
+        # that connection. The namespace carries no istio-injection label today
+        # (namespace.yml sets none), so this opt-out is what keeps the pod out of
+        # the mesh if one is ever added there.
         sidecar.istio.io/inject: "false"
     spec:
+      # cloudflared never calls the Kubernetes API, so the service account token
+      # would only be a credential for whoever can run code in the pod.
+      automountServiceAccountToken: false
       securityContext:
         runAsNonRoot: true
         runAsUser: 65532
