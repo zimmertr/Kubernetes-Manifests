@@ -21,11 +21,19 @@
   ],
   "packageRules": [
     {
-      "description": "Automerge patch updates",
+      "description": "Automerge minor and patch updates once they are seven days old",
       "matchUpdateTypes": ["minor","patch"],
       "automerge": true,
       "platformAutomerge": true,
       "minimumReleaseAge": "7 days"
+    },
+    {
+      "description": "Bluebird Forecast's image tag and chart version are written by its own release jobs, after its CI and release checks pass. A Renovate update would move them on Validate manifests alone, so Renovate leaves them to those jobs.",
+      "matchPackageNames": [
+        "zimmertr/bluebird",
+        "registry-1.docker.io/zimmertr/bluebird-helm"
+      ],
+      "enabled": false
     }
   ]
 }
