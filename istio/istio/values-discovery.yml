@@ -2,3 +2,16 @@
 meshConfig:
   ingressService: istio-gateway
   ingressSelector: gateway
+
+# The cni chart in kustomization.yml installs istio-cni-node on every node, but
+# the injector only uses it when this is on. Off, every injected pod starts
+# with istio-init as uid 0 holding NET_ADMIN and NET_RAW, which no namespace
+# can admit at the baseline or restricted Pod Security level. On, the CNI
+# plugin sets up the redirect on the node and pods get istio-validation
+# (uid 1337, no added capabilities) instead. The cni chart's repair controller
+# (REPAIR_ENABLED, on by default) fixes a pod scheduled on a rebooted node
+# before the plugin was ready. It applies to pods created after istiod picks
+# it up; running pods keep istio-init until they are restarted.
+pilot:
+  cni:
+    enabled: true
