@@ -22,11 +22,12 @@ jobs:
     name: Validate manifests
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0  # need the merge base to diff against
+          persist-credentials: false
 
-      - uses: azure/setup-helm@v5
+      - uses: azure/setup-helm@9bc31f4ebc9c6b171d7bfbaa5d006ae7abdb4310 # v5.0.1
         with:
           version: v4.3.0
 
@@ -38,9 +39,16 @@ jobs:
           # pin rots silently — this sat at 5.7.1 while upstream reached 5.8.1.
           # renovate: datasource=github-releases depName=kubernetes-sigs/kustomize extractVersion=^kustomize/v(?<version>.+)$
           KUSTOMIZE_VERSION: 5.8.1
+          # The linux_amd64 line of that release's checksums.txt. Renovate moves
+          # the version but not this, so its bump PR fails here until the hash
+          # is copied in by hand: a binary nobody has checked never runs.
+          KUSTOMIZE_SHA256: 029a7f0f4e1932c52a0476cf02a0fd855c0bb85694b82c338fc648dcb53a819d
         run: |
-          curl -sSL "https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv${KUSTOMIZE_VERSION}/kustomize_v${KUSTOMIZE_VERSION}_linux_amd64.tar.gz" \
-            | sudo tar xz -C /usr/local/bin
+          TARBALL="kustomize_v${KUSTOMIZE_VERSION}_linux_amd64.tar.gz"
+          curl -fsSL -o "$RUNNER_TEMP/$TARBALL" \
+            "https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv${KUSTOMIZE_VERSION}/${TARBALL}"
+          echo "${KUSTOMIZE_SHA256}  $RUNNER_TEMP/$TARBALL" | sha256sum --check --strict
+          sudo tar -xzf "$RUNNER_TEMP/$TARBALL" -C /usr/local/bin kustomize
           kustomize version
 
       - name: Collect changed files
@@ -55,8 +63,11 @@ jobs:
           echo "Changed files:"; sed 's/^/  /' changed.txt
 
       - name: Parse changed YAML
+        env:
+          # renovate: datasource=pypi depName=pyyaml
+          PYYAML_VERSION: 6.0.3
         run: |
-          pip install --quiet pyyaml
+          pip install --quiet "pyyaml==${PYYAML_VERSION}"
           # Cheap first gate, and the one that catches the failure mode the bump
           # bots can actually cause: they rewrite version lines with targeted
           # `sed`, and a regex that matches more than intended corrupts the file.
