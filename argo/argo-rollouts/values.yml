@@ -7,6 +7,14 @@ controller:
 
 dashboard:
   enabled: true
+  # The dashboard's API has no login and is published on the LAN below, so
+  # whatever its ClusterRole may do, anyone on the LAN (or any pod) may do.
+  # Read-only drops update/patch on rollouts and deployments and create on
+  # analysisruns/experiments, so a promote, abort, retry, restart, undo or
+  # set-image from it is refused and every release goes through the canary
+  # gates. A write that is still wanted (`kubectl argo rollouts retry` after an
+  # outside outage) goes through the plugin with a kubeconfig.
+  readonly: true
   service:
     annotations:
       metallb.universe.tf/loadBalancerIPs: 192.168.40.121
