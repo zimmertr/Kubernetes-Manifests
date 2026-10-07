@@ -90,6 +90,16 @@ canary:
           # route left off this list stays 100/0 stable through a rollout,
           # so a weighted step would skip API callers with their own key.
           - bluebird-api-keyed
+          # Each route above has an -off-tunnel twin while
+          # ingress.tunnel.peerRegex is set (bluebird#631): the same paths for
+          # a request that did not come through cloudflared, with
+          # CF-Connecting-IP removed. Listed so LAN and in-mesh traffic follows
+          # a canary too. They exist only while that value is set, and a listed
+          # route that does not exist fails the next rollout, so the two
+          # change together.
+          - bluebird-stable-off-tunnel
+          - bluebird-api-public-off-tunnel
+          - bluebird-api-keyed-off-tunnel
 
 ingress:
   enabled: true
@@ -102,3 +112,15 @@ ingress:
     enabled: true
     credentialName: bluebird
   mesh: true
+  # The gateway is also the LAN address 192.168.40.150 and serves these hosts
+  # there, so a device on the home network could reach it without the tunnel
+  # and set CF-Connecting-IP, which the app's rate limiter believes
+  # (bluebird#631). The gateway keeps that header only when the peer it saw is
+  # a cloudflared pod: an address in flannel's 10.244.0.0/16, but not a node's
+  # .0 (flannel.1) or .1 (cni0), which are what kube-proxy rewrites a LAN
+  # client's address to on the way to a gateway Service with
+  # externalTrafficPolicy Cluster. Any other peer has the header removed and is
+  # counted under the address the gateway saw. A CNI or pod CIDR change means
+  # deriving this again.
+  tunnel:
+    peerRegex: '10\.244\.\d+\.(?:[2-9]|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])'
