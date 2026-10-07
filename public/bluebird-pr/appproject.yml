@@ -12,16 +12,6 @@ spec:
   destinations:
     - namespace: bluebird-pr-system
       server: https://kubernetes.default.svc
-    # Kept only while previews move out of production's namespace
-    # (zimmertr/bluebird#637). Argo CD sees only the live objects its project
-    # permits, so dropping this before each moved preview has synced would
-    # hide its old Deployment, Service, Gateway and VirtualService from the
-    # prune and leave them running. Remove it once neither
-    # `kubectl get all -n bluebird-system` nor
-    # `kubectl get gateway,virtualservice -n bluebird-system` lists a
-    # bluebird-pr-* object.
-    - namespace: bluebird-system
-      server: https://kubernetes.default.svc
 ---
 # The previews' namespace. It lives here because the root-appprojects
 # Application applies every appproject.yml with cluster-wide rights. Left to
