@@ -5,10 +5,11 @@ metadata:
   labels:
     istio-injection: enabled
     # Istio injects through its CNI plugin since #1365, so no pod here needs
-    # NET_ADMIN any more, and a server dry run of enforce=restricted on
-    # 2026-10-06 reported no violating pod. warn and audit go to restricted
-    # first so a regression is logged before it is refused; enforce follows
-    # once they have stayed quiet (zimmertr/bluebird#572, #1312).
+    # NET_ADMIN any more. A server dry run of enforce=restricted on 2026-10-06
+    # reported no violating pod, and the previews ran restricted in their own
+    # namespace first (#1391), so production enforces it too
+    # (zimmertr/bluebird#572, #1312). A pod this refuses is a regression in the
+    # chart, not a reason to lower the level.
     pod-security.kubernetes.io/audit: restricted
-    pod-security.kubernetes.io/enforce: baseline
+    pod-security.kubernetes.io/enforce: restricted
     pod-security.kubernetes.io/warn: restricted
