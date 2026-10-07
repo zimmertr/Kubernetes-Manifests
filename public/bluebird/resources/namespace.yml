@@ -4,6 +4,11 @@ metadata:
   name: bluebird
   labels:
     istio-injection: enabled
-    pod-security.kubernetes.io/audit: baseline
-    pod-security.kubernetes.io/enforce: privileged
-    pod-security.kubernetes.io/warn: baseline
+    # Istio injects through its CNI plugin since #1365, so no pod here needs
+    # NET_ADMIN any more, and a server dry run of enforce=restricted on
+    # 2026-10-06 reported no violating pod. warn and audit go to restricted
+    # first so a regression is logged before it is refused; enforce follows
+    # once they have stayed quiet (zimmertr/bluebird#572, #1312).
+    pod-security.kubernetes.io/audit: restricted
+    pod-security.kubernetes.io/enforce: baseline
+    pod-security.kubernetes.io/warn: restricted
