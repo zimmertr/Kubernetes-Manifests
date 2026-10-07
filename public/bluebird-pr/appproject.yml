@@ -10,5 +10,33 @@ spec:
   sourceRepos:
     - oci://registry-1.docker.io/zimmertr/bluebird-helm
   destinations:
+    - namespace: bluebird-pr-system
+      server: https://kubernetes.default.svc
+    # Kept only while previews move out of production's namespace
+    # (zimmertr/bluebird#637). Argo CD sees only the live objects its project
+    # permits, so dropping this before each moved preview has synced would
+    # hide its old Deployment, Service, Gateway and VirtualService from the
+    # prune and leave them running. Remove it once neither
+    # `kubectl get all -n bluebird-system` nor
+    # `kubectl get gateway,virtualservice -n bluebird-system` lists a
+    # bluebird-pr-* object.
     - namespace: bluebird-system
       server: https://kubernetes.default.svc
+---
+# The previews' namespace. It lives here because the root-appprojects
+# Application applies every appproject.yml with cluster-wide rights. Left to
+# each preview's CreateNamespace instead, the bluebird-pr project would have to
+# permit Namespace, a cluster-scoped kind it holds none of today, and every
+# preview Application would claim the same namespace's labels as its own.
+# The labels match production's, except that enforce is already restricted:
+# a preview pod (the app, istio-proxy and istio-validation) met every
+# restricted rule when read on 2026-10-06.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: bluebird-pr-system
+  labels:
+    istio-injection: enabled
+    pod-security.kubernetes.io/audit: restricted
+    pod-security.kubernetes.io/enforce: restricted
+    pod-security.kubernetes.io/warn: restricted

@@ -23,9 +23,14 @@ spec:
         - resources-finalizer.argocd.argoproj.io
     spec:
       project: bluebird-pr
+      # Previews run in a namespace of their own, apart from production in
+      # bluebird-system (zimmertr/bluebird#637). One namespace for every
+      # preview rather than one per PR: appproject.yml beside this file
+      # creates it with its labels, so the project needs no cluster-scoped
+      # permission and no empty namespace is left behind when a PR closes.
       destination:
         server: https://kubernetes.default.svc
-        namespace: bluebird-system
+        namespace: bluebird-pr-system
       source:
         repoURL: oci://registry-1.docker.io/zimmertr/bluebird-helm
         chart: bluebird-helm
@@ -58,5 +63,13 @@ spec:
         automated:
           prune: true
           selfHeal: true
-        syncOptions:
-          - CreateNamespace=true
+        # The namespace comes from the root-appprojects Application, which
+        # syncs on its own clock, so a preview generated first finds no
+        # namespace and its sync fails. Retrying covers that gap without
+        # letting each preview create a bare, unlabelled namespace itself.
+        retry:
+          limit: 10
+          backoff:
+            duration: 10s
+            factor: 2
+            maxDuration: 5m
