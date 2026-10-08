@@ -42,7 +42,7 @@ jobs:
           # The linux_amd64 line of that release's checksums.txt. Renovate moves
           # the version but not this, so its bump PR fails here until the hash
           # is copied in by hand: a binary nobody has checked never runs.
-          KUSTOMIZE_SHA256: 029a7f0f4e1932c52a0476cf02a0fd855c0bb85694b82c338fc648dcb53a819d
+          KUSTOMIZE_SHA256: 06af0a202c2b831207d0173f9c9cdb1b30abceca0747cb3fbb72792d26055c95
         run: |
           TARBALL="kustomize_v${KUSTOMIZE_VERSION}_linux_amd64.tar.gz"
           curl -fsSL -o "$RUNNER_TEMP/$TARBALL" \
