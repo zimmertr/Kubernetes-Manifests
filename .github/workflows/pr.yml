@@ -38,7 +38,7 @@ jobs:
           # Without it a hand-rolled download URL is invisible to Renovate and the
           # pin rots silently — this sat at 5.7.1 while upstream reached 5.8.1.
           # renovate: datasource=github-releases depName=kubernetes-sigs/kustomize extractVersion=^kustomize/v(?<version>.+)$
-          KUSTOMIZE_VERSION: 5.8.1
+          KUSTOMIZE_VERSION: 5.8.2
           # The linux_amd64 line of that release's checksums.txt. Renovate moves
           # the version but not this, so its bump PR fails here until the hash
           # is copied in by hand: a binary nobody has checked never runs.
