@@ -32,6 +32,13 @@ grafana:
           editable: false
           options:
             path: /var/lib/grafana/dashboards/istio
+  # grafana-data is a ReadWriteOnce Proxmox disk that attaches to one node at
+  # a time. Under the default RollingUpdate a chart bump starts the new pod
+  # before the old one stops, and when it lands on another node it waits in
+  # Init forever for a disk the old pod still holds, leaving the app Degraded.
+  # Recreate stops the old pod first, so the disk can follow the new one.
+  deploymentStrategy:
+    type: Recreate
   dashboards:
     istio:
       Istio-Control-Plane:
