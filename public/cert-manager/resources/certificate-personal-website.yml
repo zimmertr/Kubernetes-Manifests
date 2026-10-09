@@ -2,6 +2,8 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: personal-website
+  # The shared Istio gateway only reads TLS secrets from its own namespace.
+  namespace: istio-gateway
 spec:
   secretName: personal-website
   commonName: tjzimmerman.com

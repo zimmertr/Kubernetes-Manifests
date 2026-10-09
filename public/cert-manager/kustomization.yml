@@ -1,6 +1,9 @@
 resources:
   - resources/namespace.yml
   - resources/clusterIssuer.yml
+  - resources/certificate-bluebird.yml
+  - resources/certificate-personal-website.yml
+  - resources/certificate-strava-heatmap-proxy.yml
 
 helmCharts:
   - includeCRDs: true

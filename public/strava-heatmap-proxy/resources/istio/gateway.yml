@@ -22,5 +22,5 @@ spec:
         protocol: HTTPS
       tls:
         mode: SIMPLE
-        # Issued by istio/istio-gateway/resources/certificate-strava-heatmap-proxy.yml
+        # Issued by public/cert-manager/resources/certificate-strava-heatmap-proxy.yml
         credentialName: strava-heatmap-proxy
