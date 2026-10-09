@@ -27,8 +27,12 @@ Using Proxmox? Consider using [TKS](https://github.com/zimmertr/TJs-Kubernetes-S
 Assuming you're using TKS with Flannel, [Istio](istio/README.md) can be used to set up Metal LB & Istio:
 
 ```bash
-# You may have to run this multiple times
+# The first apply creates MetalLB's CRDs and controller, but its pools can't be
+# created until the controller's webhook is up. Wait for it and apply again.
 kustomize build istio/metallb | kubectl apply -f-
+kubectl -n metallb-system rollout status deploy/controller
+kustomize build istio/metallb | kubectl apply -f-
+
 kustomize build --enable-helm istio/istio | kubectl apply -f-
 kustomize build --enable-helm istio/istio-gateway | kubectl apply -f-
 ```
