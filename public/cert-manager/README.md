@@ -5,7 +5,7 @@
 
 ## Summary
 
-[cert-manager](https://cert-manager.io) issues and renews TLS certificates. The `letsencrypt` ClusterIssuer solves ACME challenges with the **DNS-01** method via Cloudflare, so it works behind the Cloudflare proxy and supports wildcards. Gateway certificates are issued into the `istio-gateway` namespace (see [istio/istio-gateway](../../istio/istio-gateway)), where the shared Istio ingress gateway can load them.
+[cert-manager](https://cert-manager.io) issues and renews TLS certificates. The `letsencrypt` ClusterIssuer solves ACME challenges with the **DNS-01** method via Cloudflare, so it works behind the Cloudflare proxy and supports wildcards. Gateway certificates live here too, one per app (e.g. [personal-website](resources/certificate-personal-website.yml)), and are issued into the `istio-gateway` namespace where the shared Istio ingress gateway can load them.
 
 <hr>
 
