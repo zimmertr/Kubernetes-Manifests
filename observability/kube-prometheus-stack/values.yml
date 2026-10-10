@@ -17,7 +17,7 @@ alertmanager:
 
 grafana:
   # This repo is public, so the admin credential lives in a Secret created
-  # out-of-band (see the README), never in this file.
+  # out-of-band (see Secrets and Volumes in the root README.md), never in this file.
   admin:
     existingSecret: grafana-admin
   dashboardProviders:
