@@ -1,0 +1,38 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: ai
+  namespace: argo-system
+spec:
+  generators:
+    - git:
+        repoURL: https://github.com/zimmertr/Kubernetes-Manifests
+        revision: main
+        directories:
+          - path: "ai/*"
+          - exclude: true
+            path: "ai/*.disable*"
+  syncPolicy:
+    preserveResourcesOnDeletion: false
+  template:
+    metadata:
+      name: "{{ path.basenameNormalized }}"
+      labels:
+        app-group: ai
+    spec:
+      project: ai
+      source:
+        repoURL: https://github.com/zimmertr/Kubernetes-Manifests
+        targetRevision: main
+        path: "{{ path }}"
+      destination:
+        server: https://kubernetes.default.svc
+        # Each app gets its own namespace. Charts that leave the namespace off
+        # some resources rely on this to place them.
+        namespace: "{{ path.basenameNormalized }}-system"
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true

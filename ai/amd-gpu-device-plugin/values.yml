@@ -1,0 +1,38 @@
+# Advertises amd.com/gpu on GPU nodes, so pods request the GPU instead of
+# mounting /dev/kfd and /dev/dri privileged.
+labeller:
+  enabled: true
+
+# The labeller opens /dev/dri/card* for the GPU's family, VRAM and compute
+# units, which only works privileged, as in AMD's own labeller manifest.
+# Unprivileged, it only labels the device ID. Kubernetes rejects privileged
+# with allowPrivilegeEscalation false, which the chart sets.
+# Chart 0.22.0 ships 1.31.0.9, whose labeller doesn't know RDNA4's family
+# (GC_12_0_0, added in 1.31.0.11). Drop these once the chart catches up.
+dp:
+  image:
+    tag: "1.31.0.11"
+
+lbl:
+  image:
+    tag: "labeller-1.31.0.11"
+  securityContext:
+    privileged: true
+    allowPrivilegeEscalation: true
+
+# TKS labels its GPU nodes. NFD, which the chart's default selector expects,
+# isn't installed. Helm merges this with the default, so its NFD label has to be
+# removed explicitly.
+node_selector_enabled: true
+node_selector:
+  tks.io/pool: gpu
+  feature.node.kubernetes.io/pci-0300_1002.present: null
+
+# GPU nodes carry amd.com/gpu:NoSchedule. These DaemonSets don't request the
+# GPU, so ExtendedResourceToleration doesn't add the toleration for them.
+tolerations:
+  - key: CriticalAddonsOnly
+    operator: Exists
+  - key: amd.com/gpu
+    operator: Exists
+    effect: NoSchedule
