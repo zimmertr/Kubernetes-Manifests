@@ -12,3 +12,8 @@ helmCharts:
     releaseName: llama-swap
     namespace: llama-swap-system
     valuesFile: values.yml
+
+configMapGenerator:
+  - name: llama-swap-config
+    files:
+      - configs/config.yaml
