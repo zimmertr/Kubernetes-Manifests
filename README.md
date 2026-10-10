@@ -2,6 +2,7 @@
 
 * [Summary](#summary)
 * [Instructions](#instructions)
+  * [Cloud Controller Manager](#cloud-controller-manager)
   * [Networking](#networking)
     * [Istio](#istio)
     * [Cilium](#cilium)
@@ -18,6 +19,18 @@ A collection of services I deploy to Kubernetes with Argo CD using [TKS](https:/
 <hr>
 
 ## Instructions
+
+### Cloud Controller Manager
+
+If TKS's `cluster.external_cloud_provider` is on, nodes stay tainted until the [Proxmox CCM](misc/proxmox-cloud-controller-manager) runs, so install it first. See its README for populating `config.yaml`.
+
+```bash
+kubectl create secret generic proxmox-cloud-controller-manager -n kube-system \
+  --from-file=config.yaml=misc/proxmox-cloud-controller-manager/configs/config.yaml
+kustomize build --enable-helm misc/proxmox-cloud-controller-manager | kubectl apply -f-
+```
+
+<hr>
 
 ### Networking
 
