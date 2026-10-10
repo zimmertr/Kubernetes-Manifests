@@ -1,0 +1,16 @@
+# GPU temperature, power, utilization and VRAM for Prometheus.
+nodeSelector:
+  tks.io/pool: gpu
+
+# GPU nodes carry amd.com/gpu:NoSchedule, and the exporter doesn't request the
+# GPU.
+tolerations:
+  - key: amd.com/gpu
+    operator: Exists
+    effect: NoSchedule
+
+image:
+  pullPolicy: IfNotPresent
+
+serviceMonitor:
+  enabled: true

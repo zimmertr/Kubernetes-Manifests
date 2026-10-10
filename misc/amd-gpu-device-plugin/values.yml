@@ -1,0 +1,19 @@
+# Advertises amd.com/gpu on GPU nodes, so pods request the GPU instead of
+# mounting /dev/kfd and /dev/dri privileged.
+labeller:
+  enabled: true
+
+# TKS labels its GPU nodes. NFD, which the chart's default selector expects,
+# isn't installed.
+node_selector_enabled: true
+node_selector:
+  tks.io/pool: gpu
+
+# GPU nodes carry amd.com/gpu:NoSchedule. These DaemonSets don't request the
+# GPU, so ExtendedResourceToleration doesn't add the toleration for them.
+tolerations:
+  - key: CriticalAddonsOnly
+    operator: Exists
+  - key: amd.com/gpu
+    operator: Exists
+    effect: NoSchedule
