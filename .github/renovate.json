@@ -33,11 +33,6 @@
         "registry-1.docker.io/zimmertr/bluebird-helm"
       ],
       "enabled": false
-    },
-    {
-      "description": "llama-swap tags are v<llama-swap release>-vulkan-b<llama.cpp build>-non-root, and the image is published for many backends. Only follow this one. A new llama-swap release is a major update that waits for review, and a new llama.cpp build is a minor one.",
-      "matchPackageNames": ["ghcr.io/mostlygeek/llama-swap"],
-      "versioning": "regex:^v(?<major>\\d+)-vulkan-b(?<minor>\\d+)-non-root$"
     }
   ]
 }

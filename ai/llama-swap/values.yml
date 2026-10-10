@@ -1,0 +1,87 @@
+# The chart is built for kubeswap, which runs every model as its own pod. Here
+# llama-swap runs the models itself, in this pod, on the one GPU, so kubeswap's
+# RBAC and its garbage-collecting init container aren't needed.
+serviceAccount:
+  create: false
+rbac:
+  create: false
+gcInitContainer:
+  enabled: false
+
+# The image defaults to unified-vulkan-<release>, which bundles llama-server and
+# sd-server. Its only pinned tags run as root, so the pod drops to the UID of
+# its rootless variant instead.
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 10001
+  runAsGroup: 10001
+  fsGroup: 10001
+  # Only fix ownership when the volume's root is wrong, rather than walking
+  # hundreds of gigabytes of models on every start.
+  fsGroupChangePolicy: OnRootMismatch
+  seccompProfile:
+    type: RuntimeDefault
+securityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+      - ALL
+
+# Requesting the GPU also pins the pod to the GPU node and adds the toleration
+# for its taint. No memory limit, since llama.cpp memory-maps the model files
+# and a limit would count that page cache against the pod.
+resources:
+  requests:
+    cpu: "2"
+    memory: 8Gi
+  limits:
+    amd.com/gpu: 1
+
+env:
+  - name: LLAMA_SWAP_API_KEY
+    valueFrom:
+      secretKeyRef:
+        name: llama-swap-api-key
+        key: api-key
+
+extraVolumes:
+  - name: models
+    persistentVolumeClaim:
+      claimName: llama-swap-models
+extraVolumeMounts:
+  - name: models
+    mountPath: /models
+
+service:
+  type: LoadBalancer
+  annotations:
+    metallb.universe.tf/loadBalancerIPs: 192.168.40.140
+
+config:
+  inline: |
+    # https://github.com/mostlygeek/llama-swap/blob/main/docs/config.example.yaml
+
+    # Loading a large model from disk into VRAM can take minutes.
+    healthCheckTimeout: 300
+    logToStdout: "proxy,upstream"
+
+    apiKeys:
+      - "${env.LLAMA_SWAP_API_KEY}"
+
+    macros:
+      # llama-server listens on loopback only. Clients reach it through
+      # llama-swap, which checks the API key.
+      "llama-server": >-
+        llama-server
+        --host 127.0.0.1
+        --port ${PORT}
+        --n-gpu-layers 999
+        --jinja
+
+    models:
+      # A small model to prove the GPU works. https://huggingface.co/Qwen/Qwen3-0.6B-GGUF
+      "qwen3-0.6b":
+        cmd: |
+          ${llama-server}
+          --model /models/Qwen3-0.6B-Q8_0.gguf
+          --ctx-size 8192
