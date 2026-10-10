@@ -1,7 +1,5 @@
 # Strava Heatmap Proxy
 
-Serves the [Strava global heatmap](https://www.strava.com/maps/global-heatmap) and my personal heatmap as tile layers for CalTopo, or any app that takes an XYZ tile URL. Strava only serves high-zoom tiles with signed CloudFront cookies, which CalTopo can't send. [strava-heatmap-proxy](https://github.com/patrickziegler/strava-heatmap-proxy) holds a `_strava4_session` cookie from a logged-in browser, trades it for CloudFront cookies, and attaches them to each tile request. The session cookie expires after a month or so, and the pod crash loops until it's replaced.
-
 The pod runs two proxies, one for `/global/` and one for `/personal/`, because the upstream proxy takes a single target. The athlete ID is `STRAVA_ATHLETE_ID` in [kustomization.yml](kustomization.yml).
 
 ## Cookies
@@ -28,5 +26,3 @@ https://stravaproxy.tjzimmerman.com/personal/purple/{Z}/{X}/{Y}.png?filter_type=
 * Activities: `all`, `run` (runs, trail runs, walks and hikes), `ride`, `winter`, `water`, or a single sport such as `sport_Hike` or `sport_BackcountrySki`. An unknown name returns 400.
 * Colors: `hot`, `blue`, `purple`, `gray`, `orange`, `bluered` and `mobileblue`. Any other word gives `hot`. `grayscale` is opaque, so it blacks out the map.
 * Cloudflare caches global tiles for 7 days and personal tiles for 4 hours, so a new activity shows up within 4 hours.
-
-Never share a public CalTopo map with these layers on. Viewers pull tiles through your Strava account.
