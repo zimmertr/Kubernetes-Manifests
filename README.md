@@ -61,6 +61,9 @@ Then bootstrap the rest of the cluster with the [app-of-apps](https://argo-cd.re
 
 ```bash
 kubectl apply -f root-appproject.yml
+# The projects are created by Argo in the background. ApplicationSets that
+# start before theirs exists fail until their next refresh minutes later.
+kubectl -n argo-system wait application/root-appprojects --for=jsonpath='{.status.sync.status}'=Synced --timeout=5m
 kubectl apply -f root-applicationset.yml
 ```
 
