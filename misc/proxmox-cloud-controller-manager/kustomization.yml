@@ -1,10 +1,10 @@
-resources:
-  - resources/namespace.yml
-
 helmCharts:
   - name: proxmox-cloud-controller-manager
     repo: oci://ghcr.io/sergelogvinov/charts
     version: 0.2.32 # https://github.com/sergelogvinov/proxmox-cloud-controller-manager/releases
     releaseName: proxmox-cloud-controller-manager
-    namespace: proxmox-cloud-controller-manager-system
+    # The CCM's controllers authenticate as ServiceAccounts it creates in
+    # kube-system, whatever its own namespace, and the chart only grants its
+    # role to the ServiceAccount in the release namespace.
+    namespace: kube-system
     valuesFile: values.yml
