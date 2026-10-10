@@ -1,7 +1,0 @@
-etcd:
-  persistence:
-    storageClass: manual
-
-loki-stack:
-  persistence:
-    storageClassName: manual

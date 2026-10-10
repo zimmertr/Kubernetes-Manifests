@@ -72,3 +72,17 @@ run "hostnames_are_unique" {
 
   expect_failures = [var.hostnames]
 }
+
+run "cert_manager_can_only_edit_dns_on_these_zones" {
+  command = plan
+
+  assert {
+    condition     = toset([for g in cloudflare_account_token.cert_manager.policies[0].permission_groups : g.id]) == toset(["4755a26eedb94da69e1066d98aa820be", "c8fed203ed3043cba015a93ad1616f1f"])
+    error_message = "cert-manager needs zone-scoped DNS Write and Zone Read, and nothing else"
+  }
+
+  assert {
+    condition     = length(keys(jsondecode(cloudflare_account_token.cert_manager.policies[0].resources))) == length(data.cloudflare_zone.this)
+    error_message = "cert-manager's token must cover exactly the tunnel's zones"
+  }
+}

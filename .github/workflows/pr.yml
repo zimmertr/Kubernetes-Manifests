@@ -93,13 +93,13 @@ jobs:
           # every upstream chart on every PR — slow, and red for reasons that
           # have nothing to do with the change under review.
           #
-          # `.disable*` and deprecated/ are excluded for the same reason Argo's
-          # root Application excludes them: nothing there is deployed, and some
-          # of it no longer renders.
+          # `.disable*` is excluded for the same reason Argo's root Application
+          # excludes it: nothing there is deployed, and some of it no longer
+          # renders.
           targets=""
           while read -r file; do
             case "$file" in
-              deprecated/*|*.disable*/*) continue ;;
+              *.disable*/*) continue ;;
             esac
             dir="$(dirname "$file")"
             while [ "$dir" != "." ]; do
