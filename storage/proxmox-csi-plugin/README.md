@@ -4,7 +4,7 @@
 
 3. Copy [configs/config.yaml.example](configs/config.yaml.example) to `configs/config.yaml` and set `token_id` and `token_secret` to the two halves of the token. `config.yaml` is gitignored.
 
-4. On every new cluster, create the secret from the root README's [Secrets and Volumes](../../README.md#secrets-and-volumes), then label the nodes. The zone is the Proxmox host and the region is the Proxmox cluster:
+4. On every new cluster, create the secret from the root README's [Secrets and Volumes](../../README.md#secrets-and-volumes), then label the nodes. The zone is the Proxmox host and the region is the Proxmox cluster. Skip the labels if you run the [Proxmox CCM](../../misc/proxmox-cloud-controller-manager), which sets them:
 
    ```bash
    NODES=$(kubectl get nodes --no-headers | awk '{print $1}' | paste -sd, -)

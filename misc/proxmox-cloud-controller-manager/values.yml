@@ -1,0 +1,20 @@
+# The Proxmox API token lives in a Secret created by hand (see Secrets and
+# Volumes in the root README.md), never in this file.
+existingConfigSecret: proxmox-cloud-controller-manager
+existingConfigSecretKey: config.yaml
+
+# cloud-node initializes new nodes: providerID, zone and region labels, and
+# removing the uninitialized taint. cloud-node-lifecycle deletes a Node once
+# its VM is gone.
+enabledControllers:
+  - cloud-node
+  - cloud-node-lifecycle
+
+# Until this runs, every node carries the uninitialized taint and nothing
+# without a toleration for it schedules, possibly including CoreDNS and the
+# CNI's pods. So it runs on the control planes' host network and resolves the
+# Proxmox API through the node's own resolver, depending on neither.
+useDaemonSet: true
+dnsPolicy: Default
+nodeSelector:
+  node-role.kubernetes.io/control-plane: ""
