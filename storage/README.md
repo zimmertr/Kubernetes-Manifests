@@ -34,7 +34,7 @@ The [Proxmox CSI Plugin](https://github.com/sergelogvinov/proxmox-csi-plugin/tre
 
 1. Ensure that you have created a Proxmox cluster. Single-node clusters can be used. I use my [configure_cluster](https://github.com/zimmertr/Bootstrap-Proxmox/tree/main/roles/configure_cluster) Ansible role to create mine.
 
-2. Ensure that you have created an API token according to the plugin's [requirements](https://github.com/sergelogvinov/proxmox-csi-plugin/tree/main#install-csi-plugin). I use the [bootstrap](https://github.com/zimmertr/TJs-Kubernetes-Service/tree/main/bootstrap) Terraform root in TKS to create mine, by adding a `kubernetes-csi@pve` user to its `users` map. `terraform output -json api_tokens` prints the token ID and secret for the next step.
+2. Ensure that you have created an API token according to the plugin's [requirements](https://github.com/sergelogvinov/proxmox-csi-plugin/tree/main#install-csi-plugin). I use the [bootstrap](https://github.com/zimmertr/TJs-Kubernetes-Service/tree/main/bootstrap) Terraform root in TKS to create mine. It creates the `kubernetes-csi@pve` user listed in its [`vars/bootstrap.tfvars`](https://github.com/zimmertr/TJs-Kubernetes-Service/blob/main/vars/bootstrap.tfvars). `terraform output -json api_tokens | jq -r '."kubernetes-csi@pve"'` prints the token as `<token_id>=<token_secret>` for the next step.
 
 3. Create a Kubernetes secret that contains your cluster & API token information using [config.yaml.example](proxmox-csi-plugin/configs/config.yaml.example) as an example.
 
