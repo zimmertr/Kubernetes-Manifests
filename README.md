@@ -101,7 +101,7 @@ kubectl create secret generic cloudflare-api-token -n cert-manager \
   --from-literal=api-token="$(terraform -chdir=terraform/cloudflare output -raw cert_manager_token)"
 
 # Proxmox CSI Plugin
-# See storage/proxmox-csi-plugin/README.md for populating config.yaml and labeling the nodes.
+# See storage/proxmox-csi-plugin/README.md
 kubectl create secret generic proxmox-csi-plugin -n csi-proxmox \
   --from-file=storage/proxmox-csi-plugin/configs/config.yaml
 
@@ -110,12 +110,12 @@ kubectl create secret generic grafana-admin -n prometheus-system \
   --from-literal=admin-user=admin --from-literal=admin-password='CHANGEME'
 
 # Mountaineers Activity Scraper
-# See misc/mountaineers-activity-scraper/README.md for populating google_cloud_credentials.json.
+# See misc/mountaineers-activity-scraper/README.md
 kubectl create secret generic mountaineers-activity-scraper-creds -n mountaineers-activity-scraper-system \
   --from-file=misc/mountaineers-activity-scraper/files/google_cloud_credentials.json
 
 # Strava Heatmap Proxy
-# See public/strava-heatmap-proxy/README.md for populating strava-cookies.json.
+# See public/strava-heatmap-proxy/README.md
 kubectl create secret generic strava-heatmap-proxy-cookies -n strava-heatmap-proxy-system \
   --from-file=strava-cookies.json=public/strava-heatmap-proxy/files/strava-cookies.json \
   --dry-run=client -o yaml | kubectl apply -f-
