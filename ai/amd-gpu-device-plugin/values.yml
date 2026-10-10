@@ -4,10 +4,12 @@ labeller:
   enabled: true
 
 # TKS labels its GPU nodes. NFD, which the chart's default selector expects,
-# isn't installed.
+# isn't installed. Helm merges this with the default, so its NFD label has to be
+# removed explicitly.
 node_selector_enabled: true
 node_selector:
   tks.io/pool: gpu
+  feature.node.kubernetes.io/pci-0300_1002.present: null
 
 # GPU nodes carry amd.com/gpu:NoSchedule. These DaemonSets don't request the
 # GPU, so ExtendedResourceToleration doesn't add the toleration for them.
