@@ -1,0 +1,19 @@
+namespace: llama-swap-system
+
+resources:
+  - resources/namespace.yml
+  - resources/persistentVolume.yml
+  - resources/persistentVolumeClaim.yml
+  - resources/deployment.yml
+  - resources/service.yml
+
+images:
+  - name: ghcr.io/mostlygeek/llama-swap
+    newTag: v263-vulkan-b11541-non-root # https://github.com/mostlygeek/llama-swap/pkgs/container/llama-swap
+
+# The name's hash changes with the config, so editing it rolls the pod. That
+# replaces llama-swap's own -watch-config, which can miss a ConfigMap update.
+configMapGenerator:
+  - name: llama-swap-config
+    files:
+      - configs/config.yaml

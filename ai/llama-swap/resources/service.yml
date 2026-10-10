@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: llama-swap
+  annotations:
+    metallb.universe.tf/loadBalancerIPs: 192.168.40.140
+  labels:
+    app: llama-swap
+spec:
+  type: LoadBalancer
+  selector:
+    app: llama-swap
+  ports:
+    - name: http
+      protocol: TCP
+      targetPort: http
+      port: 8080
