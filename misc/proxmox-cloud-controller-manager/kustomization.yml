@@ -1,9 +1,10 @@
+resources:
+  - resources/namespace.yml
+
 helmCharts:
   - name: proxmox-cloud-controller-manager
     repo: oci://ghcr.io/sergelogvinov/charts
     version: 0.2.32 # https://github.com/sergelogvinov/proxmox-cloud-controller-manager/releases
     releaseName: proxmox-cloud-controller-manager
-    # The chart's priority class, system-cluster-critical, is only allowed in
-    # kube-system.
-    namespace: kube-system
+    namespace: proxmox-cloud-controller-manager-system
     valuesFile: values.yml

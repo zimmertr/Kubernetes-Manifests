@@ -1,5 +1,5 @@
-# The Proxmox API token lives in a Secret created by hand (see Secrets and
-# Volumes in the root README.md), never in this file.
+# The Proxmox API token lives in a Secret created by hand (see
+# Cloud Controller Manager in the root README.md), never in this file.
 existingConfigSecret: proxmox-cloud-controller-manager
 existingConfigSecretKey: config.yaml
 
