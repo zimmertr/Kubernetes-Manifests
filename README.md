@@ -38,7 +38,7 @@ kustomize build --enable-helm istio/istio-gateway | kubectl apply -f-
 
 #### Cilium
 
-Assuming you're using TKS and have disabled Flannel, [Cilium](cilium/README.md)) Can be used to install Cilium and Gateway API:
+Assuming you're using TKS and have disabled Flannel, [Cilium](cilium) Can be used to install Cilium and Gateway API:
 
 ```bash
 kustomize build --enable-helm cilium/gateway-api | kubectl apply -f-
