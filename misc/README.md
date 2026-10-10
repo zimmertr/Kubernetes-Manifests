@@ -1,51 +1,16 @@
 # Misc
 
 * [Summary](#summary)
-* [Instructions](#instructions)
-  * [Kubelet CSR Approver](#kubelet-csr-approver)
 
 <hr>
 
 ## Summary
 
-Misc is a miscellaneous applications.
+Misc is a collection of miscellaneous applications, deployed by Argo CD:
 
-<hr>
+| Application                                                  | Description                                                  |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| [Kubelet CSR Approver](https://github.com/postfinance/kubelet-csr-approver) | Approves the kubelet serving certificate requests that Cilium and Metrics Server wait on |
+| [Mountaineers Activity Scraper](https://github.com/zimmertr/Mountaineers-Activity-Scraper) | A CronJob that runs the scraper once a day. It needs a Google Cloud credentials secret, see [Secrets and Volumes](../README.md#secrets-and-volumes) in the main README |
 
-## Instructions
-
-### Heimdall
-
-```bash
-kustomize build --enable-helm heimdall | kubectl apply -f-
-```
-
-### Homepage
-
-Update `homepage/files/{configs,icons,images}` according to your needs then install with `kubectl` or Argo CD. `seed-volumes.sh` will automatically seed volumes with your configuration files, images, and icons on init.
-
-```bash
-kustomize build --enable-helm homepage | kubectl apply -f-
-```
-
-### Kubelet CSR Approver
-
-Cilium and Metrics Server will not be completely ready until you approve the necessary Certificate Signing Requests. This can be done manually with `kubectl certificate approve`, or you can use [Kubelet CSR Approver](https://github.com/postfinance/kubelet-csr-approver).
-
-```bash
-kustomize build --enable-helm kubelet-csr-approver | kubectl apply -f-
-```
-
-### Mountaineers Activity Scraper
-
-A CronJob to run this project once a day: https://github.com/zimmertr/Mountaineers-Activity-Scraper
-
-The tool will not run successfully until a Google Cloud Credentials secret has been created. This can be done manually with:
-
-```bash
-kubectl create ns mountaineers-activity-scraper
-
-kubectl create secret generic mountaineers-activity-scraper-creds \
-  --from-file=mountaineers-activity-scraper/files/google_cloud_credentials.json \
-  -n mountaineers-activity-scraper-system
-```
+Heimdall and Homepage are disabled. Homepage seeds its volumes from `homepage/files/{configs,icons,images}` on init, so update those before turning it back on.

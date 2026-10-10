@@ -25,43 +25,23 @@ Public is a collection of my public-facing applications.
 
 The image tag in [bluebird/kustomization.yml](bluebird/kustomization.yml) is bumped automatically by the release workflow in [zimmertr/bluebird](https://github.com/zimmertr/bluebird) on every merge to `main`. Edit it by hand only to pin or roll back.
 
-1. Modify the Kustomize project as per your needs.
-
-2. Deploy to Kubernetes:
-   ```bash
-   kustomize build --enable-helm bluebird | kubectl apply -f-
-   ```
-
 ### Bluebird PR
 
 Bluebird PR provides ephemeral preview environments, one per pull request in [zimmertr/bluebird](https://github.com/zimmertr/bluebird). An Argo CD `pullRequest` generator watches for PRs labeled `create pr container` and deploys the `zimmertr/bluebird-pr:pr-<number>-<sha>` image at `pr-<number>.ganymede.sol.milkyway`. Applications are pruned automatically once the PR is closed or the label is removed.
 
 Unlike the rest of `public/`, this directory has no Kustomize project. It owns its own `ApplicationSet` and `AppProject`, and is excluded from the `public/*` generator in [applicationset.yml](applicationset.yml) so the [root generators](../README.md#argo-cd) manage it directly. Nothing needs to be applied by hand once the cluster is bootstrapped.
 
-1. To apply the resources ahead of a bootstrap, or after editing them:
-   ```bash
-   kubectl apply -f bluebird-pr/appproject.yml
-   kubectl apply -f bluebird-pr/applicationset.yml
-   ```
-
 ### CertManager
 
-[Cert Manager](https://cert-manager.io/) is a tool used to request and manage X509 certificates.
-
-1. Modify the Kustomize project as per your needs.
-
-2. Deploy to Kubernetes:
-   ```bash
-   kustomize build --enable-helm cert-manager | kubectl apply -f-
-   ```
+[Cert Manager](https://cert-manager.io/) is a tool used to request and manage X509 certificates. See its [README](cert-manager/README.md) for how it gets its Cloudflare token.
 
 ### Cloudflared
 
 A [Cloudflare Tunnel](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/) that terminates all public traffic and forwards it to the shared Istio ingress gateway. It replaces the inbound `443` port forward, so the origin holds no open inbound port and is never reachable off the Cloudflare path (bluebird issue [#148](https://github.com/zimmertr/bluebird/issues/148)).
 
-One shared tunnel serves every public hostname. The tunnel, its ingress rules and a proxied `CNAME` for each hostname are managed by Terraform in [terraform/cloudflare](../terraform/cloudflare), along with [cert-manager](cert-manager)'s Cloudflare token, from the hostname list in [terraform/cloudflare/cloudflare.tfvars](../terraform/cloudflare/cloudflare.tfvars). cloudflared only needs the tunnel's token, which is a secret created by hand, the same split the [Proxmox CSI Plugin](../storage/README.md#proxmox-csi-plugin) uses. Internal `*.sol.milkyway` names are never in that list, so they never traverse the tunnel. The pod opts out of the mesh (`sidecar.istio.io/inject: "false"`) because it originates its own TLS to the gateway.
+One shared tunnel serves every public hostname. The tunnel, its ingress rules and a proxied `CNAME` for each hostname are managed by Terraform in [terraform/cloudflare](../terraform/cloudflare), along with [cert-manager](cert-manager)'s Cloudflare token, from the hostname list in [terraform/cloudflare/cloudflare.tfvars](../terraform/cloudflare/cloudflare.tfvars). cloudflared only needs the tunnel's token, which is a secret created by hand, see [Secrets and Volumes](../README.md#secrets-and-volumes) in the main README. Internal `*.sol.milkyway` names are never in that list, so they never traverse the tunnel. The pod opts out of the mesh (`sidecar.istio.io/inject: "false"`) because it originates its own TLS to the gateway.
 
-The Deployment stays unhealthy until the token secret exists. Set it up as follows.
+Set up the Cloudflare side once as follows.
 
 1. Create a Cloudflare API token with **Account → Cloudflare Tunnel → Edit**, **Account → Account API Tokens → Edit**, **Zone → Zone → Read** and **Zone → DNS → Edit** on the zones you serve, and export it. The API Tokens permission lets it create cert-manager's token:
 
@@ -77,64 +57,27 @@ The Deployment stays unhealthy until the token secret exists. Set it up as follo
    terraform apply -var-file=cloudflare.tfvars
    ```
 
-3. Create the token secret:
-
-   ```bash
-   kubectl create ns cloudflared-system
-
-   kubectl create secret generic cloudflared-token \
-     --from-literal=token="$(terraform output -raw tunnel_token)" \
-     -n cloudflared-system
-   ```
-
-4. Back in `public/`, deploy (or let Argo CD sync it).
-
-   ```bash
-   kustomize build cloudflared | kubectl apply -f-
-   ```
-
-5. Verify each hostname serves through the tunnel, then remove any inbound `443` port forward on OPNsense. Only after the forward is gone is the direct-to-origin path closed.
-
 To add a public hostname, add it to `terraform/cloudflare/cloudflare.tfvars` and apply again. The token doesn't change, so cloudflared picks the new rule up on its own.
 
 ### Personal Website
 
 [Personal Website](https://tjzimmerman.com) is my personal website.
 
-1. Modify the Kustomize project as per your needs.
-
-2. Deploy to Kubernetes:
-   ```bash
-   kustomize build --enable-helm personal-website | kubectl apply -f-
-   ```
-
 ### Strava Heatmap Proxy
 
 A reverse proxy in front of the [Strava global heatmap](https://www.strava.com/maps/global-heatmap) and my personal heatmap, so they can be added to CalTopo (or any app that takes an XYZ tile URL) as a custom layer. Strava serves the high-zoom tiles only with signed CloudFront cookies, which CalTopo cannot send. The proxy is [patrickziegler/strava-heatmap-proxy](https://github.com/patrickziegler/strava-heatmap-proxy): it holds one `_strava4_session` cookie from a logged-in browser, exchanges it for CloudFront cookies, refreshes them as they expire, and forwards tile requests with the cookies attached. The URL never expires. Only the session cookie does, after a month or a few, and then the pod crash loops until a fresh one is exported.
 
-Two processes run in one pod because the upstream proxy takes a single target: one for the global heatmap (`/global/`) and one for the personal heatmap (`/personal/`, athlete id set as `STRAVA_ATHLETE_ID` in [strava-heatmap-proxy/kustomization.yml](strava-heatmap-proxy/kustomization.yml)). The VirtualService strips the prefix. The cookie file is a secret created by hand, the same split as [Cloudflared](#cloudflared).
+Two processes run in one pod because the upstream proxy takes a single target: one for the global heatmap (`/global/`) and one for the personal heatmap (`/personal/`, athlete id set as `STRAVA_ATHLETE_ID` in [strava-heatmap-proxy/kustomization.yml](strava-heatmap-proxy/kustomization.yml)). The VirtualService strips the prefix. The cookie file is a secret created by hand. The certificate lives with the other public ones in [cert-manager](cert-manager), and the hostname is routed through the tunnel by [terraform/cloudflare/cloudflare.tfvars](../terraform/cloudflare/cloudflare.tfvars).
 
 1. Export the cookies. Log in to [strava.com](https://www.strava.com) in a browser and either install the [Strava Cookie Exporter](https://github.com/patrickziegler/strava-heatmap-proxy/tree/main/strava-cookie-exporter) extension and click Export, or copy the `_strava4_session` value from the browser's cookie storage into the shape of [strava-heatmap-proxy/files/strava-cookies.json.example](strava-heatmap-proxy/files/strava-cookies.json.example). Save it as `strava-heatmap-proxy/files/strava-cookies.json` (gitignored).
 
-2. Create the secret. Repeat this step with a fresh export whenever the pod crash loops.
+2. Create the secret with the Strava command in [Secrets and Volumes](../README.md#secrets-and-volumes) in the main README. Whenever the pod crash loops, export a fresh cookie, run that command again and restart the pod:
 
    ```bash
-   kubectl create ns strava-heatmap-proxy-system
-
-   kubectl create secret generic strava-heatmap-proxy-cookies \
-     --from-file=strava-cookies.json=strava-heatmap-proxy/files/strava-cookies.json \
-     -n strava-heatmap-proxy-system --dry-run=client -o yaml | kubectl apply -f-
-
    kubectl rollout restart deployment strava-heatmap-proxy -n strava-heatmap-proxy-system
    ```
 
-3. Deploy (or let Argo CD sync it). The certificate lives with the other public ones in [cert-manager](cert-manager), and the hostname is routed through the tunnel by [terraform/cloudflare/cloudflare.tfvars](../terraform/cloudflare/cloudflare.tfvars).
-
-   ```bash
-   kustomize build strava-heatmap-proxy | kubectl apply -f-
-   ```
-
-4. Add the layers in CalTopo under Add, Custom Source: type Tile, Max Zoom 15 (neither heatmap has tiles past 15), overlay Yes - Transparent Overlay, then Save To Account. Tiles are 512px with no query string; add `?px=256` to the global URLs for the old size.
+3. Add the layers in CalTopo under Add, Custom Source: type Tile, Max Zoom 15 (neither heatmap has tiles past 15), overlay Yes - Transparent Overlay, then Save To Account. Tiles are 512px with no query string; add `?px=256` to the global URLs for the old size.
 
    ```text
    https://stravaproxy.tjzimmerman.com/global/run/hot/{Z}/{X}/{Y}.png
@@ -146,7 +89,7 @@ Two processes run in one pod because the upstream proxy takes a single target: o
 
    The tables below list every activity and color name that was verified against the proxy.
 
-5. Tile reference. Every global URL follows this pattern:
+4. Tile reference. Every global URL follows this pattern:
 
    ```text
    https://stravaproxy.tjzimmerman.com/global/<activity>/<color>/{Z}/{X}/{Y}.png

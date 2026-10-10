@@ -1,9 +1,0 @@
-galaxy_info:
-  author: TJ Zimmerman
-  description: Deploys the Kubernetes Dashboard to your cluster and rotates the certificates with a new CA.
-  license: GPL-3.0-only
-  min_ansible_version: 2.9
-  platforms:
-  - name: CentOS
-    versions:
-    - 7.7

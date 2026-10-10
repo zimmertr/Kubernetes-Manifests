@@ -1,54 +1,17 @@
 # Istio
 
 * [Summary](#summary)
-* [Instructions](#instructions)
-  * [Istio](#istio)
-  * [Istio Gateway](#istio-gateway)
-  * [MetalLB](#metallb)
 
 <hr>
 
 ## Summary
 
-Istio is a collection of networking applications needed to stand up the Istio Service Mesh.
+Istio is a collection of networking applications needed to stand up the Istio Service Mesh:
 
-<hr>
+| Application                                                  | Description                                                  |
+| ------------------------------------------------------------ | ------------------------------------------------------------ |
+| [Istio](https://istio.io/)                                   | The Service Mesh                                             |
+| [Istio Gateway](https://istio.io/latest/docs/reference/config/networking/gateway/) | The shared ingress gateway every public and internal hostname goes through |
+| [MetalLB](https://metallb.universe.tf/)                      | A bare metal load balancer that gives the gateway its IP     |
 
-## Instructions
-
-### Istio
-
-[Istio](https://istio.io/) is a Service Mesh.
-
-1. Modify the Kustomize project as per your needs.
-
-3. Deploy to Kubernetes:
-   ```bash
-   kustomize build --enable-helm istio | kubectl apply -f-
-   ```
-
-<hr>
-
-### Istio Gateway
-
-[Istio Gateway](https://istio.io/latest/docs/reference/config/networking/gateway/) is an ingress Gateway for Istio.
-
-1. Modify the Kustomize project as per your needs.
-
-3. Deploy to Kubernetes:
-   ```bash
-   kustomize build --enable-helm istio-gateway | kubectl apply -f-
-   ```
-
-<hr>
-
-### MetalLB
-
-[MetalLB](https://metallb.universe.tf/) is a bare metal load balancer implementation.
-
-1. Modify the Kustomize project as per your needs.
-
-3. Deploy to Kubernetes:
-   ```bash
-   kustomize build --enable-helm metallb | kubectl apply -f-
-   ```
+They're installed by hand before Argo CD, see [Istio](../README.md#istio) in the main README for the order. Argo CD manages them after that.

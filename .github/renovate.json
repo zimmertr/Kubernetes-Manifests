@@ -4,8 +4,7 @@
     "config:recommended"
   ],
   "ignorePaths": [
-    "*/*.disabled/*",
-    "deprecated/"
+    "*/*.disabled/*"
   ],
   "prConcurrentLimit": 0,
   "prHourlyLimit": 0,

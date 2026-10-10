@@ -1,70 +1,19 @@
 # Media
 
 * [Summary](#summary)
-* [Instructions](#instructions)
-  * [Plex Media Server](#plex-media-server)
-  * [Radarr](#radarr)
-  * [ruTorrent](#rutorrent)
-  * [Sonarr](#sonarr)
 
 <hr>
 
 ## Summary
 
-Media is a collection of entertainment applications.
+Media is a collection of entertainment applications, deployed by Argo CD:
 
-<hr>
+| Application                                         | Description                  |
+| --------------------------------------------------- | ---------------------------- |
+| [Jellyfin](https://jellyfin.org/)                   | A media streaming server     |
+| [ruTorrent](https://github.com/Novik/ruTorrent)     | A bittorrent client          |
+| [Sonarr](https://sonarr.tv/)                        | A television collection manager |
 
-## Instructions
+Plex, Radarr and Tautulli are disabled. If you turn Plex back on, update its claim token from https://plex.tv/claim first.
 
-### Plex Media Server
-
-[Plex Media Server](https://www.plex.tv/) is a media streaming application.
-
-1. Modify the Kustomize project as per your needs.
-
-2. Update the Claim token using https://plex.tv/claim. 
-
-3. Deploy to Kubernetes:
-   ```bash
-   kustomize build --enable-helm plex-media-server | kubectl apply -f-
-   ```
-
-<hr>
-
-### Radarr
-
-[Radarr](https://radarr.video/) is a movie collection manager.
-
-1. Modify the Kustomize project as per your needs.
-
-2. Deploy to Kubernetes:
-   ```bash
-   kustomize build --enable-helm radarr | kubectl apply -f-
-   ```
-
-<hr>
-
-### ruTorrent
-
-[ruTorrent](https://github.com/Novik/ruTorrent) is a bittorrent client.
-
-1. Modify the Kustomize project as per your needs.
-
-2. Deploy to Kubernetes:
-    ```bash
-    kustomize build --enable-helm rutorrent | kubectl apply -f-
-    ```
-
-<hr>
-
-### Sonarr
-
-[Sonarr](https://sonarr.tv/) is a television collection manager.
-
-1. Modify the Kustomize project as per your needs.
-
-2. Deploy to Kubernetes:
-    ```bash
-    kustomize build --enable-helm sonarr | kubectl apply -f-
-    ```
+Their config lives on statically provisioned volumes, see [Secrets and Volumes](../README.md#secrets-and-volumes) in the main README.

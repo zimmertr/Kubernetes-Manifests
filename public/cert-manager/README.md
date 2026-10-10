@@ -11,20 +11,4 @@
 
 ## Instructions
 
-The DNS-01 solver needs a Cloudflare API token, provided as a Kubernetes secret. The token is created by Terraform in [terraform/cloudflare](../../terraform/cloudflare), with DNS edit on the zones the tunnel serves and nothing else. See the [Cloudflared](../README.md#cloudflared) instructions for applying it.
-
-1. Create the secret from the Terraform output. The ClusterIssuer reads the key `api-token`, so keep that name:
-
-   ```bash
-   kubectl create secret generic cloudflare-api-token \
-     -n cert-manager \
-     --from-literal=api-token="$(terraform -chdir=../../terraform/cloudflare output -raw cert_manager_token)"
-   ```
-
-2. Verify the key is present (prints `OK`, not the error):
-
-   ```bash
-   kubectl get secret cloudflare-api-token -n cert-manager \
-     -o jsonpath='{.data.api-token}' | grep -q . \
-     && echo OK || echo "ERROR: key 'api-token' missing"
-   ```
+The DNS-01 solver needs a Cloudflare API token, provided as the secret `cert-manager/cloudflare-api-token` under the key `api-token`, which is what the ClusterIssuer reads. The token is created by Terraform in [terraform/cloudflare](../../terraform/cloudflare), with DNS edit on the zones the tunnel serves and nothing else. See [Cloudflared](../README.md#cloudflared) for applying it, and [Secrets and Volumes](../../README.md#secrets-and-volumes) in the main README for creating the secret.

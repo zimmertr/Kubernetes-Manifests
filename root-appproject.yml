@@ -33,7 +33,7 @@ spec:
     directory:
       recurse: true
       include: '**/appproject.yml'
-      exclude: '{deprecated/**,**/*.disable*}'
+      exclude: '**/*.disable*'
   destination:
     server: https://kubernetes.default.svc
     namespace: argo-system
