@@ -156,16 +156,16 @@ jobs:
           persist-credentials: false
 
       - name: Format, validate and test
-        working-directory: terraform
+        working-directory: terraform/cloudflare
         run: |
           # Docker Hub images come through Google's mirror to dodge its
           # anonymous pull limit on shared runners.
           tf() {
-            docker run --rm -v "$PWD:/src" -w /src/cloudflare -e TF_IN_AUTOMATION=1 \
+            docker run --rm -v "$PWD:/src" -w /src -e TF_IN_AUTOMATION=1 \
               "mirror.gcr.io/hashicorp/terraform:${TERRAFORM_VERSION}" "$@"
           }
-          tf fmt -check -recursive /src
+          tf fmt -check -recursive
           # -backend=false skips the HCP Terraform workspace, which tests don't need.
           tf init -backend=false -input=false
           tf validate
-          tf test -var-file=../vars/cloudflare.tfvars
+          tf test -var-file=cloudflare.tfvars

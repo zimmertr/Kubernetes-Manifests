@@ -59,7 +59,7 @@ Unlike the rest of `public/`, this directory has no Kustomize project. It owns i
 
 A [Cloudflare Tunnel](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/) that terminates all public traffic and forwards it to the shared Istio ingress gateway. It replaces the inbound `443` port forward, so the origin holds no open inbound port and is never reachable off the Cloudflare path (bluebird issue [#148](https://github.com/zimmertr/bluebird/issues/148)).
 
-One shared tunnel serves every public hostname. The tunnel, its ingress rules and a proxied `CNAME` for each hostname are managed by Terraform in [terraform/cloudflare](../terraform/cloudflare), from the hostname list in [terraform/vars/cloudflare.tfvars](../terraform/vars/cloudflare.tfvars). cloudflared only needs the tunnel's token, which is a secret created by hand, the same split the [Proxmox CSI Plugin](../storage/README.md#proxmox-csi-plugin) uses. Internal `*.sol.milkyway` names are never in that list, so they never traverse the tunnel. The pod opts out of the mesh (`sidecar.istio.io/inject: "false"`) because it originates its own TLS to the gateway.
+One shared tunnel serves every public hostname. The tunnel, its ingress rules and a proxied `CNAME` for each hostname are managed by Terraform in [terraform/cloudflare](../terraform/cloudflare), from the hostname list in [terraform/cloudflare/cloudflare.tfvars](../terraform/cloudflare/cloudflare.tfvars). cloudflared only needs the tunnel's token, which is a secret created by hand, the same split the [Proxmox CSI Plugin](../storage/README.md#proxmox-csi-plugin) uses. Internal `*.sol.milkyway` names are never in that list, so they never traverse the tunnel. The pod opts out of the mesh (`sidecar.istio.io/inject: "false"`) because it originates its own TLS to the gateway.
 
 The Deployment stays unhealthy until the token secret exists. Set it up as follows.
 
@@ -74,7 +74,7 @@ The Deployment stays unhealthy until the token secret exists. Set it up as follo
    ```bash
    cd terraform/cloudflare
    terraform init
-   terraform apply -var-file=../vars/cloudflare.tfvars
+   terraform apply -var-file=cloudflare.tfvars
    ```
 
 3. Create the token secret:
@@ -95,7 +95,7 @@ The Deployment stays unhealthy until the token secret exists. Set it up as follo
 
 5. Verify each hostname serves through the tunnel, then remove any inbound `443` port forward on OPNsense. Only after the forward is gone is the direct-to-origin path closed.
 
-To add a public hostname, add it to `terraform/vars/cloudflare.tfvars` and apply again. The token doesn't change, so cloudflared picks the new rule up on its own.
+To add a public hostname, add it to `terraform/cloudflare/cloudflare.tfvars` and apply again. The token doesn't change, so cloudflared picks the new rule up on its own.
 
 ### Personal Website
 
@@ -128,7 +128,7 @@ Two processes run in one pod because the upstream proxy takes a single target: o
    kubectl rollout restart deployment strava-heatmap-proxy -n strava-heatmap-proxy-system
    ```
 
-3. Deploy (or let Argo CD sync it). The certificate lives with the other public ones in [cert-manager](cert-manager), and the hostname is routed through the tunnel by [terraform/vars/cloudflare.tfvars](../terraform/vars/cloudflare.tfvars).
+3. Deploy (or let Argo CD sync it). The certificate lives with the other public ones in [cert-manager](cert-manager), and the hostname is routed through the tunnel by [terraform/cloudflare/cloudflare.tfvars](../terraform/cloudflare/cloudflare.tfvars).
 
    ```bash
    kustomize build strava-heatmap-proxy | kubectl apply -f-

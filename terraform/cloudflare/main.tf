@@ -1,7 +1,7 @@
 # The Cloudflare side of the public ingress: one remotely-managed tunnel, its
 # ingress rules, and a proxied CNAME per public hostname. cloudflared in
 # public/cloudflared runs with this tunnel's token and reads the rules from
-# Cloudflare, so the hostname list in ../vars/cloudflare.tfvars is the only
+# Cloudflare, so the hostname list in cloudflare.tfvars is the only
 # place a public hostname is declared.
 terraform {
   required_version = ">= 1.16"

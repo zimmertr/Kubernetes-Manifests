@@ -1,4 +1,4 @@
-# Run with ../vars/cloudflare.tfvars, so the hostnames checked are the ones
+# Run with cloudflare.tfvars, so the hostnames checked are the ones
 # that get applied.
 mock_provider "cloudflare" {
   mock_resource "cloudflare_zero_trust_tunnel_cloudflared" {
