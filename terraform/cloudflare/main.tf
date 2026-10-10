@@ -1,8 +1,8 @@
 # The Cloudflare side of the public ingress: one remotely-managed tunnel, its
-# ingress rules, and a proxied CNAME per public hostname. cloudflared in
-# public/cloudflared runs with this tunnel's token and reads the rules from
-# Cloudflare, so the hostname list in cloudflare.tfvars is the only
-# place a public hostname is declared.
+# ingress rules, a proxied CNAME per public hostname, and the token cert-manager
+# solves DNS-01 challenges with. cloudflared in public/cloudflared runs with
+# this tunnel's token and reads the rules from Cloudflare, so the hostname list
+# in cloudflare.tfvars is the only place a public hostname is declared.
 terraform {
   required_version = ">= 1.16"
   required_providers {
@@ -80,4 +80,22 @@ resource "cloudflare_dns_record" "this" {
 data "cloudflare_zero_trust_tunnel_cloudflared_token" "this" {
   account_id = var.account_id
   tunnel_id  = cloudflare_zero_trust_tunnel_cloudflared.this.id
+}
+
+# cert-manager's DNS-01 solver writes a TXT record to prove each certificate's
+# hostname, so it gets DNS edit on the tunnel's zones and nothing else.
+resource "cloudflare_account_token" "cert_manager" {
+  account_id = var.account_id
+  name       = "cert-manager"
+
+  policies = [{
+    effect = "allow"
+    # Cloudflare's fixed IDs for the zone-scoped "DNS Write" and "Zone Read"
+    # permission groups.
+    permission_groups = [
+      { id = "4755a26eedb94da69e1066d98aa820be" },
+      { id = "c8fed203ed3043cba015a93ad1616f1f" },
+    ]
+    resources = jsonencode({ for z in data.cloudflare_zone.this : "com.cloudflare.api.account.zone.${z.id}" => "*" })
+  }]
 }

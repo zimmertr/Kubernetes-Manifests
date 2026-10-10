@@ -59,11 +59,11 @@ Unlike the rest of `public/`, this directory has no Kustomize project. It owns i
 
 A [Cloudflare Tunnel](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/) that terminates all public traffic and forwards it to the shared Istio ingress gateway. It replaces the inbound `443` port forward, so the origin holds no open inbound port and is never reachable off the Cloudflare path (bluebird issue [#148](https://github.com/zimmertr/bluebird/issues/148)).
 
-One shared tunnel serves every public hostname. The tunnel, its ingress rules and a proxied `CNAME` for each hostname are managed by Terraform in [terraform/cloudflare](../terraform/cloudflare), from the hostname list in [terraform/cloudflare/cloudflare.tfvars](../terraform/cloudflare/cloudflare.tfvars). cloudflared only needs the tunnel's token, which is a secret created by hand, the same split the [Proxmox CSI Plugin](../storage/README.md#proxmox-csi-plugin) uses. Internal `*.sol.milkyway` names are never in that list, so they never traverse the tunnel. The pod opts out of the mesh (`sidecar.istio.io/inject: "false"`) because it originates its own TLS to the gateway.
+One shared tunnel serves every public hostname. The tunnel, its ingress rules and a proxied `CNAME` for each hostname are managed by Terraform in [terraform/cloudflare](../terraform/cloudflare), along with [cert-manager](cert-manager)'s Cloudflare token, from the hostname list in [terraform/cloudflare/cloudflare.tfvars](../terraform/cloudflare/cloudflare.tfvars). cloudflared only needs the tunnel's token, which is a secret created by hand, the same split the [Proxmox CSI Plugin](../storage/README.md#proxmox-csi-plugin) uses. Internal `*.sol.milkyway` names are never in that list, so they never traverse the tunnel. The pod opts out of the mesh (`sidecar.istio.io/inject: "false"`) because it originates its own TLS to the gateway.
 
 The Deployment stays unhealthy until the token secret exists. Set it up as follows.
 
-1. Create a Cloudflare API token with **Account → Cloudflare Tunnel → Edit**, **Zone → Zone → Read** and **Zone → DNS → Edit** on the zones you serve, and export it:
+1. Create a Cloudflare API token with **Account → Cloudflare Tunnel → Edit**, **Account → Account API Tokens → Edit**, **Zone → Zone → Read** and **Zone → DNS → Edit** on the zones you serve, and export it. The API Tokens permission lets it create cert-manager's token:
 
    ```bash
    export CLOUDFLARE_API_TOKEN="REPLACEME"

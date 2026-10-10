@@ -11,30 +11,17 @@
 
 ## Instructions
 
-The DNS-01 solver needs a Cloudflare API token, provided as a Kubernetes secret. It is applied out-of-band — only a redacted example is committed ([configs/api-token.example](configs/api-token.example)); the real value in `configs/api-token` is gitignored.
+The DNS-01 solver needs a Cloudflare API token, provided as a Kubernetes secret. The token is created by Terraform in [terraform/cloudflare](../../terraform/cloudflare), with DNS edit on the zones the tunnel serves and nothing else. See the [Cloudflared](../README.md#cloudflared) instructions for applying it.
 
-> **The secret key must be `api-token`** (that is what the ClusterIssuer references). The steps below store the token in a file named literally `api-token` so that `kubectl --from-file` derives that exact key from the filename. Do **not** rename the file or add a `key=` override — if the key doesn't match, issuance fails with `specified key "api-token" not found in secret cert-manager/cloudflare-api-token`.
-
-1. Create a Cloudflare API token: **Manage Account → API Tokens → Create Token** (an account-owned token, not a personal one).
-
-   * Permissions: **Zone → DNS → Edit** and **Zone → Zone → Read**
-   * Zone Resources: **Include** the zones you need certificates for (or **All zones from an account**)
-
-2. Save the token into the gitignored file `configs/api-token` (use `printf` to avoid a trailing newline, which breaks token auth):
-
-   ```bash
-   printf '%s' '<PASTE_TOKEN>' > configs/api-token
-   ```
-
-3. Create the secret from that file. The key is taken from the filename, so it becomes `api-token`, matching the ClusterIssuer:
+1. Create the secret from the Terraform output. The ClusterIssuer reads the key `api-token`, so keep that name:
 
    ```bash
    kubectl create secret generic cloudflare-api-token \
      -n cert-manager \
-     --from-file=configs/api-token
+     --from-literal=api-token="$(terraform -chdir=../../terraform/cloudflare output -raw cert_manager_token)"
    ```
 
-4. Verify the key is present (prints `OK`, not the error):
+2. Verify the key is present (prints `OK`, not the error):
 
    ```bash
    kubectl get secret cloudflare-api-token -n cert-manager \
