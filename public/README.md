@@ -59,50 +59,43 @@ Unlike the rest of `public/`, this directory has no Kustomize project. It owns i
 
 A [Cloudflare Tunnel](https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/) that terminates all public traffic and forwards it to the shared Istio ingress gateway. It replaces the inbound `443` port forward, so the origin holds no open inbound port and is never reachable off the Cloudflare path (bluebird issue [#148](https://github.com/zimmertr/bluebird/issues/148)).
 
-One shared tunnel serves every public hostname. The ingress rules live in [cloudflared/files/config.yaml](cloudflared/files/config.yaml); only `credentials.json` is a secret, created by hand, the same split the [Proxmox CSI Plugin](../storage/README.md#proxmox-csi-plugin) uses. Internal `*.sol.milkyway` names are absent from the config, so they never traverse the tunnel. The pod opts out of the mesh (`sidecar.istio.io/inject: "false"`) because it originates its own TLS to the gateway.
+One shared tunnel serves every public hostname. The tunnel, its ingress rules and a proxied `CNAME` for each hostname are managed by Terraform in [terraform/cloudflare](../terraform/cloudflare), from the hostname list in [terraform/vars/cloudflare.tfvars](../terraform/vars/cloudflare.tfvars). cloudflared only needs the tunnel's token, which is a secret created by hand, the same split the [Proxmox CSI Plugin](../storage/README.md#proxmox-csi-plugin) uses. Internal `*.sol.milkyway` names are never in that list, so they never traverse the tunnel. The pod opts out of the mesh (`sidecar.istio.io/inject: "false"`) because it originates its own TLS to the gateway.
 
-The Deployment stays unhealthy until the credentials secret exists. Set it up as follows.
+The Deployment stays unhealthy until the token secret exists. Set it up as follows.
 
-1. Install `cloudflared` locally and log in. This opens a browser to pick the account and grants a local certificate for tunnel management.
-
-   ```bash
-   cloudflared tunnel login
-   ```
-
-2. Create the tunnel. The name must match `tunnel:` in [cloudflared/files/config.yaml](cloudflared/files/config.yaml) (`tks-ingress`). This writes a `<UUID>.json` credentials file under `~/.cloudflared/`.
+1. Create a Cloudflare API token with **Account → Cloudflare Tunnel → Edit**, **Zone → Zone → Read** and **Zone → DNS → Edit** on the zones you serve, and export it:
 
    ```bash
-   cloudflared tunnel create tks-ingress
+   export CLOUDFLARE_API_TOKEN="REPLACEME"
    ```
 
-3. Create the credentials secret from that file.
+2. Create the tunnel and its DNS records. I keep the state in [HCP Terraform](https://app.terraform.io), in the `cloudflare` workspace of the `Kubernetes-Manifests` organization, so run `terraform login` first. Its *Default Execution Mode* is set to *Local*, otherwise HCP tries to run the plan itself.
+
+   ```bash
+   cd terraform/cloudflare
+   terraform init
+   terraform apply -var-file=../vars/cloudflare.tfvars
+   ```
+
+3. Create the token secret:
 
    ```bash
    kubectl create ns cloudflared-system
 
-   kubectl create secret generic cloudflared-credentials \
-     --from-file=credentials.json=$HOME/.cloudflared/<UUID>.json \
+   kubectl create secret generic cloudflared-token \
+     --from-literal=token="$(terraform output -raw tunnel_token)" \
      -n cloudflared-system
    ```
 
-4. Deploy (or let Argo CD sync it).
+4. Back in `public/`, deploy (or let Argo CD sync it).
 
    ```bash
    kustomize build cloudflared | kubectl apply -f-
    ```
 
-5. Point each public hostname at the tunnel. This creates a proxied `CNAME` to `<UUID>.cfargotunnel.com` for every zone (`bluebirdforecast.com`, `tjzimmerman.com`, `tjzimmerman.dev`, each with `www`). Run it for all six, or add the records in the dashboard.
+5. Verify each hostname serves through the tunnel, then remove any inbound `443` port forward on OPNsense. Only after the forward is gone is the direct-to-origin path closed.
 
-   ```bash
-   for host in \
-     bluebirdforecast.com www.bluebirdforecast.com \
-     tjzimmerman.com www.tjzimmerman.com \
-     tjzimmerman.dev www.tjzimmerman.dev; do
-       cloudflared tunnel route dns tks-ingress "$host"
-   done
-   ```
-
-6. Verify each hostname serves through the tunnel, then remove the inbound `443` port forward on OPNsense. Only after the forward is gone is the direct-to-origin path closed.
+To add a public hostname, add it to `terraform/vars/cloudflare.tfvars` and apply again. The token doesn't change, so cloudflared picks the new rule up on its own.
 
 ### Personal Website
 
@@ -135,7 +128,7 @@ Two processes run in one pod because the upstream proxy takes a single target: o
    kubectl rollout restart deployment strava-heatmap-proxy -n strava-heatmap-proxy-system
    ```
 
-3. Deploy (or let Argo CD sync it). The certificate lives with the other public ones in [istio/istio-gateway](../istio/istio-gateway), and the hostname is routed through the tunnel by [cloudflared/files/config.yaml](cloudflared/files/config.yaml).
+3. Deploy (or let Argo CD sync it). The certificate lives with the other public ones in [cert-manager](cert-manager), and the hostname is routed through the tunnel by [terraform/vars/cloudflare.tfvars](../terraform/vars/cloudflare.tfvars).
 
    ```bash
    kustomize build strava-heatmap-proxy | kubectl apply -f-
