@@ -1,9 +1,0 @@
-helmCharts:
-  - name: amd-gpu
-    repo: https://rocm.github.io/k8s-device-plugin
-    version: 0.22.0 # https://github.com/ROCm/k8s-device-plugin/releases
-    releaseName: amd-gpu
-    # Talos exempts kube-system from Pod Security admission, and both
-    # DaemonSets mount host paths.
-    namespace: kube-system
-    valuesFile: values.yml

@@ -1,11 +1,15 @@
+resources:
+  - resources/namespace.yml
+
 helmCharts:
   - name: device-metrics-exporter-charts
     repo: https://rocm.github.io/device-metrics-exporter
     version: v1.5.3 # https://github.com/ROCm/device-metrics-exporter/releases
     releaseName: amd-device-metrics-exporter
-    # The exporter runs privileged with host paths, and Talos exempts
-    # kube-system from Pod Security admission.
-    namespace: kube-system
+    # Its own namespace, labeled privileged because the exporter runs
+    # privileged with host paths, rather than kube-system's blanket Pod
+    # Security exemption.
+    namespace: amd-device-metrics-exporter-system
     valuesFile: values.yml
     # The chart only renders its ServiceMonitor when the API is advertised, and
     # helm template advertises none. kube-prometheus-stack installs it.
