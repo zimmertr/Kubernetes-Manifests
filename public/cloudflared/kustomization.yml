@@ -5,14 +5,6 @@ resources:
   - resources/deployment.yml
   - resources/poddisruptionbudget.yml
 
-configMapGenerator:
-  - name: cloudflared-config
-    files:
-      - config.yaml=files/config.yaml
-
-generatorOptions:
-  disableNameSuffixHash: true
-
 images:
   - name: cloudflare/cloudflared
     newTag: 2026.9.3 # https://github.com/cloudflare/cloudflared/releases

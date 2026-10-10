@@ -39,11 +39,20 @@ spec:
       containers:
         - name: cloudflared
           image: cloudflare/cloudflared
+          # The ingress rules live in Cloudflare (terraform/cloudflare), so the
+          # token is all cloudflared needs.
           args:
             - tunnel
-            - --config
-            - /etc/cloudflared/config/config.yaml
+            - --no-autoupdate
+            - --metrics
+            - 0.0.0.0:2000
             - run
+          env:
+            - name: TUNNEL_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: cloudflared-token
+                  key: token
           ports:
             - name: metrics
               containerPort: 2000
@@ -73,20 +82,6 @@ spec:
             capabilities:
               drop:
                 - ALL
-          volumeMounts:
-            - name: config
-              mountPath: /etc/cloudflared/config
-              readOnly: true
-            - name: creds
-              mountPath: /etc/cloudflared/creds
-              readOnly: true
-      volumes:
-        - name: config
-          configMap:
-            name: cloudflared-config
-        - name: creds
-          secret:
-            secretName: cloudflared-credentials
       # Keep the two replicas on different nodes so a single node loss cannot
       # take both down.
       topologySpreadConstraints:

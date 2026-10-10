@@ -8,3 +8,6 @@
 # Kustomize
 charts/
 google_cloud_credentials.json
+
+# Terraform keeps its provider lock file
+!.terraform.lock.hcl

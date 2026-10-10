@@ -140,3 +140,32 @@ jobs:
             fi
           done
           exit $rc
+
+  # terraform/ holds the Cloudflare side of the public ingress. Renovate bumps
+  # its provider, so it needs the same gate as the manifests. It runs on every
+  # PR rather than on a path filter, so it can be a required check.
+  terraform:
+    name: Validate Terraform
+    runs-on: ubuntu-latest
+    env:
+      # renovate: datasource=docker depName=hashicorp/terraform
+      TERRAFORM_VERSION: 1.16.5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Format, validate and test
+        working-directory: terraform/cloudflare
+        run: |
+          # Docker Hub images come through Google's mirror to dodge its
+          # anonymous pull limit on shared runners.
+          tf() {
+            docker run --rm -v "$PWD:/src" -w /src -e TF_IN_AUTOMATION=1 \
+              "mirror.gcr.io/hashicorp/terraform:${TERRAFORM_VERSION}" "$@"
+          }
+          tf fmt -check -recursive
+          # -backend=false skips the HCP Terraform workspace, which tests don't need.
+          tf init -backend=false -input=false
+          tf validate
+          tf test -var-file=cloudflare.tfvars
