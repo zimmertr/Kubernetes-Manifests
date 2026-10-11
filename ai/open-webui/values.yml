@@ -1,0 +1,108 @@
+# One replica, talking only to llama-swap, so none of the chart's extras: no
+# bundled Ollama, no Pipelines, and the in-memory websocket manager instead
+# of Redis.
+ollama:
+  enabled: false
+pipelines:
+  enabled: false
+websocket:
+  enabled: true
+  manager: ""
+  redis:
+    enabled: false
+
+podSecurityContext:
+  fsGroup: 1000
+  # Only fix ownership when the volume's root is wrong, rather than walking
+  # every upload and generated image on each start.
+  fsGroupChangePolicy: OnRootMismatch
+  seccompProfile:
+    type: RuntimeDefault
+# As a non-root user it can't refresh its static assets inside the image, so
+# each start logs "Permission denied" for them. The image's own copies are
+# identical, and are what it serves.
+containerSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+  runAsGroup: 1000
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+      - ALL
+
+persistence:
+  enabled: true
+  existingClaim: open-webui-data
+
+service:
+  type: LoadBalancer
+  annotations:
+    metallb.universe.tf/loadBalancerIPs: 192.168.40.141
+
+# Its own key for llama-swap, so it can be revoked without touching other
+# clients.
+enableOpenaiApi: true
+openaiBaseApiUrl: http://llama-swap.llama-swap-system.svc:8080/v1
+openaiApiKeyExistingSecret: open-webui-llama-swap-api-key
+openaiApiKeyExistingSecretKey: api-key
+
+extraEnvVars:
+  # Settings below apply on every start, so Git stays the source of truth.
+  # Changes made in the admin panel last until the next restart.
+  - name: ENABLE_PERSISTENT_CONFIG
+    value: "false"
+  # The admin account comes from the Secret, and nobody else can sign up.
+  - name: ENABLE_SIGNUP
+    value: "false"
+  - name: WEBUI_ADMIN_NAME
+    value: Admin
+  - name: WEBUI_ADMIN_EMAIL
+    valueFrom:
+      secretKeyRef:
+        name: open-webui-admin
+        key: email
+  - name: WEBUI_ADMIN_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: open-webui-admin
+        key: password
+  # Signs sessions. Without a fixed one, every restart signs everyone out.
+  - name: WEBUI_SECRET_KEY
+    valueFrom:
+      secretKeyRef:
+        name: open-webui-secret-key
+        key: secret-key
+  # Z-Image-Turbo for new images, since it needs only 8 steps. Qwen-Image 2.1
+  # for edits, since it's the one model here trained to follow an edit
+  # instruction.
+  - name: ENABLE_IMAGE_GENERATION
+    value: "true"
+  - name: IMAGE_GENERATION_ENGINE
+    value: openai
+  - name: IMAGE_GENERATION_MODEL
+    value: z-image-turbo
+  - name: IMAGE_SIZE
+    value: 1024x1024
+  - name: ENABLE_IMAGE_EDIT
+    value: "true"
+  - name: IMAGE_EDIT_ENGINE
+    value: openai
+  - name: IMAGE_EDIT_MODEL
+    value: qwen-image-2.1
+  # Open WebUI points image requests at api.openai.com with no key unless told
+  # otherwise, rather than at the chat connection above, so both image
+  # features name llama-swap and the key outright.
+  - name: IMAGES_OPENAI_API_BASE_URL
+    value: http://llama-swap.llama-swap-system.svc:8080/v1
+  - name: IMAGES_OPENAI_API_KEY
+    valueFrom:
+      secretKeyRef:
+        name: open-webui-llama-swap-api-key
+        key: api-key
+  - name: IMAGES_EDIT_OPENAI_API_BASE_URL
+    value: http://llama-swap.llama-swap-system.svc:8080/v1
+  - name: IMAGES_EDIT_OPENAI_API_KEY
+    valueFrom:
+      secretKeyRef:
+        name: open-webui-llama-swap-api-key
+        key: api-key
