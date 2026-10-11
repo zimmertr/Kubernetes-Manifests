@@ -96,6 +96,7 @@ zfs create -s -V 50G FlashPool/vm-9999-Jellyfin-Config
 zfs create -s -V 10G FlashPool/vm-9999-ruTorrent-Data
 zfs create -s -V 10G FlashPool/vm-9999-Sonarr-Data
 zfs create -s -V 500G FlashPool/vm-9999-AI-Models
+zfs create -s -V 10G FlashPool/vm-9999-Open-WebUI-Data
 ```
 
 Apply [terraform/cloudflare](terraform/cloudflare/README.md) for the Cloudflare tunnel, DNS records and cert-manager API token:
@@ -128,6 +129,18 @@ kubectl create secret generic llama-swap-api-key -n llama-swap-system \
   --from-literal=api-key="sk-$(openssl rand -hex 24)"
 kubectl create secret generic llama-swap-hf-token -n llama-swap-system \
   --from-literal=token='CHANGEME'
+
+# Open WebUI
+# Its llama-swap API key is stored in both namespaces.
+OPEN_WEBUI_API_KEY="sk-$(openssl rand -hex 24)"
+kubectl create secret generic llama-swap-open-webui-api-key -n llama-swap-system \
+  --from-literal=api-key="$OPEN_WEBUI_API_KEY"
+kubectl create secret generic open-webui-llama-swap-api-key -n open-webui-system \
+  --from-literal=api-key="$OPEN_WEBUI_API_KEY"
+kubectl create secret generic open-webui-admin -n open-webui-system \
+  --from-literal=email='CHANGEME' --from-literal=password='CHANGEME'
+kubectl create secret generic open-webui-secret-key -n open-webui-system \
+  --from-literal=secret-key="$(openssl rand -hex 32)"
 
 # Mountaineers Activity Scraper
 # See misc/mountaineers-activity-scraper/README.md

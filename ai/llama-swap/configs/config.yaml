@@ -4,8 +4,10 @@
 healthCheckTimeout: 300
 logToStdout: "proxy,upstream"
 
+# One key per client, so each can be revoked on its own.
 apiKeys:
   - "${env.LLAMA_SWAP_API_KEY}"
+  - "${env.LLAMA_SWAP_OPEN_WEBUI_API_KEY}"
 
 macros:
   # llama-server listens on loopback only. Clients reach it through
