@@ -50,11 +50,16 @@ env:
         key: api-key
   - name: LLAMA_CACHE
     value: /models
+  # Mesa compiles the GPU's shaders on every model load unless it can cache
+  # them, and the image's home directory isn't writable by this user.
+  - name: MESA_SHADER_CACHE_DIR
+    value: /models/.cache/mesa
 
-# Downloads every -hf model in configs/config.yaml that isn't on /models yet,
-# using llama.cpp's own downloader. The llama-swap image doesn't ship the llama
-# binary, so this runs llama.cpp's CPU image. A model whose cached copy still
-# matches Hugging Face is skipped.
+# Downloads every model in the config that isn't on /models yet. -hf models use
+# llama.cpp's own downloader, which skips a cached copy that still matches
+# Hugging Face. The llama-swap image doesn't ship the llama binary, so this
+# runs llama.cpp's CPU image. Files under /models/hf/ are fetched with curl,
+# once.
 initContainers:
   - name: download-models
     image: ghcr.io/ggml-org/llama.cpp:light-b11541
@@ -62,10 +67,21 @@ initContainers:
     args:
       - |
         set -eu
-        # Only lines that start with -hf, so comments that mention it don't count.
-        for model in $(grep -E '^[[:space:]]*-hf[[:space:]]' /config/config.yaml | awk '{print $2}' | sort -u); do
+        configs="/config/config.yaml $(ls /extra/*.yaml /extra/*.yml 2> /dev/null || true)"
+        # Only lines that start with the flag, so comments that mention one don't count.
+        for model in $(grep -hE '^[[:space:]]*-hf[[:space:]]' $configs | awk '{print $2}' | sort -u); do
           echo "Downloading $model"
           /app/llama download -hf "$model"
+        done
+        if [ -n "${HF_TOKEN:-}" ]; then set -- -H "Authorization: Bearer $HF_TOKEN"; else set --; fi
+        for path in $(grep -hE '^[[:space:]]*--[a-z-]+[[:space:]]+/models/hf/' $configs | awk '{print $2}' | sort -u); do
+          [ -f "$path" ] && continue
+          file=${path#/models/hf/}
+          repo=$(echo "$file" | cut -d/ -f1-2)
+          echo "Downloading $file"
+          mkdir -p "$(dirname "$path")"
+          curl -fL --retry 3 "$@" -o "$path.part" "https://huggingface.co/$repo/resolve/main/${file#"$repo"/}"
+          mv "$path.part" "$path"
         done
     env:
       - name: LLAMA_CACHE
@@ -86,6 +102,9 @@ initContainers:
       - name: config
         mountPath: /config
         readOnly: true
+      - name: extra-config
+        mountPath: /extra
+        readOnly: true
       - name: models
         mountPath: /models
 
@@ -93,9 +112,16 @@ extraVolumes:
   - name: models
     persistentVolumeClaim:
       claimName: llama-swap-models
+  - name: extra-config
+    configMap:
+      name: llama-swap-extra-config
+      optional: true
 extraVolumeMounts:
   - name: models
     mountPath: /models
+  - name: extra-config
+    mountPath: /etc/llama-swap/extra
+    readOnly: true
 
 service:
   type: LoadBalancer

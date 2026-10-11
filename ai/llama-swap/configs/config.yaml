@@ -11,7 +11,8 @@ macros:
   # llama-server listens on loopback only. Clients reach it through
   # llama-swap, which checks the API key. --offline loads models from the cache
   # on /models without touching the network, since the init container has
-  # already downloaded them.
+  # already downloaded them. With no --ctx-size, llama.cpp's --fit sets the
+  # context to the most that fits in VRAM.
   "llama-server": >-
     llama-server
     --host 127.0.0.1
@@ -19,14 +20,58 @@ macros:
     --n-gpu-layers 999
     --jinja
     --offline
+  # Two slots share one KV cache, so a single client can use all of it.
+  "llama-server-coding": >-
+    ${llama-server}
+    --parallel 2
+    --kv-unified
+  # sd-server has no -hf, so it's given file paths. A path under
+  # /models/hf/<user>/<repo>/ names the Hugging Face file it's downloaded from.
+  "sd-server": >-
+    sd-server
+    --listen-ip 127.0.0.1
+    --listen-port ${PORT}
 
-# Each model names its Hugging Face repo and quantization with -hf, as
-# <user>/<repo>:<quant>. The init container downloads every -hf it finds here,
-# so this is also the list of models kept on /models.
+# Language models name their Hugging Face repo and quantization with -hf, as
+# <user>/<repo>:<quant>. The init container downloads every -hf and every
+# /models/hf/ path it finds here, so this is also the list of models kept on
+# /models.
 models:
-  # A small model to prove the GPU works.
-  "qwen3-0.6b":
+  # Mixture of experts: 35B weights, about 3B read per token, so it's fast.
+  "qwen3.6-35b-a3b":
     cmd: |
-      ${llama-server}
-      -hf Qwen/Qwen3-0.6B-GGUF:Q8_0
-      --ctx-size 8192
+      ${llama-server-coding}
+      -hf unsloth/Qwen3.6-35B-A3B-GGUF:UD-Q4_K_XL
+
+  # Dense: every weight is read per token, so it's slower and often smarter.
+  "qwen3.6-27b":
+    cmd: |
+      ${llama-server-coding}
+      -hf unsloth/Qwen3.6-27B-GGUF:Q5_K_M
+
+  # sd-server has no /health, so llama-swap checks /v1/models instead.
+  "z-image-turbo":
+    checkEndpoint: /v1/models
+    cmd: |
+      ${sd-server}
+      --diffusion-model /models/hf/leejet/Z-Image-Turbo-GGUF/z_image_turbo-Q8_0.gguf
+      --llm /models/hf/unsloth/Qwen3-4B-Instruct-2507-GGUF/Qwen3-4B-Instruct-2507-Q8_0.gguf
+      --vae /models/hf/Comfy-Org/z_image_turbo/split_files/vae/ae.safetensors
+      --diffusion-fa
+      --cfg-scale 1.0
+      --steps 8
+
+  "qwen-image-2.1":
+    checkEndpoint: /v1/models
+    cmd: |
+      ${sd-server}
+      --diffusion-model /models/hf/leejet/Qwen-Image-2.1-GGUF/qwen_image_2.1-Q8_0.gguf
+      --llm /models/hf/Qwen/Qwen3-VL-8B-Instruct-GGUF/Qwen3VL-8B-Instruct-Q8_0.gguf
+      --vae /models/hf/Comfy-Org/Qwen-Image-2.1/vae/qwen_image_2.1_vae_bf16.safetensors
+      --fa
+      --cfg-scale 6.0
+
+hooks:
+  on_startup:
+    preload:
+      - "qwen3.6-35b-a3b"

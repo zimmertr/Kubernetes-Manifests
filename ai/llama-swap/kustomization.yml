@@ -17,3 +17,16 @@ configMapGenerator:
   - name: llama-swap-config
     files:
       - configs/config.yaml
+
+# The chart sets llama-swap's arguments itself, with no way to add one.
+patches:
+  - target:
+      kind: Deployment
+      name: llama-swap
+    patch: |-
+      - op: add
+        path: /spec/template/spec/containers/0/args/-
+        value: -config-dir
+      - op: add
+        path: /spec/template/spec/containers/0/args/-
+        value: /etc/llama-swap/extra
