@@ -89,6 +89,12 @@ extraEnvVars:
     value: openai
   - name: IMAGE_EDIT_MODEL
     value: qwen-image-2.1
+  # Without a size, sd-server edits at the uploaded image's own resolution: a
+  # phone photo becomes a 4096x3072 job that runs out of GPU memory. A
+  # different aspect ratio is center-cropped, and the model still sees the
+  # whole photo as its reference.
+  - name: IMAGE_EDIT_SIZE
+    value: 1024x1024
   # Open WebUI points image requests at api.openai.com with no key unless told
   # otherwise, rather than at the chat connection above, so both image
   # features name llama-swap and the key outright.
