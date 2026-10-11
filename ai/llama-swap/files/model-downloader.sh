@@ -19,6 +19,10 @@
 # publishes a new version. It names each file after its SHA-256, which this
 # checks once per file, since llama.cpp never does.
 #
+# After a check in which every download succeeded, it also logs what's on
+# /models that no config uses any more, for deleting by hand. It never deletes
+# anything itself.
+#
 # Set LOG_LEVEL=debug to also log each check that finds nothing to do.
 
 set -uo pipefail
@@ -31,6 +35,9 @@ readonly LLAMA_OUTPUT=/tmp/llama-download.log
 readonly CHECK_INTERVAL=60    # seconds between checks of the config
 readonly PROGRESS_INTERVAL=5  # seconds between progress reports
 readonly LOG_LEVEL=${LOG_LEVEL:-info}
+
+# Every path on /models the configs use, filled in by each check.
+declare -A USED=()
 
 # Logs go to stderr, because functions hand their results over on stdout.
 # %(...)T is bash's own strftime, so logging doesn't fork date, and the
@@ -59,16 +66,19 @@ error() {
   log ERROR "$@"
 }
 
-# Both match only lines that start with the flag, so a comment that mentions
-# one doesn't count.
+# Only lines that start with the flag, so a comment that mentions one doesn't
+# count.
 declared_hf_models() {
   grep --no-filename --extended-regexp '^[[:space:]]*-hf[[:space:]]' "$@" |
     awk '{ print $2 }' | sort --unique
 }
 
+# Any path under /models/hf/ outside a comment, whichever flag it follows,
+# since sd-server's flags include digits and underscores (--t5xxl,
+# --llm_vision).
 declared_hf_files() {
-  grep --no-filename --extended-regexp "^[[:space:]]*--[a-z-]+[[:space:]]+$HF_FILES_DIR/" "$@" |
-    awk '{ print $2 }' | sort --unique
+  grep --no-filename --invert-match '^[[:space:]]*#' "$@" |
+    grep --only-matching --extended-regexp "$HF_FILES_DIR/[^[:space:]\"']+" | sort --unique
 }
 
 # Paths in the cache encode the repo as models--<user>--<repo>, and the file's
@@ -138,11 +148,26 @@ download() {
   printf '%s\n' "$output"
 }
 
+# Records a file in llama.cpp's cache as used: the path the config resolves
+# to, the blob it points to, and the repo's directory.
+mark_used() {
+  local cached=$1
+
+  USED[$cached]=1
+  USED[$(readlink --canonicalize-existing "$cached")]=1
+  USED[${cached%%/snapshots/*}]=1
+}
+
 download_hf_model() {
   local model=$1
+  local output cached
 
   info "Checking $model"
-  download -hf "$model" > /dev/null
+  output=$(download -hf "$model") || return 1
+  while IFS= read -r cached; do
+    mark_used "$cached"
+    info "Ready: $(cached_file_name "$cached") at $cached"
+  done <<< "$output"
 }
 
 download_hf_file() {
@@ -153,13 +178,16 @@ download_hf_file() {
   info "Checking $user/$repo/$file"
   cached=$(download -hf "$user/$repo" -hff "$file" --no-mmproj) || return 1
 
-  [[ $(readlink "$path") == "$cached" ]] && return 0
-  mkdir --parents "$(dirname "$path")"
-  # Renaming a new link over the old path swaps it in one step, so sd-server
-  # never finds the file missing.
-  ln --symbolic --force "$cached" "$path.new" &&
-    mv --no-target-directory "$path.new" "$path" &&
-    info "Linked $path to llama.cpp's cache"
+  if [[ $(readlink "$path") != "$cached" ]]; then
+    mkdir --parents "$(dirname "$path")"
+    # Renaming a new link over the old path swaps it in one step, so sd-server
+    # never finds the file missing.
+    ln --symbolic --force "$cached" "$path.new" || return 1
+    mv --no-target-directory "$path.new" "$path" || return 1
+  fi
+  mark_used "$cached"
+  USED[$path]=1
+  info "Ready: $user/$repo/$file at $path -> $cached"
 }
 
 # Downloads whatever the given config files name that isn't on /models yet.
@@ -169,6 +197,7 @@ download_declared_models() {
   local -a models files
   local model path failed=0
 
+  USED=()
   mapfile -t models < <(declared_hf_models "$@")
   mapfile -t files < <(declared_hf_files "$@")
 
@@ -182,11 +211,41 @@ download_declared_models() {
   return "$failed"
 }
 
+unused() {
+  warn "Not used by any config: $1, $(du --summarize --human-readable "$1" | cut --fields=1)"
+}
+
+# Logs everything on /models that the last check didn't mark as used. Only
+# meaningful after a check in which every download succeeded, since a failed
+# one leaves USED incomplete.
+report_unused() {
+  local entry
+
+  # The glob skips .cache, which holds the shader cache and checksum markers.
+  for entry in "$MODELS_DIR"/*; do
+    [[ $entry == "$HF_FILES_DIR" || -n ${USED[$entry]:-} ]] || unused "$entry"
+  done
+
+  # Within a repo still in use: an old version of a file, a quant the config
+  # no longer names, or an abandoned partial download.
+  for entry in "$MODELS_DIR"/models--*/blobs/*; do
+    if [[ -n ${USED[${entry%%/blobs/*}]:-} && -z ${USED[$entry]:-} ]]; then
+      unused "$entry"
+    fi
+  done
+
+  if [[ -d $HF_FILES_DIR ]]; then
+    while IFS= read -r -d '' entry; do
+      [[ -n ${USED[$entry]:-} ]] || unused "$entry"
+    done < <(find "$HF_FILES_DIR" \( -type f -o -type l \) -print0)
+  fi
+}
+
 # llama.cpp shows no progress without a terminal, so this reports every file
 # still downloading: its size so far, and its rate since the last report.
 report_progress() {
   local -A last_size=() size=()
-  local file bytes rate
+  local file bytes
 
   while sleep "$PROGRESS_INTERVAL"; do
     size=()
@@ -194,11 +253,12 @@ report_progress() {
       # The download may have finished since find listed it.
       bytes=$(stat --format=%s "$file" 2> /dev/null) || continue
       size[$file]=$bytes
-      rate=""
       if [[ -n ${last_size[$file]:-} ]]; then
-        rate=", $(((bytes - last_size[$file]) / PROGRESS_INTERVAL / 1000000)) MB/s"
+        info "Downloading $(repo_name "$file"): $(gigabytes "$bytes")," \
+          "$(((bytes - last_size[$file]) / PROGRESS_INTERVAL / 1000000)) MB/s"
+      else
+        info "Downloading $(repo_name "$file") to $file: $(gigabytes "$bytes")"
       fi
-      info "Downloading $(repo_name "$file"): $(gigabytes "$bytes")$rate"
     done < <(find "$MODELS_DIR" -name '*.downloadInProgress' -print0)
 
     # Remember only the files still downloading, so one that starts over
@@ -231,6 +291,7 @@ main() {
       info "Checking the models in ${configs[*]}"
       if download_declared_models "${configs[@]}"; then
         downloaded_checksum=$checksum
+        report_unused
         info "All models present, $(du --summarize --human-readable "$MODELS_DIR" | cut --fields=1) on $MODELS_DIR." \
           "Checking the config for changes every ${CHECK_INTERVAL}s"
       else
