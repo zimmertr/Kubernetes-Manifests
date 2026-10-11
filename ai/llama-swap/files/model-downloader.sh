@@ -38,7 +38,7 @@ readonly LOG_LEVEL=${LOG_LEVEL:-info}
 log() {
   local level=$1
   shift
-  printf '%(%Y-%m-%dT%H:%M:%SZ)T %-5s %s\n' -1 "$level" "$*" >&2
+  printf '%(%Y-%m-%dT%H:%M:%SZ)T %s\t| %s\n' -1 "$level" "$*" >&2
 }
 
 debug() {
