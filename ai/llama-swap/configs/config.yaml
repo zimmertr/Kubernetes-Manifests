@@ -15,19 +15,25 @@ macros:
   # on /models without touching the network, since the model downloader
   # fetches them, and a model still downloading fails at once. With no
   # --ctx-size, llama.cpp's --fit sets the context to the most that fits in
-  # VRAM.
+  # VRAM. Flash attention is the default on Vulkan, but stated so a change in
+  # the default can't silently cost it: without it, prompt processing at 32k
+  # of context fell from 1,662 to 61 tok/s on the 35B.
   "llama-server": >-
     llama-server
     --host 127.0.0.1
     --port ${PORT}
     --n-gpu-layers 999
+    --flash-attn on
     --jinja
     --offline
-  # Two slots share one KV cache, so a single client can use all of it.
+  # Two slots share one KV cache, so a single client can use all of it. A
+  # 2048-token micro-batch reads long prompts, such as Claude Code's, 2.2
+  # times faster than the default 512, for a slightly smaller context.
   "llama-server-coding": >-
     ${llama-server}
     --parallel 2
     --kv-unified
+    --ubatch-size 2048
   # sd-server has no -hf, so it's given file paths. A path under
   # /models/hf/<user>/<repo>/ names a Hugging Face file, which the model
   # downloader links there from llama.cpp's cache.
