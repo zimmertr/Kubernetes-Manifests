@@ -27,7 +27,8 @@ macros:
     --parallel 2
     --kv-unified
   # sd-server has no -hf, so it's given file paths. A path under
-  # /models/hf/<user>/<repo>/ names the Hugging Face file it's downloaded from.
+  # /models/hf/<user>/<repo>/ names a Hugging Face file, which the model
+  # downloader links there from llama.cpp's cache.
   "sd-server": >-
     sd-server
     --listen-ip 127.0.0.1
