@@ -108,9 +108,6 @@ initContainers:
       - name: models
         mountPath: /models
 
-# A ConfigMap made by hand, not in Git, can add models. Its *.yaml files merge
-# into the config through -config-dir (see kustomization.yml). It's optional,
-# so without it the directory is empty and only this repo's models load.
 extraVolumes:
   - name: models
     persistentVolumeClaim:
