@@ -29,7 +29,7 @@ readonly HF_FILES_DIR=/models/hf
 readonly VERIFIED_DIR=/models/.cache/verified
 readonly LLAMA_OUTPUT=/tmp/llama-download.log
 readonly CHECK_INTERVAL=60    # seconds between checks of the config
-readonly PROGRESS_INTERVAL=30 # seconds between progress reports
+readonly PROGRESS_INTERVAL=5  # seconds between progress reports
 readonly LOG_LEVEL=${LOG_LEVEL:-info}
 
 # Logs go to stderr, because functions hand their results over on stdout.
