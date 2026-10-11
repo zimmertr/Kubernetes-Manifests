@@ -95,7 +95,7 @@ gigabytes() {
 # marker records each blob that passed, so it's hashed only once.
 verify() {
   local cached=$1
-  local blob hash
+  local blob hash name started
 
   blob=$(readlink --canonicalize-existing "$cached") || return 1
   hash=$(basename "$blob")
@@ -105,13 +105,16 @@ verify() {
   [[ ${#hash} -eq 64 ]] || return 0
   [[ -e $VERIFIED_DIR/$hash ]] && return 0
 
-  info "Verifying $(cached_file_name "$cached"), $(gigabytes "$(stat --format=%s "$blob")")"
+  name=$(cached_file_name "$cached")
+  info "Verifying $name, $(gigabytes "$(stat --format=%s "$blob")")"
+  started=$SECONDS
   if [[ $(sha256sum "$blob" | cut --delimiter=' ' --fields=1) == "$hash" ]]; then
     touch "$VERIFIED_DIR/$hash"
+    info "Verified $name in $((SECONDS - started))s"
     return 0
   fi
 
-  error "Checksum mismatch, discarding $(cached_file_name "$cached")"
+  error "Checksum mismatch, discarding $name"
   rm --force "$blob" "$cached"
   return 1
 }
