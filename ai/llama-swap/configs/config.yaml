@@ -13,11 +13,10 @@ macros:
   # llama-server listens on loopback only. Clients reach it through
   # llama-swap, which checks the API key. --offline loads models from the cache
   # on /models without touching the network, since the model downloader
-  # fetches them, and a model still downloading fails at once. With no
-  # --ctx-size, llama.cpp's --fit sets the context to the most that fits in
-  # VRAM. Flash attention is the default on Vulkan, but stated so a change in
-  # the default can't silently cost it: without it, prompt processing at 32k
-  # of context fell from 1,662 to 61 tok/s on the 35B.
+  # fetches them, and a model still downloading fails at once. Flash attention
+  # is the default on Vulkan, but stated so a change in the default can't
+  # silently cost it: without it, prompt processing at 32k of context fell
+  # from 1,662 to 61 tok/s on the 35B.
   "llama-server": >-
     llama-server
     --host 127.0.0.1
@@ -26,14 +25,15 @@ macros:
     --flash-attn on
     --jinja
     --offline
-  # Two slots share one KV cache, so a single client can use all of it. A
-  # 2048-token micro-batch reads long prompts, such as Claude Code's, 2.2
-  # times faster than the default 512, for a slightly smaller context.
+  # One slot: two slots sharing a KV cache halved the 35B's generation speed,
+  # and requests finish sooner one after the other than side by side. Each
+  # model sets its context explicitly rather than leaving it to --fit, which
+  # quietly falls back to 4k when the GPU isn't free yet, such as when
+  # llama-swap reloads its config. Then the load fails, and llama-swap tries
+  # again on the next request.
   "llama-server-coding": >-
     ${llama-server}
-    --parallel 2
-    --kv-unified
-    --ubatch-size 2048
+    --parallel 1
   # sd-server has no -hf, so it's given file paths. A path under
   # /models/hf/<user>/<repo>/ names a Hugging Face file, which the model
   # downloader links there from llama.cpp's cache.
@@ -47,17 +47,24 @@ macros:
 # -hf and every /models/hf/ path it finds here, so this is also the list of
 # models kept on /models.
 models:
-  # Mixture of experts: 35B weights, about 3B read per token, so it's fast.
+  # Mixture of experts: 35B weights, about 3B read per token, so it's fast. Its
+  # full context fits. A 2048-token micro-batch reads long prompts, such as
+  # Claude Code's, 1.5 times faster than the default 512.
   "qwen3.6-35b-a3b":
     cmd: |
       ${llama-server-coding}
       -hf unsloth/Qwen3.6-35B-A3B-GGUF:UD-Q4_K_XL
+      --ctx-size 262144
+      --ubatch-size 2048
 
   # Dense: every weight is read per token, so it's slower and often smarter.
+  # 160k leaves a margin below the most that fits. It keeps the default
+  # micro-batch, since 2048 read prompts three times slower on this model.
   "qwen3.6-27b":
     cmd: |
       ${llama-server-coding}
       -hf unsloth/Qwen3.6-27B-GGUF:Q5_K_M
+      --ctx-size 163840
 
   # sd-server has no /health, so llama-swap checks /v1/models instead.
   "z-image-turbo":
