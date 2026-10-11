@@ -88,13 +88,14 @@ Argo CD cannot create Secret resources since they're not tracked in this repo. A
 Create any ZFS volumes the statically provisioned [Proxmox CSI](storage/proxmox-csi-plugin/README.md) PersistentVolume resources point at:
 
 ```bash
-zfs create -V 100G FlashPool/vm-9999-Prometheus-Data
-zfs create -V 10G FlashPool/vm-9999-AlertManager-Data
-zfs create -V 1G FlashPool/vm-9999-Grafana-Data
-zfs create -V 50G FlashPool/vm-9999-Jellyfin-Cache
-zfs create -V 50G FlashPool/vm-9999-Jellyfin-Config
-zfs create -V 10G FlashPool/vm-9999-ruTorrent-Data
-zfs create -V 10G FlashPool/vm-9999-Sonarr-Data
+zfs create -s -V 100G FlashPool/vm-9999-Prometheus-Data
+zfs create -s -V 10G FlashPool/vm-9999-AlertManager-Data
+zfs create -s -V 1G FlashPool/vm-9999-Grafana-Data
+zfs create -s -V 50G FlashPool/vm-9999-Jellyfin-Cache
+zfs create -s -V 50G FlashPool/vm-9999-Jellyfin-Config
+zfs create -s -V 10G FlashPool/vm-9999-ruTorrent-Data
+zfs create -s -V 10G FlashPool/vm-9999-Sonarr-Data
+zfs create -s -V 500G FlashPool/vm-9999-AI-Models
 ```
 
 Apply [terraform/cloudflare](terraform/cloudflare/README.md) for the Cloudflare tunnel, DNS records and cert-manager API token:
@@ -121,6 +122,10 @@ kubectl create secret generic proxmox-csi-plugin -n csi-proxmox \
 # Grafana
 kubectl create secret generic grafana-admin -n prometheus-system \
   --from-literal=admin-user=admin --from-literal=admin-password='CHANGEME'
+
+# llama-swap
+kubectl create secret generic llama-swap-api-key -n llama-swap-system \
+  --from-literal=api-key="sk-$(openssl rand -hex 24)"
 
 # Mountaineers Activity Scraper
 # See misc/mountaineers-activity-scraper/README.md
