@@ -126,6 +126,8 @@ kubectl create secret generic grafana-admin -n prometheus-system \
 # llama-swap
 kubectl create secret generic llama-swap-api-key -n llama-swap-system \
   --from-literal=api-key="sk-$(openssl rand -hex 24)"
+kubectl create secret generic llama-swap-hf-token -n llama-swap-system \
+  --from-literal=token='CHANGEME'
 
 # Mountaineers Activity Scraper
 # See misc/mountaineers-activity-scraper/README.md

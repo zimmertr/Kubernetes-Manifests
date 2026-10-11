@@ -48,6 +48,46 @@ env:
       secretKeyRef:
         name: llama-swap-api-key
         key: api-key
+  - name: LLAMA_CACHE
+    value: /models
+
+# Downloads every -hf model in configs/config.yaml that isn't on /models yet,
+# using llama.cpp's own downloader. The llama-swap image doesn't ship the llama
+# binary, so this runs llama.cpp's CPU image. A model whose cached copy still
+# matches Hugging Face is skipped.
+initContainers:
+  - name: download-models
+    image: ghcr.io/ggml-org/llama.cpp:light-b11541
+    command: ["/bin/sh", "-c"]
+    args:
+      - |
+        set -eu
+        # Only lines that start with -hf, so comments that mention it don't count.
+        for model in $(grep -E '^[[:space:]]*-hf[[:space:]]' /config/config.yaml | awk '{print $2}' | sort -u); do
+          echo "Downloading $model"
+          /app/llama download -hf "$model"
+        done
+    env:
+      - name: LLAMA_CACHE
+        value: /models
+      # Only gated repos need it, so the Secret is optional.
+      - name: HF_TOKEN
+        valueFrom:
+          secretKeyRef:
+            name: llama-swap-hf-token
+            key: token
+            optional: true
+    securityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+          - ALL
+    volumeMounts:
+      - name: config
+        mountPath: /config
+        readOnly: true
+      - name: models
+        mountPath: /models
 
 extraVolumes:
   - name: models
