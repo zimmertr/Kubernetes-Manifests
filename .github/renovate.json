@@ -33,6 +33,11 @@
         "registry-1.docker.io/zimmertr/bluebird-helm"
       ],
       "enabled": false
+    },
+    {
+      "description": "llama.cpp tags its CPU image light-b<build>, alongside tags for other variants. Only follow this one, and treat each build as a patch.",
+      "matchPackageNames": ["ghcr.io/ggml-org/llama.cpp"],
+      "versioning": "regex:^light-b(?<patch>\\d+)$"
     }
   ]
 }
