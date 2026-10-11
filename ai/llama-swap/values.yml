@@ -67,7 +67,7 @@ initContainers:
     args:
       - |
         set -eu
-        configs="/config/config.yaml $(ls /private/*.yaml /private/*.yml 2> /dev/null || true)"
+        configs="/config/config.yaml $(ls /extra/*.yaml /extra/*.yml 2> /dev/null || true)"
         # Only lines that start with the flag, so comments that mention one don't count.
         for model in $(grep -hE '^[[:space:]]*-hf[[:space:]]' $configs | awk '{print $2}' | sort -u); do
           echo "Downloading $model"
@@ -102,8 +102,8 @@ initContainers:
       - name: config
         mountPath: /config
         readOnly: true
-      - name: private-config
-        mountPath: /private
+      - name: extra-config
+        mountPath: /extra
         readOnly: true
       - name: models
         mountPath: /models
@@ -115,15 +115,15 @@ extraVolumes:
   - name: models
     persistentVolumeClaim:
       claimName: llama-swap-models
-  - name: private-config
+  - name: extra-config
     configMap:
-      name: llama-swap-private-config
+      name: llama-swap-extra-config
       optional: true
 extraVolumeMounts:
   - name: models
     mountPath: /models
-  - name: private-config
-    mountPath: /etc/llama-swap/private
+  - name: extra-config
+    mountPath: /etc/llama-swap/extra
     readOnly: true
 
 service:
