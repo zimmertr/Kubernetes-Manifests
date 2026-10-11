@@ -27,9 +27,14 @@ securityContext:
     drop:
       - ALL
 
-# Requesting the GPU also pins the pod to the GPU node and adds the toleration
-# for its taint. No memory limit, since llama.cpp memory-maps the model files
-# and a limit would count that page cache against the pod.
+# Requesting the GPU is what mounts it into the container, and it also adds
+# the toleration for the GPU node's taint. The selector says outright which
+# node is meant, as the device plugin and exporter do.
+nodeSelector:
+  tks.io/pool: gpu
+
+# No memory limit, since llama.cpp memory-maps the model files and a limit
+# would count that page cache against the pod.
 resources:
   requests:
     cpu: "2"

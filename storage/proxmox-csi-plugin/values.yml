@@ -17,3 +17,20 @@ storageClass:
     storage: local
     fstype: xfs
     reclaimPolicy: Retain
+
+# The chart's tolerations, plus the GPU node's taint, so pods there can mount
+# Proxmox volumes. Helm replaces lists, so the defaults are repeated.
+node:
+  tolerations:
+    - key: karpenter.sh/disrupted
+      operator: Exists
+      effect: NoSchedule
+    - key: node.kubernetes.io/unschedulable
+      operator: Exists
+      effect: NoSchedule
+    - key: node.kubernetes.io/disk-pressure
+      operator: Exists
+      effect: NoSchedule
+    - key: amd.com/gpu
+      operator: Exists
+      effect: NoSchedule
