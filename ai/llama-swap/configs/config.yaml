@@ -63,12 +63,15 @@ models:
       --cfg-scale 1.0
       --steps 8
 
+  # Also edits images through /v1/images/edits. The text encoder's vision
+  # weights (--llm_vision) are what let it see the images it's given.
   "qwen-image-2.1":
     checkEndpoint: /v1/models
     cmd: |
       ${sd-server}
       --diffusion-model /models/hf/leejet/Qwen-Image-2.1-GGUF/qwen_image_2.1-Q8_0.gguf
       --llm /models/hf/Qwen/Qwen3-VL-8B-Instruct-GGUF/Qwen3VL-8B-Instruct-Q8_0.gguf
+      --llm_vision /models/hf/Qwen/Qwen3-VL-8B-Instruct-GGUF/mmproj-Qwen3VL-8B-Instruct-F16.gguf
       --vae /models/hf/Comfy-Org/Qwen-Image-2.1/vae/qwen_image_2.1_vae_bf16.safetensors
       --fa
       --cfg-scale 6.0
