@@ -10,9 +10,10 @@ apiKeys:
 macros:
   # llama-server listens on loopback only. Clients reach it through
   # llama-swap, which checks the API key. --offline loads models from the cache
-  # on /models without touching the network, since the init container has
-  # already downloaded them. With no --ctx-size, llama.cpp's --fit sets the
-  # context to the most that fits in VRAM.
+  # on /models without touching the network, since the model downloader
+  # fetches them, and a model still downloading fails at once. With no
+  # --ctx-size, llama.cpp's --fit sets the context to the most that fits in
+  # VRAM.
   "llama-server": >-
     llama-server
     --host 127.0.0.1
@@ -33,9 +34,9 @@ macros:
     --listen-port ${PORT}
 
 # Language models name their Hugging Face repo and quantization with -hf, as
-# <user>/<repo>:<quant>. The init container downloads every -hf and every
-# /models/hf/ path it finds here, so this is also the list of models kept on
-# /models.
+# <user>/<repo>:<quant>. The model downloader beside llama-swap fetches every
+# -hf and every /models/hf/ path it finds here, so this is also the list of
+# models kept on /models.
 models:
   # Mixture of experts: 35B weights, about 3B read per token, so it's fast.
   "qwen3.6-35b-a3b":

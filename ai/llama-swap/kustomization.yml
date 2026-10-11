@@ -14,9 +14,16 @@ helmCharts:
     valuesFile: values.yml
 
 configMapGenerator:
+  # A fixed name, so a change updates the file in the running pod rather than
+  # replacing the pod.
   - name: llama-swap-config
     files:
       - configs/config.yaml
+    options:
+      disableNameSuffixHash: true
+  - name: llama-swap-model-downloader
+    files:
+      - files/model-downloader.sh
 
 # The chart sets llama-swap's arguments itself, with no way to add one.
 patches:

@@ -55,62 +55,15 @@ env:
   - name: MESA_SHADER_CACHE_DIR
     value: /models/.cache/mesa
 
-# Downloads every model in the config that isn't on /models yet. -hf models use
-# llama.cpp's own downloader, which skips a cached copy that still matches
-# Hugging Face. The llama-swap image doesn't ship the llama binary, so this
-# runs llama.cpp's CPU image. Files under /models/hf/ are fetched with curl,
-# once.
+# Downloads the models the config names, including ones added while the pod
+# runs. It's a native sidecar, an init container that keeps running, so
+# llama-swap starts without waiting for downloads. The llama-swap image doesn't
+# ship the llama binary, so this runs llama.cpp's CPU image.
 initContainers:
-  - name: download-models
+  - name: model-downloader
     image: ghcr.io/ggml-org/llama.cpp:light-b11541
-    command: ["/bin/sh", "-c"]
-    args:
-      - |
-        set -eu
-        # Neither downloader shows progress without a terminal, so report every
-        # file still downloading every 30 seconds, as one line each.
-        report_progress() {
-          while sleep 30; do
-            find /models \( -name '*.downloadInProgress' -o -name '*.part' \) | while read -r f; do
-              name=$(basename "$f" | sed -E 's/\.(downloadInProgress|part)$//')
-              # llama.cpp names its file after a hash, so use the repo it's cached under.
-              case "$f" in */models--*/blobs/*) name=$(echo "$f" | sed -E 's#.*/models--([^/]+)/blobs/.*#\1#; s#--#/#g') ;; esac
-              key=$(basename "$f")
-              size=$(stat -c %s "$f")
-              last=$(cat "/tmp/$key.size" 2> /dev/null || true)
-              echo "$size" > "/tmp/$key.size"
-              awk -v n="$name" -v s="$size" -v l="$last" 'BEGIN {
-                printf "  %s: %.1f GB", n, s / 1e9
-                if (l != "") printf ", %.0f MB/s", (s - l) / 30 / 1e6
-                printf "\n"
-              }'
-            done
-          done
-        }
-        report_progress &
-        reporter=$!
-        trap 'kill "$reporter" 2> /dev/null || true' EXIT
-
-        configs="/config/config.yaml $(ls /extra/*.yaml /extra/*.yml 2> /dev/null || true)"
-        # Only lines that start with the flag, so comments that mention one don't count.
-        for model in $(grep -hE '^[[:space:]]*-hf[[:space:]]' $configs | awk '{print $2}' | sort -u); do
-          echo "Checking $model"
-          /app/llama download -hf "$model"
-        done
-        if [ -n "${HF_TOKEN:-}" ]; then set -- -H "Authorization: Bearer $HF_TOKEN"; else set --; fi
-        for path in $(grep -hE '^[[:space:]]*--[a-z-]+[[:space:]]+/models/hf/' $configs | awk '{print $2}' | sort -u); do
-          file=${path#/models/hf/}
-          if [ -f "$path" ]; then
-            echo "Already have $file"
-            continue
-          fi
-          repo=$(echo "$file" | cut -d/ -f1-2)
-          echo "Downloading $file"
-          mkdir -p "$(dirname "$path")"
-          curl -fsSL --retry 3 "$@" -o "$path.part" "https://huggingface.co/$repo/resolve/main/${file#"$repo"/}"
-          mv "$path.part" "$path"
-        done
-        echo "All models present: $(du -sh /models | cut -f1) on /models"
+    restartPolicy: Always
+    command: ["/bin/bash", "/scripts/model-downloader.sh"]
     env:
       - name: LLAMA_CACHE
         value: /models
@@ -127,6 +80,9 @@ initContainers:
         drop:
           - ALL
     volumeMounts:
+      - name: model-downloader
+        mountPath: /scripts
+        readOnly: true
       - name: config
         mountPath: /config
         readOnly: true
@@ -144,6 +100,9 @@ extraVolumes:
     configMap:
       name: llama-swap-extra-config
       optional: true
+  - name: model-downloader
+    configMap:
+      name: llama-swap-model-downloader
 extraVolumeMounts:
   - name: models
     mountPath: /models
@@ -156,7 +115,8 @@ service:
   annotations:
     metallb.universe.tf/loadBalancerIPs: 192.168.40.140
 
-# The config lives in configs/config.yaml. Kustomize turns it into this
-# ConfigMap, whose name gets a hash of the file, so a change rolls the pod.
+# The config lives in configs/config.yaml, and Kustomize turns it into this
+# ConfigMap. When it changes, llama-swap reloads it and the model downloader
+# fetches any new models, without restarting the pod.
 config:
   existing: llama-swap-config
