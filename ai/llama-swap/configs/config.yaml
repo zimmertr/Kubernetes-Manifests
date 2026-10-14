@@ -9,6 +9,17 @@ apiKeys:
   - "${env.LLAMA_SWAP_API_KEY}"
   - "${env.LLAMA_SWAP_OPEN_WEBUI_API_KEY}"
 
+# A request to /upstream/<model>/<path> loads that model, as any request does.
+# Prometheus scrapes every language model's /metrics there on a schedule, and
+# that mustn't swap models under a user: an ignored path answers 409 when its
+# model isn't loaded, which Prometheus records as the target being down. The
+# first pattern is llama-swap's default, restated because setting the list
+# replaces it.
+upstream:
+  ignorePaths:
+    - '.*\.(js|json|css|png|gif|jpg|jpeg|ico|txt)$'
+    - '^/metrics$'
+
 macros:
   # llama-server listens on loopback only. Clients reach it through
   # llama-swap, which checks the API key. --offline loads models from the cache
@@ -16,7 +27,10 @@ macros:
   # fetches them, and a model still downloading fails at once. Flash attention
   # is the default on Vulkan, but stated so a change in the default can't
   # silently cost it: without it, prompt processing at 32k of context fell
-  # from 1,662 to 61 tok/s on the 35B.
+  # from 1,662 to 61 tok/s on the 35B. --metrics is llama-server's own
+  # Prometheus endpoint, which Prometheus scrapes through llama-swap's
+  # /upstream path: llama-swap's /metrics has only host and GPU stats, not
+  # tokens or requests.
   "llama-server": >-
     llama-server
     --host 127.0.0.1
@@ -25,6 +39,7 @@ macros:
     --flash-attn on
     --jinja
     --offline
+    --metrics
   # One slot: two slots sharing a KV cache halved the 35B's generation speed,
   # and requests finish sooner one after the other than side by side. Each
   # model sets its context explicitly rather than leaving it to --fit, which

@@ -1,0 +1,45 @@
+# Prometheus scrapes two things through llama-swap's port, both behind the API
+# key. llama-swap's own /metrics has the host and GPU stats behind its
+# performance graphs. Tokens and requests are counted by llama-server, so each
+# language model's /metrics is scraped through /upstream/<model>/, under its
+# own job so that a model being unloaded (the usual state for all but one)
+# isn't mistaken for llama-swap being down. A language model added to
+# config.yaml needs an endpoint here to show up in Grafana. Image models have
+# no metrics endpoint.
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: llama-swap
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: llama-swap
+  endpoints:
+    - port: http
+      path: /metrics
+      authorization:
+        credentials:
+          name: llama-swap-api-key
+          key: api-key
+    - port: http
+      path: /upstream/qwen3.6-35b-a3b/metrics
+      authorization:
+        credentials:
+          name: llama-swap-api-key
+          key: api-key
+      relabelings:
+        - targetLabel: job
+          replacement: llama-server
+        - targetLabel: model
+          replacement: qwen3.6-35b-a3b
+    - port: http
+      path: /upstream/qwen3.6-27b/metrics
+      authorization:
+        credentials:
+          name: llama-swap-api-key
+          key: api-key
+      relabelings:
+        - targetLabel: job
+          replacement: llama-server
+        - targetLabel: model
+          replacement: qwen3.6-27b

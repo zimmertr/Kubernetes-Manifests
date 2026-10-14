@@ -10,6 +10,7 @@ It serves `http://192.168.40.140:8080`:
 | `/v1/messages`, `/v1/messages/count_tokens` | Anthropic API, so Claude Code can use it |
 | `/v1/images/generations`, `/v1/images/edits` | OpenAI images API, served by `sd-server` |
 | `/ui/` | Playground, logs, and GPU performance graphs |
+| `/metrics`, `/upstream/<model>/metrics` | Prometheus metrics: host and GPU stats from llama-swap, tokens and requests from the loaded model's `llama-server` |
 
 Every request needs `Authorization: Bearer <key>`, with the key from the `llama-swap-api-key` Secret. Open WebUI has its own key so it can be revoked on its own.
 
@@ -35,7 +36,9 @@ Every request needs `Authorization: Bearer <key>`, with the key from the `llama-
 
 4. A model removed from both configs is deleted from `/models` once it has been unused for 72 hours. The downloader's log names each unused file and the date it goes, and a model declared again before then is kept.
 
-5. To use it from Claude Code, point it at llama-swap and map every model name to the one you want, since llama-swap rejects names it doesn't know. All requests in that session go to the local model:
+5. Grafana's `llama-swap` dashboard shows the loaded model, requests, prompt and generation speed, and the GPU's VRAM, activity, temperature, power and clocks. The model numbers come from `llama-server`, scraped through `/upstream/<model>/metrics` by the [ServiceMonitor](resources/serviceMonitor.yml), so a language model added to `config.yaml` also needs an endpoint there. Only the loaded model answers; the others show as down in Prometheus, which is expected.
+
+6. To use it from Claude Code, point it at llama-swap and map every model name to the one you want, since llama-swap rejects names it doesn't know. All requests in that session go to the local model:
 
    ```bash
    export ANTHROPIC_BASE_URL=http://192.168.40.140:8080
