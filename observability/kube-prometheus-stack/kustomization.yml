@@ -15,6 +15,12 @@ configMapGenerator:
     options:
       labels:
         grafana_dashboard: "1"
+  - name: llama-swap-dashboard
+    files:
+      - llama-swap.json=files/llama-swap-dashboard.json
+    options:
+      labels:
+        grafana_dashboard: "1"
 
 generatorOptions:
   disableNameSuffixHash: true

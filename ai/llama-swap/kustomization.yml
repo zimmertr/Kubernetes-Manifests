@@ -4,6 +4,7 @@ resources:
   - resources/namespace.yml
   - resources/persistentVolume.yml
   - resources/persistentVolumeClaim.yml
+  - resources/serviceMonitor.yml
 
 helmCharts:
   - name: llama-swap
