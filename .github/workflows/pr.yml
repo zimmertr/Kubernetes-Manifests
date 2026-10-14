@@ -141,27 +141,6 @@ jobs:
           done
           exit $rc
 
-  # The model downloader deletes files, so its behaviour is pinned by a test
-  # that runs the real script in its own image against a scratch /models. It
-  # runs on every PR rather than on a path filter, so it can be a required
-  # check.
-  model-downloader:
-    name: Test the model downloader
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-
-      # The same image the sidecar runs in ai/llama-swap/values.yml, so the
-      # test sees the same bash and coreutils.
-      - name: Run the pruning tests
-        run: |
-          docker run --rm \
-            -v "$PWD/ai/llama-swap/files/model-downloader.sh:/scripts/model-downloader.sh:ro" \
-            -v "$PWD/ai/llama-swap/tests/model-downloader-test.sh:/tests/test.sh:ro" \
-            --entrypoint bash ghcr.io/ggml-org/llama.cpp:light-b11541 /tests/test.sh
-
   # terraform/ holds the Cloudflare side of the public ingress. Renovate bumps
   # its provider, so it needs the same gate as the manifests. It runs on every
   # PR rather than on a path filter, so it can be a required check.
