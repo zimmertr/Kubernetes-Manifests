@@ -19,9 +19,17 @@
 # publishes a new version. It names each file after its SHA-256, which this
 # checks once per file, since llama.cpp never does.
 #
-# After a check in which every download succeeded, it also logs what's on
-# /models that no config uses any more, for deleting by hand. It never deletes
-# anything itself.
+# It also prunes what no config uses any more, after a grace period: the first
+# time a check finds a file unused it records the date and warns, on every
+# later check it warns again with the deletion date, and once the file has
+# been unused for PRUNE_AFTER_HOURS it deletes it. A file declared again in
+# the meantime is forgotten. The grace period means a model taken out of the
+# config by mistake, or a ConfigMap that's briefly missing, costs nothing.
+# Only llama.cpp's cache and /models/hf are pruned; anything else on /models
+# is reported and left alone, since that's where files placed by hand live.
+# Nothing is pruned after a check in which a download failed, or when the
+# configs declare no models at all, because that's what a broken config looks
+# like.
 #
 # Set LOG_LEVEL=debug to also log each check that finds nothing to do.
 
@@ -31,13 +39,18 @@ shopt -s nullglob
 readonly MODELS_DIR=/models
 readonly HF_FILES_DIR=/models/hf
 readonly VERIFIED_DIR=/models/.cache/verified
+readonly UNUSED_DIR=/models/.cache/unused  # one marker per unused path, dated when first seen
 readonly LLAMA_OUTPUT=/tmp/llama-download.log
-readonly CHECK_INTERVAL=60    # seconds between checks of the config
+readonly CHECK_INTERVAL=${CHECK_INTERVAL:-60}       # seconds between checks of the config
+readonly REVIEW_INTERVAL=${REVIEW_INTERVAL:-3600}  # seconds between reviews of unused files when the config is unchanged
 readonly PROGRESS_INTERVAL=5  # seconds between progress reports
+readonly PRUNE_AFTER_HOURS=${PRUNE_AFTER_HOURS:-72}
 readonly LOG_LEVEL=${LOG_LEVEL:-info}
 
-# Every path on /models the configs use, filled in by each check.
+# Every path on /models the configs use, filled in by each check, and how
+# many models and files the configs declared.
 declare -A USED=()
+DECLARED=0
 
 # Logs go to stderr, because functions hand their results over on stdout.
 # %(...)T is bash's own strftime, so logging doesn't fork date, and the
@@ -200,6 +213,7 @@ download_declared_models() {
   USED=()
   mapfile -t models < <(declared_hf_models "$@")
   mapfile -t files < <(declared_hf_files "$@")
+  DECLARED=$((${#models[@]} + ${#files[@]}))
 
   for model in "${models[@]}"; do
     download_hf_model "$model" || { error "Failed to download $model"; failed=1; }
@@ -211,34 +225,99 @@ download_declared_models() {
   return "$failed"
 }
 
-unused() {
-  warn "Not used by any config: $1, $(du --summarize --human-readable "$1" | cut --fields=1)"
+size_of() {
+  du --summarize --human-readable "$1" | cut --fields=1
 }
 
-# Logs everything on /models that the last check didn't mark as used. Only
-# meaningful after a check in which every download succeeded, since a failed
-# one leaves USED incomplete.
-report_unused() {
-  local entry
+# The marker that records when a path was first found unused. Its name is a
+# hash of the path, since paths contain slashes, and its content is the path.
+marker_for() {
+  printf '%s/%s\n' "$UNUSED_DIR" "$(printf '%s' "$1" | sha256sum | cut --characters=1-32)"
+}
 
-  # The glob skips .cache, which holds the shader cache and checksum markers.
+# Deletes an unused path and its marker. A blob's snapshot links would dangle
+# without it, so they go too.
+delete_unused() {
+  local path=$1
+
+  if [[ $path == */blobs/* ]]; then
+    find "${path%%/blobs/*}/snapshots" -type l -lname "*/blobs/$(basename "$path")" -delete
+  fi
+  rm --recursive --force "$path" && rm --force "$(marker_for "$path")"
+}
+
+# Warns about an unused path, and deletes it once it has been unused for the
+# whole grace period.
+consider_unused() {
+  local path=$1
+  local marker size unused_hours
+
+  marker=$(marker_for "$path")
+  size=$(size_of "$path")
+  if [[ ! -e $marker ]]; then
+    printf '%s\n' "$path" > "$marker"
+    warn "Not used by any config: $path, $size." \
+      "Deleting it on $(date --date="+$PRUNE_AFTER_HOURS hours" +%F) unless a config uses it again"
+    return
+  fi
+
+  unused_hours=$(( ($(date +%s) - $(stat --format=%Y "$marker")) / 3600 ))
+  if (( unused_hours >= PRUNE_AFTER_HOURS )); then
+    delete_unused "$path" && info "Deleted $path, $size, unused for ${unused_hours}h"
+  else
+    warn "Not used by any config: $path, $size, unused for ${unused_hours}h." \
+      "Deleting it on $(date --date="+$((PRUNE_AFTER_HOURS - unused_hours)) hours" +%F) unless a config uses it again"
+  fi
+}
+
+# Reviews everything on /models that the last check didn't mark as used:
+# prunes what's inside llama.cpp's cache and /models/hf, reports the rest.
+# Only meaningful after a check in which every download succeeded, since a
+# failed one leaves USED incomplete.
+review_unused() {
+  local entry marker path
+
+  mkdir --parents "$UNUSED_DIR"
+
+  # The glob skips .cache, which holds the shader cache and the markers.
   for entry in "$MODELS_DIR"/*; do
-    [[ $entry == "$HF_FILES_DIR" || -n ${USED[$entry]:-} ]] || unused "$entry"
+    [[ $entry == "$HF_FILES_DIR" || -n ${USED[$entry]:-} ]] && continue
+    if [[ $entry == "$MODELS_DIR"/models--* ]]; then
+      consider_unused "$entry"
+    else
+      warn "Not used by any config, and not managed here: $entry, $(size_of "$entry")"
+    fi
   done
 
   # Within a repo still in use: an old version of a file, a quant the config
   # no longer names, or an abandoned partial download.
   for entry in "$MODELS_DIR"/models--*/blobs/*; do
     if [[ -n ${USED[${entry%%/blobs/*}]:-} && -z ${USED[$entry]:-} ]]; then
-      unused "$entry"
+      consider_unused "$entry"
     fi
   done
 
   if [[ -d $HF_FILES_DIR ]]; then
     while IFS= read -r -d '' entry; do
-      [[ -n ${USED[$entry]:-} ]] || unused "$entry"
+      [[ -n ${USED[$entry]:-} ]] || consider_unused "$entry"
     done < <(find "$HF_FILES_DIR" \( -type f -o -type l \) -print0)
   fi
+
+  # Forget paths that a config uses again, or that are gone.
+  for marker in "$UNUSED_DIR"/*; do
+    path=$(< "$marker")
+    if [[ -n ${USED[$path]:-} ]]; then
+      info "Used again, so no longer to be deleted: $path"
+      rm --force "$marker"
+    elif [[ ! -e $path && ! -L $path ]]; then
+      rm --force "$marker"
+    fi
+  done
+
+  # Deleting leaves empty snapshot and /models/hf directories behind.
+  for entry in "$MODELS_DIR"/models--* "$HF_FILES_DIR"; do
+    [[ -d $entry ]] && find "$entry" -mindepth 1 -type d -empty -delete
+  done
 }
 
 # llama.cpp shows no progress without a terminal, so this reports every file
@@ -270,9 +349,19 @@ report_progress() {
   done
 }
 
+# Runs the review when the last check downloaded everything it needed and the
+# configs declared something, so a broken config never looks like an empty one.
+review_if_safe() {
+  if (( DECLARED == 0 )); then
+    warn "The configs declare no models, so nothing on $MODELS_DIR is reviewed for deletion"
+  else
+    review_unused
+  fi
+}
+
 main() {
   local -a configs
-  local checksum downloaded_checksum=""
+  local checksum downloaded_checksum="" last_review=0
 
   mkdir --parents "$VERIFIED_DIR"
   report_progress &
@@ -285,18 +374,23 @@ main() {
     configs=(/config/*.yaml /extra/*.yaml /extra/*.yml)
     checksum=$(cat "${configs[@]}" | sha256sum)
 
-    if [[ $checksum == "$downloaded_checksum" ]]; then
-      debug "No change to ${configs[*]}"
-    else
+    if [[ $checksum != "$downloaded_checksum" ]]; then
       info "Checking the models in ${configs[*]}"
       if download_declared_models "${configs[@]}"; then
         downloaded_checksum=$checksum
-        report_unused
-        info "All models present, $(du --summarize --human-readable "$MODELS_DIR" | cut --fields=1) on $MODELS_DIR." \
+        review_if_safe
+        last_review=$SECONDS
+        info "All models present, $(size_of "$MODELS_DIR") on $MODELS_DIR." \
           "Checking the config for changes every ${CHECK_INTERVAL}s"
       else
         warn "Retrying the failed downloads in ${CHECK_INTERVAL}s"
       fi
+    elif (( SECONDS - last_review >= REVIEW_INTERVAL )); then
+      # Grace periods run out between config changes too.
+      review_if_safe
+      last_review=$SECONDS
+    else
+      debug "No change to ${configs[*]}"
     fi
 
     # Waiting on a background sleep lets SIGTERM stop the pod straight away.

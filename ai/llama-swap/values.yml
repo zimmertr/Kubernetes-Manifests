@@ -72,6 +72,10 @@ initContainers:
     env:
       - name: LLAMA_CACHE
         value: /models
+      # A model no config names any more is deleted once it has been unused
+      # this long. Three days covers a mistake noticed after a weekend.
+      - name: PRUNE_AFTER_HOURS
+        value: "72"
       # Only gated repos need it, so the Secret is optional.
       - name: HF_TOKEN
         valueFrom:
