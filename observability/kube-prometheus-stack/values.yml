@@ -1,4 +1,18 @@
 alertmanager:
+  # Every language model has a scrape target through llama-swap, and only the
+  # loaded one answers, so TargetDown fires for the llama-server job as long
+  # as any model is unloaded, which is always. Helm replaces the routes list
+  # rather than merging it, so the chart's Watchdog route is restated.
+  config:
+    route:
+      routes:
+        - receiver: "null"
+          matchers:
+            - alertname = "Watchdog"
+        - receiver: "null"
+          matchers:
+            - alertname = "TargetDown"
+            - job = "llama-server"
   alertmanagerSpec:
     storage:
       volumeClaimTemplate:
