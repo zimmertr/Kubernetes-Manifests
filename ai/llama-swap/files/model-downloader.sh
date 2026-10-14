@@ -44,6 +44,7 @@ readonly LLAMA_OUTPUT=/tmp/llama-download.log
 readonly CHECK_INTERVAL=${CHECK_INTERVAL:-60}       # seconds between checks of the config
 readonly REVIEW_INTERVAL=${REVIEW_INTERVAL:-3600}  # seconds between reviews of unused files when the config is unchanged
 readonly PROGRESS_INTERVAL=5  # seconds between progress reports
+readonly SIZES_DIR=$MODELS_DIR/.cache/sizes  # expected size of each blob, by its SHA-256, for the progress reports
 readonly PRUNE_AFTER_HOURS=${PRUNE_AFTER_HOURS:-72}
 readonly LOG_LEVEL=${LOG_LEVEL:-info}
 
@@ -133,6 +134,7 @@ verify() {
   started=$SECONDS
   if [[ $(sha256sum "$blob" | cut --delimiter=' ' --fields=1) == "$hash" ]]; then
     touch "$VERIFIED_DIR/$hash"
+    rm --force "$SIZES_DIR/$hash"
     info "Verified $name in $((SECONDS - started))s"
     return 0
   fi
@@ -171,11 +173,55 @@ mark_used() {
   USED[${cached%%/snapshots/*}]=1
 }
 
+# Writes the expected size of each blob a download will produce, so the
+# progress reports can say how far along it is. Best effort: Hugging Face's
+# answer is what llama.cpp itself goes by, and without it the report simply
+# has no total.
+note_sizes() {
+  local hash bytes
+  mkdir --parents "$SIZES_DIR"
+  while read -r hash bytes; do
+    # A manifest also lists the chat template and parameters, a few bytes each.
+    [[ ${#hash} -eq 64 && ${bytes:-0} -ge 1000000 ]] || continue
+    printf '%s\n' "$bytes" > "$SIZES_DIR/$hash"
+  done
+  return 0
+}
+
+hf_get() {
+  curl --silent --fail --location --max-time 30 --user-agent llama-cpp \
+    ${HF_TOKEN:+--header "Authorization: Bearer $HF_TOKEN"} "$@"
+}
+
+# A model's manifest lists every blob with its digest and size. The digest is
+# the blob's file name in the cache.
+note_model_sizes() {
+  local model=$1 tag=latest
+  [[ $model == *:* ]] && tag=${model#*:}
+  hf_get "https://huggingface.co/v2/${model%%:*}/manifests/$tag" 2> /dev/null |
+    tr --delete ' \n' |
+    grep --only-matching --extended-regexp '"digest":"sha256:[0-9a-f]{64}"|"size":[0-9]+' |
+    sed --expression 's/"digest":"sha256://' --expression 's/"size"://' --expression 's/"//g' |
+    paste --delimiters=' ' - - |
+    note_sizes || true
+}
+
+# A file's headers carry the same two facts for its one blob.
+note_file_sizes() {
+  hf_get --head "https://huggingface.co/$1/resolve/main/$2" 2> /dev/null |
+    tr --delete '\r' |
+    awk 'tolower($1) == "x-linked-etag:" { gsub(/"/, "", $2); hash = $2 }
+         tolower($1) == "x-linked-size:" { bytes = $2 }
+         END { if (hash != "") print hash, bytes }' |
+    note_sizes || true
+}
+
 download_hf_model() {
   local model=$1
   local output cached
 
   info "Checking $model"
+  note_model_sizes "$model"
   output=$(download -hf "$model") || return 1
   while IFS= read -r cached; do
     mark_used "$cached"
@@ -189,6 +235,7 @@ download_hf_file() {
 
   IFS=/ read -r user repo file <<< "${path#"$HF_FILES_DIR"/}"
   info "Checking $user/$repo/$file"
+  note_file_sizes "$user/$repo" "$file"
   cached=$(download -hf "$user/$repo" -hff "$file" --no-mmproj) || return 1
 
   if [[ $(readlink "$path") != "$cached" ]]; then
@@ -324,7 +371,7 @@ review_unused() {
 # still downloading: its size so far, and its rate since the last report.
 report_progress() {
   local -A last_size=() size=()
-  local file bytes
+  local file bytes total progress
 
   while sleep "$PROGRESS_INTERVAL"; do
     size=()
@@ -332,11 +379,18 @@ report_progress() {
       # The download may have finished since find listed it.
       bytes=$(stat --format=%s "$file" 2> /dev/null) || continue
       size[$file]=$bytes
+      # The blob is named after its SHA-256, which is how its size was noted.
+      total=$(cat "$SIZES_DIR/$(basename "$file" .downloadInProgress)" 2> /dev/null) || total=""
+      if [[ -n $total ]]; then
+        progress="$(gigabytes "$bytes") of $(gigabytes "$total"), $((bytes * 100 / total))%"
+      else
+        progress=$(gigabytes "$bytes")
+      fi
       if [[ -n ${last_size[$file]:-} ]]; then
-        info "Downloading $(repo_name "$file"): $(gigabytes "$bytes")," \
+        info "Downloading $(repo_name "$file"): $progress," \
           "$(((bytes - last_size[$file]) / PROGRESS_INTERVAL / 1000000)) MB/s"
       else
-        info "Downloading $(repo_name "$file") to $file: $(gigabytes "$bytes")"
+        info "Downloading $(repo_name "$file") to $file: $progress"
       fi
     done < <(find "$MODELS_DIR" -name '*.downloadInProgress' -print0)
 

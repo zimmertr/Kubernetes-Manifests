@@ -16,7 +16,7 @@ Every request needs `Authorization: Bearer <key>`, with the key from the `llama-
 
 1. Create the `FlashPool/vm-9999-AI-Models` volume and the Secrets, see [Secrets and Volumes](../../README.md#secrets-and-volumes) in the root README. The Hugging Face token is only needed for gated repos.
 
-2. Models are declared in [configs/config.yaml](configs/config.yaml). A language model names its Hugging Face repo and quant with `-hf user/repo:QUANT` on its own line. An image model gives `sd-server` file paths under `/models/hf/user/repo/`, which map to files in that Hugging Face repo. The `model-downloader` sidecar fetches whatever the config names into `/models`, verifies each file's SHA-256, and logs where it put it. llama-swap starts straight away; a model still downloading fails until it's there.
+2. Models are declared in [configs/config.yaml](configs/config.yaml). A language model names its Hugging Face repo and quant with `-hf user/repo:QUANT` on its own line. An image model gives `sd-server` file paths under `/models/hf/user/repo/`, which map to files in that Hugging Face repo. The `model-downloader` sidecar fetches whatever the config names into `/models`, verifies each file's SHA-256, and logs each download's progress and where it put it. llama-swap starts straight away; a model still downloading fails until it's there.
 
 3. Models I don't want in Git go in an optional ConfigMap, which the downloader and llama-swap both watch:
 
