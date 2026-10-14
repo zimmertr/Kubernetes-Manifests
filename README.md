@@ -8,7 +8,6 @@
     * [Cilium](#cilium)
   * [Argo CD](#argo-cd)
   * [Secrets and Volumes](#secrets-and-volumes)
-  * [AI](#ai)
   
 
 <hr>
@@ -154,9 +153,3 @@ kubectl create secret generic strava-heatmap-proxy-cookies -n strava-heatmap-pro
   --from-file=strava-cookies.json=public/strava-heatmap-proxy/files/strava-cookies.json \
   --dry-run=client -o yaml | kubectl apply -f-
 ```
-
-<hr>
-
-### AI
-
-[llama-swap](ai/llama-swap/README.md) serves language and image models from the GPU node at `http://192.168.40.140:8080`, with OpenAI and Anthropic APIs, and [Open WebUI](ai/open-webui/README.md) is the chat interface for it at `http://192.168.40.141`. Their READMEs cover adding a model and using the endpoint from Claude Code.
