@@ -194,16 +194,26 @@ hf_get() {
 }
 
 # A model's manifest lists every blob with its digest and size. The digest is
-# the blob's file name in the cache.
+# the blob's file name in the cache. A model split into shards is the
+# exception: the manifest names only the first shard, a few megabytes of
+# metadata, so the others are looked up as files.
 note_model_sizes() {
-  local model=$1 tag=latest
+  local model=$1 tag=latest manifest first count shard
   [[ $model == *:* ]] && tag=${model#*:}
-  hf_get "https://huggingface.co/v2/${model%%:*}/manifests/$tag" 2> /dev/null |
-    tr --delete ' \n' |
+  manifest=$(hf_get "https://huggingface.co/v2/${model%%:*}/manifests/$tag" 2> /dev/null | tr --delete ' \n') || return 0
+  printf '%s' "$manifest" |
     grep --only-matching --extended-regexp '"digest":"sha256:[0-9a-f]{64}"|"size":[0-9]+' |
     sed --expression 's/"digest":"sha256://' --expression 's/"size"://' --expression 's/"//g' |
     paste --delimiters=' ' - - |
     note_sizes || true
+
+  first=$(printf '%s' "$manifest" | grep --only-matching --extended-regexp '"rfilename":"[^"]*-00001-of-[0-9]{5}\.gguf"' | head -1 | cut --delimiter='"' --fields=4)
+  [[ -n $first ]] || return 0
+  count=${first##*-of-}
+  count=${count%.gguf}
+  for shard in $(seq --format='%05.0f' 2 "$((10#$count))"); do
+    note_file_sizes "${model%%:*}" "${first/-00001-of-/-$shard-of-}"
+  done
 }
 
 # A file's headers carry the same two facts for its one blob.
