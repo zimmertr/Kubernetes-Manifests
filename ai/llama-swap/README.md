@@ -18,6 +18,8 @@ Every request needs `Authorization: Bearer <key>`, with the key from the `llama-
 
 2. Models are declared in [configs/config.yaml](configs/config.yaml). A language model names its Hugging Face repo and quant with `-hf user/repo:QUANT` on its own line. An image model gives `sd-server` file paths under `/models/hf/user/repo/`, which map to files in that Hugging Face repo. The `model-downloader` sidecar fetches whatever the config names into `/models`, verifies each file's SHA-256, and logs each download's progress and where it put it. llama-swap starts straight away; a model still downloading fails until it's there.
 
+   Ideogram 4 only reads its JSON caption schema; a plain sentence comes back as a "blocked by safety filter" banner. Ideogram's [prompting guide](https://github.com/ideogram-oss/ideogram4/blob/main/docs/prompting.md) has the schema and the system prompt that turns a sentence into a caption, which any chat model here can run.
+
 3. Models I don't want in Git go in an optional ConfigMap, which the downloader and llama-swap both watch:
 
    ```bash
