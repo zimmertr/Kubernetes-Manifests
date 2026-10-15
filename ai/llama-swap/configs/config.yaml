@@ -106,6 +106,23 @@ models:
       --fa
       --cfg-scale 6.0
 
+  # Ideogram 4 for lettering and photographs. It was trained only on JSON
+  # captions, so a plain sentence draws its "Image blocked by safety filter"
+  # banner: write the caption to its schema, or have a chat model write it
+  # with the magic-prompt system prompt from ideogram-oss/ideogram4. The
+  # weights stream from RAM (--offload-to-cpu); with everything in VRAM it
+  # was a third slower, not faster.
+  "ideogram-4":
+    checkEndpoint: /v1/models
+    cmd: |
+      ${sd-server}
+      --diffusion-model /models/hf/leejet/ideogram-4-GGUF/ideogram4-Q4_0.gguf
+      --uncond-diffusion-model /models/hf/leejet/ideogram-4-GGUF/ideogram4_uncond-Q4_0.gguf
+      --llm /models/hf/Qwen/Qwen3-VL-8B-Instruct-GGUF/Qwen3VL-8B-Instruct-Q8_0.gguf
+      --vae /models/hf/Comfy-Org/flux2-dev/split_files/vae/flux2-vae.safetensors
+      --offload-to-cpu
+      --diffusion-fa
+
 hooks:
   on_startup:
     preload:
