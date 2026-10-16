@@ -152,9 +152,11 @@ kubectl create secret generic litellm-llama-swap-api-key -n litellm-system \
   --from-literal=api-key="$LITELLM_API_KEY"
 kubectl create secret generic litellm-master-key -n litellm-system \
   --from-literal=master-key="sk-$(openssl rand -hex 24)"
-# Hex, because the password goes into a connection URL.
+# Hex, because LiteLLM puts the password in a connection URL.
 kubectl create secret generic litellm-postgres -n litellm-system \
-  --from-literal=username=litellm --from-literal=password="$(openssl rand -hex 24)"
+  --from-literal=superuser-password="$(openssl rand -hex 24)" \
+  --from-literal=database=litellm --from-literal=username=litellm \
+  --from-literal=password="$(openssl rand -hex 24)"
 
 # Mountaineers Activity Scraper
 # See misc/mountaineers-activity-scraper/README.md

@@ -1,0 +1,28 @@
+# LiteLLM's dashboard, its logins and its request logs need PostgreSQL. The
+# chart runs the official image as the postgres user with a read-only root
+# filesystem by default.
+
+# The static volume in resources/, so the data outlives the app and the
+# cluster.
+storage:
+  persistentVolumeClaimName: litellm-postgres-data
+
+# One Secret holds the superuser password and LiteLLM's own user, which
+# LiteLLM reads too.
+settings:
+  existingSecret: litellm-postgres
+  superuserPassword:
+    secretKey: superuser-password
+userDatabase:
+  existingSecret: litellm-postgres
+  name:
+    secretKey: database
+  user:
+    secretKey: username
+  password:
+    secretKey: password
+
+resources:
+  requests:
+    cpu: 50m
+    memory: 256Mi

@@ -4,7 +4,6 @@ resources:
   - resources/namespace.yml
   - resources/persistentVolume.yml
   - resources/persistentVolumeClaim.yml
-  - resources/postgres.yml
 
 helmCharts:
   - name: litellm-helm
@@ -18,3 +17,9 @@ helmCharts:
     # The chart's test hooks are busybox Pods that Argo would run as part of
     # the app.
     skipTests: true
+  - name: postgres
+    repo: https://groundhog2k.github.io/helm-charts/
+    version: 1.6.8 # https://github.com/groundhog2k/helm-charts/releases
+    releaseName: litellm-postgres
+    namespace: litellm-system
+    valuesFile: values-postgres.yml

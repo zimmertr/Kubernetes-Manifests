@@ -1,4 +1,4 @@
-# The Postgres in resources/postgres.yml, not the chart's bundled one, whose
+# The groundhog2k Postgres beside it, not the chart's bundled one, whose
 # Bitnami images are no longer maintained.
 db:
   deployStandalone: false
