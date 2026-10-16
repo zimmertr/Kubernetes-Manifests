@@ -51,3 +51,36 @@ Every request needs `Authorization: Bearer <key>`, with the key from the `llama-
    ```
 
    With those mappings, `/model sonnet` is the 35B and `/model opus` is the 27B.
+
+7. A flat icon or logo that traces to an SVG path. Ask for a silhouette and let the trace force it to one colour:
+
+   ```bash
+   export KEY=$(kubectl -n llama-swap-system get secret llama-swap-api-key -o jsonpath='{.data.api-key}' | base64 -d)
+   export PROMPT='Flat vector icon of a sitting fox, single solid black silhouette on a plain white background, no outline, no gradient, no shading, no text, centered, simple geometric shapes'
+   ```
+
+   Ideogram 4 draws the cleanest glyphs but only reads its JSON captions, so a chat model writes the caption first, with Ideogram's own magic-prompt system prompt:
+
+   ```bash
+   curl -sLo magic.txt https://raw.githubusercontent.com/ideogram-oss/ideogram4/main/src/ideogram4/magic_prompt_system_prompts/v1.txt
+   SYSTEM=$(sed -n '/^\[SYSTEM\]/,/^\[USER\]/p' magic.txt | sed '1d;$d')
+   CAPTION=$(jq -n --arg s "$SYSTEM" --arg p "TARGET IMAGE ASPECT RATIO: 1:1 (width:height).
+   User idea: $PROMPT" '{model:"qwen3.6-35b-a3b",temperature:1,chat_template_kwargs:{enable_thinking:false},messages:[{role:"system",content:$s},{role:"user",content:$p}]}' |
+     curl -s -H "Authorization: Bearer $KEY" -H 'Content-Type: application/json' http://192.168.40.140:8080/v1/chat/completions -d @- |
+     jq -r '.choices[0].message.content' | jq -c 'del(.aspect_ratio)')
+   jq -n --arg c "$CAPTION" '{model:"ideogram-4",prompt:$c,size:"1024x1024"}' |
+     curl -s -H "Authorization: Bearer $KEY" -H 'Content-Type: application/json' http://192.168.40.140:8080/v1/images/generations -d @- |
+     jq -r '.data[0].b64_json' | base64 -d > icon.png
+   ```
+
+   Z-Image-Turbo takes `$PROMPT` as is and is three times faster, so it's the one for a handful of candidates (`"n": 4`). Qwen-Image-2.1 is the weakest of the three at this.
+
+   Then threshold and trace. Everything that isn't close to white is the glyph, which is what makes a coloured fill come out as one shape:
+
+   ```bash
+   brew install potrace imagemagick
+   magick icon.png -fuzz 30% -fill black +opaque white -colorspace gray -threshold 90% icon.pbm
+   potrace --svg --turdsize 20 --alphamax 1 -o icon.svg icon.pbm
+   ```
+
+   `--turdsize` drops specks and `--alphamax 1` rounds the corners. The path comes out in 1024pt units; rescale the `viewBox` to taste.
