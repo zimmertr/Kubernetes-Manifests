@@ -142,6 +142,16 @@ kubectl create secret generic open-webui-admin -n open-webui-system \
 kubectl create secret generic open-webui-secret-key -n open-webui-system \
   --from-literal=secret-key="$(openssl rand -hex 32)"
 
+# LiteLLM
+# Its llama-swap API key is stored in both namespaces.
+LITELLM_API_KEY="sk-$(openssl rand -hex 24)"
+kubectl create secret generic llama-swap-litellm-api-key -n llama-swap-system \
+  --from-literal=api-key="$LITELLM_API_KEY"
+kubectl create secret generic litellm-llama-swap-api-key -n litellm-system \
+  --from-literal=api-key="$LITELLM_API_KEY"
+kubectl create secret generic litellm-master-key -n litellm-system \
+  --from-literal=master-key="sk-$(openssl rand -hex 24)"
+
 # Mountaineers Activity Scraper
 # See misc/mountaineers-activity-scraper/README.md
 kubectl create secret generic mountaineers-activity-scraper-creds -n mountaineers-activity-scraper-system \

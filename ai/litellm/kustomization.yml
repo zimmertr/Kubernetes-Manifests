@@ -1,0 +1,17 @@
+namespace: litellm-system
+
+resources:
+  - resources/namespace.yml
+
+helmCharts:
+  - name: litellm-helm
+    repo: oci://ghcr.io/berriai
+    version: 1.105.1 # https://github.com/BerriAI/litellm/releases
+    releaseName: litellm
+    namespace: litellm-system
+    valuesFile: values.yml
+    additionalValuesFiles:
+      - configs/config.yaml
+    # The chart's test hooks are busybox Pods that Argo would run as part of
+    # the app.
+    skipTests: true
