@@ -70,10 +70,8 @@ models:
   # The sampling settings are Qwen's recommendation for thinking mode on
   # precise coding tasks. Claude Code sends no sampling parameters, so these
   # flags decide how it samples; a client that sends its own still wins.
-  # preserve_thinking keeps earlier turns' reasoning in the prompt, as Qwen
-  # recommends for agents: the template otherwise drops it once a new user
-  # message arrives, which also changes the prompt's prefix and throws away
-  # the prompt cache.
+  # Qwen also recommends preserve_thinking for agents, which llama-server
+  # already turns on for templates that support it.
   "qwen3.6-35b-a3b":
     cmd: |
       ${llama-server-coding}
@@ -85,7 +83,6 @@ models:
       --top-k 20
       --min-p 0
       --presence-penalty 0
-      --chat-template-kwargs '{"preserve_thinking":true}'
 
   # Dense: every weight is read per token, so it's slower and often smarter.
   # 160k leaves a margin below the most that fits. It keeps the default
