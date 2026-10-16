@@ -1,0 +1,35 @@
+# A static volume rather than a dynamic one, so LiteLLM's request logs and
+# settings outlive the app and the cluster.
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: litellm-postgres-data
+spec:
+  accessModes:
+    - ReadWriteOnce
+  capacity:
+    storage: 10Gi
+  csi:
+    driver: csi.proxmox.sinextra.dev
+    fsType: xfs
+    volumeAttributes:
+      cache: writethrough
+      ssd: "true"
+      storage: FlashPool
+    volumeHandle: sol-milkyway/earth/FlashPool/vm-9999-LiteLLM-Postgres-Data
+  mountOptions:
+    - noatime
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: topology.kubernetes.io/region
+          operator: In
+          values:
+            - sol-milkyway
+        - key: topology.kubernetes.io/zone
+          operator: In
+          values:
+            - earth
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: proxmox-flashpool

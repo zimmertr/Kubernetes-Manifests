@@ -97,6 +97,7 @@ zfs create -s -V 10G FlashPool/vm-9999-ruTorrent-Data
 zfs create -s -V 10G FlashPool/vm-9999-Sonarr-Data
 zfs create -s -V 500G FlashPool/vm-9999-AI-Models
 zfs create -s -V 10G FlashPool/vm-9999-Open-WebUI-Data
+zfs create -s -V 10G FlashPool/vm-9999-LiteLLM-Postgres-Data
 ```
 
 Apply [terraform/cloudflare](terraform/cloudflare/README.md) for the Cloudflare tunnel, DNS records and cert-manager API token:
@@ -151,6 +152,9 @@ kubectl create secret generic litellm-llama-swap-api-key -n litellm-system \
   --from-literal=api-key="$LITELLM_API_KEY"
 kubectl create secret generic litellm-master-key -n litellm-system \
   --from-literal=master-key="sk-$(openssl rand -hex 24)"
+# Hex, because the password goes into a connection URL.
+kubectl create secret generic litellm-postgres -n litellm-system \
+  --from-literal=username=litellm --from-literal=password="$(openssl rand -hex 24)"
 
 # Mountaineers Activity Scraper
 # See misc/mountaineers-activity-scraper/README.md

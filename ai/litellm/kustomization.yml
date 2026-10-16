@@ -2,6 +2,9 @@ namespace: litellm-system
 
 resources:
   - resources/namespace.yml
+  - resources/persistentVolume.yml
+  - resources/persistentVolumeClaim.yml
+  - resources/postgres.yml
 
 helmCharts:
   - name: litellm-helm

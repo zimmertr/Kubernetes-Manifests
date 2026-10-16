@@ -1,8 +1,16 @@
-# The master key is the only credential LiteLLM checks, so it runs without a
-# database: none of the chart's PostgreSQL, Redis or schema migrations.
+# The Postgres in resources/postgres.yml, not the chart's bundled one, whose
+# Bitnami images are no longer maintained.
 db:
   deployStandalone: false
-  useExisting: false
+  useExisting: true
+  endpoint: litellm-postgres
+  database: litellm
+  secret:
+    name: litellm-postgres
+    usernameKey: username
+    passwordKey: password
+# LiteLLM applies its schema migrations itself at startup. The chart's Job
+# would run as an Argo PreSync hook, before Postgres exists on a first sync.
 migrationJob:
   enabled: false
 

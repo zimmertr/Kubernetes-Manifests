@@ -4,7 +4,9 @@
 
 It serves `http://192.168.40.142:4000`. Every request needs `x-litellm-api-key: Bearer <key>`, with the key from the `litellm-master-key` Secret.
 
-1. Create the Secrets, see [Secrets and Volumes](../../README.md#secrets-and-volumes) in the root README.
+Its dashboard at `http://192.168.40.142:4000/ui` shows every request, with its model, latency and tokens. Sign in as `admin` with the master key. The dashboard and the request logs live in a PostgreSQL instance beside it, on a static volume.
+
+1. Create the volume and the Secrets, see [Secrets and Volumes](../../README.md#secrets-and-volumes) in the root README.
 
 2. Routes are declared in [configs/config.yaml](configs/config.yaml). A local model is an `openai/` route to llama-swap with LiteLLM's llama-swap key. Never make it an `anthropic/` route: LiteLLM would forward the caller's claude.ai login to llama-swap in place of that key.
 
