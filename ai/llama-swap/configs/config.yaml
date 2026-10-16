@@ -8,6 +8,7 @@ logToStdout: "proxy,upstream"
 apiKeys:
   - "${env.LLAMA_SWAP_API_KEY}"
   - "${env.LLAMA_SWAP_OPEN_WEBUI_API_KEY}"
+  - "${env.LLAMA_SWAP_LITELLM_API_KEY}"
 
 # A request to /upstream/<model>/<path> loads that model, as any request does.
 # Prometheus scrapes every language model's /metrics there on a schedule, and

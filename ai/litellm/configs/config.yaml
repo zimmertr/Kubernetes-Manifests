@@ -1,0 +1,40 @@
+# Merged into the chart's values, so the chart builds the ConfigMap and rolls the
+# pod when this changes: LiteLLM reads its config only at startup.
+# https://docs.litellm.ai/docs/proxy/configs
+proxy_config:
+  # Routed by the request's model id, so one ANTHROPIC_BASE_URL serves both
+  # Claude and the local models.
+  model_list:
+    # No api_key on purpose: LiteLLM forwards the caller's own claude.ai login,
+    # so usage stays on their subscription. A key here would be used, and
+    # billed, for any request that arrived without one.
+    - model_name: "claude-*"
+      litellm_params:
+        model: "anthropic/claude-*"
+
+    # Through llama-swap's OpenAI API, with LiteLLM translating from Anthropic's
+    # format. An anthropic/ route would forward the caller's claude.ai login to
+    # llama-swap in place of llama-swap's own key.
+    - model_name: "qwen3.6-35b-a3b"
+      litellm_params:
+        model: "openai/qwen3.6-35b-a3b"
+        api_base: "http://llama-swap.llama-swap-system.svc:8080/v1"
+        api_key: "os.environ/LLAMA_SWAP_API_KEY"
+        # Loading the model and reading Claude Code's long prompt can take
+        # minutes after a swap.
+        timeout: 900
+
+  litellm_settings:
+    # Claude Code sends Anthropic-only parameters (thinking, effort,
+    # context_management) that the OpenAI side rejects.
+    drop_params: true
+
+  router_settings:
+    # An expired login would otherwise take the Claude route out of rotation
+    # for everyone for a few minutes.
+    disable_cooldowns: true
+
+  general_settings:
+    # Clients send it in x-litellm-api-key. The subscription passthrough has
+    # been reported to fail without one (BerriAI/litellm#42170).
+    master_key: "os.environ/PROXY_MASTER_KEY"

@@ -1,0 +1,48 @@
+# The master key is the only credential LiteLLM checks, so it runs without a
+# database: none of the chart's PostgreSQL, Redis or schema migrations.
+db:
+  deployStandalone: false
+  useExisting: false
+migrationJob:
+  enabled: false
+
+image:
+  pullPolicy: IfNotPresent
+
+# Clients authenticate with this key in the x-litellm-api-key header.
+masterkeySecretName: litellm-master-key
+masterkeySecretKey: master-key
+
+# Its own key for llama-swap, so it can be revoked without touching other
+# clients.
+extraEnvVars:
+  - name: LLAMA_SWAP_API_KEY
+    valueFrom:
+      secretKeyRef:
+        name: litellm-llama-swap-api-key
+        key: api-key
+
+# A read-only root filesystem makes the chart mount the scratch directories
+# LiteLLM writes to.
+podSecurityContext:
+  seccompProfile:
+    type: RuntimeDefault
+securityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+  runAsGroup: 1000
+  readOnlyRootFilesystem: true
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+      - ALL
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 512Mi
+
+service:
+  type: LoadBalancer
+  annotations:
+    metallb.universe.tf/loadBalancerIPs: 192.168.40.142

@@ -12,7 +12,7 @@ It serves `http://192.168.40.140:8080`:
 | `/ui/` | Playground, logs, and GPU performance graphs |
 | `/metrics`, `/upstream/<model>/metrics` | Prometheus metrics: host and GPU stats from llama-swap, tokens and requests from the loaded model's `llama-server` |
 
-Every request needs `Authorization: Bearer <key>`, with the key from the `llama-swap-api-key` Secret. Open WebUI has its own key so it can be revoked on its own.
+Every request needs `Authorization: Bearer <key>`, with the key from the `llama-swap-api-key` Secret. Open WebUI and [LiteLLM](../litellm) each have their own key so they can be revoked on their own.
 
 1. Create the `FlashPool/vm-9999-AI-Models` volume and the Secrets, see [Secrets and Volumes](../../README.md#secrets-and-volumes) in the root README. The Hugging Face token is only needed for gated repos.
 
@@ -51,3 +51,5 @@ Every request needs `Authorization: Bearer <key>`, with the key from the `llama-
    ```
 
    With those mappings, `/model sonnet` is the 35B and `/model opus` is the 27B.
+
+   To keep Claude in the same session and hand work to a local model as a subagent, go through [LiteLLM](../litellm) instead.

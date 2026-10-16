@@ -53,6 +53,11 @@ env:
       secretKeyRef:
         name: llama-swap-open-webui-api-key
         key: api-key
+  - name: LLAMA_SWAP_LITELLM_API_KEY
+    valueFrom:
+      secretKeyRef:
+        name: llama-swap-litellm-api-key
+        key: api-key
   - name: LLAMA_CACHE
     value: /models
   # Mesa compiles the GPU's shaders on every model load unless it can cache
