@@ -1,15 +1,15 @@
 namespace: bluebird-system
 
+  # The database subchart ships a ping Job as a Helm test hook, which Argo CD
+  # would run as an ordinary Job on every sync.
 helmCharts:
 - name: bluebird-helm
   namespace: bluebird-system
   releaseName: bluebird
   repo: oci://registry-1.docker.io/zimmertr
+  skipTests: true
   valuesFile: values.yml
   version: 0.16.34
-  # The database subchart ships a ping Job as a Helm test hook, which Argo CD
-  # would run as an ordinary Job on every sync.
-  skipTests: true
 
 resources:
 - resources/namespace.yml
@@ -21,6 +21,6 @@ resources:
 images:
 - name: zimmertr/bluebird
   newName: zimmertr/bluebird
-  newTag: 0.116.0
+  newTag: 0.117.0
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
