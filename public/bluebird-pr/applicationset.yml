@@ -50,6 +50,15 @@ spec:
               # allowlist the chart ships by default (bluebird#240) is off
               # here and the whole surface is published.
               publishFullApi: true
+            # Previews read production's database rather than run one each,
+            # with a login that can only read (bluebird#760). The maintainer's
+            # condition, 2026-10-18: only while that database holds cached
+            # public data. Once it holds anything else, previews must not
+            # touch production's.
+            database:
+              enabled: false
+              existingSecret: bluebird-database-preview
+              readOnly: true
             extraEnv:
               - name: PREVIEW_BANNER
                 value: "true"

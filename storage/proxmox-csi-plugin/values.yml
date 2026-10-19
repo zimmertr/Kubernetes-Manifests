@@ -17,6 +17,13 @@ storageClass:
     storage: local
     fstype: xfs
     reclaimPolicy: Retain
+  # Throwaway space for a Job's ephemeral volume, deleted with its claim:
+  # bluebird's planet fill downloads 95 GB here and keeps none of it
+  # (bluebird#760).
+  - name: proxmox-datapool-scratch
+    storage: DataPool
+    fstype: xfs
+    reclaimPolicy: Delete
 
 # The chart's tolerations, plus the GPU node's taint, so pods there can mount
 # Proxmox volumes. Helm replaces lists, so the defaults are repeated.

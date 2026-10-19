@@ -33,6 +33,36 @@ topologySpreadConstraints:
 
 revisionHistoryLimit: 1
 
+# The shared cache (bluebird#760). The chart's defaults apart from where the
+# data lives, when Argo CD syncs it, and a login for the PR previews.
+database:
+  cluster:
+    annotations:
+      # After the operator and the volume (-2), before the app (0), whose
+      # pods read the Secret the operator writes for this Cluster.
+      argocd.argoproj.io/sync-wave: "-1"
+      # The Cluster CRD arrives in the same sync, so a dry run before it
+      # exists would fail.
+      argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+    storage:
+      size: 10Gi
+      storageClass: proxmox-flashpool
+    # The previews read this database with a login that can only read. The
+    # maintainer's condition, 2026-10-18: only while it holds cached public
+    # data. Once it holds anything else, previews and CI must not touch it.
+    roles:
+      - name: bluebird_preview
+        ensure: present
+        login: true
+        inRoles:
+          - pg_read_all_data
+        passwordSecret:
+          name: bluebird-database-preview
+
+fill:
+  scratch:
+    storageClass: proxmox-datapool-scratch
+
 extraEnv:
   - name: LOG_LEVEL
     value: INFO
