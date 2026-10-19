@@ -38,11 +38,12 @@ revisionHistoryLimit: 1
 database:
   cluster:
     annotations:
-      # After the operator and the volume (-2), before the app (0), whose
-      # pods read the Secret the operator writes for this Cluster.
+      # After its volume (-2), before the app (0), whose pods read the
+      # Secret the operator writes for this Cluster.
       argocd.argoproj.io/sync-wave: "-1"
-      # The Cluster CRD arrives in the same sync, so a dry run before it
-      # exists would fail.
+      # The operator is its own app (misc/cloudnative-pg), so on a first
+      # install this can sync before the Cluster CRD exists, and a dry run
+      # would fail.
       argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
     storage:
       size: 10Gi
