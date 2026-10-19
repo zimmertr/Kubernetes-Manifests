@@ -15,7 +15,7 @@ helmCharts:
     repo: https://cloudnative-pg.github.io/charts
     version: 0.29.1 # https://github.com/cloudnative-pg/charts/releases
     releaseName: cnpg
-    namespace: cnpg-system
+    namespace: postgres-system
 
 # The CRDs are larger than the 256 KiB a client-side apply can record in its
 # annotation, so Argo CD applies them server-side. The chart's CRD template
