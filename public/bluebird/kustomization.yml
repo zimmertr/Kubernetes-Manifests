@@ -7,9 +7,13 @@ helmCharts:
   repo: oci://registry-1.docker.io/zimmertr
   valuesFile: values.yml
   version: 0.16.34
+  # The database subchart ships a ping Job as a Helm test hook, which Argo CD
+  # would run as an ordinary Job on every sync.
+  skipTests: true
 
 resources:
 - resources/namespace.yml
+- resources/persistentVolume.yml
 - resources/analysisTemplate-apiTest.yml
 - resources/analysisTemplate-errorRate.yml
 - resources/analysisTemplate-versionCheck.yml

@@ -98,6 +98,7 @@ zfs create -s -V 10G FlashPool/vm-9999-Sonarr-Data
 zfs create -s -V 500G FlashPool/vm-9999-AI-Models
 zfs create -s -V 10G FlashPool/vm-9999-Open-WebUI-Data
 zfs create -s -V 10G FlashPool/vm-9999-LiteLLM-Postgres-Data
+zfs create -s -V 10G FlashPool/vm-9999-Bluebird-Data
 ```
 
 Apply [terraform/cloudflare](terraform/cloudflare/README.md) for the Cloudflare tunnel, DNS records and cert-manager API token:
@@ -157,6 +158,16 @@ kubectl create secret generic litellm-postgres -n litellm-system \
   --from-literal=superuser-password="$(openssl rand -hex 24)" \
   --from-literal=database=litellm --from-literal=username=litellm \
   --from-literal=password="$(openssl rand -hex 24)"
+
+# Bluebird Forecast
+# A login that can only read the shared cache, for the PR previews
+# (zimmertr/bluebird#760). Hex, because the password goes in a connection URL.
+BLUEBIRD_PREVIEW_PASSWORD="$(openssl rand -hex 24)"
+kubectl create secret generic bluebird-database-preview -n bluebird-system \
+  --type=kubernetes.io/basic-auth \
+  --from-literal=username=bluebird_preview --from-literal=password="$BLUEBIRD_PREVIEW_PASSWORD"
+kubectl create secret generic bluebird-database-preview -n bluebird-pr-system \
+  --from-literal=uri="postgresql://bluebird_preview:${BLUEBIRD_PREVIEW_PASSWORD}@bluebird-database-rw.bluebird-system:5432/app"
 
 # Mountaineers Activity Scraper
 # See misc/mountaineers-activity-scraper/README.md
