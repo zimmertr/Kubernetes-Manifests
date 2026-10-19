@@ -34,12 +34,13 @@ topologySpreadConstraints:
 revisionHistoryLimit: 1
 
 # The shared cache (bluebird#760). The chart's defaults apart from where the
-# data lives, when Argo CD syncs it, and a login for the PR previews.
+# data lives, when Argo CD syncs it, and a login for the PR previews. Each of
+# the chart's three instances gets its own dynamically provisioned volume.
 database:
   cluster:
     annotations:
-      # After its volume (-2), before the app (0), whose pods read the
-      # Secret the operator writes for this Cluster.
+      # Before the app (0), whose pods read the Secret the operator writes
+      # for this Cluster.
       argocd.argoproj.io/sync-wave: "-1"
       # The operator is its own app (misc/cloudnative-pg), so on a first
       # install this can sync before the Cluster CRD exists, and a dry run
