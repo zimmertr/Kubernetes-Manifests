@@ -27,7 +27,7 @@ Its dashboard at `http://192.168.40.142:4000/ui` shows every request, with its m
    ---
    name: qwen-coder
    description: Local Qwen coding worker. Give it a precise plan; it edits files, runs the tests and reports back.
-   model: qwen3.8-27b
+   model: qwen3.6-35b-a3b
    tools: Read, Edit, Write, Bash, Grep, Glob
    ---
 

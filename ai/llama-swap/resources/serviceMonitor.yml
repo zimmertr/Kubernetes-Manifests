@@ -33,7 +33,7 @@ spec:
         - targetLabel: model
           replacement: qwen3.6-35b-a3b
     - port: http
-      path: /upstream/qwen3.8-27b/metrics
+      path: /upstream/qwen3.6-27b/metrics
       authorization:
         credentials:
           name: llama-swap-api-key
@@ -42,4 +42,4 @@ spec:
         - targetLabel: job
           replacement: llama-server
         - targetLabel: model
-          replacement: qwen3.8-27b
+          replacement: qwen3.6-27b
