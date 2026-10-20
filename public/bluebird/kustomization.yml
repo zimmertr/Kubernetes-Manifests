@@ -9,7 +9,7 @@ helmCharts:
   repo: oci://registry-1.docker.io/zimmertr
   skipTests: true
   valuesFile: values.yml
-  version: 0.16.35
+  version: 0.16.37
 
 resources:
 - resources/namespace.yml
@@ -20,6 +20,6 @@ resources:
 images:
 - name: zimmertr/bluebird
   newName: zimmertr/bluebird
-  newTag: 0.117.0
+  newTag: 0.117.2
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
