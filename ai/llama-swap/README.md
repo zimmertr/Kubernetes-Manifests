@@ -45,11 +45,11 @@ Every request needs `Authorization: Bearer <key>`, with the key from the `llama-
    ```bash
    export ANTHROPIC_BASE_URL=http://192.168.40.140:8080
    export ANTHROPIC_AUTH_TOKEN=$(kubectl -n llama-swap-system get secret llama-swap-api-key -o jsonpath='{.data.api-key}' | base64 -d)
-   export ANTHROPIC_MODEL=qwen3.6-35b-a3b ANTHROPIC_DEFAULT_OPUS_MODEL=qwen3.6-27b ANTHROPIC_DEFAULT_SONNET_MODEL=qwen3.6-35b-a3b ANTHROPIC_DEFAULT_HAIKU_MODEL=qwen3.6-35b-a3b ANTHROPIC_DEFAULT_FABLE_MODEL=qwen3.6-35b-a3b CLAUDE_CODE_SUBAGENT_MODEL=qwen3.6-35b-a3b
+   export ANTHROPIC_MODEL=qwen3.8-27b ANTHROPIC_DEFAULT_OPUS_MODEL=qwen3.8-27b ANTHROPIC_DEFAULT_SONNET_MODEL=qwen3.6-35b-a3b ANTHROPIC_DEFAULT_HAIKU_MODEL=qwen3.6-35b-a3b ANTHROPIC_DEFAULT_FABLE_MODEL=qwen3.8-27b CLAUDE_CODE_SUBAGENT_MODEL=qwen3.8-27b
    export CLAUDE_CODE_ATTRIBUTION_HEADER=0 CLAUDE_CODE_MAX_CONTEXT_TOKENS=262144 CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1
    claude
    ```
 
-   With those mappings, `/model sonnet` is the 35B and `/model opus` is the 27B.
+   With those mappings, `/model opus` is the dense 27B and `/model sonnet` is the faster 35B mixture of experts.
 
    To keep Claude in the same session and hand work to a local model as a subagent, go through [LiteLLM](../litellm) instead.
