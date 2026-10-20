@@ -98,7 +98,6 @@ zfs create -s -V 10G FlashPool/vm-9999-Sonarr-Data
 zfs create -s -V 500G FlashPool/vm-9999-AI-Models
 zfs create -s -V 10G FlashPool/vm-9999-Open-WebUI-Data
 zfs create -s -V 10G FlashPool/vm-9999-LiteLLM-Postgres-Data
-zfs create -s -V 10G FlashPool/vm-9999-Bluebird-Data
 ```
 
 Apply [terraform/cloudflare](terraform/cloudflare/README.md) for the Cloudflare tunnel, DNS records and cert-manager API token:

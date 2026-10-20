@@ -13,7 +13,6 @@ helmCharts:
 
 resources:
 - resources/namespace.yml
-- resources/persistentVolume.yml
 - resources/analysisTemplate-apiTest.yml
 - resources/analysisTemplate-errorRate.yml
 - resources/analysisTemplate-versionCheck.yml
