@@ -25,6 +25,10 @@ configMapGenerator:
   - name: llama-swap-model-downloader
     files:
       - files/model-downloader.sh
+  # Chat templates that replace a model's embedded one, for --chat-template-file.
+  - name: llama-swap-chat-templates
+    files:
+      - files/qwen3.8-27b.jinja
 
 # The chart sets llama-swap's arguments itself, with no way to add one.
 patches:

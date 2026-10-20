@@ -92,10 +92,13 @@ models:
   # times slower. The sampling settings are Qwen's recommendation for thinking
   # mode, which differs from Qwen3.6's in its temperature. The qwen-coder
   # subagent runs on this model, so they decide how Claude Code samples.
+  # Its embedded chat template rejects a system message that isn't first,
+  # which every Claude Code request has, so a patched copy replaces it.
   "qwen3.8-27b":
     cmd: |
       ${llama-server-coding}
       -hf unsloth/Qwen3.8-27B-GGUF:UD-Q5_K_M
+      --chat-template-file /etc/llama-swap/templates/qwen3.8-27b.jinja
       --ctx-size 163840
       --temp 1.0
       --top-p 0.95

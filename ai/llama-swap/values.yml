@@ -117,11 +117,17 @@ extraVolumes:
   - name: model-downloader
     configMap:
       name: llama-swap-model-downloader
+  - name: chat-templates
+    configMap:
+      name: llama-swap-chat-templates
 extraVolumeMounts:
   - name: models
     mountPath: /models
   - name: extra-config
     mountPath: /etc/llama-swap/extra
+    readOnly: true
+  - name: chat-templates
+    mountPath: /etc/llama-swap/templates
     readOnly: true
 
 service:
