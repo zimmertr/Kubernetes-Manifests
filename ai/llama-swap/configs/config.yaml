@@ -85,23 +85,13 @@ models:
       --presence-penalty 0
 
   # Dense: every weight is read per token, so it's slower and often smarter.
-  # Qwen3.8-27B has Qwen3.6-27B's exact shape: 64 layers with attention in 1
-  # of 4, 4 KV heads of 256, so its KV cache costs the same 64 KiB a token,
-  # and 160k leaves the same margin below the most that fit for Qwen3.6-27B.
-  # It keeps the default micro-batch: on Qwen3.6-27B, 2048 read prompts three
-  # times slower. The sampling settings are Qwen's recommendation for thinking
-  # mode, which differs from Qwen3.6's in its temperature. The qwen-coder
-  # subagent runs on this model, so they decide how Claude Code samples.
-  "qwen3.8-27b":
+  # 160k leaves a margin below the most that fits. It keeps the default
+  # micro-batch, since 2048 read prompts three times slower on this model.
+  "qwen3.6-27b":
     cmd: |
       ${llama-server-coding}
-      -hf unsloth/Qwen3.8-27B-GGUF:UD-Q5_K_M
+      -hf unsloth/Qwen3.6-27B-GGUF:Q5_K_M
       --ctx-size 163840
-      --temp 1.0
-      --top-p 0.95
-      --top-k 20
-      --min-p 0
-      --presence-penalty 0
 
   # sd-server has no /health, so llama-swap checks /v1/models instead.
   "z-image-turbo":
@@ -148,4 +138,4 @@ models:
 hooks:
   on_startup:
     preload:
-      - "qwen3.8-27b"
+      - "qwen3.6-35b-a3b"

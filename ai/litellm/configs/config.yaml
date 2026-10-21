@@ -15,19 +15,13 @@ proxy_config:
     # Through llama-swap's OpenAI API, with LiteLLM translating from Anthropic's
     # format. An anthropic/ route would forward the caller's claude.ai login to
     # llama-swap in place of llama-swap's own key.
-    - model_name: "qwen3.8-27b"
-      litellm_params:
-        model: "openai/qwen3.8-27b"
-        api_base: "http://llama-swap.llama-swap-system.svc:8080/v1"
-        api_key: "os.environ/LLAMA_SWAP_API_KEY"
-        # Loading the model and reading Claude Code's long prompt can take
-        # minutes after a swap.
-        timeout: 900
     - model_name: "qwen3.6-35b-a3b"
       litellm_params:
         model: "openai/qwen3.6-35b-a3b"
         api_base: "http://llama-swap.llama-swap-system.svc:8080/v1"
         api_key: "os.environ/LLAMA_SWAP_API_KEY"
+        # Loading the model and reading Claude Code's long prompt can take
+        # minutes after a swap.
         timeout: 900
 
   litellm_settings:
