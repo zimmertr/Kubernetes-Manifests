@@ -9,7 +9,7 @@ resources:
 helmCharts:
   - name: llama-swap
     repo: oci://ghcr.io/mostlygeek/charts
-    version: 265.0.0 # https://github.com/mostlygeek/llama-swap/releases
+    version: 266.0.0 # https://github.com/mostlygeek/llama-swap/releases
     releaseName: llama-swap
     namespace: llama-swap-system
     valuesFile: values.yml
