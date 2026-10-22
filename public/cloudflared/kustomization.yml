@@ -7,4 +7,4 @@ resources:
 
 images:
   - name: cloudflare/cloudflared
-    newTag: 2026.10.0 # https://github.com/cloudflare/cloudflared/releases
+    newTag: 2026.10.1 # https://github.com/cloudflare/cloudflared/releases
