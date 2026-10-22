@@ -9,7 +9,7 @@ helmCharts:
   repo: oci://registry-1.docker.io/zimmertr
   skipTests: true
   valuesFile: values.yml
-  version: 0.17.20
+  version: 0.17.21
 
 resources:
 - resources/namespace.yml
