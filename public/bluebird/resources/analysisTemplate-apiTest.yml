@@ -1,3 +1,16 @@
+# The API gate on a canary. One discovery against the canary proves the build
+# serves its API and finds places in a known ring. The answer is bluebird's
+# DestinationsResponse, and the gate passes on one peak or more.
+#
+# It asks for discovery because the places table answers that with no third
+# party (bluebird#760): one request to production with this body answered 200
+# with 8 peaks in 0.27 s (2026-10-27). Overpass is the app's fallback when the
+# table cannot answer, which is what the 120 s timeout is for. Open-Meteo stays
+# off the gate's path: an analyze would spend the free daily quota the cluster
+# shares with every browser on the home network, and on a busy day its 429
+# fails a healthy release (bluebird#787, TJ 2026-10-27).
+# Forecast correctness is CI's: pytest and the Playwright suite run against the
+# built image.
 apiVersion: argoproj.io/v1alpha1
 kind: AnalysisTemplate
 metadata:
@@ -7,16 +20,14 @@ spec:
     - name: api-test
       count: 1
       failureLimit: 0
-      successCondition: len(result.results) >= 1
+      successCondition: len(result.destinations) >= 1
       provider:
         web:
           method: POST
-          url: http://bluebird-canary.bluebird-system.svc.cluster.local:8000/api/analyze
+          url: http://bluebird-canary.bluebird-system.svc.cluster.local:8000/api/destinations
           timeoutSeconds: 120
           jsonBody:
             destination_types: [peak]
-            forecast_mode: current
-            limit: 3
             polygon:
               type: Polygon
               coordinates:

@@ -1,9 +1,9 @@
 # The metric gate on a canary (bluebird#77, step 8; bluebird#236). The canary
 # serves no user traffic while the steps run — weight stays 0 by choice (TJ,
 # 2026-08-21) — so the 5xx ratio judged here is the canary's synthetic diet:
-# its kubelet probes, the version check, and api-test's full analyze. That is
-# enough to catch a build that crashes, 500s its probes, or fails a real
-# analysis end to end; it cannot see a regression only real traffic finds.
+# its kubelet probes, the version check, and api-test's discovery. That is
+# enough to catch a build that crashes, 500s its probes, or cannot find places
+# in a ring; it cannot see a regression only real traffic finds.
 #
 # Both sides of the ratio guard against empty vectors: `sum()` over no series
 # returns nothing, not zero, and an empty result errors the measurement where
@@ -14,9 +14,10 @@
 #
 # One 5xx must not abort a release (bluebird#519). The canary's 2-minute
 # window holds about sixteen requests, so one 5xx is over the 0.05 threshold
-# on its own, and one api-test retry after an upstream 502 would fail two
-# readings in a row. The query below answers 0 until the window holds two or
-# more 5xx. A real outage gives many 5xx in two minutes and still fails.
+# on its own, and one api-test retry after a 502 from its Overpass fallback
+# would fail two readings in a row. The query below answers 0 until the window
+# holds two or more 5xx. A real outage gives many 5xx in two minutes and still
+# fails.
 apiVersion: argoproj.io/v1alpha1
 kind: AnalysisTemplate
 metadata:
@@ -44,9 +45,10 @@ spec:
           # series created by its first 5xx reads 0 for it. The pod therefore
           # creates every 5xx series the canary's own requests can produce at
           # 0 when it starts (CANARY_ROUTES in bluebird backend/app/telemetry.py,
-          # bluebird#574): GET /healthz, GET /api/version and POST /api/analyze,
-          # at 500 and each 5xx the route declares, client="api". A 5xx on any
-          # other series is not counted until the second one there.
+          # bluebird#574): GET /healthz, GET /api/version and
+          # POST /api/destinations, at 500 and each 5xx the route declares,
+          # client="api". A 5xx on any other series is not counted until the
+          # second one there.
           # The window must also hold 10 or more
           # requests. The kubelet probes alone send 16 per window (readiness
           # every 10s, liveness every 30s; the measured median over 40 pods),

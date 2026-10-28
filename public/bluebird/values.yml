@@ -93,14 +93,14 @@ canary:
             valueFrom:
               fieldRef:
                 fieldPath: spec.template.spec.containers[0].image
-    # Validate that the canary API is responding successfully
+    # Validate that the canary API answers a discovery with places
     - analysis:
         templates:
           - templateName: api-test
     # Watch the canary's own 5xx ratio in Prometheus before promoting. The
     # canary takes no user traffic during these steps (weight stays 0), so
     # the signal is deliberately synthetic: its probes, the version check,
-    # and api-test's full analyze (TJ, 2026-08-21). Needs the monitoring
+    # and api-test's discovery (TJ, 2026-08-21). Needs the monitoring
     # stack running and the PodMonitor above: with no role="canary" series
     # the query reads 0 and passes, but an UNREACHABLE Prometheus errors the
     # analysis and aborts the rollout, so this merges last.
