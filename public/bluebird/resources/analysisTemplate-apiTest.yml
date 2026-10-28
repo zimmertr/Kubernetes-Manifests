@@ -6,9 +6,9 @@
 # party (bluebird#760): one request to production with this body answered 200
 # with 8 peaks in 0.27 s (2026-10-27). Overpass is the app's fallback when the
 # table cannot answer, which is what the 120 s timeout is for. Open-Meteo stays
-# off the gate's path. A full analyze here spent the free daily quota the
-# cluster shares with every browser on the home network, and on a busy day the
-# pod answered 429 and failed healthy releases (bluebird#787, TJ 2026-10-27).
+# off the gate's path: an analyze would spend the free daily quota the cluster
+# shares with every browser on the home network, and on a busy day its 429
+# fails a healthy release (bluebird#787, TJ 2026-10-27).
 # Forecast correctness is CI's: pytest and the Playwright suite run against the
 # built image.
 apiVersion: argoproj.io/v1alpha1
