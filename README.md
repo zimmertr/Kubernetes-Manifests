@@ -175,10 +175,12 @@ kubectl create secret generic mountaineers-activity-scraper-creds -n mountaineer
 
 # hevy2garmin
 # See misc/hevy2garmin/README.md
+# The API key is at https://hevy.com/settings?developer (needs Hevy Pro).
 kubectl create secret generic hevy2garmin -n hevy2garmin-system \
   --from-literal=password='CHANGEME' \
   --from-literal=secret="$(openssl rand -hex 32)" \
-  --from-literal=cron-secret="$(openssl rand -hex 32)"
+  --from-literal=cron-secret="$(openssl rand -hex 32)" \
+  --from-literal=hevy-api-key='CHANGEME'
 
 # Strava Heatmap Proxy
 # See public/strava-heatmap-proxy/README.md

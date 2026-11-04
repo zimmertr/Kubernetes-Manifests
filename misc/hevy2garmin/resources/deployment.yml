@@ -55,6 +55,15 @@ spec:
                 secretKeyRef:
                   name: hevy2garmin
                   key: cron-secret
+            # Optional, so a Secret without it still works and the key can be
+            # entered in the dashboard instead. When set here it wins over the
+            # saved one.
+            - name: HEVY_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: hevy2garmin
+                  key: hevy-api-key
+                  optional: true
             # Sign in to Garmin from this pod. Garmin blocks logins from cloud
             # IPs, which is why upstream routes them through a Cloudflare
             # Worker by default; a home connection isn't blocked, and this way

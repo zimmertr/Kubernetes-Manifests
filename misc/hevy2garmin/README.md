@@ -2,7 +2,7 @@
 
 [hevy2garmin](https://github.com/drkostas/hevy2garmin) merges the workouts I log in Hevy into the Strength Training activity my watch recorded, so Garmin Connect has the exercises, sets, reps and weights next to the watch's heart rate and Training Effect. Garmin forwards that activity to Strava. It also turns each Hevy routine into a Garmin planned workout, so the watch walks me through the exercises instead of guessing them.
 
-The dashboard is LAN only at [192.168.40.102](http://192.168.40.102). Its Postgres is a [CloudNativePG](../cloudnative-pg) cluster; the Hevy key and Garmin login are entered in the dashboard and live there, not in git.
+The dashboard is LAN only at [192.168.40.102](http://192.168.40.102). Its Postgres is a [CloudNativePG](../cloudnative-pg) cluster. The Hevy API key comes from the secret; the Garmin login is entered once in the dashboard and its tokens live in Postgres, not in git.
 
 ## Image
 
@@ -20,7 +20,7 @@ Then set that commit as `newTag` in [kustomization.yml](kustomization.yml). Reno
 
 1. Create the secret from the root README's [Secrets and Volumes](../../README.md#secrets-and-volumes).
 
-2. Open the dashboard, log in with the password from the secret, and on the setup page enter the Hevy API key from [hevy.com/settings?developer](https://hevy.com/settings?developer) (needs Hevy Pro) and the Garmin email and password. The 2FA code is asked for inline. Garmin rate-limits logins for hours if you retry, so get it right once.
+2. Open the dashboard, log in with the password from the secret, and on the setup page enter the Garmin email and password. The 2FA code is asked for inline. Garmin rate-limits logins for hours if you retry, so get it right once. Hevy already shows as connected, from the key in the secret.
 
 3. In Settings, set the timezone, turn on *Enhance Watch Activities* and pick the *Merge* strategy. Merge keeps the watch's activity and writes the Hevy sets into it. *Replace* uploads a copy and deletes the watch's, which loses Training Effect and leaves a duplicate on Strava.
 
