@@ -59,15 +59,6 @@ spec:
                       key: password
                 - name: HEVY_STATE_FILE
                   value: /state/hevy-session.json
-                # Read-only, for the calendar entry ids hevy2garmin's API
-                # doesn't return. Same CNPG secret the dashboard uses.
-                - name: DATABASE_URL
-                  valueFrom:
-                    secretKeyRef:
-                      name: hevy2garmin-database-app
-                      key: uri
-                - name: TZ
-                  value: America/Los_Angeles
               volumeMounts:
                 - name: state
                   mountPath: /state
