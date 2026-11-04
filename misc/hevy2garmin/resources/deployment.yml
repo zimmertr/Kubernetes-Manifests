@@ -1,0 +1,104 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hevy2garmin
+  labels:
+    app: hevy2garmin
+spec:
+  # One replica. The Garmin two-factor step is held in memory between the
+  # password and the code, and a sync takes a lock in Postgres that a second
+  # pod would only ever wait on.
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hevy2garmin
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: hevy2garmin
+    spec:
+      # Never calls the Kubernetes API.
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        # The image runs as the `node` user from the base image.
+        runAsUser: 1000
+        runAsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: web
+          image: zimmertr/hevy2garmin-web
+          ports:
+            - name: http
+              containerPort: 8096
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: hevy2garmin-database-app
+                  key: uri
+            - name: H2G_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: hevy2garmin
+                  key: password
+            - name: HEVY2GARMIN_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: hevy2garmin
+                  key: secret
+            - name: CRON_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: hevy2garmin
+                  key: cron-secret
+            # Sign in to Garmin from this pod. Garmin blocks logins from cloud
+            # IPs, which is why upstream routes them through a Cloudflare
+            # Worker by default; a home connection isn't blocked, and this way
+            # the password and 2FA code go to Garmin and nowhere else.
+            - name: H2G_DIRECT_GARMIN_LOGIN
+              value: "true"
+            # What the dashboard shows as the auto-sync schedule. Keep it in
+            # step with the CronJob.
+            - name: H2G_SERVER_SYNC_SCHEDULE
+              value: every 15 minutes
+          # /api/version needs neither a session nor the database, so a
+          # database outage doesn't become a restart loop.
+          livenessProbe:
+            httpGet:
+              path: /api/version
+              port: http
+            initialDelaySeconds: 20
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /api/version
+              port: http
+            periodSeconds: 10
+          resources:
+            requests:
+              cpu: 50m
+              memory: 256Mi
+            limits:
+              memory: 768Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+          volumeMounts:
+            # The only paths the image writes: Next's cache, and the temp
+            # directory for FIT files on their way to Garmin.
+            - name: next-cache
+              mountPath: /app/.next/cache
+            - name: tmp
+              mountPath: /tmp
+      volumes:
+        - name: next-cache
+          emptyDir: {}
+        - name: tmp
+          emptyDir: {}

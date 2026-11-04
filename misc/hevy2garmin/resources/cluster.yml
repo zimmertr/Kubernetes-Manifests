@@ -1,0 +1,33 @@
+# The dashboard's only state: sync history, exercise mappings, settings and the
+# Hevy key and Garmin tokens entered in the dashboard. The operator in
+# misc/cloudnative-pg runs it and writes the connection string to the
+# hevy2garmin-database-app Secret, which the Deployment reads.
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: hevy2garmin-database
+  annotations:
+    # Before the app (0), whose pod reads the Secret the operator writes for
+    # this Cluster.
+    argocd.argoproj.io/sync-wave: "-1"
+    # The operator is its own app, so on a first install this can sync before
+    # the Cluster CRD exists, and a dry run would fail.
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  # One instance. The data is a mirror of what Hevy and Garmin already hold, so
+  # a lost volume costs a re-login and a re-sync, not a database to restore.
+  instances: 1
+  imageName: ghcr.io/cloudnative-pg/postgresql:18.1-standard-trixie # https://github.com/cloudnative-pg/postgres-containers/pkgs/container/postgresql
+  bootstrap:
+    initdb:
+      database: hevy2garmin
+      owner: hevy2garmin
+  storage:
+    size: 2Gi
+    storageClass: proxmox-flashpool
+  resources:
+    requests:
+      cpu: 50m
+      memory: 256Mi
+    limits:
+      memory: 512Mi
