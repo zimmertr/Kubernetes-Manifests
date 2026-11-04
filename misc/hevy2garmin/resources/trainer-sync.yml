@@ -39,14 +39,16 @@ spec:
                     secretKeyRef:
                       name: hevy2garmin
                       key: hevy-api-key
-                # Only read on the first run, before the state file exists. The
-                # token rotates on every refresh, so this copy goes stale after
-                # that and can be removed from the secret.
-                - name: HEVY_REFRESH_TOKEN
+                # The hevy.com cookie, whole: Hevy's refresh endpoint wants the
+                # old access token as well as the refresh token. Only read on
+                # the first run, before the state file exists. The refresh token
+                # rotates after that, so this copy goes stale and can be removed
+                # from the secret.
+                - name: HEVY_SESSION
                   valueFrom:
                     secretKeyRef:
                       name: hevy2garmin
-                      key: hevy-refresh-token
+                      key: hevy-session
                       optional: true
                 - name: H2G_URL
                   value: http://hevy2garmin

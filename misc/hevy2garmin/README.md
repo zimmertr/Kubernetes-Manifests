@@ -4,7 +4,7 @@
 
 I use Hevy Trainer, which never creates routines, so a second CronJob runs [hevy-trainer-sync](https://github.com/zimmertr/hevy-trainer-sync) alongside it. That one mirrors the Trainer program into an `Upper` and a `Lower` routine every hour and has hevy2garmin push them to the watch. Strava only ever sees what the watch recorded, so the planned workout is what makes Strava accurate.
 
-The dashboard is LAN only at [192.168.40.102](http://192.168.40.102). Its Postgres is a [CloudNativePG](../cloudnative-pg) cluster. The Hevy API key and the Trainer bootstrap token come from the secret; the Garmin login is entered once in the dashboard and its tokens live in Postgres, not in git.
+The dashboard is LAN only at [192.168.40.102](http://192.168.40.102). Its Postgres is a [CloudNativePG](../cloudnative-pg) cluster. The Hevy API key and the Trainer bootstrap session come from the secret; the Garmin login is entered once in the dashboard and its tokens live in Postgres, not in git.
 
 ## Images
 
@@ -28,7 +28,7 @@ Then set the commit as `newTag` in [kustomization.yml](kustomization.yml). Renov
 
 ## Setup
 
-1. Create the secret from the root README's [Secrets and Volumes](../../README.md#secrets-and-volumes). The refresh token comes from the `auth2.0-token` cookie on hevy.com (DevTools → Application → Cookies, URL-decode the value, take `refresh_token`). hevy-trainer-sync uses it once, on its first run, then keeps the rotating replacement on its own volume. If that volume is ever lost, paste a fresh one into the secret.
+1. Create the secret from the root README's [Secrets and Volumes](../../README.md#secrets-and-volumes). The session is the `auth2.0-token` cookie on hevy.com (DevTools → Application → Cookies), pasted whole; both tokens in it are needed. hevy-trainer-sync uses it once, on its first run, then keeps the rotating replacement on its own volume. If that volume is ever lost, paste a fresh cookie into the secret.
 
 2. Open the dashboard, log in with the password from the secret, and on the setup page enter the Garmin email and password. The 2FA code is asked for inline. Garmin rate-limits logins for hours if you retry, so get it right once. Hevy already shows as connected, from the key in the secret.
 
