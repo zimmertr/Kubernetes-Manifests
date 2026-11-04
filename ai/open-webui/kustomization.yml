@@ -8,7 +8,7 @@ resources:
 helmCharts:
   - name: open-webui
     repo: https://helm.openwebui.com
-    version: 17.0.0 # https://github.com/open-webui/helm-charts/releases
+    version: 18.0.0 # https://github.com/open-webui/helm-charts/releases
     releaseName: open-webui
     namespace: open-webui-system
     valuesFile: values.yml
