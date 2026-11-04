@@ -1,0 +1,63 @@
+# The web app has no timer of its own. Something has to call its cron route,
+# which syncs every unsynced Hevy workout, merging into the matching watch
+# activity when there is one.
+#
+# A workout is held back for two hours after it ends (upstream's grace period,
+# not configurable from the dashboard) so the watch's own recording reaches
+# Garmin first. So a workout merges on the first run after that, and the 15
+# minutes here only bound how long it waits past the two hours. "Sync Now" in
+# the dashboard skips the wait.
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: hevy2garmin-sync
+spec:
+  schedule: "*/15 * * * *"
+  # A sync that is still running holds the lock the next one would need.
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      # The route syncs up to 50 workouts in one call, each a Garmin upload.
+      activeDeadlineSeconds: 1000
+      backoffLimit: 0
+      template:
+        spec:
+          restartPolicy: Never
+          automountServiceAccountToken: false
+          securityContext:
+            runAsNonRoot: true
+            # The curl image's unprivileged user.
+            runAsUser: 100
+            runAsGroup: 101
+            seccompProfile:
+              type: RuntimeDefault
+          containers:
+            - name: curl
+              image: curlimages/curl:8.16.0 # https://github.com/curl/curl-container/releases
+              env:
+                - name: CRON_SECRET
+                  valueFrom:
+                    secretKeyRef:
+                      name: hevy2garmin
+                      key: cron-secret
+              command:
+                - /bin/sh
+                - -c
+                - >-
+                  curl -fsS --max-time 900
+                  -H "Authorization: Bearer $CRON_SECRET"
+                  http://hevy2garmin/api/cron/sync
+              resources:
+                requests:
+                  cpu: 10m
+                  memory: 16Mi
+                limits:
+                  memory: 32Mi
+              securityContext:
+                allowPrivilegeEscalation: false
+                readOnlyRootFilesystem: true
+                capabilities:
+                  drop:
+                    - ALL

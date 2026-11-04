@@ -1,0 +1,16 @@
+namespace: hevy2garmin-system
+
+resources:
+  - resources/namespace.yml
+  - resources/cluster.yml
+  - resources/deployment.yml
+  - resources/service.yml
+  - resources/cronjob.yml
+
+images:
+  - name: zimmertr/hevy2garmin-web
+    # Upstream publishes no image. This one is web/Dockerfile from
+    # drkostas/hevy2garmin, built on my Mac and tagged with the upstream commit
+    # it was built from (see README.md). Renovate can't follow a commit tag, so
+    # bumping it is a manual rebuild.
+    newTag: f0f6755228776197f52a32cd15ab32cb948a2dd4
