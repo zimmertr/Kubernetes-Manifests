@@ -6,6 +6,8 @@ resources:
   - resources/deployment.yml
   - resources/service.yml
   - resources/cronjob.yml
+  - resources/persistentVolumeClaim.yml
+  - resources/trainer-sync.yml
 
 images:
   - name: zimmertr/hevy2garmin-web
@@ -14,3 +16,7 @@ images:
     # it was built from (see README.md). Renovate can't follow a commit tag, so
     # bumping it is a manual rebuild.
     newTag: f0f6755228776197f52a32cd15ab32cb948a2dd4
+  - name: zimmertr/hevy-trainer-sync
+    # Built from github.com/zimmertr/hevy-trainer-sync and tagged with its
+    # commit, same deal as above.
+    newTag: e258c8d8e5e82c6a277a2fef7addd27551e4f932

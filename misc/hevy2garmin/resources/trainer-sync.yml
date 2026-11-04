@@ -1,0 +1,78 @@
+# Hevy Trainer never creates routines, and routines are the only thing
+# hevy2garmin can turn into a planned workout on the watch. hevy-trainer-sync
+# (github.com/zimmertr/hevy-trainer-sync) reads the Trainer program through
+# Hevy's private API, writes one routine per template, and asks the dashboard
+# to push the changed ones to Garmin. Hourly is plenty: the program only moves
+# when a workout finishes or Trainer rotates exercises for the week.
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: hevy-trainer-sync
+spec:
+  schedule: "7 * * * *"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      activeDeadlineSeconds: 600
+      backoffLimit: 0
+      template:
+        spec:
+          restartPolicy: Never
+          automountServiceAccountToken: false
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            runAsGroup: 1000
+            # The state volume is mounted root-owned otherwise, and the job
+            # has to rewrite the session file every run.
+            fsGroup: 1000
+            seccompProfile:
+              type: RuntimeDefault
+          containers:
+            - name: hevy-trainer-sync
+              image: zimmertr/hevy-trainer-sync
+              env:
+                - name: HEVY_API_KEY
+                  valueFrom:
+                    secretKeyRef:
+                      name: hevy2garmin
+                      key: hevy-api-key
+                # Only read on the first run, before the state file exists. The
+                # token rotates on every refresh, so this copy goes stale after
+                # that and can be removed from the secret.
+                - name: HEVY_REFRESH_TOKEN
+                  valueFrom:
+                    secretKeyRef:
+                      name: hevy2garmin
+                      key: hevy-refresh-token
+                      optional: true
+                - name: H2G_URL
+                  value: http://hevy2garmin
+                - name: H2G_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: hevy2garmin
+                      key: password
+                - name: HEVY_STATE_FILE
+                  value: /state/hevy-session.json
+              volumeMounts:
+                - name: state
+                  mountPath: /state
+              resources:
+                requests:
+                  cpu: 20m
+                  memory: 64Mi
+                limits:
+                  memory: 128Mi
+              securityContext:
+                allowPrivilegeEscalation: false
+                readOnlyRootFilesystem: true
+                capabilities:
+                  drop:
+                    - ALL
+          volumes:
+            - name: state
+              persistentVolumeClaim:
+                claimName: hevy-trainer-sync-state
