@@ -1,0 +1,14 @@
+# Holds hevy-trainer-sync's Hevy session file, a few hundred bytes. It has to
+# outlive the pod: the refresh token rotates on every run, and losing the
+# newest one means pasting a fresh cookie into the secret.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: hevy-trainer-sync-state
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: proxmox-flashpool
