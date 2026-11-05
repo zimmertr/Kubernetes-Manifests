@@ -20,7 +20,7 @@ docker buildx build --platform linux/amd64 --push -t "zimmertr/hevy2garmin-web:$
 
 Then set the commit as `newTag` in [kustomization.yml](kustomization.yml). Renovate doesn't follow commit tags, so updating is the same two steps again.
 
-hevy-trainer-sync doesn't need any of that. Its CI builds and pushes the image on every merge to main and opens a PR here that bumps its `newTag` and merges itself. The CronJob and the poller share that one tag.
+hevy-trainer-sync doesn't need any of that. Its CI cuts a release on every merge to main and opens a PR here that bumps its `newTag` to the new version and merges itself. The CronJob and the poller share that one tag.
 
 ## Setup
 
