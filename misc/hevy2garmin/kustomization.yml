@@ -18,7 +18,7 @@ resources:
 images:
 - name: zimmertr/hevy-trainer-sync
   newName: zimmertr/hevy-trainer-sync
-  newTag: bfd50bbd71682b27c3b70341e6cdc5f3fe953596
+  newTag: 78d0773f27e8fb223e18d6f8405e562dc60d9df4
 - name: zimmertr/hevy2garmin-web
   newTag: f0f6755228776197f52a32cd15ab32cb948a2dd4
 apiVersion: kustomize.config.k8s.io/v1beta1
