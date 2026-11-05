@@ -1,0 +1,62 @@
+# hevy2garmin holds a finished workout for two hours before it merges it, so
+# the watch's activity has time to reach Garmin. Its Hevy webhook route skips
+# that wait, but Hevy can only call it from the internet. This polls Hevy's
+# workout events every minute from in here and calls the route itself, so the
+# merge lands a few minutes after the watch syncs and nothing is exposed.
+#
+# It needs no Hevy session and no volume, so it never races the trainer sync
+# CronJob for the rotating token.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hevy-trainer-poll
+spec:
+  replicas: 1
+  # Two pollers would only call the webhook twice, which hevy2garmin copes
+  # with, but there is no reason to overlap them either.
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: hevy-trainer-poll
+  template:
+    metadata:
+      labels:
+        app: hevy-trainer-poll
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: hevy-trainer-poll
+          image: zimmertr/hevy-trainer-sync
+          args: ["poll"]
+          env:
+            - name: HEVY_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: hevy2garmin
+                  key: hevy-api-key
+            - name: H2G_URL
+              value: http://hevy2garmin
+            - name: CRON_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: hevy2garmin
+                  key: cron-secret
+          resources:
+            requests:
+              cpu: 5m
+              memory: 32Mi
+            limits:
+              memory: 64Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL

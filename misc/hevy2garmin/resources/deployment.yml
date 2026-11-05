@@ -74,6 +74,18 @@ spec:
             # step with the CronJob.
             - name: H2G_SERVER_SYNC_SCHEDULE
               value: every 15 minutes
+            # What the webhook route does once hevy-trainer-poll calls it: try a
+            # merge a minute after the workout is saved, then every three
+            # minutes, and only on the tenth try (about 28 minutes in) upload a
+            # fresh activity because no watch recording turned up. Upstream's
+            # defaults are 300, 600 and 3, which wait five minutes for the first
+            # try.
+            - name: WEBHOOK_DELAY_SECONDS
+              value: "60"
+            - name: WEBHOOK_RETRY_INTERVAL_SECONDS
+              value: "180"
+            - name: WEBHOOK_MAX_ATTEMPTS
+              value: "10"
           # /api/version needs neither a session nor the database, so a
           # database outage doesn't become a restart loop.
           livenessProbe:

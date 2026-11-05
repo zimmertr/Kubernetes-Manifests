@@ -8,6 +8,7 @@ resources:
   - resources/cronjob.yml
   - resources/persistentVolumeClaim.yml
   - resources/trainer-sync.yml
+  - resources/trainer-poll.yml
 
 images:
   - name: zimmertr/hevy2garmin-web
