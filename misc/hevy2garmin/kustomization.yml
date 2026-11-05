@@ -20,4 +20,4 @@ images:
   - name: zimmertr/hevy-trainer-sync
     # Built from github.com/zimmertr/hevy-trainer-sync and tagged with its
     # commit. Its CI bumps this line after every build on main.
-    newTag: 0ea45a8f8fbd7c66e31414040f0504a5fe4cf77d
+    newTag: cf7bace5041fae7329e70f931bc511b53b1d1ac1
