@@ -52,6 +52,13 @@ jobs:
           TARGET_BRANCH: refs/pull/${{ github.event.number }}/merge
           REPO: ${{ github.repository }}
         run: |
+          # The throwaway Argo CD is the chart version argo/argo-cd pins in
+          # this PR, with the one setting every app here needs from
+          # argo/argo-cd/values.yml: kustomize's helmCharts need --enable-helm.
+          ARGOCD_CHART_VERSION=$(yq '.helmCharts[0].version' pull-request/argo/argo-cd/kustomization.yml)
+          export ARGOCD_CHART_VERSION
+          mkdir argocd-config
+          printf 'configs:\n  cm:\n    kustomize.buildOptions: "--enable-helm"\n' > argocd-config/values.yaml
           # 60000 leaves room under GitHub's 65536-character comment limit for
           # the sticky comment's own marker.
           docker run --rm --network=host \
@@ -59,7 +66,9 @@ jobs:
             -v "$PWD/main:/base-branch" \
             -v "$PWD/pull-request:/target-branch" \
             -v "$PWD/output:/output" \
-            -e TARGET_BRANCH -e REPO -e MAX_DIFF_LENGTH=60000 \
+            -v "$PWD/argocd-config:/argocd-config" \
+            -e TARGET_BRANCH -e REPO -e ARGOCD_CHART_VERSION \
+            -e MAX_DIFF_LENGTH=60000 -e TIMEOUT=300 \
             "dagandersen/argocd-diff-preview:${DIFF_PREVIEW_IMAGE}"
 
       - name: Post the diff
