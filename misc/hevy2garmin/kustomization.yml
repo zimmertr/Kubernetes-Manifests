@@ -1,5 +1,4 @@
 namespace: hevy2garmin-system
-
 resources:
   - resources/namespace.yml
   - resources/cluster.yml
@@ -9,7 +8,6 @@ resources:
   - resources/persistentVolumeClaim.yml
   - resources/trainer-sync.yml
   - resources/trainer-poll.yml
-
 images:
   - name: zimmertr/hevy2garmin-web
     # Upstream publishes no image. This one is web/Dockerfile from
@@ -22,4 +20,4 @@ images:
     # release version (0.1.0 on; older builds carry their commit). Its CI
     # bumps this line after every release, and Renovate leaves it to that job
     # (.github/renovate.json).
-    newTag: 0.1.17
+    newTag: 0.1.18
