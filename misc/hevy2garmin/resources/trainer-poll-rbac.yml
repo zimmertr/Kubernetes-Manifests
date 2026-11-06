@@ -1,0 +1,33 @@
+# hevy-trainer-poll starts a run of the hevy-trainer-sync CronJob the moment a
+# workout is saved, so the weights and the next workout reach the Garmin
+# calendar within minutes instead of at the next hour. This is all it may do:
+# read that one CronJob and create Jobs in this namespace.
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: hevy-trainer-poll
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: hevy-trainer-poll
+rules:
+  - apiGroups: ["batch"]
+    resources: ["cronjobs"]
+    resourceNames: ["hevy-trainer-sync"]
+    verbs: ["get"]
+  - apiGroups: ["batch"]
+    resources: ["jobs"]
+    verbs: ["create"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: hevy-trainer-poll
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: hevy-trainer-poll
+subjects:
+  - kind: ServiceAccount
+    name: hevy-trainer-poll

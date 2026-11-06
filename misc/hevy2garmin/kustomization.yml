@@ -8,6 +8,7 @@ resources:
   - resources/persistentVolumeClaim.yml
   - resources/trainer-sync.yml
   - resources/trainer-poll.yml
+  - resources/trainer-poll-rbac.yml
 images:
   - name: zimmertr/hevy2garmin-web
     # Upstream publishes no image. This one is web/Dockerfile from
