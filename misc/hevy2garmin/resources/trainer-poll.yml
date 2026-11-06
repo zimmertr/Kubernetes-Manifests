@@ -1,11 +1,13 @@
-# hevy2garmin holds a finished workout for two hours before it merges it, so
-# the watch's activity has time to reach Garmin. Its Hevy webhook route skips
-# that wait, but Hevy can only call it from the internet. This polls Hevy's
-# workout events every minute from in here and calls the route itself, so the
-# merge lands a few minutes after the watch syncs and nothing is exposed.
+# Polls Hevy's workout events every minute from in here, so nothing is
+# exposed. Each new workout waits until Garmin has the watch's activity for
+# it, and only then is hevy2garmin's webhook route called, so its first try
+# merges and it never uploads an activity of its own. A session the watch
+# didn't record stays in Hevy; only the watch ever reaches Strava.
 #
 # It needs no Hevy session and no volume, so it never races the trainer sync
-# CronJob for the rotating token.
+# CronJob for the rotating token. It reads hevy2garmin's database for the
+# Garmin token, the merge settings and which workouts are done, and uses the
+# dashboard password only to have Garmin's token refreshed.
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -48,12 +50,24 @@ spec:
                 secretKeyRef:
                   name: hevy2garmin
                   key: cron-secret
+            - name: H2G_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: hevy2garmin
+                  key: password
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: hevy2garmin-database-app
+                  key: uri
+          # 17Mi before it read the database. psycopg loads libpq when the
+          # first workout waits, so the limit matches the trainer sync's.
           resources:
             requests:
               cpu: 5m
-              memory: 32Mi
+              memory: 48Mi
             limits:
-              memory: 64Mi
+              memory: 128Mi
           securityContext:
             allowPrivilegeEscalation: false
             readOnlyRootFilesystem: true

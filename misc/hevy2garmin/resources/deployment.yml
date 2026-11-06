@@ -71,17 +71,16 @@ spec:
             - name: H2G_DIRECT_GARMIN_LOGIN
               value: "true"
             # What the dashboard shows as the auto-sync schedule. Keep it in
-            # step with the CronJob.
+            # step with the CronJob, which is suspended.
             - name: H2G_SERVER_SYNC_SCHEDULE
-              value: every 15 minutes
-            # What the webhook route does once hevy-trainer-poll calls it: try a
-            # merge a minute after the workout is saved, then every three
-            # minutes, and only on the tenth try (about 28 minutes in) upload a
-            # fresh activity because no watch recording turned up. Upstream's
-            # defaults are 300, 600 and 3, which wait five minutes for the first
-            # try.
+              value: off, hevy-trainer-poll starts each merge
+            # What the webhook route does once hevy-trainer-poll calls it. The
+            # poller calls only once the watch's activity is on Garmin, so the
+            # first try, at once, merges. The tenth try would upload a fresh
+            # activity if none turned up; with the activity already there it
+            # never comes. Upstream's defaults are 300, 600 and 3.
             - name: WEBHOOK_DELAY_SECONDS
-              value: "60"
+              value: "0"
             - name: WEBHOOK_RETRY_INTERVAL_SECONDS
               value: "180"
             - name: WEBHOOK_MAX_ATTEMPTS
