@@ -3,6 +3,10 @@ kind: ApplicationSet
 metadata:
   name: bluebird-pr
   namespace: argo-system
+  annotations:
+    # argocd-diff-preview (pr.yml) renders this set only when a file beside it
+    # changes, such as the chart version bluebird-helm's release writes.
+    argocd-diff-preview/watch-pattern: "public/bluebird-pr/.*"
 spec:
   goTemplate: true
   goTemplateOptions: ["missingkey=error"]
