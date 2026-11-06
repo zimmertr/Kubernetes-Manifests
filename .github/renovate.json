@@ -35,6 +35,11 @@
       "enabled": false
     },
     {
+      "description": "hevy-trainer-sync's image tag is written by its own release job, once its tests and its image scan pass. Its version tag reaches Docker Hub before that scan, so a Renovate update could move to an image the scan stopped. Renovate leaves it to that job.",
+      "matchPackageNames": ["zimmertr/hevy-trainer-sync"],
+      "enabled": false
+    },
+    {
       "description": "llama.cpp tags its CPU image light-b<build>, alongside tags for other variants. Only follow this one, and treat each build as a patch.",
       "matchPackageNames": ["ghcr.io/ggml-org/llama.cpp"],
       "versioning": "regex:^light-b(?<patch>\\d+)$"
