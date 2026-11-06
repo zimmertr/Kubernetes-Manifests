@@ -7,6 +7,7 @@ resources:
   - resources/service.yml
   - resources/istio/gateway.yml
   - resources/istio/virtualService.yml
+  - resources/does-not-exist.yml
 
 configMapGenerator:
   - name: test-connection-sh
