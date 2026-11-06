@@ -50,7 +50,7 @@ spec:
     spec:
       containers:
         - name: personal-website
-          image: ghcr.io/zimmertr/personal-website
+          image: zimmertr/personal-website
           ports:
             - name: http
               containerPort: 80

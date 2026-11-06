@@ -8,7 +8,7 @@ The settings that shape how this repo is checked and kept current. Each app's ow
 
 - Minor and patch updates merge themselves once they are seven days old.
 - zimmertr/yggdrasil's module pin merges itself after three days, the wait every repo that calls the modules uses.
-- `zimmertr/bluebird`, `zimmertr/bluebird-helm` and `zimmertr/hevy-trainer-sync` are off: those repos' releases write their tags here ([CICD.md](CICD.md#bump-prs-from-other-repos)).
+- `zimmertr/bluebird`, `zimmertr/bluebird-helm`, `zimmertr/hevy-trainer-sync`, `zimmertr/personal-website` and `zimmertr/mountaineers-activity-scraper` are off: those repos' releases write their tags here ([CICD.md](CICD.md#bump-prs-from-other-repos)).
 - `ghcr.io/ggml-org/llama.cpp` follows only its `light-b<build>` tags.
 - A regex manager reads `# renovate:` comments on workflow `env:` lines, such as `TERRAFORM_VERSION` and `DIFF_PREVIEW_IMAGE`. A value may carry `@sha256:` and a digest, and Renovate moves both.
 - Folders matching `*/*.disabled/*` are ignored.
