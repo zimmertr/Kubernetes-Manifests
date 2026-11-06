@@ -21,4 +21,4 @@ images:
     # Built from github.com/zimmertr/hevy-trainer-sync and tagged with its
     # release version (0.1.0 on; older builds carry their commit). Its CI
     # bumps this line after every release.
-    newTag: 0.1.10
+    newTag: 0.1.11
