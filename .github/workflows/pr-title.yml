@@ -1,0 +1,27 @@
+name: PR Title
+
+# The PR title becomes the squash commit's title. yggdrasil's pr-title module
+# refuses a title that isn't `type(scope): summary`, so the history reads the
+# same as every other repo's. Renovate's titles (`chore(deps): ...`) and the
+# release bumps' (`chore: bump ...`) already pass.
+#
+# A workflow of its own, because it has to run when only the title changes
+# (`edited`), and an edit must not rerun the manifest checks. `synchronize`
+# stays in the list because a check reports against the head commit.
+#
+# Branch protection requires `PR Title / PR Title` (this job's name, then the
+# module's); renaming either strands PRs on a check that never reports.
+on:
+  pull_request:
+    types: [opened, edited, reopened, synchronize]
+    branches:
+      - main
+
+permissions: {}
+
+jobs:
+  title:
+    name: PR Title
+    uses: zimmertr/yggdrasil/.github/workflows/pr-title.yml@95c4f710c3600dba170ed579c0beabab507011b9 # v0.9.2
+    permissions:
+      pull-requests: read # the module reads the PR's title

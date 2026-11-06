@@ -3,6 +3,10 @@ kind: ApplicationSet
 metadata:
   name: misc
   namespace: argo-system
+  annotations:
+    # argocd-diff-preview (pr.yml) renders this set only when a file under
+    # misc/ changes, and each app only when a file under its own path does.
+    argocd-diff-preview/watch-pattern: "misc/.*"
 spec:
   generators:
     - git:
@@ -16,6 +20,8 @@ spec:
     preserveResourcesOnDeletion: false
   template:
     metadata:
+      annotations:
+        argocd-diff-preview/watch-pattern: "{{ path }}/.*"
       name: "{{ path.basenameNormalized }}"
       labels:
         app-group: misc
