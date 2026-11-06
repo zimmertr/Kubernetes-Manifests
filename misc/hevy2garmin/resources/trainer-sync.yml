@@ -2,8 +2,11 @@
 # hevy2garmin can turn into a planned workout on the watch. hevy-trainer-sync
 # (github.com/zimmertr/hevy-trainer-sync) reads the Trainer program through
 # Hevy's private API, writes one routine per template, and asks the dashboard
-# to push the changed ones to Garmin. Hourly is plenty: the program only moves
-# when a workout finishes or Trainer rotates exercises for the week.
+# to push the changed ones to Garmin. The program moves when a workout
+# finishes, and hevy-trainer-poll starts a run right then. The hourly schedule
+# catches the rest: Trainer's weekly rotation, Monday's new week name, and
+# midnight, when the next workout moves to the new day. A run waits on a lock
+# beside the session file, so the two never overlap.
 apiVersion: batch/v1
 kind: CronJob
 metadata:

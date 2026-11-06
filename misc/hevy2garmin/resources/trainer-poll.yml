@@ -26,7 +26,10 @@ spec:
       labels:
         app: hevy-trainer-poll
     spec:
-      automountServiceAccountToken: false
+      # Its token may only start a run of the trainer sync CronJob
+      # (trainer-poll-rbac.yml).
+      serviceAccountName: hevy-trainer-poll
+      automountServiceAccountToken: true
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
@@ -60,6 +63,9 @@ spec:
                 secretKeyRef:
                   name: hevy2garmin-database-app
                   key: uri
+            # Run the trainer sync as soon as a workout is saved.
+            - name: RUN_CRONJOB
+              value: hevy-trainer-sync
           # 17Mi before it read the database. psycopg loads libpq when the
           # first workout waits, so the limit matches the trainer sync's.
           resources:
