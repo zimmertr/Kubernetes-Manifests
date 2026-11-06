@@ -67,6 +67,17 @@ spec:
                     secretKeyRef:
                       name: hevy2garmin-database-app
                       key: uri
+                # Workouts reach the watch through the Garmin calendar: Trainer's
+                # next workout on today's date, and nothing else. Garmin keeps
+                # calendar workouts in step with the watch. Send to Device only
+                # ever added, so every copy it sent piled up there.
+                - name: SCHEDULE_NEXT
+                  value: "1"
+                - name: SEND_TO_DEVICE
+                  value: "0"
+                # Which day "today" is.
+                - name: TZ
+                  value: America/Los_Angeles
               volumeMounts:
                 - name: state
                   mountPath: /state
