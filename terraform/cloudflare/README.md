@@ -14,7 +14,7 @@ Its outputs become the `cloudflared-token` and `cloudflare-api-token` secrets in
    export CLOUDFLARE_API_TOKEN="REPLACEME"
    ```
 
-2. Run `terraform login`. The state is in [HCP Terraform](https://app.terraform.io), in the `cloudflare` workspace of the `Kubernetes-Manifests` organization. Its *Default Execution Mode* is *Local*, otherwise HCP tries to run the plan itself and can't.
+2. Run `terraform login`. The state is in [HCP Terraform](https://app.terraform.io), in the `cloudflare` workspace of the `Yggdrasil-Org` organization. Its *Default Execution Mode* is *Local*, otherwise HCP tries to run the plan itself and can't.
 
 3. Apply it with the commands in the root README.
 

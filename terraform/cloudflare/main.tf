@@ -13,7 +13,7 @@ terraform {
   }
 
   cloud {
-    organization = "Kubernetes-Manifests"
+    organization = "Yggdrasil-Org"
     workspaces {
       name = "cloudflare"
     }
