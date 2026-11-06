@@ -8,7 +8,7 @@ helmCharts:
     repo: oci://registry-1.docker.io/zimmertr
     skipTests: true
     valuesFile: values.yml
-    version: 0.18.27
+    version: 0.18.28
 resources:
   - resources/namespace.yml
   - resources/analysisTemplate-apiTest.yml
