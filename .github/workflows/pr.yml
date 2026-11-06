@@ -18,128 +18,55 @@ jobs:
   # failed sync rather than a failed build. This job is what makes the
   # automated bump PRs (bluebird image tag, bluebird-helm chart versions) worth
   # routing through a PR at all: `gh pr merge --auto` has something to wait on.
+  #
+  # argocd-diff-preview renders the PR's apps with Argo CD itself, in a
+  # throwaway kind cluster on the runner, and posts the rendered diff against
+  # main. It renders the way the cluster does (ApplicationSets, Helm through
+  # kustomize, the same Argo CD), so nothing here pins helm or kustomize. The
+  # watch-pattern annotations on each ApplicationSet keep it to the apps whose
+  # folder the PR touches. It never talks to the real cluster.
   validate:
     name: Validate manifests
     runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read # read both branches
+      pull-requests: write # post the diff as a sticky comment
+    env:
+      # renovate: datasource=docker depName=dagandersen/argocd-diff-preview
+      DIFF_PREVIEW_IMAGE: v0.2.17@sha256:ea90848df29337b50d5058330210b38e39232360b78d9c60951fc92e454c6941
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          fetch-depth: 0  # need the merge base to diff against
+          path: pull-request
           persist-credentials: false
 
-      - uses: azure/setup-helm@9bc31f4ebc9c6b171d7bfbaa5d006ae7abdb4310 # v5.0.1
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          version: v4.3.1
+          ref: main
+          path: main
+          persist-credentials: false
 
-      - name: Install kustomize
+      - name: Render the changed apps with Argo CD
         env:
-          # There's no setup-kustomize action pinned here, so the version lives in
-          # an env var with the annotation Renovate's customManager looks for.
-          # Without it a hand-rolled download URL is invisible to Renovate and the
-          # pin rots silently — this sat at 5.7.1 while upstream reached 5.8.1.
-          # renovate: datasource=github-releases depName=kubernetes-sigs/kustomize extractVersion=^kustomize/v(?<version>.+)$
-          KUSTOMIZE_VERSION: 5.8.3
-          # The linux_amd64 line of that release's checksums.txt. Renovate moves
-          # the version but not this, so its bump PR fails here until the hash
-          # is copied in by hand: a binary nobody has checked never runs.
-          KUSTOMIZE_SHA256: cb9e31198d3f63b44848bd0afc4c8efc56e6cfef9c93a4a39a211940e6decd61
+          TARGET_BRANCH: refs/pull/${{ github.event.number }}/merge
+          REPO: ${{ github.repository }}
         run: |
-          TARBALL="kustomize_v${KUSTOMIZE_VERSION}_linux_amd64.tar.gz"
-          curl -fsSL -o "$RUNNER_TEMP/$TARBALL" \
-            "https://github.com/kubernetes-sigs/kustomize/releases/download/kustomize%2Fv${KUSTOMIZE_VERSION}/${TARBALL}"
-          echo "${KUSTOMIZE_SHA256}  $RUNNER_TEMP/$TARBALL" | sha256sum --check --strict
-          sudo tar -xzf "$RUNNER_TEMP/$TARBALL" -C /usr/local/bin kustomize
-          kustomize version
+          # 60000 leaves room under GitHub's 65536-character comment limit for
+          # the sticky comment's own marker.
+          docker run --rm --network=host \
+            -v /var/run/docker.sock:/var/run/docker.sock \
+            -v "$PWD/main:/base-branch" \
+            -v "$PWD/pull-request:/target-branch" \
+            -v "$PWD/output:/output" \
+            -e TARGET_BRANCH -e REPO -e MAX_DIFF_LENGTH=60000 \
+            "dagandersen/argocd-diff-preview:${DIFF_PREVIEW_IMAGE}"
 
-      - name: Collect changed files
-        id: changed
-        env:
-          BASE: ${{ github.event.pull_request.base.sha }}
-          HEAD: ${{ github.event.pull_request.head.sha }}
-        run: |
-          # --diff-filter=d drops deletions: a removed file has nothing to parse,
-          # and its directory is picked up anyway if a sibling still changed.
-          git diff --name-only --diff-filter=d "$BASE" "$HEAD" > changed.txt
-          echo "Changed files:"; sed 's/^/  /' changed.txt
-
-      - name: Parse changed YAML
-        env:
-          # renovate: datasource=pypi depName=pyyaml
-          PYYAML_VERSION: 6.0.3
-        run: |
-          pip install --quiet "pyyaml==${PYYAML_VERSION}"
-          # Cheap first gate, and the one that catches the failure mode the bump
-          # bots can actually cause: they rewrite version lines with targeted
-          # `sed`, and a regex that matches more than intended corrupts the file.
-          python3 - <<'PY'
-          import sys, yaml, pathlib
-          bad = []
-          for line in pathlib.Path("changed.txt").read_text().splitlines():
-              if not line.endswith((".yml", ".yaml")):
-                  continue
-              try:
-                  list(yaml.safe_load_all(pathlib.Path(line).read_text()))
-                  print(f"  ok  {line}")
-              except yaml.YAMLError as e:
-                  bad.append(line)
-                  print(f"  FAIL {line}\n{e}", file=sys.stderr)
-          sys.exit(1 if bad else 0)
-          PY
-
-      - name: Render affected kustomizations
-        run: |
-          # Walk each changed file up to its nearest kustomization, so a PR that
-          # touches one app renders one app. Rendering the whole repo would pull
-          # every upstream chart on every PR — slow, and red for reasons that
-          # have nothing to do with the change under review.
-          #
-          # `.disable*` is excluded for the same reason Argo's root Application
-          # excludes it: nothing there is deployed, and some of it no longer
-          # renders.
-          targets=""
-          while read -r file; do
-            case "$file" in
-              *.disable*/*) continue ;;
-            esac
-            dir="$(dirname "$file")"
-            while [ "$dir" != "." ]; do
-              if [ -f "$dir/kustomization.yml" ] || [ -f "$dir/kustomization.yaml" ]; then
-                targets="$(printf '%s\n%s' "$targets" "$dir")"
-                break
-              fi
-              dir="$(dirname "$dir")"
-            done
-          done < changed.txt
-
-          # This workflow is the only thing standing between a bad manifest and a
-          # failed Argo sync, and Renovate keeps bumping the tools it runs. A PR
-          # that only edits this file has no kustomization ancestor, so it would
-          # otherwise pass on an empty target list — green without rendering
-          # anything, which is exactly how a broken helm/kustomize bump would land.
-          # Render one real app so the check has to prove it still works.
-          if grep -q '^\.github/workflows/pr\.yml$' changed.txt; then
-            echo "Workflow changed — adding public/bluebird as a canary target."
-            targets="$(printf '%s\n%s' "$targets" "public/bluebird")"
-          fi
-
-          targets="$(printf '%s' "$targets" | grep -v '^$' | sort -u || true)"
-          if [ -z "$targets" ]; then
-            echo "No kustomization affected by this PR."
-            exit 0
-          fi
-
-          rc=0
-          for t in $targets; do
-            echo "::group::kustomize build $t"
-            # --enable-helm inflates helmCharts blocks; the charts these pull are
-            # public, so no registry credentials are involved.
-            if kustomize build --enable-helm "$t" >/dev/null; then
-              echo "::endgroup::"; echo "  ok   $t"
-            else
-              echo "::endgroup::"; echo "  FAIL $t"; rc=1
-            fi
-          done
-          exit $rc
+      - name: Post the diff
+        uses: marocchino/sticky-pull-request-comment@5770ad5eb8f42dd2c4f34da00c94c5381e49af88 # v3.0.5
+        with:
+          header: argocd-diff-preview
+          path: output/diff.md
 
   # terraform/ holds the Cloudflare side of the public ingress. Renovate bumps
   # its provider, so it needs the same gate as the manifests. It runs on every

@@ -22,6 +22,9 @@ kind: Application
 metadata:
   name: root-appprojects
   namespace: argo-system
+  annotations:
+    # argocd-diff-preview (pr.yml) renders this only when an AppProject changes.
+    argocd-diff-preview/watch-pattern: "(.*/)?appproject\\.yml"
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:

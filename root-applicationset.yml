@@ -3,6 +3,9 @@ kind: Application
 metadata:
   name: root-applicationsets
   namespace: argo-system
+  annotations:
+    # argocd-diff-preview (pr.yml) renders this only when an ApplicationSet changes.
+    argocd-diff-preview/watch-pattern: "(.*/)?applicationset\\.yml"
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
