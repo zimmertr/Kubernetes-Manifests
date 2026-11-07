@@ -1,5 +1,4 @@
 namespace: personal-website-system
-
 resources:
   - resources/namespace.yml
   - resources/analysisTemplate.yml
@@ -7,16 +6,13 @@ resources:
   - resources/service.yml
   - resources/istio/gateway.yml
   - resources/istio/virtualService.yml
-
 configMapGenerator:
   - name: test-connection-sh
     namespace: personal-website-system
     files:
       - files/test-connection.sh
-
 generatorOptions:
- disableNameSuffixHash: true
-
+  disableNameSuffixHash: true
 images:
   - name: zimmertr/personal-website
     newTag: 1.3.3
