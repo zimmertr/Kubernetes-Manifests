@@ -20,7 +20,7 @@ A change that makes any page untrue updates it in the same PR. The README is TJ'
 
 - **`main` is what runs.** Argo CD syncs every app from `main` with prune and self-heal, so a merge is a deploy.
 - **A PR's apps are rendered by Argo CD before it merges.** `Validate manifests` runs argocd-diff-preview, which renders the apps the PR touches in a throwaway cluster and posts the diff. A new app folder's ApplicationSet already carries the watch pattern. Record: [0001](docs/architectural-decision-records/0001-argo-cd-renders-every-pr.md)
-- **Other repos' releases write their own tags.** bluebird, bluebird-helm and hevy-trainer-sync open the bump PRs for their image tag and chart version, and Renovate is told to leave those packages alone. Don't edit those lines by hand.
+- **Other repos' releases write their own tags.** bluebird, bluebird-helm, hevy-trainer-sync, Personal-Website and Mountaineers-Activity-Scraper open the bump PRs for their image tag and chart version, and Renovate is told to leave those packages alone. Don't edit those lines by hand.
 - **No Secrets in the repo.** Secrets and statically provisioned volumes are created by hand, as the README lists.
 - **Renovate stays here** until zimmertr/yggdrasil#40 decides between it and Dependabot.
 

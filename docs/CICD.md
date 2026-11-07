@@ -29,7 +29,7 @@ Branch protection requires all six, with admins included. Renaming a job means u
 
 ## Bump PRs from other repos
 
-bluebird, bluebird-helm and hevy-trainer-sync release through zimmertr/yggdrasil's `release` module. After a release, it opens a PR here that sets the new image tag or chart version, titled `chore: bump ...`, and arms auto-merge. The PR merges itself once the checks above pass. Renovate leaves those packages alone (`.github/renovate.json`), so no bot PR races the release.
+bluebird, bluebird-helm, hevy-trainer-sync, Personal-Website and Mountaineers-Activity-Scraper release through zimmertr/yggdrasil's `release` module. After a release, it opens a PR here that sets the new image tag or chart version, titled `chore: bump ...`, and arms auto-merge. The PR merges itself once the checks above pass. Renovate leaves those packages alone (`.github/renovate.json`), so no bot PR races the release.
 
 ## Renovate
 

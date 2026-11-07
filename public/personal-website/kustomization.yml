@@ -18,5 +18,5 @@ generatorOptions:
  disableNameSuffixHash: true
 
 images:
-  - name: ghcr.io/zimmertr/personal-website
-    newTag: main-61d7f34
+  - name: zimmertr/personal-website
+    newTag: 1.3.3
