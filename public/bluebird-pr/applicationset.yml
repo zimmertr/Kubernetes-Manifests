@@ -38,7 +38,7 @@ spec:
       source:
         repoURL: oci://registry-1.docker.io/zimmertr/bluebird-helm
         chart: bluebird-helm
-        targetRevision: 0.18.31
+        targetRevision: 0.18.32
         helm:
           releaseName: "bluebird-pr-{{ .number }}"
           valuesObject:
