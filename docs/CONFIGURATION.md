@@ -10,7 +10,7 @@ The settings that shape how this repo is checked and kept current. Each app's ow
 - zimmertr/yggdrasil's module pin merges itself after three days, the wait every repo that calls the modules uses.
 - `zimmertr/bluebird`, `zimmertr/bluebird-helm`, `zimmertr/hevy-trainer-sync`, `zimmertr/personal-website` and `zimmertr/mountaineers-activity-scraper` are off: those repos' releases write their tags here ([CICD.md](CICD.md#bump-prs-from-other-repos)).
 - `ghcr.io/ggml-org/llama.cpp` follows only its `light-b<build>` tags.
-- A regex manager reads `# renovate:` comments on workflow `env:` lines, such as `TERRAFORM_VERSION` and `DIFF_PREVIEW_IMAGE`. A value may carry `@sha256:` and a digest, and Renovate moves both.
+- A regex manager reads `# renovate:` comments on workflow `env:` lines, such as `DIFF_PREVIEW_IMAGE`. A value may carry `@sha256:` and a digest, and Renovate moves both.
 - Folders matching `*/*.disabled/*` are ignored.
 
 ## Watch patterns
@@ -33,4 +33,4 @@ Argo CD itself ignores these annotations. A new folder of apps copies its Applic
 
 ## Secrets and volumes
 
-Not in the repo. The README lists every Secret and ZFS volume to create by hand, and the `terraform/cloudflare` outputs some of them read.
+Not in the repo. The README lists every Secret and ZFS volume to create by hand, and the outputs of zimmertr/yggdrasil's `terraform/cloudflare` some of them read.
