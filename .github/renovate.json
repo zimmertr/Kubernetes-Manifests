@@ -48,6 +48,11 @@
       "enabled": false
     },
     {
+      "description": "hevy-garmin-sync's chart version is written by its own release job, once its tests and image scans pass, for the same reason as hevy-trainer-sync's. Renovate leaves it to that job.",
+      "matchPackageNames": ["registry-1.docker.io/zimmertr/hevy-garmin-sync-helm"],
+      "enabled": false
+    },
+    {
       "description": "Personal-Website's and Mountaineers-Activity-Scraper's image tags are written by their own release jobs, once each image scan passes, for the same reason as hevy-trainer-sync's. Renovate leaves them to those jobs.",
       "matchPackageNames": [
         "zimmertr/personal-website",
