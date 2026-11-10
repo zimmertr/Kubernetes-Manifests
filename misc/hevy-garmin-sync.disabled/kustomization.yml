@@ -9,6 +9,6 @@ helmCharts:
     namespace: hevy-garmin-sync-system
     releaseName: hevy-garmin-sync
     repo: oci://registry-1.docker.io/zimmertr
-    version: 0.1.6
+    version: 0.1.7
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
