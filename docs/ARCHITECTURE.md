@@ -16,7 +16,6 @@ flowchart TD
 - **Each app is a kustomization.** Most pull an upstream Helm chart through kustomize's `helmCharts`, which is why Argo CD runs kustomize with `--enable-helm` (`argo/argo-cd/values.yml`). Every kustomization reads only its own folder.
 - **The roots are applied once by hand**, as the README says: `root-appproject.yml`, then `root-applicationset.yml`. From then on, Argo CD finds every `applicationset.yml` and `appproject.yml` itself.
 - **A folder named `*.disable*` is skipped** by every generator and by the roots. Nothing there is deployed, and some of it no longer renders.
-- **`misc/hevy-garmin-sync.disabled`** holds only the chart version that zimmertr/hevy-garmin-sync's releases bump. hevy2garmin, which it replaces, is gone. It stays disabled until TJ turns it on; then it loses `.disabled` and gains its values and resources.
 - **`public/bluebird-pr`** is its own ApplicationSet: a GitHub pull request generator makes one preview of bluebird for each PR labelled `create pr container`, from the bluebird-helm chart.
 
 ## What is outside the repo

@@ -1,0 +1,23 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: hevy-garmin-sync-system
+resources:
+  - resources/namespace.yml
+helmCharts:
+  - name: hevy-garmin-sync-helm
+    namespace: hevy-garmin-sync-system
+    releaseName: hevy-garmin-sync
+    repo: oci://registry-1.docker.io/zimmertr
+    # hevy-garmin-sync's release job bumps this after every release
+    # (zimmertr/hevy-garmin-sync, spec D-7), and Renovate leaves it to that job
+    # (.github/renovate.json).
+    version: 0.2.0
+    valuesInline:
+      # Made by hand, see README.md. It holds the API key, the Garmin token and
+      # the Hevy session, none of which belong in git.
+      existingSecret: hevy-garmin-sync
+      persistence:
+        # The rotated Garmin token and Hevy session, a few kilobytes. 1Gi is
+        # the size the old hevy-trainer-sync volume had on this storage class.
+        size: 1Gi
+        storageClassName: proxmox-flashpool
