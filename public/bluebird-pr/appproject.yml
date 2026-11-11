@@ -8,7 +8,7 @@ metadata:
 spec:
   description: Ephemeral per-PR Bluebird preview environments.
   sourceRepos:
-    - oci://registry-1.docker.io/zimmertr/bluebird-helm
+    - oci://ghcr.io/zimmertr/bluebird-helm
   destinations:
     - namespace: bluebird-pr-system
       server: https://kubernetes.default.svc

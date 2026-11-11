@@ -36,14 +36,14 @@ spec:
         server: https://kubernetes.default.svc
         namespace: bluebird-pr-system
       source:
-        repoURL: oci://registry-1.docker.io/zimmertr/bluebird-helm
+        repoURL: oci://ghcr.io/zimmertr/bluebird-helm
         chart: bluebird-helm
-        targetRevision: 0.18.34
+        targetRevision: 0.18.36
         helm:
           releaseName: "bluebird-pr-{{ .number }}"
           valuesObject:
             image:
-              name: zimmertr/bluebird-pr
+              name: ghcr.io/zimmertr/bluebird-pr
               tag: "pr-{{ .number }}-{{ .head_sha }}"
             ingress:
               enabled: true
