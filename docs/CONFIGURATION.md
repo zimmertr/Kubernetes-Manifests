@@ -4,14 +4,19 @@ The settings that shape how this repo is checked and kept current. Each app's ow
 
 ## Renovate
 
-`.github/renovate.json` extends `config:recommended`, so Renovate finds image tags and chart versions in the manifests, and actions in the workflows. Each rule carries its reason in its `description`:
+`.github/renovate.json` extends zimmertr/yggdrasil's shared preset, `github>zimmertr/yggdrasil//defaults/renovate`, so Renovate finds image tags and chart versions in the manifests, and actions in the workflows. The preset holds the rules every repo shares:
 
-- Minor and patch updates merge themselves once they are seven days old.
-- zimmertr/yggdrasil's module pin merges itself after three days, the wait every repo that calls the modules uses.
+- Every release waits seven days, and everything below a major then merges itself.
+- An image whose registry gives no publish date (GHCR, Quay, ECR) can't be aged, so it merges with no wait.
+- zimmertr/yggdrasil's module pin merges with no wait.
+
+This repo adds only its own rules, and each carries its reason in its `description`:
+
 - `ghcr.io/zimmertr/bluebird`, `ghcr.io/zimmertr/bluebird-helm`, `ghcr.io/zimmertr/hevy-garmin-sync-helm`, `ghcr.io/zimmertr/personal-website` and `ghcr.io/zimmertr/mountaineers-activity-scraper` are off: those repos' releases write their tags here ([CICD.md](CICD.md#bump-prs-from-other-repos)).
 - `ghcr.io/ggml-org/llama.cpp` follows only its `light-b<build>` tags.
 - A regex manager reads `# renovate:` comments on workflow `env:` lines, such as `DIFF_PREVIEW_IMAGE`. A value may carry `@sha256:` and a digest, and Renovate moves both.
 - Folders matching `*/*.disabled/*` are ignored.
+- `prConcurrentLimit` and `prHourlyLimit` are `0`, so Renovate opens every update as soon as it is old enough.
 
 ## Watch patterns
 

@@ -32,7 +32,7 @@ bluebird, bluebird-helm, hevy-garmin-sync, Personal-Website and Mountaineers-Act
 
 ## Renovate
 
-Renovate keeps the charts, images and tools current ([CONFIGURATION.md](CONFIGURATION.md#renovate)). Its PRs are titled `chore(deps): update ...`. Minor and patch updates merge themselves once they are seven days old and the checks pass. yggdrasil's module pin waits three days instead. Majors wait for TJ.
+Renovate keeps the charts, images and tools current ([CONFIGURATION.md](CONFIGURATION.md#renovate)). Its PRs are titled `chore(deps): update ...`. Everything below a major merges itself once it is seven days old and the checks pass. yggdrasil's module pin, and an image whose registry gives no publish date (GHCR, Quay, ECR), merge with no wait. Majors wait for TJ.
 
 ## After the merge
 
