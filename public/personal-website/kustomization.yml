@@ -15,4 +15,4 @@ generatorOptions:
   disableNameSuffixHash: true
 images:
   - name: zimmertr/personal-website
-    newTag: 1.3.3
+    newTag: 1.3.4
