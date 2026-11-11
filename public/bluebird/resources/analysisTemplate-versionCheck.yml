@@ -15,7 +15,9 @@ spec:
       initialDelay: 15s
       count: 1
       failureLimit: 0
-      successCondition: hasSuffix("{{args.version}}", ":" + result)
+      # The image reads name:tag@digest, so the version sits between the
+      # colon and the @. Both ends, so 0.1.2 doesn't match 0.1.23.
+      successCondition: '"{{args.version}}" contains (":" + result + "@")'
       provider:
         web:
           url: http://bluebird-canary.bluebird-system.svc.cluster.local:8000/api/version

@@ -37,8 +37,8 @@
     {
       "description": "Bluebird Forecast's image tag and chart version are written by its own release jobs, after its CI and release checks pass. A Renovate update would move them on Validate manifests alone, so Renovate leaves them to those jobs.",
       "matchPackageNames": [
-        "zimmertr/bluebird",
-        "registry-1.docker.io/zimmertr/bluebird-helm"
+        "ghcr.io/zimmertr/bluebird",
+        "ghcr.io/zimmertr/bluebird-helm"
       ],
       "enabled": false
     },
