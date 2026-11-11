@@ -10,4 +10,4 @@ generatorOptions:
   disableNameSuffixHash: true
 images:
   - name: zimmertr/mountaineers-activity-scraper
-    newTag: 0.14.1
+    newTag: 0.14.2
