@@ -14,7 +14,6 @@ flowchart LR
 | Workflow | Check | What it does |
 |---|---|---|
 | `pr.yml` | `Validate manifests` | argocd-diff-preview renders the apps the PR touches with Argo CD, in a throwaway kind cluster on the runner, for both `main` and the PR, and posts the rendered diff as a sticky comment. A manifest Argo CD can't render fails it. Record: [0001](architectural-decision-records/0001-argo-cd-renders-every-pr.md) |
-| `pr.yml` | `Validate Terraform` | `terraform fmt -check`, `validate` and `test` on `terraform/cloudflare`, in the `hashicorp/terraform` image. It runs on every PR so it can be required. |
 | `pr-title.yml` | `PR Title / PR Title` | zimmertr/yggdrasil's `pr-title` module: the title must be `type(scope): summary`. |
 | `lint.yml` | `Lint / actionlint`, `Lint / zizmor`, `Lint / semgrep` | zimmertr/yggdrasil's `lint` module: actionlint and zizmor over the workflows. Semgrep's Dockerfile rule finds nothing to scan here. |
 

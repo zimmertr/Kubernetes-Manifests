@@ -100,21 +100,16 @@ zfs create -s -V 10G FlashPool/vm-9999-Open-WebUI-Data
 zfs create -s -V 10G FlashPool/vm-9999-LiteLLM-Postgres-Data
 ```
 
-Apply [terraform/cloudflare](terraform/cloudflare/README.md) for the Cloudflare tunnel, DNS records and cert-manager API token:
-
-```bash
-terraform -chdir=terraform/cloudflare init
-terraform -chdir=terraform/cloudflare apply -var-file=cloudflare.tfvars
-```
+The Cloudflare tunnel, DNS records and cert-manager API token are applied by [zimmertr/yggdrasil](https://github.com/zimmertr/yggdrasil/tree/main/terraform/cloudflare). Run `terraform -chdir=../yggdrasil/terraform/cloudflare init` from here, with yggdrasil checked out beside this repo.
 
 Create any Secret resources using the Terraform outputs:
 
 ```bash
 # Cloudflared and Cert-Manager
 kubectl create secret generic cloudflared-token -n cloudflared-system \
-  --from-literal=token="$(terraform -chdir=terraform/cloudflare output -raw tunnel_token)"
+  --from-literal=token="$(terraform -chdir=../yggdrasil/terraform/cloudflare output -raw tunnel_token)"
 kubectl create secret generic cloudflare-api-token -n cert-manager \
-  --from-literal=api-token="$(terraform -chdir=terraform/cloudflare output -raw cert_manager_token)"
+  --from-literal=api-token="$(terraform -chdir=../yggdrasil/terraform/cloudflare output -raw cert_manager_token)"
 
 # Proxmox CSI Plugin
 # See storage/proxmox-csi-plugin/README.md

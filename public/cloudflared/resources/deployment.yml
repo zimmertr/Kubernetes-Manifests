@@ -39,7 +39,8 @@ spec:
       containers:
         - name: cloudflared
           image: cloudflare/cloudflared
-          # The ingress rules live in Cloudflare (terraform/cloudflare), so the
+          # The ingress rules live in Cloudflare (zimmertr/yggdrasil's
+          # terraform/cloudflare), so the
           # token is all cloudflared needs.
           args:
             - tunnel

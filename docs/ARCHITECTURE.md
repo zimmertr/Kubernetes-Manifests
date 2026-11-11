@@ -18,7 +18,6 @@ flowchart TD
 - **A folder named `*.disable*` is skipped** by every generator and by the roots. Nothing there is deployed, and some of it no longer renders.
 - **`misc/hevy-garmin-sync.disabled`** holds only the chart version that zimmertr/hevy-garmin-sync's releases bump. It stays disabled until TJ moves over from hevy2garmin; then it loses `.disabled` and gains its values and resources.
 - **`public/bluebird-pr`** is its own ApplicationSet: a GitHub pull request generator makes one preview of bluebird for each PR labelled `create pr container`, from the bluebird-helm chart.
-- **`terraform/cloudflare`** holds the Cloudflare side of the public ingress: the tunnel, the DNS records and cert-manager's API token. It is applied by hand ([its README](../terraform/cloudflare/README.md)), not by Argo CD.
 
 ## What is outside the repo
 

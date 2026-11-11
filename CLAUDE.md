@@ -29,9 +29,9 @@ A change that makes any page untrue updates it in the same PR. The README is TJ'
 File issues with the `create-issue` skill from zimmertr/ai-config: the two-sentence summary, the six sections, the hemingway and humanizer passes, one priority, one type, the area labels and the session label. The skill reads the four things below from this section.
 
 - **The reader**: TJ, who runs the cluster and knows Kubernetes and Argo CD.
-- **The gates**: `Validate manifests`, `Validate Terraform`, `PR Title / PR Title` and the three `Lint /` checks pass; the `docs/` page that owns the topic changes in the same PR; the README changes only to stay accurate.
+- **The gates**: `Validate manifests`, `PR Title / PR Title` and the three `Lint /` checks pass; the `docs/` page that owns the topic changes in the same PR; the README changes only to stay accurate.
 - **The constraints**: never change the cluster with `kubectl` without TJ's okay (reads are fine); no Secret values in the repo or in logs; the release-owned tags stay out of Renovate.
-- **The areas**: `kubernetes` (an app's manifests, Argo CD, the ApplicationSets), `terraform` (`terraform/cloudflare`), `ci` (the workflows and Renovate), `security`.
+- **The areas**: `kubernetes` (an app's manifests, Argo CD, the ApplicationSets), `ci` (the workflows and Renovate), `security`.
 
 ## Working in this repo
 
