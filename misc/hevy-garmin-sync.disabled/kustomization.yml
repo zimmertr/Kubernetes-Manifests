@@ -1,8 +1,8 @@
 # hevy-garmin-sync's release job bumps the chart version below after every
 # release (zimmertr/hevy-garmin-sync, spec D-7). The folder stays disabled until
-# TJ's cutover from hevy2garmin: the misc ApplicationSet skips *.disable*
-# folders, so nothing here deploys yet. At cutover it loses ".disabled", gains
-# its values and resources, and the release job's bump path follows it.
+# TJ turns it on: the misc ApplicationSet skips *.disable* folders, so nothing
+# here deploys yet. Then it loses ".disabled", gains its values and resources,
+# and the release job's bump path follows it.
 namespace: hevy-garmin-sync-system
 helmCharts:
   - name: hevy-garmin-sync-helm
