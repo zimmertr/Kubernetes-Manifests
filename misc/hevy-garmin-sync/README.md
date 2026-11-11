@@ -13,7 +13,7 @@ It's one pod from the project's own Helm chart. Its release job bumps the chart 
 2. Sign in to Garmin once, at home, and keep the long value it prints. The password is used once and saved nowhere. Garmin rate-limits logins for hours if you retry, so get it right once.
 
    ```bash
-   docker run --rm -it zimmertr/hevy-garmin-sync:0.2.0 login
+   docker run --rm -it ghcr.io/zimmertr/hevy-garmin-sync:0.3.0 login
    ```
 
 3. For Hevy Trainer, open a private browser window, sign in at hevy.com, and copy the whole value of the `auth2.0-token` cookie (DevTools → Application → Cookies). Close the window without logging out.

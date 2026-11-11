@@ -43,8 +43,8 @@
       "enabled": false
     },
     {
-      "description": "hevy-garmin-sync's chart version is written by its own release job, once its tests and image scans pass. Its version tag reaches Docker Hub before those scans, so a Renovate update could move to a release the scan stopped. Renovate leaves it to that job.",
-      "matchPackageNames": ["registry-1.docker.io/zimmertr/hevy-garmin-sync-helm"],
+      "description": "hevy-garmin-sync's chart version is written by its own release job, once its tests and image scans pass. Its version tag reaches GHCR before those scans, so a Renovate update could move to a release the scan stopped. Renovate leaves it to that job.",
+      "matchPackageNames": ["ghcr.io/zimmertr/hevy-garmin-sync-helm"],
       "enabled": false
     },
     {
