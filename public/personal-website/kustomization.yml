@@ -16,5 +16,5 @@ generatorOptions:
 images:
   - name: zimmertr/personal-website
     newName: ghcr.io/zimmertr/personal-website
-    newTag: 1.3.9
-    digest: sha256:1828a19a27866f5d1b78c708b02c861a7dfbee2ce97ac73734503ba168f1da02
+    newTag: 1.3.10
+    digest: sha256:b0a402db083c5933df039eded5aab712beae9a5e753c40038edb5a0f2e48eccc
