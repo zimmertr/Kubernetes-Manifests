@@ -11,7 +11,7 @@ helmCharts:
     # hevy-garmin-sync's release job bumps this after every release
     # (zimmertr/hevy-garmin-sync, spec D-7), and Renovate leaves it to that job
     # (.github/renovate.json).
-    version: 0.8.1
+    version: 0.8.2
     valuesInline:
       # Made by hand, see README.md. It holds the API key, the Garmin token and
       # the Hevy session, none of which belong in git.
