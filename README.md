@@ -168,6 +168,15 @@ kubectl create secret generic bluebird-database-preview -n bluebird-pr-system \
 kubectl create secret generic mountaineers-activity-scraper-creds -n mountaineers-activity-scraper-system \
   --from-file=misc/mountaineers-activity-scraper/files/google_cloud_credentials.json
 
+# hevy-garmin-sync
+# See misc/hevy-garmin-sync/README.md
+# The session is the whole auth2.0-token cookie value from hevy.com, pasted as
+# is. Leave it out to run without Hevy Trainer.
+kubectl create secret generic hevy-garmin-sync -n hevy-garmin-sync-system \
+  --from-literal=HEVY_API_KEY='CHANGEME' \
+  --from-literal=GARMIN_TOKEN='CHANGEME' \
+  --from-literal=HEVY_SESSION='CHANGEME'
+
 # Strava Heatmap Proxy
 # See public/strava-heatmap-proxy/README.md
 kubectl create secret generic strava-heatmap-proxy-cookies -n strava-heatmap-proxy-system \
