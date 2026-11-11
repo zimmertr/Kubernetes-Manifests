@@ -1,7 +1,7 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:recommended"
+    "github>zimmertr/yggdrasil//defaults/renovate"
   ],
   "ignorePaths": [
     "*/*.disabled/*"
@@ -19,21 +19,6 @@
     }
   ],
   "packageRules": [
-    {
-      "description": "Automerge minor and patch updates once they are seven days old",
-      "matchUpdateTypes": ["minor","patch"],
-      "automerge": true,
-      "platformAutomerge": true,
-      "minimumReleaseAge": "7 days"
-    },
-    {
-      "description": "yggdrasil's modules, pinned by SHA with the version beside it. A patch or minor release merges itself once it is three days old, the wait every repo that calls them uses (yggdrasil decision record 0023), instead of the seven days above.",
-      "matchPackageNames": ["zimmertr/yggdrasil"],
-      "matchUpdateTypes": ["minor","patch"],
-      "automerge": true,
-      "platformAutomerge": true,
-      "minimumReleaseAge": "3 days"
-    },
     {
       "description": "Bluebird Forecast's image tag and chart version are written by its own release jobs, after its CI and release checks pass. A Renovate update would move them on Validate manifests alone, so Renovate leaves them to those jobs.",
       "matchPackageNames": [

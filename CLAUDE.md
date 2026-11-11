@@ -22,7 +22,7 @@ A change that makes any page untrue updates it in the same PR. The README is TJ'
 - **A PR's apps are rendered by Argo CD before it merges.** `Validate manifests` runs argocd-diff-preview, which renders the apps the PR touches in a throwaway cluster and posts the diff. A new app folder's ApplicationSet already carries the watch pattern. Record: [0001](docs/architectural-decision-records/0001-argo-cd-renders-every-pr.md)
 - **Other repos' releases write their own tags.** bluebird, bluebird-helm, hevy-garmin-sync, Personal-Website and Mountaineers-Activity-Scraper open the bump PRs for their image tag and chart version, and Renovate is told to leave those packages alone. Don't edit those lines by hand.
 - **No Secrets in the repo.** Secrets and statically provisioned volumes are created by hand, as the README lists.
-- **Renovate stays here** until zimmertr/yggdrasil#40 decides between it and Dependabot.
+- **Renovate's shared rules live in zimmertr/yggdrasil.** `.github/renovate.json` extends its preset and adds only this repo's own rules ([CONFIGURATION.md](docs/CONFIGURATION.md#renovate)). A rule every repo wants goes in the preset, not here.
 
 ## Issues
 
@@ -38,5 +38,5 @@ File issues with the `create-issue` skill from zimmertr/ai-config: the two-sente
 - Work in a fresh clone in the session's scratchpad, never in TJ's checkout. Branch from the latest `origin/main`.
 - Everything reaches main through a squash-merged PR. Never push to main.
 - The PR title is `type(scope): summary`; the `PR Title` check refuses anything else.
-- CI runs on zimmertr/yggdrasil's `pr-title` and `lint` modules, pinned by commit SHA with the version beside it. Renovate bumps the pin, and a patch or minor merges itself after three days.
+- CI runs on zimmertr/yggdrasil's `pr-title` and `lint` modules, pinned by commit SHA with the version beside it. Renovate bumps the pin, and a patch or minor merges itself with no wait.
 - Actions are pinned to commit SHAs with the version in a comment, and so is the argocd-diff-preview image (tag and digest).

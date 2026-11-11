@@ -6,7 +6,7 @@ What TJ sees from this repo, and what to do when it breaks.
 
 - **An "Argo CD Diff Preview" comment** with the rendered diff of every app the PR touches, updated on each push.
 - **Bump PRs from other repos' releases** (`chore: bump ...`). They merge themselves once the checks pass.
-- **Renovate PRs** (`chore(deps): update ...`). Minor and patch merge themselves after seven days, yggdrasil's pin after three. Majors wait for TJ.
+- **Renovate PRs** (`chore(deps): update ...`). Everything below a major merges itself after seven days; yggdrasil's pin, and an image from GHCR, Quay or ECR, with no wait. Majors wait for TJ.
 
 ## In Argo CD
 
