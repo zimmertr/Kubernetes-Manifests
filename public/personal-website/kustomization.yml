@@ -15,4 +15,6 @@ generatorOptions:
   disableNameSuffixHash: true
 images:
   - name: zimmertr/personal-website
-    newTag: 1.3.4
+    newName: ghcr.io/zimmertr/personal-website
+    newTag: 1.3.5
+    digest: sha256:a3a5f5f30f8d50931a13157efb5e28f968fbbf4a30795ae8d3dfe4a0dd909cd6
