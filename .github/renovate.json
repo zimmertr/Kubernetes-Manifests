@@ -50,8 +50,8 @@
     {
       "description": "Personal-Website's and Mountaineers-Activity-Scraper's image tags are written by their own release jobs, once each image scan passes, for the same reason as hevy-garmin-sync's. Renovate leaves them to those jobs.",
       "matchPackageNames": [
-        "zimmertr/personal-website",
-        "zimmertr/mountaineers-activity-scraper"
+        "ghcr.io/zimmertr/personal-website",
+        "ghcr.io/zimmertr/mountaineers-activity-scraper"
       ],
       "enabled": false
     },
