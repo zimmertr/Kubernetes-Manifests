@@ -1,6 +1,6 @@
 # Contributing
 
-This repo is what TJ's cluster runs, so changes come through PRs that TJ reviews.
+Thanks for your interest in contributing. These manifests run a live cluster, so every change comes through a pull request and gets a review.
 
 1. Branch from the latest `main`.
 2. Make one change per PR, and title it `type(scope): summary`, such as `feat(ai): add open-webui`.
