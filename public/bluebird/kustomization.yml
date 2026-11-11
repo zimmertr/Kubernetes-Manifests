@@ -8,7 +8,7 @@ helmCharts:
     repo: oci://ghcr.io/zimmertr
     skipTests: true
     valuesFile: values.yml
-    version: 0.18.41
+    version: 0.18.43
 resources:
   - resources/namespace.yml
   - resources/analysisTemplate-apiTest.yml
