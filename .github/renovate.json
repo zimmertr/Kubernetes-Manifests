@@ -43,17 +43,12 @@
       "enabled": false
     },
     {
-      "description": "hevy-trainer-sync's image tag is written by its own release job, once its tests and its image scan pass. Its version tag reaches Docker Hub before that scan, so a Renovate update could move to an image the scan stopped. Renovate leaves it to that job.",
-      "matchPackageNames": ["zimmertr/hevy-trainer-sync"],
-      "enabled": false
-    },
-    {
-      "description": "hevy-garmin-sync's chart version is written by its own release job, once its tests and image scans pass, for the same reason as hevy-trainer-sync's. Renovate leaves it to that job.",
+      "description": "hevy-garmin-sync's chart version is written by its own release job, once its tests and image scans pass. Its version tag reaches Docker Hub before those scans, so a Renovate update could move to a release the scan stopped. Renovate leaves it to that job.",
       "matchPackageNames": ["registry-1.docker.io/zimmertr/hevy-garmin-sync-helm"],
       "enabled": false
     },
     {
-      "description": "Personal-Website's and Mountaineers-Activity-Scraper's image tags are written by their own release jobs, once each image scan passes, for the same reason as hevy-trainer-sync's. Renovate leaves them to those jobs.",
+      "description": "Personal-Website's and Mountaineers-Activity-Scraper's image tags are written by their own release jobs, once each image scan passes, for the same reason as hevy-garmin-sync's. Renovate leaves them to those jobs.",
       "matchPackageNames": [
         "zimmertr/personal-website",
         "zimmertr/mountaineers-activity-scraper"
