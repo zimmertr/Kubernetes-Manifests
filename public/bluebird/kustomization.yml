@@ -18,7 +18,7 @@ images:
   # Named for the image the chart renders. bluebird's release writes the tag
   # and the digest the release scanned (zimmertr/bluebird record 0280).
   - name: ghcr.io/zimmertr/bluebird
-    newTag: 0.135.5
-    digest: sha256:46a7993381fea4828f8ca68456997f9d5c30af48f3dc07c5299711ba059fd12c
+    newTag: 0.136.0
+    digest: sha256:169d7cf59136dc3f2ff6ce010216eca75e12ae0dc40239d1831492bd7b2ab879
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
