@@ -71,7 +71,7 @@ env:
 # ship the llama binary, so this runs llama.cpp's CPU image.
 initContainers:
   - name: model-downloader
-    image: ghcr.io/ggml-org/llama.cpp:light-b12282
+    image: ghcr.io/ggml-org/llama.cpp:light-b12316
     restartPolicy: Always
     command: ["/bin/bash", "/scripts/model-downloader.sh"]
     env:
