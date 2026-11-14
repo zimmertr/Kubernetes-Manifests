@@ -1,3 +1,6 @@
+# Each pool is .100-.199 of its VLAN. Below .100 are the Talos nodes and VIPs, which set
+# their own static addresses, and .200-.254 is OPNsense's DHCP range, so MetalLB can never
+# hand out an address that a node or a DHCP client already holds.
 apiVersion: metallb.io/v1beta1
 kind: IPAddressPool
 metadata:
@@ -5,7 +8,7 @@ metadata:
   namespace: metallb-system
 spec:
   addresses:
-    - 192.168.40.2-192.168.40.250
+    - 192.168.40.100-192.168.40.199
 ---
 apiVersion: metallb.io/v1beta1
 kind: IPAddressPool
@@ -14,7 +17,7 @@ metadata:
   namespace: metallb-system
 spec:
   addresses:
-    - 192.168.50.2-192.168.50.250
+    - 192.168.50.100-192.168.50.199
 ---
 apiVersion: metallb.io/v1beta1
 kind: IPAddressPool
@@ -23,5 +26,5 @@ metadata:
   namespace: metallb-system
 spec:
   addresses:
-    - 192.168.60.2-192.168.60.250
+    - 192.168.60.100-192.168.60.199
   autoAssign: false

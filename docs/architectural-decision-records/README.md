@@ -22,3 +22,4 @@ A new record that reverses an old one says `Supersedes NNNN` in its status line.
 | Record | Decision | Date | Status |
 |---|---|---|---|
 | [0001](0001-argo-cd-renders-every-pr.md) | Argo CD renders a PR's apps before it merges, through argocd-diff-preview | 2026-11-06 | Accepted |
+| [0002](0002-metallb-pools-stay-clear-of-nodes-and-dhcp.md) | Each MetalLB pool is .100 to .199 of its VLAN, clear of the nodes and of DHCP | 2026-11-13 | Accepted |
