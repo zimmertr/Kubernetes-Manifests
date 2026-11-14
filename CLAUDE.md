@@ -21,6 +21,7 @@ A change that makes any page untrue updates it in the same PR. The README is TJ'
 - **`main` is what runs.** Argo CD syncs every app from `main` with prune and self-heal, so a merge is a deploy.
 - **A PR's apps are rendered by Argo CD before it merges.** `Validate manifests` runs argocd-diff-preview, which renders the apps the PR touches in a throwaway cluster and posts the diff. A new app folder's ApplicationSet already carries the watch pattern. Record: [0001](docs/architectural-decision-records/0001-argo-cd-renders-every-pr.md)
 - **Other repos' releases write their own tags.** bluebird, bluebird-helm, hevy-garmin-sync, Personal-Website and Mountaineers-Activity-Scraper open the bump PRs for their image tag and chart version, and Renovate is told to leave those packages alone. Don't edit those lines by hand.
+- **MetalLB hands out .100 to .199** of each VLAN; nodes set their own addresses below it and DHCP owns .200 and up. Pin each LoadBalancer Service inside it. Address changes are recorded in the private zimmertr/homelab-ipam repo. Record: [0002](docs/architectural-decision-records/0002-metallb-pools-stay-clear-of-nodes-and-dhcp.md)
 - **No Secrets in the repo.** Secrets and statically provisioned volumes are created by hand, as the README lists.
 - **Renovate's shared rules live in zimmertr/yggdrasil.** `.github/renovate.json` extends its preset and adds only this repo's own rules ([CONFIGURATION.md](docs/CONFIGURATION.md#renovate)). A rule every repo wants goes in the preset, not here.
 
