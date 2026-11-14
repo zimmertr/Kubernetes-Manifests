@@ -1,0 +1,83 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: hevy-garmin-sync-pr
+  namespace: argo-system
+  annotations:
+    # argocd-diff-preview (pr.yml) renders this set only when a file beside it
+    # changes, such as the chart version hevy-garmin-sync's release writes.
+    argocd-diff-preview/watch-pattern: "misc/hevy-garmin-sync-pr/.*"
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+    - pullRequest:
+        github:
+          owner: zimmertr
+          repo: hevy-garmin-sync
+          # yggdrasil's pr-preview module adds it to TJ's own PRs, after it
+          # has pushed the image below.
+          labels:
+            - create pr container
+        # The generator asks GitHub without a token, and GitHub allows 60
+        # such calls an hour from one address. bluebird-pr's set takes 24 of
+        # them; this one takes 12.
+        requeueAfterSeconds: 300
+  template:
+    metadata:
+      name: "hevy-garmin-sync-pr-{{ .number }}"
+      labels:
+        app-group: misc
+      finalizers:
+        - resources-finalizer.argocd.argoproj.io
+    spec:
+      project: hevy-garmin-sync-pr
+      # One namespace for every preview, apart from the live app's, made by
+      # appproject.yml beside this file, as bluebird-pr's is.
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: hevy-garmin-sync-pr-system
+      source:
+        repoURL: oci://ghcr.io/zimmertr/hevy-garmin-sync-helm
+        chart: hevy-garmin-sync-helm
+        # hevy-garmin-sync's release job bumps this with the live app's
+        # (zimmertr/hevy-garmin-sync, spec D-12), and Renovate leaves it to
+        # that job (.github/renovate.json).
+        targetRevision: 0.12.0
+        helm:
+          releaseName: "hevy-garmin-sync-pr-{{ .number }}"
+          valuesObject:
+            # The PR's own build. The chart pins the release's digest, which
+            # wins over a tag, so it is emptied here.
+            image:
+              repository: ghcr.io/zimmertr/hevy-garmin-sync-pr
+              tag: "pr-{{ .number }}-{{ .head_sha }}"
+              digest: ""
+            # PREVIEW_PR swaps Hevy, Hevy Trainer and Garmin for made-up
+            # accounts inside the pod and shows the red banner (spec C-14,
+            # W-10). No Secret is given: a preview reads no credential, and
+            # the chart's own Secret is left empty.
+            env:
+              PREVIEW_PR: "{{ .number }}"
+              PREVIEW_COMMIT: "{{ .head_sha }}"
+            # The made-up accounts are rebuilt at every start, so nothing
+            # needs a volume.
+            persistence:
+              enabled: false
+            ingress:
+              enabled: true
+              hosts:
+                - "pr-{{ .number }}.atlas.sol.milkyway"
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        # The namespace comes from the root-appprojects Application, which
+        # syncs on its own clock, so a preview generated first finds no
+        # namespace and its sync fails until it does.
+        retry:
+          limit: 10
+          backoff:
+            duration: 10s
+            factor: 2
+            maxDuration: 5m

@@ -21,3 +21,11 @@ helmCharts:
         # the size the old hevy-trainer-sync volume had on this storage class.
         size: 1Gi
         storageClassName: proxmox-flashpool
+      # The status page at http://atlas.sol.milkyway, through the shared Istio
+      # gateway (zimmertr/hevy-garmin-sync#62). The name resolves only on the
+      # LAN and the gateway has no route from the internet, so the page has no
+      # sign-in.
+      ingress:
+        enabled: true
+        hosts:
+          - atlas.sol.milkyway

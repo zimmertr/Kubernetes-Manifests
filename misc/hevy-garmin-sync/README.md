@@ -4,7 +4,7 @@
 
 It replaced hevy2garmin and hevy-trainer-sync. Nothing merges Hevy's sets into the Garmin activity afterwards any more.
 
-It's one pod from the project's own Helm chart. Its release job bumps the chart version in [kustomization.yml](kustomization.yml) after every release, through a PR that merges itself. There's no dashboard and nothing is exposed: the log is the only place to look.
+It's one pod from the project's own Helm chart. Its release job bumps the chart version in [kustomization.yml](kustomization.yml) after every release, through a PR that merges itself. Its status page is at http://atlas.sol.milkyway, on the LAN only, and it can start a sync by hand. Each of my hevy-garmin-sync PRs labelled `create pr container` gets a preview at `http://pr-<N>.atlas.sol.milkyway`, running on made-up accounts under a red banner, from [hevy-garmin-sync-pr](../hevy-garmin-sync-pr/applicationset.yml).
 
 ## Setup
 

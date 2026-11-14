@@ -27,6 +27,7 @@ This repo adds only its own rules, and each carries its reason in its `descripti
 | Each folder's ApplicationSet | `<folder>/.*` | Anything in the folder changes |
 | Each ApplicationSet's template, so each generated app | `{{ path }}/.*` | Anything in that app's folder changes |
 | `public/bluebird-pr/applicationset.yml` | `public/bluebird-pr/.*` | The preview set or its project changes |
+| `misc/hevy-garmin-sync-pr/applicationset.yml` | `misc/hevy-garmin-sync-pr/.*` | The preview set or its project changes |
 | `root-applicationset.yml` | `(.*/)?applicationset\.yml` | Any ApplicationSet changes |
 | `root-appproject.yml` | `(.*/)?appproject\.yml` | Any AppProject changes |
 
