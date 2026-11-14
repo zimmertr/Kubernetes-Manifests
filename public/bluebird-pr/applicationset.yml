@@ -38,7 +38,7 @@ spec:
       source:
         repoURL: oci://ghcr.io/zimmertr/bluebird-helm
         chart: bluebird-helm
-        targetRevision: 0.19.1
+        targetRevision: 0.19.4
         helm:
           releaseName: "bluebird-pr-{{ .number }}"
           valuesObject:
