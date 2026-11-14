@@ -16,6 +16,10 @@ helmCharts:
       # Made by hand, see README.md. It holds the API key, the Garmin token and
       # the Hevy session, none of which belong in git.
       existingSecret: hevy-garmin-sync
+      # Set rather than read from the Garmin profile, so "today", midnight and
+      # the status page's times never depend on that lookup.
+      env:
+        TZ: America/Los_Angeles
       persistence:
         # The rotated Garmin token and Hevy session, a few kilobytes. 1Gi is
         # the size the old hevy-trainer-sync volume had on this storage class.
