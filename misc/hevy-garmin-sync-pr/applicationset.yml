@@ -43,7 +43,7 @@ spec:
         # hevy-garmin-sync's release job bumps this with the live app's
         # (zimmertr/hevy-garmin-sync, spec D-12), and Renovate leaves it to
         # that job (.github/renovate.json).
-        targetRevision: 0.12.7
+        targetRevision: 0.13.0
         helm:
           releaseName: "hevy-garmin-sync-pr-{{ .number }}"
           valuesObject:
