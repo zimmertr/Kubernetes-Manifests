@@ -10,6 +10,7 @@ flowchart TD
   rootproj["root-appproject.yml<br/>Application root-appprojects"] -->|every appproject.yml| projects["One AppProject per folder"]
   sets -->|git directory generator| apps["One Application per subfolder<br/>e.g. public/bluebird"]
   preview["public/bluebird-pr<br/>ApplicationSet"] -->|pull request generator| previews["One preview per labelled bluebird PR"]
+  hgspreview["misc/hevy-garmin-sync-pr<br/>ApplicationSet"] -->|pull request generator| hgspreviews["One preview per labelled hevy-garmin-sync PR"]
 ```
 
 - **Folders are app groups.** Each top-level folder (`ai`, `argo`, `cilium`, `istio`, `media`, `misc`, `observability`, `public`, `storage`) holds an `applicationset.yml`, an `appproject.yml`, and one subfolder per app.
@@ -17,6 +18,7 @@ flowchart TD
 - **The roots are applied once by hand**, as the README says: `root-appproject.yml`, then `root-applicationset.yml`. From then on, Argo CD finds every `applicationset.yml` and `appproject.yml` itself.
 - **A folder named `*.disable*` is skipped** by every generator and by the roots. Nothing there is deployed, and some of it no longer renders.
 - **`public/bluebird-pr`** is its own ApplicationSet: a GitHub pull request generator makes one preview of bluebird for each PR labelled `create pr container`, from the bluebird-helm chart.
+- **`misc/hevy-garmin-sync-pr`** is the same for hevy-garmin-sync: one preview per labelled PR, from the hevy-garmin-sync-helm chart, at `pr-<N>.atlas.sol.milkyway`. A preview runs on made-up accounts and gets no Secret. The `misc` set skips the folder, as `public` skips `bluebird-pr`.
 
 ## What is outside the repo
 

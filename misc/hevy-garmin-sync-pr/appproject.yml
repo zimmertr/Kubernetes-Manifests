@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: hevy-garmin-sync-pr
+  namespace: argo-system
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  description: Per-PR hevy-garmin-sync previews, on made-up accounts.
+  sourceRepos:
+    - oci://ghcr.io/zimmertr/hevy-garmin-sync-helm
+  destinations:
+    - namespace: hevy-garmin-sync-pr-system
+      server: https://kubernetes.default.svc
+---
+# The previews' namespace, here for the reason bluebird-pr's is: the
+# root-appprojects Application applies it with cluster-wide rights, so the
+# project above needs no cluster-scoped kind. In the mesh, as the live app is.
+# No Pod Security labels, as the live app's namespace has none: the chart sets
+# no seccompProfile, which the restricted level requires (read 2026-11-13).
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: hevy-garmin-sync-pr-system
+  labels:
+    istio-injection: enabled

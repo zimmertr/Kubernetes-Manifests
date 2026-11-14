@@ -2,3 +2,7 @@ apiVersion: v1
 kind: Namespace
 metadata:
   name: hevy-garmin-sync
+  labels:
+    # In the mesh, as every app behind the shared Istio gateway is. The pod
+    # takes its sidecar at its next rollout.
+    istio-injection: enabled

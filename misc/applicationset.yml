@@ -16,6 +16,9 @@ spec:
           - path: "misc/*"
           - exclude: true
             path: "misc/*.disable*"
+          # Owns its own ApplicationSet + AppProject (applied by the root generators).
+          - exclude: true
+            path: "misc/hevy-garmin-sync-pr"
   syncPolicy:
     preserveResourcesOnDeletion: false
   template:
