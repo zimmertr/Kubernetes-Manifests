@@ -105,10 +105,10 @@ models:
       --cfg-scale 1.0
       --steps 8
 
-  # Pixel-art models, on trial for the landmarks in trailhead: none of the
-  # models above draws clean pixel art. sd-server ignores <lora:...> tags in
-  # API prompts, so each LoRA is its own model, applied to every request by a
-  # startup --prompt tag. The tag's path is relative to --lora-model-dir and
+  # Z-Image with a pixel-art LoRA, for trailhead's artwork. sd-server ignores
+  # <lora:...> tags in API prompts, and a structured lora field in a request
+  # did nothing either, so each LoRA is its own model, applied to every request
+  # by a startup --prompt tag. The tag's path is relative to --lora-model-dir and
   # leaves off the extension, so the env line names the file for the model
   # downloader, which only fetches full /models/hf/ paths.
   "z-image-turbo-pixel-art":
@@ -125,47 +125,6 @@ models:
       --diffusion-fa
       --cfg-scale 1.0
       --steps 8
-
-  # Qwen-Image-2512, not 2.1: both pixel-art LoRAs worth trying were trained
-  # on it. The sampler settings are stable-diffusion.cpp's for Qwen-Image, and
-  # 40 steps sits near the 45 to 50 the prithivMLmods card asks for. At Q8 the
-  # model (22.4 GB) and its text encoder (8.1 GB) don't fit in 32 GB of VRAM
-  # beside the activations, so the weights stream from RAM (--offload-to-cpu).
-  "qwen-image-2512-pixel-art-redmond":
-    checkEndpoint: /v1/models
-    env:
-      - "PIXEL_LORA=/models/hf/artificialguybr/PIXELART-REDMOND-QWENIMAGE/[Qwen.Image]PixelArt_Redmond.safetensors"
-    cmd: |
-      ${sd-server}
-      --diffusion-model /models/hf/unsloth/Qwen-Image-2512-GGUF/qwen-image-2512-Q8_0.gguf
-      --llm /models/hf/unsloth/Qwen2.5-VL-7B-Instruct-GGUF/Qwen2.5-VL-7B-Instruct-Q8_0.gguf
-      --vae /models/hf/Comfy-Org/Qwen-Image_ComfyUI/split_files/vae/qwen_image_vae.safetensors
-      --lora-model-dir /models/hf
-      --prompt "<lora:artificialguybr/PIXELART-REDMOND-QWENIMAGE/[Qwen.Image]PixelArt_Redmond:1>"
-      --offload-to-cpu
-      --fa
-      --cfg-scale 2.5
-      --flow-shift 3
-      --sampling-method euler
-      --steps 40
-
-  "qwen-image-2512-pixel-art-prithiv":
-    checkEndpoint: /v1/models
-    env:
-      - "PIXEL_LORA=/models/hf/prithivMLmods/Qwen-Image-2512-Pixel-Art-LoRA/Qwen-Image-2512-Master-Pixel-Art-LoRA.safetensors"
-    cmd: |
-      ${sd-server}
-      --diffusion-model /models/hf/unsloth/Qwen-Image-2512-GGUF/qwen-image-2512-Q8_0.gguf
-      --llm /models/hf/unsloth/Qwen2.5-VL-7B-Instruct-GGUF/Qwen2.5-VL-7B-Instruct-Q8_0.gguf
-      --vae /models/hf/Comfy-Org/Qwen-Image_ComfyUI/split_files/vae/qwen_image_vae.safetensors
-      --lora-model-dir /models/hf
-      --prompt "<lora:prithivMLmods/Qwen-Image-2512-Pixel-Art-LoRA/Qwen-Image-2512-Master-Pixel-Art-LoRA:1>"
-      --offload-to-cpu
-      --fa
-      --cfg-scale 2.5
-      --flow-shift 3
-      --sampling-method euler
-      --steps 40
 
   # Also edits images through /v1/images/edits. The text encoder's vision
   # weights (--llm_vision) are what let it see the images it's given.
