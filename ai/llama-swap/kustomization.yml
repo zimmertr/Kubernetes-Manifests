@@ -38,8 +38,3 @@ patches:
       - op: add
         path: /spec/template/spec/containers/0/args/-
         value: /etc/llama-swap/extra
-      # Paused while a LoRA trains on the GPU in the lora-training namespace,
-      # which needs the card to itself. Revert this op to bring llama-swap back.
-      - op: add
-        path: /spec/replicas
-        value: 0
