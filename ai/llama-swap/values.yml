@@ -81,7 +81,7 @@ initContainers:
       # this long. Three days covers a mistake noticed after a weekend.
       - name: PRUNE_AFTER_HOURS
         value: "72"
-      # Only gated repos need it, so the Secret is optional.
+      # Only gated and private repos need it, so the Secret is optional.
       - name: HF_TOKEN
         valueFrom:
           secretKeyRef:
