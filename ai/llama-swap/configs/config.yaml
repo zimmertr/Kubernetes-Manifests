@@ -126,6 +126,26 @@ models:
       --cfg-scale 1.0
       --steps 8
 
+  # Z-Image with trailhead's own style LoRA, trained on the game's art. It's set
+  # up like the pixel-art model above. The repo is private, so the downloader
+  # fetches it with the Hugging Face token. Prompts start with "trlhd, pixel art,
+  # side view scene," because ones that ask for an overhead map come back as
+  # generic pieces of the game's map.
+  "z-image-turbo-trailhead":
+    checkEndpoint: /v1/models
+    env:
+      - "TRAILHEAD_LORA=/models/hf/zimmertr/trailhead-lora-zimage-turbo/trailhead-style.safetensors"
+    cmd: |
+      ${sd-server}
+      --diffusion-model /models/hf/leejet/Z-Image-Turbo-GGUF/z_image_turbo-Q8_0.gguf
+      --llm /models/hf/unsloth/Qwen3-4B-Instruct-2507-GGUF/Qwen3-4B-Instruct-2507-Q8_0.gguf
+      --vae /models/hf/Comfy-Org/z_image_turbo/split_files/vae/ae.safetensors
+      --lora-model-dir /models/hf
+      --prompt "<lora:zimmertr/trailhead-lora-zimage-turbo/trailhead-style:1>"
+      --diffusion-fa
+      --cfg-scale 1.0
+      --steps 8
+
   # Also edits images through /v1/images/edits. The text encoder's vision
   # weights (--llm_vision) are what let it see the images it's given.
   "qwen-image-2.1":
