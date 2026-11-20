@@ -11,5 +11,5 @@ generatorOptions:
 images:
   - name: zimmertr/mountaineers-activity-scraper
     newName: ghcr.io/zimmertr/mountaineers-activity-scraper
-    newTag: 0.14.19
-    digest: sha256:5a11812df28386a2037dc87c32b89fab0baf915a58dbd1a77c874c2840abc11a
+    newTag: 0.14.20
+    digest: sha256:2d207f858b9cc7a1796f9f2f2fd139a90322c8bbc9af1ccdc034044b863f0fb4
