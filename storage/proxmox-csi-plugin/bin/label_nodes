@@ -1,10 +1,12 @@
 #!/bin/bash
 
 label_node(){
-  for node in $(echo $1 | sed "s/,/ /g"); do
-    kubectl label node $node node.cloudprovider.kubernetes.io/platform=nocloud --overwrite
-    kubectl label node $node topology.kubernetes.io/zone=$2 --overwrite
-    kubectl label node $node topology.kubernetes.io/region=$3 --overwrite
+  local names
+  IFS="," read -ra names <<< "$1"
+  for node in "${names[@]}"; do
+    kubectl label node "$node" node.cloudprovider.kubernetes.io/platform=nocloud --overwrite
+    kubectl label node "$node" topology.kubernetes.io/zone="$2" --overwrite
+    kubectl label node "$node" topology.kubernetes.io/region="$3" --overwrite
   done
 }
 
@@ -13,7 +15,7 @@ main(){
   zone=$2
   cluster=$3
 
-  label_node $nodes $zone $cluster
+  label_node "$nodes" "$zone" "$cluster"
 }
 
 main "$@"
