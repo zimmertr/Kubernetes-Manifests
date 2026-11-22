@@ -7,7 +7,7 @@ The settings that shape how this repo is checked and kept current. Each app's ow
 `.github/renovate.json` extends zimmertr/yggdrasil's shared preset, `github>zimmertr/yggdrasil//defaults/renovate`, so Renovate finds image tags and chart versions in the manifests, and actions in the workflows. The preset holds the rules every repo shares:
 
 - Every release waits seven days, and everything below a major then merges itself.
-- The riskiest upstreams, those that hold a write token or have one maintainer, wait 30 days instead. Here those are the argocd-diff-preview image and `marocchino/sticky-pull-request-comment` (zimmertr/yggdrasil record 0062).
+- The riskiest upstreams, those that hold a write token or have one maintainer, wait 30 days instead. Here that is the argocd-diff-preview image (zimmertr/yggdrasil record 0062).
 - An image whose registry gives no publish date (GHCR, Quay, ECR) can't be aged, so it merges with no wait.
 - zimmertr/yggdrasil's module pin merges with no wait.
 
