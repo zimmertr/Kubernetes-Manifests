@@ -15,9 +15,11 @@ flowchart LR
 |---|---|---|
 | `pr.yml` | `Validate manifests` | argocd-diff-preview renders the apps the PR touches with Argo CD, in a throwaway kind cluster on the runner, for both `main` and the PR, and posts the rendered diff as a sticky comment. A manifest Argo CD can't render fails it. Record: [0001](architectural-decision-records/0001-argo-cd-renders-every-pr.md) |
 | `pr-title.yml` | `PR Title / PR Title` | zimmertr/yggdrasil's `pr-title` module: the title must be `type(scope): summary`. |
-| `lint.yml` | `Lint / actionlint`, `Lint / zizmor`, `Lint / semgrep` | zimmertr/yggdrasil's `lint` module: actionlint and zizmor over the workflows. Semgrep's Dockerfile rule finds nothing to scan here. |
+| `lint.yml` | `Lint / actionlint`, `Lint / zizmor`, `Lint / semgrep`, `Lint / shellcheck`, `Lint / docs` | zimmertr/yggdrasil's `lint` module: actionlint and zizmor over the workflows, shellcheck over the scripts, and lychee and an em dash check over the Markdown. Semgrep's Dockerfile rule finds nothing to scan here. |
 
-Branch protection requires all six, with admins included. Renaming a job means updating the required checks in the same change.
+Branch protection requires all seven, with admins included. Renaming a job means updating the required checks in the same change.
+
+`scorecard.yml` runs zimmertr/yggdrasil's `scorecard` module weekly and on every push to `main`. OpenSSF Scorecard's findings land in the Security tab, and nothing fails a PR.
 
 ### What `Validate manifests` renders
 
