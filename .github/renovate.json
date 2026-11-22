@@ -44,6 +44,12 @@
       "description": "llama.cpp tags its CPU image light-b<build>, alongside tags for other variants. Only follow this one, and treat each build as a patch.",
       "matchPackageNames": ["ghcr.io/ggml-org/llama.cpp"],
       "versioning": "regex:^light-b(?<patch>\\d+)$"
+    },
+    {
+      "description": "llama-swap's chart bumps its major on every release (273.0.0 to 275.0.0), so each one would wait for TJ like a breaking change. Read the first number as the minor instead, so a release merges itself like any minor.",
+      "matchManagers": ["kustomize"],
+      "matchDepNames": ["llama-swap"],
+      "versioning": "regex:^(?<minor>\\d+)\\.(?<patch>\\d+)\\.(?<build>\\d+)$"
     }
   ]
 }
