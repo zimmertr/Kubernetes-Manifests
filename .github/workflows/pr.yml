@@ -72,7 +72,7 @@ jobs:
             "dagandersen/argocd-diff-preview:${DIFF_PREVIEW_IMAGE}"
 
       - name: Post the diff
-        uses: zimmertr/yggdrasil/actions/sticky-comment@09f6b632a2fb0f0692df46b92cb04cc664a833a1 # v3.1.4
+        uses: zimmertr/yggdrasil/actions/sticky-comment@47059cdc3da02c837181fbb16cd5d8647dd968d8 # v3.1.5
         with:
           header: argocd-diff-preview
           path: output/diff.md
