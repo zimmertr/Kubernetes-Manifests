@@ -4,7 +4,7 @@ resources:
 helmCharts:
   - name: device-metrics-exporter-charts
     repo: https://rocm.github.io/device-metrics-exporter
-    version: v1.5.3 # https://github.com/ROCm/device-metrics-exporter/releases
+    version: v1.5.4 # https://github.com/ROCm/device-metrics-exporter/releases
     releaseName: amd-device-metrics-exporter
     # Its own namespace, labeled privileged because the exporter runs
     # privileged with host paths, rather than kube-system's blanket Pod
