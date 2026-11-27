@@ -14,6 +14,7 @@ resources:
   - resources/analysisTemplate-apiTest.yml
   - resources/analysisTemplate-errorRate.yml
   - resources/analysisTemplate-versionCheck.yml
+  - resources/prometheusRule-slo.yml
 images:
   # Named for the image the chart renders. bluebird's release writes the tag
   # and the digest the release scanned (zimmertr/bluebird record 0280).

@@ -1,0 +1,64 @@
+# Alerts on Bluebird Forecast's reliability targets (zimmertr/bluebird record
+# 0339, docs/RELIABILITY.md "Alerting"). An analysis runs in the reader's
+# browser, so the pod only learns how one ended from the browser's own report
+# (`bluebird_forecast_run_reports_total`, `..._run_duration_seconds`).
+#
+# Every alert is a ticket for now (`severity: warning`, the stack's own lower
+# level, as its default rules use it): at about 50 real runs a month one failure
+# moves the hour's ratio past the fast threshold, so a page would cry wolf
+# until the synthetic runs every five minutes exist, and nothing routes a page
+# to a phone yet. A failed or abandoned run spends the budget; a refused one
+# was never a run. A ratio over no runs is no series, so a quiet hour alerts
+# nothing.
+#
+# The `release: prometheus` label is the operator's ruleSelector.
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: bluebird-slo
+  labels:
+    release: prometheus
+spec:
+  groups:
+    - name: bluebird-forecast-slo
+      rules:
+        - record: bluebird_forecast:run_errors:ratio_rate1h
+          expr: |
+            sum(rate(bluebird_forecast_run_reports_total{kind="analysis",outcome=~"failed|abandoned"}[1h]))
+            /
+            sum(rate(bluebird_forecast_run_reports_total{kind="analysis",outcome!="refused"}[1h]))
+        - record: bluebird_forecast:run_errors:ratio_rate3d
+          expr: |
+            sum(rate(bluebird_forecast_run_reports_total{kind="analysis",outcome=~"failed|abandoned"}[3d]))
+            /
+            sum(rate(bluebird_forecast_run_reports_total{kind="analysis",outcome!="refused"}[3d]))
+        - alert: BluebirdForecastAnalysesFailingFast
+          # An hour at this rate spends the 28-day budget of 0.1% in two days.
+          expr: bluebird_forecast:run_errors:ratio_rate1h > (14 * 0.001)
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: Analyses are failing fast enough to spend the month's error budget in two days
+        - alert: BluebirdForecastAnalysesFailingSlowly
+          # Three days at this rate spend the budget within the 28 days.
+          expr: bluebird_forecast:run_errors:ratio_rate3d > 0.001
+          for: 1h
+          labels:
+            severity: warning
+          annotations:
+            summary: Analyses have failed above the 0.1% budget for three days
+        - alert: BluebirdForecastAnalysesSlow
+          # More than one typical run in twenty slower than 8 s over a day. A
+          # degraded run is a success that took its time, so it counts.
+          expr: |
+            1 - (
+              sum(rate(bluebird_forecast_run_duration_seconds_bucket{kind="analysis",outcome=~"success|degraded",size="typical",le="8.0"}[1d]))
+              /
+              sum(rate(bluebird_forecast_run_duration_seconds_count{kind="analysis",outcome=~"success|degraded",size="typical"}[1d]))
+            ) > 0.05
+          for: 1h
+          labels:
+            severity: warning
+          annotations:
+            summary: More than 5% of typical analyses took longer than 8 s over the last day
